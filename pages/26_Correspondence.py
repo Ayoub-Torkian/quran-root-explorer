@@ -111,11 +111,12 @@ def _dv_bars(items, color="#1D9E75"):
 def _net_svg():
     tw = VZ.get("twins", [])[:8]
     forms = [(26, 28, "ṬSM"), (25, 67, "Tabāraka"), (62, 64, "Yusabbiḥ"), (85, 86, "wa-l-samāʾ"), (113, 114, "ʿawḏ")]
+    Y0 = 104.0
     def X(s):
-        return 24.0 + (s - 1) / 113.0 * 632.0
-    P = ['<line x1="24" y1="116" x2="656" y2="116" stroke="#D7DEE6" stroke-width="1"/>']
+        return 28.0 + (s - 1) / 113.0 * 626.0
+    P = ['<line x1="28" y1="%g" x2="654" y2="%g" stroke="#D7DEE6" stroke-width="1.2"/>' % (Y0, Y0)]
     for s in (1, 30, 60, 90, 114):
-        P.append('<text x="%.1f" y="130" font-size="9" fill="#9AA4B2" text-anchor="middle">%d</text>' % (X(s), s))
+        P.append('<text x="%.1f" y="%g" font-size="12" fill="#7A8390" text-anchor="middle">%d</text>' % (X(s), Y0 + 17, s))
     nodes = set()
     if tw:
         mxn = max(t.get("n", 1) for t in tw)
@@ -127,31 +128,33 @@ def _net_svg():
             nodes.update((a, b))
             xa, xb = X(a), X(b)
             mid = (xa + xb) / 2.0
-            apex = 116.0 - (20.0 + min(72.0, abs(xb - xa) * 0.30))
-            w = 1.0 + (t.get("n", 1) / float(mxn)) * 2.6
-            P.append('<path d="M%.1f 116 Q%.1f %.1f %.1f 116" fill="none" stroke="#1D9E75" stroke-width="%.1f" opacity="0.85"/>' % (xa, mid, apex, xb, w))
+            apex = Y0 - (22.0 + (t.get("n", 1) / float(mxn)) * 68.0)
+            w = 1.4 + (t.get("n", 1) / float(mxn)) * 2.4
+            P.append('<path d="M%.1f %g Q%.1f %.1f %.1f %g" fill="none" stroke="#1D9E75" stroke-width="%.1f" opacity="0.9"/>' % (xa, Y0, mid, apex, xb, Y0, w))
         t = tw[0]
         try:
             a, b = [int(x) for x in t["p"].split("·")]
             mid = (X(a) + X(b)) / 2.0
-            apex = 116.0 - (20.0 + min(72.0, abs(X(b) - X(a)) * 0.30))
-            P.append('<text x="%.1f" y="%.1f" font-size="9" font-weight="600" fill="#0F6E56" text-anchor="middle">%s (%d)</text>' % (mid, apex - 4, t.get("nm", "").split(" (")[0], t.get("n", 0)))
+            P.append('<text x="%.1f" y="14" font-size="12" font-weight="700" fill="#0F6E56" text-anchor="start">%s &mdash; %d shared roots</text>' % (max(mid - 20.0, 30.0), t.get("nm", "").split(" (")[0], t.get("n", 0)))
         except Exception:
             pass
     for a, b, lab in forms:
         nodes.update((a, b))
         xa, xb = X(a), X(b)
         mid = (xa + xb) / 2.0
-        apex = 116.0 + (12.0 + min(22.0, abs(xb - xa) * 0.16))
-        P.append('<path d="M%.1f 116 Q%.1f %.1f %.1f 116" fill="none" stroke="#D85A30" stroke-width="1.4" stroke-dasharray="3,2"/>' % (xa, mid, apex, xb))
+        apex = Y0 - (16.0 + min(62.0, abs(xb - xa) * 0.42))
+        P.append('<path d="M%.1f %g Q%.1f %.1f %.1f %g" fill="none" stroke="#D85A30" stroke-width="1.7" stroke-dasharray="4,3"/>' % (xa, Y0, mid, apex, xb, Y0))
+        P.append('<text x="%.1f" y="%.1f" font-size="10" fill="#A8542F" text-anchor="middle">%s</text>' % (mid, apex - 4, lab))
     for s in nodes:
-        P.append('<circle cx="%.1f" cy="116" r="2.2" fill="#16243B"/>' % X(s))
-    return '<svg viewBox="0 0 680 150" width="100%" preserveAspectRatio="xMidYMid meet" role="img">' + "".join(P) + '</svg>'
+        P.append('<circle cx="%.1f" cy="%g" r="3" fill="#16243B"/>' % (X(s), Y0))
+    P.append('<line x1="500" y1="12" x2="524" y2="12" stroke="#1D9E75" stroke-width="2.6"/><text x="529" y="16" font-size="11" fill="#46505F">shared-root link</text>')
+    P.append('<line x1="500" y1="28" x2="524" y2="28" stroke="#D85A30" stroke-width="1.7" stroke-dasharray="4,3"/><text x="529" y="32" font-size="11" fill="#46505F">form-twin (same opening)</text>')
+    return '<svg viewBox="0 0 680 128" width="100%" preserveAspectRatio="xMidYMid meet" role="img">' + "".join(P) + '</svg>'
 
 # ---------------- WHAT WE DISCOVERED — three results, each visualized ----------------
 st.markdown('<div class="cl-sec">What we discovered — three results, each visualized</div>', unsafe_allow_html=True)
 st.markdown('<div style="font-size:13px;color:#46505F;margin:-2px 0 8px;max-width:1050px">Three discoveries cover all seven bedrock features — each measured only against the text&#700;s own shuffle (the One Law).</div>', unsafe_allow_html=True)
-st.markdown('<div style="font-size:13.5px;font-weight:700;color:#1D3557;margin:8px 0 3px">Discovery 1 — a Sūra is an integrated unit <span style="font-weight:400;color:#6A7480">(A1 edge · A2 interior · A6 wiring)</span></div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:8px 0 3px">Discovery 1 — a Sūra is an integrated unit <span style="font-weight:400;color:#6A7480">(A1 edge · A2 interior · A6 wiring)</span></div>', unsafe_allow_html=True)
 st.markdown(
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:14px 18px;margin:2px 0 8px;max-width:1050px">'
     '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:6px">'
@@ -210,39 +213,38 @@ st.markdown(
     '</div>', unsafe_allow_html=True)
 
 # ---------------- Discovery 2: sūras form a modular network ----------------
-st.markdown('<div style="font-size:13.5px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 2 — sūras form a modular network <span style="font-weight:400;color:#6A7480">(A6 wiring · A7 twins)</span></div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 2 — sūras form a modular network <span style="font-weight:400;color:#6A7480">(A6 wiring · A7 twins)</span></div>', unsafe_allow_html=True)
 st.markdown(
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:13px 16px;margin:2px 0 8px;max-width:1050px">'
-    '<div style="font-size:13px;line-height:1.5;color:#16243B;margin-bottom:4px">'
+    '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:6px">'
     'Sūras are <b>not</b> a bag of independent texts. Specific pairs share far more roots than a degree-matched '
     'shuffle would give (<b style="color:#0F6E56">teal arcs</b>, thicker = stronger — e.g. Baqara·Āl-ʿImrān 342), '
     'and <b style="color:#993C1D">form-twin</b> sūras that open with the same template pair up above chance '
     '(<b style="color:#993C1D">dashed arcs</b> — ṬSM 26·28, Tabāraka 25·67, wa-l-samāʾ 85·86). '
     'The whole book reads as a wired, modular system.</div>'
     + _net_svg() +
-    '<div style="font-size:11px;color:#6A7480;margin-top:4px">Horizontal axis = the 114 sūras in order. '
-    'Arcs above = strong shared-root links · arcs below = bilateral form-twins.</div>'
+    '<div style="font-size:12px;color:#6A7480;margin-top:4px">Horizontal axis = the 114 sūras in order · arch height = link strength · dashed = bilateral form-twins.</div>'
     '</div>', unsafe_allow_html=True)
 
 # ---------------- Discovery 3: three confirming signatures ----------------
-st.markdown('<div style="font-size:13.5px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 3 — three system signatures <span style="font-weight:400;color:#6A7480">(A3 self-replication · A5 rhythm · A4 interface)</span></div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 3 — three system signatures <span style="font-weight:400;color:#6A7480">(A3 self-replication · A5 rhythm · A4 interface)</span></div>', unsafe_allow_html=True)
 _ff = [(f["al"] + "·" + f["bl"], f["n"]) for f in VZ.get("formulae", [])[:6]]
 st.markdown(
     '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:2px 0 8px;max-width:1050px">'
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
-    '<div style="font-size:12.5px;font-weight:700;color:#16243B">Self-replication <span style="color:#0F6E56">z=+125</span></div>'
-    '<div style="font-size:11px;color:#46505F;line-height:1.4;margin:2px 0 5px">Fixed root-formulae recur far above chance, across every region — the text copies its own forms.</div>'
+    '<div style="font-size:14px;font-weight:700;color:#16243B">Self-replication <span style="color:#0F6E56">z=+125</span></div>'
+    '<div style="font-size:12px;color:#46505F;line-height:1.45;margin:2px 0 6px">Fixed root-formulae recur far above chance, across every region — the text copies its own forms.</div>'
     + _dv_bars(_ff) +
     '</div>'
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
-    '<div style="font-size:12.5px;font-weight:700;color:#16243B">Rhythm <span style="color:#0F6E56">DFA 0.95</span></div>'
-    '<div style="font-size:11px;color:#46505F;line-height:1.4;margin:2px 0 5px">Verse-lengths carry long-range 1/f memory across the whole book — a multi-scale pulse, not noise.</div>'
+    '<div style="font-size:14px;font-weight:700;color:#16243B">Rhythm <span style="color:#0F6E56">DFA 0.95</span></div>'
+    '<div style="font-size:12px;color:#46505F;line-height:1.45;margin:2px 0 6px">Verse-lengths carry long-range 1/f memory across the whole book — a multi-scale pulse, not noise.</div>'
     + _dv_line(VZ.get("wave", [1, 1])) +
     '<div style="font-size:10px;color:#9AA4B2;margin-top:2px;text-align:center">words per verse · sūra 1 → 114</div>'
     '</div>'
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
-    '<div style="font-size:12.5px;font-weight:700;color:#16243B">Interface zones <span style="color:#0F6E56">z=+17.6</span></div>'
-    '<div style="font-size:11px;color:#46505F;line-height:1.4;margin:2px 0 7px">Outward-address verses (qul, yā-ayyuhā) cluster into zones rather than scattering — an outward-facing surface.</div>'
+    '<div style="font-size:14px;font-weight:700;color:#16243B">Interface zones <span style="color:#0F6E56">z=+17.6</span></div>'
+    '<div style="font-size:12px;color:#46505F;line-height:1.45;margin:2px 0 7px">Outward-address verses (qul, yā-ayyuhā) cluster into zones rather than scattering — an outward-facing surface.</div>'
     '<div style="display:flex;height:22px;border-radius:5px;overflow:hidden;font-size:10px;color:#fff;font-weight:700">'
     '<div style="width:28%;background:#1D9E75;display:flex;align-items:center;justify-content:center">28% out</div>'
     '<div style="width:72%;background:#C4CBD3;display:flex;align-items:center;justify-content:center;color:#46505F">72% inward</div></div>'
