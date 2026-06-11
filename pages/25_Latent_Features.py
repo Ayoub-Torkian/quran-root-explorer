@@ -207,11 +207,133 @@ st.markdown(r'''<div style="background:#F5F8FC;border-left:4px solid #1D3557;bor
 #  the landing leads with the discoveries themselves.)
 new_n = sum(1 for f in feats if f.get("status") == "new")
 
-# ---------------- viz data (used by the feature cards) ----------------
+# ---------------- viz data (used by the feature cards + the discovery section) ----------------
 try:
     VZ = json.load(open(os.path.join(os.path.dirname(DATA), "viz_data.json"), encoding="utf-8"))
 except Exception:
     VZ = None
+
+# ---------------- WHAT WE DISCOVERED — three results, each visualized ----------------
+if VZ:
+    def _d_bars(items, hi=None):
+        mx = max(v for _, v in items) or 1
+        rows = ""
+        for lab, v in items:
+            w = max(4, int(v / float(mx) * 100))
+            c = "#1D9E75" if (hi and lab == hi) else "#9AA4B2"
+            rows += ('<div style="display:flex;align-items:center;gap:8px;font-size:12.5px;margin:3px 0">'
+                     '<span style="width:132px;flex:none;color:#46505F">%s</span>'
+                     '<span style="flex:1;height:13px;background:#ECEFF3;border-radius:3px;overflow:hidden">'
+                     '<i style="display:block;height:100%%;width:%d%%;background:%s"></i></span>'
+                     '<span style="width:64px;flex:none;text-align:right;font-weight:700;color:#16243B">%s</span></div>'
+                     % (lab, w, c, format(v, ",")))
+        return rows
+
+    def _d_heat(pt):
+        inv = pt["invariants"]
+        rmap = {r[0]: r[1:] for r in pt["rows"]}
+        h = '<table style="border-collapse:collapse;font-size:11.5px;width:100%;max-width:560px">'
+        h += '<tr><td></td>' + "".join('<td style="padding:3px 6px;color:#46505F;text-align:center;font-weight:700">%s</td>' % i for i in inv) + '</tr>'
+        for r in ["intact", "MOVE", "REPLACE", "ADD"]:
+            h += '<tr><td style="padding:3px 8px;color:#16243B;font-weight:700">%s</td>' % r
+            for v in rmap.get(r, []):
+                bg = "rgba(29,158,117,%.2f)" % (0.10 + v * 0.85)
+                tc = "#0B3F2A" if v > 0.5 else "#7a2a2a"
+                h += '<td style="padding:5px 8px;text-align:center;background:%s;color:%s;border:2px solid #fff;font-weight:700">%.2f</td>' % (bg, tc, v)
+            h += '</tr>'
+        return h + '</table>'
+
+    def _d_line(series, color="#2A9D8F"):
+        s = series
+        if len(s) > 200:
+            stp = len(s) / 200.0
+            s = [s[int(i * stp)] for i in range(200)]
+        mx = max(s) or 1.0
+        n = len(s)
+        pts = []
+        for i, v in enumerate(s):
+            x = 4.0 + (i / (n - 1.0)) * 316.0
+            y = 66.0 - (v / mx) * 56.0
+            pts.append("%.1f,%.1f" % (x, y))
+        return ('<svg viewBox="0 0 320 72" width="100%%" height="70" preserveAspectRatio="none" role="img">'
+                '<path d="M%s" fill="none" stroke="%s" stroke-width="1.2"/></svg>' % (" L".join(pts), color))
+
+    def _d_seams(seams):
+        return ('<div style="line-height:1">' + "".join(
+            '<span style="display:inline-block;width:5px;height:14px;margin:0 1px;border-radius:1px;background:%s"></span>'
+            % ("#1D9E75" if s else "#E2E7EE") for s in seams) + '</div>')
+
+    def _d_scatter(land):
+        xs = [p[1] for p in land]; ys = [p[2] for p in land]; cls = [p[4] for p in land]; sz = [p[3] for p in land]
+        x0, x1 = min(xs), max(xs); y0, y1 = min(ys), max(ys)
+        x1 = x1 if x1 != x0 else x0 + 1
+        y1 = y1 if y1 != y0 else y0 + 1
+        def X(v):
+            return 34.0 + (v - x0) / (x1 - x0) * 612.0
+        def Y(v):
+            return 150.0 - (v - y0) / (y1 - y0) * 128.0
+        dots = ""
+        for x, y, c, s in zip(xs, ys, cls, sz):
+            r = min(9.0, 2.6 + (s ** 0.5) / 3.5)
+            col = "#1D9E75" if c == 1 else "#457B9D"
+            dots += '<circle cx="%.1f" cy="%.1f" r="%.1f" fill="%s" opacity="0.75"/>' % (X(x), Y(y), r, col)
+        return ('<svg viewBox="0 0 680 172" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'
+                '<line x1="34" y1="150" x2="650" y2="150" stroke="#E7ECF3" stroke-width="1"/>'
+                '<line x1="34" y1="16" x2="34" y2="150" stroke="#E7ECF3" stroke-width="1"/>'
+                '<circle cx="400" cy="22" r="4" fill="#1D9E75"/><text x="408" y="25" font-size="10.5" fill="#46505F">long sūras</text>'
+                '<circle cx="520" cy="22" r="4" fill="#457B9D"/><text x="528" y="25" font-size="10.5" fill="#46505F">short sūras</text>'
+                '<text x="342" y="167" font-size="11" fill="#7A8390" text-anchor="middle">each dot = one sūra · horizontal axis tracks size / richness (≈ canonical order)</text>'
+                + dots + '</svg>')
+
+    ob = VZ.get("order_bits", {})
+    seams = VZ.get("seams", [])
+    _bits = ob.get("random", 0) - ob.get("canonical", 0)
+    st.markdown(
+        '<div class="lf-kpis">'
+        '<div class="lf-kpi"><div class="n">' + str(len(included)) + '</div><div class="l">graded features ≥ 90</div></div>'
+        '<div class="lf-kpi navy"><div class="n">' + format(_bits, ",") + '</div><div class="l">bits of order information</div></div>'
+        '<div class="lf-kpi"><div class="n">' + str(sum(seams)) + '<span style="font-size:15px;color:#6A7480">/' + str(len(seams)) + '</span></div><div class="l">sūra boundaries detected</div></div>'
+        '<div class="lf-kpi amber"><div class="n">r = ' + ("%.2f" % VZ.get("pc1_order_r", 0)) + '</div><div class="l">order ↔ sequence</div></div>'
+        '</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="lf-sec">What we discovered — three results, each visualized</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:14px;color:#46505F;margin:-2px 0 8px;max-width:1050px">Three results, each measured only against the text&#700;s own shuffle (the One Law) — the substance behind the feature cards further down.</div>', unsafe_allow_html=True)
+
+    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:8px 0 3px">Discovery 1 — the arrangement is determined <span style="font-weight:500;color:#6A7480">(order carries real information)</span></div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:13px 16px;margin:2px 0 8px;max-width:1050px">'
+        '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:7px">Compress the order of the text. A <b>random</b> order needs ' + format(ob.get("random", 0), ",") + ' bits; the <b>canonical</b> order (the muṣḥaf) needs only <b style="color:#0F6E56">' + format(ob.get("canonical", 0), ",") + '</b> — about <b>9,900 bits less</b>. The arrangement is <b>not random</b>: it carries real, measurable structure.</div>'
+        + _d_bars([("random order", ob.get("random", 0)), ("canonical (the muṣḥaf)", ob.get("canonical", 0)), ("length-sorted", ob.get("length-sorted", 0))], hi="canonical (the muṣḥaf)") +
+        '<div style="font-size:13px;color:#16243B;font-weight:700;margin:11px 0 4px">And the order is load-bearing — perturb the text and the four invariants collapse:</div>'
+        + _d_heat(VZ["perturb"]) +
+        '<div style="font-size:11.5px;color:#6A7480;margin-top:5px">Rows = what we did to the text · columns = the four invariants · value = how much survives (1.0 = fully intact). The <b>MOVE</b> row (reorder the verses) wipes the 1/f signal to 0.</div>'
+        '</div>', unsafe_allow_html=True)
+
+    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:12px 0 3px">Discovery 2 — the units are real and detectable <span style="font-weight:500;color:#6A7480">(a sūra is a definable unit)</span></div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:13px 16px;margin:2px 0 8px;max-width:1050px">'
+        '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:7px">Place every sūra by its own profile and they spread into a structured landscape — the main axis tracks the canonical order (r = <b>' + ("%.2f" % VZ.get("pc1_order_r", 0)) + '</b>). And the seams between sūras are objectively findable: <b style="color:#0F6E56">' + str(sum(seams)) + ' of ' + str(len(seams)) + '</b> boundaries light up from the text alone.</div>'
+        + _d_scatter(VZ["landscape"]) +
+        '<div style="font-size:13px;color:#16243B;font-weight:700;margin:9px 0 4px">Detected sūra boundaries (each tick = one of the 113 seams):</div>'
+        + _d_seams(seams) +
+        '<div style="font-size:11.5px;color:#6A7480;margin-top:5px">Teal = a boundary the text marks on its own, with no external cue.</div>'
+        '</div>', unsafe_allow_html=True)
+
+    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:12px 0 3px">Discovery 3 — system signatures <span style="font-weight:500;color:#6A7480">(rhythm · 1/f · rhyme)</span></div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:2px 0 10px;max-width:1050px">'
+        '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 14px">'
+        '<div style="font-size:14px;font-weight:700;color:#16243B">Rhythm <span style="color:#0F6E56">DFA 0.95</span> · 1/f slope ' + ("%.2f" % VZ.get("spectrum_slope", 0)) + '</div>'
+        '<div style="font-size:12px;color:#46505F;margin:3px 0 6px">Verse-lengths carry long-range memory across the whole book — a multi-scale pulse, not noise.</div>'
+        + _d_line(VZ.get("wave", [1, 1])) +
+        '<div style="font-size:10px;color:#9AA4B2;text-align:center;margin-top:2px">words per verse · sūra 1 → 114</div>'
+        '</div>'
+        '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 14px">'
+        '<div style="font-size:14px;font-weight:700;color:#16243B">Rhyme <span style="color:#0F6E56">fāṣila cohesion</span></div>'
+        '<div style="font-size:12px;color:#46505F;margin:3px 0 6px">A few verse-ending sounds dominate the whole text — strong, structured rhyme.</div>'
+        + _d_bars([(w, c) for w, c in VZ.get("fasila", [])[:6]]) +
+        '</div>'
+        '</div>', unsafe_allow_html=True)
 
 # landing carries no filter chrome; matches() defaults to all
 sel_dim, query = [], ""
