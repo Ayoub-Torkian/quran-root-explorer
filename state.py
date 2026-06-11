@@ -168,9 +168,9 @@ def render_grouped_nav():
         "border-radius:6px!important;padding:5px 10px!important;margin:6px 0 0!important;"
         "line-height:1.2!important;display:block!important;white-space:nowrap!important;"
         "overflow:hidden!important;text-overflow:ellipsis!important;}"
-        ".dlnav-h2{font-size:12px!important;font-weight:700!important;letter-spacing:.4px!important;"
-        "color:#1D3557!important;text-transform:uppercase!important;margin:4px 0 3px 0!important;background:#EEF3FB!important;border-radius:5px!important;border-left:3px solid #1D9E75!important;"
-        "padding:3px 9px!important;line-height:1.2!important;display:block!important;}"
+        ".dlnav-h2{font-size:11px!important;font-weight:800!important;letter-spacing:.7px!important;"
+        "color:#7A8597!important;text-transform:uppercase!important;margin:9px 0 1px 6px!important;"
+        "background:none!important;border:none!important;padding:0!important;line-height:1.3!important;display:block!important;}"
         # v2.0: global PROGRESS RIBBON — animated bar pinned to the very top whenever the app
         # is computing (driven by the presence of Streamlit's status widget via :has()).
         "@keyframes dlribbon{0%{background-position:0 0}100%{background-position:300% 0}}"
