@@ -171,7 +171,7 @@ def render_grouped_nav():
         "line-height:1.2!important;display:block!important;white-space:nowrap!important;"
         "overflow:hidden!important;text-overflow:ellipsis!important;}"
         ".dlnav-h2{font-size:11px!important;font-weight:800!important;letter-spacing:.7px!important;"
-        "color:#7A8597!important;text-transform:uppercase!important;margin:9px 0 1px 6px!important;"
+        "color:#7A8597!important;text-transform:uppercase!important;margin:9px 0 1px 18px!important;"
         "background:none!important;border:none!important;padding:0!important;line-height:1.3!important;display:block!important;}"
         # v2.0: global PROGRESS RIBBON — animated bar pinned to the very top whenever the app
         # is computing (driven by the presence of Streamlit's status widget via :has()).
