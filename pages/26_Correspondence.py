@@ -286,9 +286,9 @@ st.markdown(
 # ---------------- master table (full-width HTML: every column visible, text wraps) ----------------
 st.markdown(
     "<style>"
-    ".ct{width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.38;table-layout:fixed;margin:2px 0 6px}"
-    ".ct th{background:#1D3557;color:#fff;text-align:left;padding:6px 9px;font-size:11.5px;font-weight:700}"
-    ".ct td{padding:6px 9px;border-bottom:1px solid #EDF1F6;color:#2B3440;vertical-align:top;word-wrap:break-word;overflow-wrap:anywhere}"
+    ".ct{width:100%;max-width:1060px;border-collapse:collapse;font-size:11.5px;line-height:1.3;table-layout:fixed;margin:2px 0 6px}"
+    ".ct th{background:#1D3557;color:#fff;text-align:left;padding:4px 7px;font-size:11px;font-weight:700}"
+    ".ct td{padding:4px 7px;border-bottom:1px solid #EDF1F6;color:#2B3440;vertical-align:top;word-wrap:break-word;overflow-wrap:anywhere}"
     ".ct .ct-id{width:40px;font-weight:800;color:#1D3557}"
     ".ct .ct-c{width:108px;font-weight:700;color:#16243B}"
     ".ct .ct-why{color:#46505F}.ct .ct-got{color:#0B3F2A}"
