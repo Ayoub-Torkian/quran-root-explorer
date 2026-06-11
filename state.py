@@ -218,7 +218,7 @@ def render_grouped_nav():
                     st.markdown(f"<div class='dlnav-h1'>{l1}</div>", unsafe_allow_html=True)
                 _render_items(subs)
             else:
-                with st.expander(l1, expanded=(l1 == "🧭 MAIN")):
+                with st.expander(l1, expanded=(l1 == "🧭 MAIN") or any(_nav_is_current(_pp) for _l2, _it in subs for _pp, _lb, _ic in _it)):
                     _render_items(subs)
         # v2.1: per-page feedback widgets removed (Feedback page stays in the nav)
 
