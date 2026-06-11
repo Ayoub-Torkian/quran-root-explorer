@@ -46,7 +46,6 @@ def _facts(_corpus, _cid):
 def render_overview(corpus, source="Book6"):
     d = _facts(corpus, id(corpus))
     f = lambda n: format(int(n), ",")
-    # header carries ONLY facts not shown in the tables (no repeats)
     strip_line = "%s sūras &middot; %s āyāt &middot; %s letters &middot; %s" % (
         f(d["surahs"]), f(d["ayahs"]), f(d["letters"]), source)
 
@@ -63,16 +62,19 @@ def render_overview(corpus, source="Book6"):
              "<div class='ov-c'>Each verse stored 4 ways: diacritized → rasm → word-forms → roots.</div>"
              "</div>")
 
-    rgrp = ("<colgroup><col style='width:18%'><col style='width:40%'>"
-            "<col style='width:20%'><col style='width:22%'></colgroup>")
+    rgrp = ("<colgroup><col style='width:14%'><col style='width:26%'><col style='width:34%'>"
+            "<col style='width:13%'><col style='width:13%'></colgroup>")
+    mx = d["top"][0][3] if d["top"] else 1.0
     rrows = "".join(
         "<tr><td class='rr' dir='rtl'>%s</td><td class='rg'>%s</td>"
-        "<td class='cn'>%s</td><td class='cn'>%.1f%%</td></tr>" % (rt, gl, f(c), p)
+        "<td class='bw'><div class='bar' style='width:%d%%'></div></td>"
+        "<td class='cn'>%s</td><td class='cn'>%.1f%%</td></tr>"
+        % (rt, gl, max(6, int(round(p / mx * 100))), f(c), p)
         for rt, gl, c, p in d["top"])
     box_b = ("<div class='ov-box'><div class='ov-h'>Most frequent roots &amp; reach</div>"
              "<table class='ov-t'>" + rgrp +
-             "<tr><th>root</th><th>meaning</th><th class='r'>count</th><th class='r'>share</th></tr>"
-             + rrows + "</table>"
+             "<tr><th>root</th><th>meaning</th><th>frequency</th>"
+             "<th class='r'>count</th><th class='r'>share</th></tr>" + rrows + "</table>"
              "<div class='ov-c'>Top 100 roots → <b>%d%%</b> of all words; top 500 → <b>%d%%</b>. "
              "%s roots appear only once.</div></div>" % (d["cov100"], d["cov500"], f(d["hapax"])))
 
@@ -81,21 +83,22 @@ def render_overview(corpus, source="Book6"):
         ".ov-card{border:1px solid #E2E8F1;border-radius:11px;overflow:hidden;margin:2px 0 12px;background:#FBFCFE}"
         ".ov-head{background:linear-gradient(90deg,#1D3557,#1D9E75);padding:10px 18px;"
         "display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px}"
-        ".ov-head b{font-size:19px;font-weight:800;color:#fff}"
-        ".ov-head span{font-size:14px;color:#EAF6F1}"
-        ".ov-row{display:flex;gap:18px;flex-wrap:wrap;padding:12px 16px 14px}"
+        ".ov-head b{font-size:19px;font-weight:800;color:#fff}.ov-head span{font-size:14px;color:#EAF6F1}"
+        ".ov-row{display:flex;gap:18px;flex-wrap:wrap;padding:10px 16px 12px}"
         ".ov-box{flex:1;min-width:340px}"
-        ".ov-h{font-size:14px;font-weight:800;color:#1D3557;margin:0 0 5px}"
+        ".ov-h{font-size:14px;font-weight:800;color:#1D3557;margin:0 0 4px}"
         ".ov-t{border-collapse:collapse;width:100%;table-layout:fixed}"
         ".ov-t th{padding:5px 9px;font-size:12.5px;color:#46505F;font-weight:700;"
         "border-bottom:2px solid #1D3557;text-align:left}.ov-t th.r{text-align:right}"
-        ".ov-t td{padding:7px 9px;border-bottom:1px solid #EEF2F7;overflow:hidden;text-overflow:ellipsis}"
+        ".ov-t td{padding:6px 9px;border-bottom:1px solid #EEF2F7;overflow:hidden}"
         ".ov-t td.cc{color:#46505F;font-weight:600;font-size:13.5px;white-space:nowrap}"
         ".ov-t td.cn{color:#1D3557;font-weight:800;text-align:right;font-size:14.5px;font-variant-numeric:tabular-nums}"
         ".ov-t td.cs{color:#1D3557;font-weight:700;font-size:16px;white-space:nowrap}"
         ".ov-t td.rr{color:#1D3557;font-weight:800;font-size:18px}"
         ".ov-t td.rg{color:#46505F;font-size:13.5px}"
-        ".ov-c{font-size:12px;color:#6B7685;margin-top:7px}"
+        ".ov-t td.bw{padding:6px 9px}"
+        ".bar{height:12px;border-radius:3px;background:linear-gradient(90deg,#1D9E75,#1D3557)}"
+        ".ov-c{font-size:12.5px;color:#46505F;margin-top:6px}"
         "</style>")
     html = (css + "<div class='ov-card'><div class='ov-head'>"
             "<b>📖 The Qur'an at a Glance</b><span>" + strip_line + "</span></div>"
