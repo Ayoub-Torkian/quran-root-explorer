@@ -1,0 +1,13 @@
+{
+  "note": "Route-B pilot, plumbing/calibration only, not a claim",
+  "data": "biology = 6 human RefSeq CDS (INS,HBB,TP53,ACTB,GAPDH,ALB), 5925 nt; language = English prose from repo .md docs, 308948 letters",
+  "seed": 7,
+  "sequences": [
+    {"name": "CDS_real",        "N": 5925,   "alphabet": 4,  "redundancy_unigram": 0.0021, "gzip_ratio": 0.3126, "zipf_slope_3gram": -0.249, "MI_d1": 0.06003, "MI_d2": 0.00264, "MI_d5": 0.00047, "MI_d10": 0.00109, "MI_d20": 0.00139, "MI_d50": 0.00224},
+    {"name": "CDS_shuffled",    "N": 5925,   "alphabet": 4,  "redundancy_unigram": 0.0021, "gzip_ratio": 0.3261, "zipf_slope_3gram": -0.146, "MI_d1": 0.00104, "MI_d2": -0.00033, "MI_d5": -0.00003, "MI_d10": -0.0005, "MI_d20": -0.00002, "MI_d50": -0.00015},
+    {"name": "CDS_random_iid",  "N": 5925,   "alphabet": 4,  "redundancy_unigram": 0.0017, "gzip_ratio": 0.3259, "zipf_slope_3gram": -0.104, "MI_d1": 0.00031, "MI_d2": 0.00113, "MI_d5": 0.0004, "MI_d10": -0.00038, "MI_d20": -0.00028, "MI_d50": -0.00026},
+    {"name": "English_full",    "N": 308948, "alphabet": 26, "redundancy_unigram": 0.1076, "gzip_ratio": 0.3448, "zipf_slope_3gram": -1.46, "MI_d1": 0.47059, "MI_d2": 0.13823, "MI_d5": 0.01728, "MI_d10": 0.00193, "MI_d20": 0.00064, "MI_d50": 0.00034},
+    {"name": "English_shuffled","N": 308948, "alphabet": 26, "redundancy_unigram": 0.1076, "gzip_ratio": 0.5952, "zipf_slope_3gram": -1.106, "MI_d1": 0.00005, "MI_d2": 0.00009, "MI_d5": -0.00005, "MI_d10": -0.00009, "MI_d20": 0.00005, "MI_d50": 0.00013},
+    {"name": "English_CDSlen",  "N": 5925,   "alphabet": 26, "redundancy_unigram": 0.1053, "gzip_ratio": 0.4447, "zipf_slope_3gram": -0.837, "MI_d1": 0.51057, "MI_d2": 0.19031, "MI_d5": 0.03697, "MI_d10": 0.0053, "MI_d20": -0.00075, "MI_d50": -0.001}
+  ]
+}

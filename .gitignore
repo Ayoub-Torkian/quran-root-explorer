@@ -1,0 +1,95 @@
+# === SECRETS — never publish (credentials, tokens, keys) ===
+.hf_token
+*.token
+*.key
+.env
+.env.*
+secrets.*
+**/secrets/
+
+# === Deploy mechanism (not source; the repo itself IS the source of truth) ===
+.deploy_workdir/
+
+# === Python caches / build artifacts (regenerated automatically) ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.ipynb_checkpoints/
+
+# === Working caches & staging (regenerable; not part of the project) ===
+.stage/
+.topics_cache/
+.trans/
+.analytics/
+*.db-journal
+
+# === Logs & backups ===
+*.log
+*.bak
+*~
+
+# === Runtime / user-generated data (kept private, not committed) ===
+feedback/*.jsonl
+*.db
+
+# === OS / editor cruft ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# === Two Books study: large, regenerable data (rebuild via research/two_books_genome/scripts/) ===
+# Not committed — too large for Hugging Face (10 MB cap) and bloats the push.
+research/two_books_genome/data/genome/
+research/two_books_genome/data/quran/
+research/two_books_genome/data/languages/
+
+# Binary write-up deliverables (kept locally; Hugging Face rejects non-LFS binaries).
+# The plain-text post (two_books_post.md) stays in the repo.
+research/two_books_genome/writeups/*.pptx
+research/two_books_genome/writeups/*.pdf
+research/two_books_genome/writeups/*.docx
+
+# Generated proteins + folds (rebuild via scripts/make_proteins.py, fold_proteins.py)
+research/two_books_genome/generated_proteins/
+
+# Local data exports (binaries; keep out of HF deploy)
+exports/
+
+# local dev tooling (do not deploy)
+apply_ui.py
+apply_ui.bat
+fix_git_index.bat
+fix_push.bat
+deploy_full.log
+research/two_books_genome/narratives_data/
+*.nii
+*.nii.gz
+*.wav
+# (large fMRI/audio research data — must never deploy)
+research/two_books_genome/bids/
+fix_large_files.bat
+research/two_books_genome/glove.6B.300d.txt
+research/two_books_genome/glove.6B.zip
+*.zip
+*.gz
+*.fasta
+*.fna
+*.nsq
+*.nhr
+*.nin
+*.npy
+*.npz
+*.h5
+*.bin
+*.pt
+*.pth
+*.pdf
+*.pptx
+*.docx
+research/**/*.png
+research/**/*.jpg
+research/**/*.jpeg
+Creation_as_Signs_handout.docx
+research/two_books_genome/

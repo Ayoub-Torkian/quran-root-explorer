@@ -1,0 +1,7 @@
+{
+  "note": "Route-B confirmation-grade pilot. Mapping-free. Format per metric: [mean, 95%CI_halfwidth, n_chunks]. chunkLen=1000. Data: 6 human CDS (5925 nt, only 5 chunks -> wide CIs) vs English 30000 letters.",
+  "CDS_real":        {"N": 5925,  "chunks": 5,  "redundancy": [0.0080, 0.0036, 5], "gzip": [0.350, 0.003, 5], "Hurst": [0.539, 0.050, 5], "MI_gamma": [0.491, 0.331, 5]},
+  "CDS_shuffled":    {"N": 5925,  "chunks": 5,  "redundancy": [0.0025, 0.0008, 5], "gzip": [0.364, 0.002, 5], "Hurst": [0.495, 0.031, 5], "MI_gamma": [0.145, 1.053, 4]},
+  "English":         {"N": 30000, "chunks": 30, "redundancy": [0.1037, 0.0039, 30], "gzip": [0.525, 0.006, 30], "Hurst": [0.495, 0.018, 30], "MI_gamma": [1.906, 0.226, 27]},
+  "English_shuffled":{"N": 30000, "chunks": 30, "redundancy": [0.1030, 0.0029, 30], "gzip": [0.589, 0.001, 30], "Hurst": [0.492, 0.014, 30], "MI_gamma": [-0.776, null, 1]}
+}

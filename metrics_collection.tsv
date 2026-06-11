@@ -1,0 +1,20 @@
+metric	mode	order_sensitive	ladder	positive_control_result	status	note
+mi3_w	structural	yes	pass	scripture↑ (Bible/Quran top); Shakespeare fail	DEMOTE-G10	word MI lag3 beyond-Markov
+rep4_w	structural	yes	pass	scripture↑; Shakespeare 3/4	DEMOTE-G10	word 4-gram repetition
+gz_w	structural	yes	pass	scripture↑	DEMOTE-G10	word-stream compression
+mi5_c	structural/sonic	yes	pass	scripture↑	DEMOTE-G10	char MI lag5
+mi5_w	structural	yes	pass	scripture↑	DEMOTE-G10	word MI lag5
+mi10_w	structural	yes	weak	scripture↑	HOLD	word MI lag10 (small)
+rep4_c	sonic	yes	pass	scripture↑	DEMOTE-G10	char 4-gram repetition
+end_rh	sonic	yes	rho=-0.90	—	DEMOTE-G10	ending-bigram match (only ladder survivor of cohesion set)
+gz_c	sonic	yes	pass	—	DEMOTE-G10	char compression
+burst_w	structural	partial	—	scripture↑	HOLD	word recurrence gap CV
+ttr	lexical	NO	FAIL	invariant to scrambling	DROP	type-token ratio (order-0)
+hapax	lexical	NO	FAIL	invariant; 0 deviation vs Markov	DROP	hapax fraction (order-0)
+zipf	lexical	NO	FAIL	order-0	DROP	rank-frequency slope
+wordlen	lexical	NO	FAIL	no shuffle response	DROP	mean word length
+lx_adj	cohesion	partial	FAIL rho=-0.36	non-monotonic	DROP	set-overlap adjacency (blind to within-unit order)
+sm_adj	semantic	NO(centroid)	FAIL rho=+0.46	rises when scrambled (artifact)	DROP	embedding-centroid coherence
+sm_traj	semantic	yes	FAIL	non-monotonic	DROP	semantic trajectory length
+sem_leap	semantic/novelty	yes	—	Shakespeare 4/5 FAIL	DROP	adjacent content-word embedding distance
+unit_cv	structural	yes	weak	—	HOLD	unit-size regularity

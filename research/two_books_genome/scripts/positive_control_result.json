@@ -1,0 +1,17 @@
+{
+  "ts": "2026-06-09 15:52",
+  "objective": "trigram log-lik",
+  "optimizer": "bijection swap-SA",
+  "chance": 0.048,
+  "sec": 24.0,
+  "planted": {
+    "ground_truth_recovery": 0.3,
+    "cross_portion_mean": 0.225,
+    "cross_portion_sd": 0.056,
+    "shuffled_floor_mean": 0.263
+  },
+  "quran_top20": {
+    "cross_portion_mean": 0.275,
+    "cross_portion_sd": 0.056
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "results": {
+    "auditory": {
+      "low": -0.0005,
+      "sem": -0.0219
+    },
+    "language": {
+      "low": -0.0041,
+      "sem": -0.0288
+    }
+  },
+  "roi_reliability": {
+    "auditory": 0.123,
+    "language": 0.133
+  },
+  "ordering_only": false,
+  "trustworthy": false,
+  "verdict": "INCONCLUSIVE \u2014 ROI reliability/margins at noise level (raw single-subject; needs fMRIPrep)"
+}

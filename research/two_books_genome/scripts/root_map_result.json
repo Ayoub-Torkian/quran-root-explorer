@@ -1,0 +1,20 @@
+{
+  "ts": "2026-06-09 16:09",
+  "root_tokens": 51044,
+  "distinct_roots": 1702,
+  "A_planted_root_positive_control": {
+    "topK": 30,
+    "recovery": 0.867,
+    "cross_portion": 0.567,
+    "chance": 0.033,
+    "iters": 40000,
+    "restarts": 3
+  },
+  "B_real_root_to_codon_vs_genome": {
+    "pairs": 5,
+    "real_cross_portion_mean": 0.015,
+    "real_cross_portion_sd": 0.004,
+    "shuffled_floor_mean": 0.016,
+    "chance": 0.017
+  }
+}

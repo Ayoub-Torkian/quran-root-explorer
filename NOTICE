@@ -1,0 +1,27 @@
+NOTICE — licensing and attribution at a glance
+================================================
+
+THE PROJECT'S OWN WORK is dedicated to the public domain under CC0 1.0
+(see LICENSE). That covers the analysis, the research writing, the
+application code, and the datasets compiled by the project author(s).
+You may use, copy, modify, and redistribute that material freely, for any
+purpose, with no conditions.
+
+THIRD-PARTY MATERIAL referenced by this project is NOT covered by CC0 and
+remains under its own terms. Every external input — its source, author,
+and copyright status — is documented in SOURCES.md. In particular:
+
+  - The Qur'anic text is universal/public.
+  - Classical comparator texts (e.g. the Maqamat of al-Hamadhani and
+    al-Hariri, al-Tabari's Tarikh, al-Mutanabbi, Hafiz) are public domain;
+    they are credited in SOURCES.md.
+  - Any modern, in-copyright material (e.g. a specific English translation,
+    a modern novel, news excerpts) belongs to its respective owner, is
+    credited in SOURCES.md, and is NOT redistributed under this project's
+    free license.
+
+Software dependencies are licensed under their own open-source licenses
+(see app/requirements.txt and each package's license).
+
+In short: credit is given where it is due, the author's own contribution
+is given away freely, and nothing belonging to others is relicensed.

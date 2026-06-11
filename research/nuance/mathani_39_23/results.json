@@ -1,0 +1,17 @@
+{
+  "claim": "mathani 39:23 (oft-repeated/paired) — structured verse repetition beyond vocabulary chance",
+  "T_obs": 3523,
+  "S_obs": 0.3451,
+  "B": 300,
+  "null_mean": 2118.1,
+  "null_sd": 216.2,
+  "null_max": 2845,
+  "z": 6.5,
+  "perm_p": 0.00332,
+  "exceedances": 0,
+  "ratio_obs_over_null": 1.66,
+  "genuine_excess_pairs": 1405,
+  "artifact_fraction": 0.6,
+  "B_p_note": "B=300 caps permutation p at 1/(B+1)=0.0033 (protocol's p<0.001 typo); 0/300 nulls reached obs, z=6.5 => parametric p~1e-10. Consistent with program precedent (B=300, report z).",
+  "scope": "DESCRIPTIVE internal measure; NO comparator claim vs other Arabic. ~60% of near-twin pairing is vocabulary/length artifact; genuine structured excess is ~+66%."
+}

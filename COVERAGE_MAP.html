@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latent-Feature Coverage Map — Qur'anic Style Search</title>
+<!--
+  ============================================================================
+  LIVING COVERAGE MAP.  Update whenever a modality is opened/sharpened.
+  HOW TO UPDATE:
+    1. LAYERS array  -> [name, coverage 0-100, status ok|part|blk, weight].
+         weight = share of the full latent space (the weights should sum to ~100).
+    2. HISTORY array -> append [date, overall%, milestone].
+    3. <meta data-...> header -> bump updated / lastModality (overall + text-computable
+         + gaps are COMPUTED from LAYERS, no need to hand-edit them).
+  Everything renders from these arrays. No internet needed.
+  "Impact toward 95%" = each layer's DELIVERED points (weight*coverage) and REMAINING
+  points (weight*(1-coverage)). 95% is the practical target; the recited layer (data-
+  blocked) holds the single largest remaining lever, so 95% is gated on outside inputs.
+  Sources of truth: MASTERY_REPORT.md sec 6, EVIDENCE.md, HANDOFF_MASTERY.md.
+  ============================================================================
+-->
+<style>
+  :root{
+    --ok:#1D9E75; --part:#EF9F27; --blk:#888780;
+    --okbg:#E1F5EE; --partbg:#FAEEDA; --blkbg:#F1EFE8;
+    --ink:#2C2C2A; --muted:#5F5E5A; --hint:#888780;
+    --line:rgba(60,60,55,.14); --page:#FAF9F6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;padding:32px 20px;}
+  .wrap{max-width:880px;margin:0 auto}
+  h1{font-size:22px;font-weight:600;margin:0 0 2px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 24px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:28px}
+  .card{background:#F1EFE8;border-radius:8px;padding:14px 16px}
+  .card .lab{font-size:12px;color:var(--muted)}
+  .card .big{font-size:25px;font-weight:600;line-height:1.2}
+  .card .note{font-size:12px;color:var(--hint)}
+  h2{font-size:16px;font-weight:600;margin:30px 0 6px}
+  .h2note{font-size:13px;color:var(--muted);margin:0 0 12px}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--muted);margin-bottom:14px}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{color:var(--muted);font-weight:500;font-size:12px}
+  td.v,th.v{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .ibar{position:relative;height:18px;border-radius:4px;background:#ECEAE2;overflow:hidden;min-width:90px}
+  .idel{position:absolute;left:0;top:0;height:100%}
+  .irem{position:absolute;top:0;height:100%;background:repeating-linear-gradient(45deg,rgba(136,135,128,.32),rgba(136,135,128,.32) 4px,rgba(136,135,128,.12) 4px,rgba(136,135,128,.12) 8px)}
+  .rank{color:var(--hint);font-variant-numeric:tabular-nums;width:20px}
+  .tag{font-size:11px;padding:1px 7px;border-radius:10px;white-space:nowrap}
+  .t-ok{background:var(--okbg);color:#0F6E56}.t-part{background:var(--partbg);color:#854F0B}.t-blk{background:var(--blkbg);color:#444441}
+  .bar{display:grid;grid-template-columns:185px 1fr 46px;align-items:center;gap:10px;margin:6px 0;font-size:13px}
+  .bar .name{text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .track{background:#ECEAE2;border-radius:4px;height:18px;overflow:hidden}
+  .fill{height:100%;border-radius:4px}
+  .pct{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px}
+  .foot{color:var(--hint);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:12px}
+  .callout{background:#F1EFE8;border-radius:8px;padding:12px 16px;font-size:13px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap" id="root" data-updated="2026-06-07" data-last-modality="18 — temporal deployment (#67–#77)" data-target="95">
+
+  <h1>Latent-feature coverage — Qur'anic style search</h1>
+  <p class="sub">How much of the plausible "mastery-signal" space is opened, and which lenses move the needle most toward the 95% target. Living file; see header comment to update.</p>
+
+  <div class="cards" id="cards"></div>
+
+  <h2>Impact ranking — contribution toward 95%</h2>
+  <p class="h2note">Each modality weighted by its share of the latent space. Solid = points already delivered (weight × coverage); hatched = points still on the table (the incremental step it could add). Sorted by lever-left — biggest incremental step toward 95% first.</p>
+  <div class="legend">
+    <span><span class="sw" style="background:#1D9E75"></span>delivered</span>
+    <span><span class="sw" style="background:#888780"></span>remaining (the lever left)</span>
+    <span><span class="sw" style="background:#EF9F27"></span>partial</span>
+    <span><span class="sw" style="background:#888780"></span>blocked</span>
+  </div>
+  <table id="impact"><thead><tr><th class="rank"></th><th>Modality / layer</th><th class="v">Weight</th><th class="v">Cov.</th><th style="width:170px">Delivered ▣ / remaining ▨</th><th class="v">Lever left</th><th>State</th></tr></thead><tbody></tbody></table>
+  <div class="callout" id="leverNote"></div>
+
+  <h2>Coverage by layer</h2>
+  <p class="h2note">Raw percent of each layer explored, sorted by coverage.</p>
+  <div class="legend">
+    <span><span class="sw" style="background:#1D9E75"></span>well covered</span>
+    <span><span class="sw" style="background:#EF9F27"></span>partial / open</span>
+    <span><span class="sw" style="background:#888780"></span>blocked (needs corpus / parser)</span>
+  </div>
+  <div id="bars"></div>
+
+  <h2>The eleven lenses — verdicts</h2>
+  <table id="lenses"><thead><tr><th>Lens</th><th>Reads</th><th>Verdict</th><th>Status</th></tr></thead><tbody></tbody></table>
+
+  <h2>Progress history</h2>
+  <table id="history"><thead><tr><th>Date</th><th class="v">Overall</th><th>Milestone</th></tr></thead><tbody></tbody></table>
+
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+/* ===== DATA (edit to update) — [name, coverage%, status, weight] ===== */
+const LAYERS = [
+  ["recited / phonological (ḥarakāt — human artifact, DEPRIORITIZED)",  0, "blk", 12],
+  ["repetition / recurrence",        92, "ok",  13],
+  ["surface statistics",             90, "ok",   9],
+  ["dependency / syntax",            75, "ok",  10],
+  ["lexical-semantic / topical",     78, "part", 9],
+  ["rhyme / fāṣila",                 90, "ok",   8],
+  ["architecture (ring / refrain)",  55, "part", 6],
+  ["morpho-syntax / iltifāt",        35, "part", 7],
+  ["discourse / intratextual",       62, "part", 8],
+  ["phonosemantics",                 65, "part", 6],
+  ["wazn templates",                 70, "ok",   4],
+  ["fusion (multimodal)",            80, "ok",   4],
+  ["temporal deployment (nuzūl dynamics)", 70, "ok", 4]
+];
+const LENSES = [
+  ["1 · Lexical–statistical repetition", "word texture", "register-level (~+1σ)", "ok"],
+  ["2 · Architecture (ring/refrain)", "large-scale form", "ring null; refrain local", "part"],
+  ["3 · Rhyme / fāṣila", "end-rhyme", "persistence distinctive vs sajʿ (+1.7σ)", "ok"],
+  ["4 · Phonosemantics", "sound–meaning", "null", "part"],
+  ["5 · Fusion cell", "conjunction of axes", "distinctive as a conjunction", "ok"],
+  ["6 · Prosodic rhythm", "tartīl trace (text)", "null at text level", "part"],
+  ["7 · Morpho-syntax / iltifāt", "person/number/tense shift", "null vs prose; referent-blind", "part"],
+  ["8 · Wazn templates", "derivational shape", "register-level; null", "ok"],
+  ["9 · Intratextual recurrence", "cross-sūrah retelling", "DISTINCTIVE ~+3σ (the one axis)", "ok"],
+  ["10 · Discourse macrostructure", "move sequencing", "sequencing null; genre-mix +2.4σ", "part"],
+  ["11 · Syntactic complexity", "parataxis / hypotaxis", "register-level; wāw-parataxis +1.9σ (sajʿ exceeds)", "part"],
+  ["12 · Lexical-semantic field dynamics", "topical field sequencing/cohesion", "null (|g|<0.5σ; Qur'an clusters fields ≤ ordinary)", "part"],
+  ["13 · Dependency-syntax (parser)", "real embedding depth/distance", "register-level; Qur'an simpler than prose, |g|<0.7σ", "ok"],
+  ["14 · Recited/phonological", "syllable weight/madd/ghunna (vocalized)", "instrument built; internal rhythm real; DATA-BLOCKED + DEPRIORITIZED (ḥarakāt = human artifact)", "blk"],
+  ["15 · Muqaṭṭaʿāt / rasm pointer", "disjoint letters in revealed rasm + canonical order", "POSITIVE (divinely-rooted): 14/28 half-alphabet; position Moran +0.54; combinatorics nulled (#67: reuse z=−12.6, anti-nested); order-discipline near ceiling (#68/69; abjadī key = human frame); content ⊥ letters (#56/#64/#73)", "ok"],
+  ["16 · Canonical-order coherence", "sūra arrangement thematically smooth", "adjacent sūras root-similar beyond length (z=+3.1, p<10⁻³)", "ok"],
+  ["17 · Fāṣila system", "recurrence + content-fit at verse-end", "POSITIVE: heavy ending-repetition > sajʿ (≥3× 0.18 surface [#76-corr.] vs 0.04, ord 0.10); ending fits content (z≈+12), referent-general (#77)", "ok"],
+  ["18 · Temporal deployment", "nuzūl-order dynamics (waves, re-aiming, order-typed axes)", "Qur'an-internal POSITIVE: letter-family waves (z=−5.3); seal 2×2 typology; devotional wave (+3.2 within-period); narrative anchors NULL — return spans time", "ok"]
+];
+const HISTORY = [
+  ["pre-#40", 46, "Six text modalities swept (surface, architecture, rhyme, fusion, phonosemantics, prosody)"],
+  ["#40–42",  53, "Added iltifāt (null), wazn (register-level), intratextual recurrence (breakthrough)"],
+  ["#43",     53, "Recurrence firmed: tokenization bug fixed; headline corrected +3.5–4σ → ~+3σ; variation profile"],
+  ["#44",     56, "Modality 10 (discourse macrostructure): sequencing null, genre-inventory diversity +2.4σ"],
+  ["#45",     58, "Modality 11 (syntactic complexity): register-level; opened dependency-syntax region ~0→35%"],
+  ["#46",     60, "Modality 12 (lexical-semantic field dynamics): NULL — seed-lexicon + data-driven clusters agree, field sequencing/cohesion not distinctive"],
+  ["#47",     64, "Modality 13 (dependency-syntax, real parser): register-level — Qur'an SIMPLER than prose; confirms #11's proxy; dependency region 35→75%"],
+  ["#49",     64, "Lens 14 (recited/phonological): instrument built, Qur'an-internal rhythm real, but DATA-BLOCKED + DEPRIORITIZED — ḥarakāt are a human artifact (divine-rootedness control)"],
+  ["#50",     66, "Lens 15 (muqaṭṭaʿāt / rasm pointer): POSITIVE divinely-rooted structure — 14/28 half-alphabet, bearer enrichment z=+2.2, canonical contiguity p<10⁻⁴. 2nd positive result, sui generis"],
+  ["#51",     67, "Muqaṭṭaʿāt deepened: Moran's I=+0.54 (z=5.8); ROBUST under nuzūl order (I=+0.31, p=.001); bearer enrichment concentrated in distinctive letters (ط/ق/ن/ص ~1.2x)"],
+  ["#52",     67, "Muqaṭṭaʿāt phonetic-balance claim TESTED: voicing splits exactly half (5/10, 9/18) but aggregate 'half of every category' NOT significant (p=0.14). Structure = cardinality+position, not phonetics"],
+  ["#53",     68, "Signal-geometry on ROOTS: muqaṭṭaʿāt grouping is root-space coherent (cosine 0.53 vs 0.25, z=+6.9); same-letter groups tight (Ḥā-Mīm z=+3.1). Opening letters track lexical-thematic families"],
+  ["#54",     68, "Meccan-controlled null: root-space cohesion STRENGTHENS (z=+7.4) — not a register artifact. Muqaṭṭaʿāt = position + robust letter-specific content coherence. Caveat resolved"],
+  ["#55",     69, "Content anchor: muqaṭṭaʿāt over-express the revelation/'the Book' lexicon (whole-sūra z=+3.6 p=.0002; openings ~5x). The letters are a frontispiece to scripture-about-scripture"],
+  ["#56",     69, "Per-letter signatures: families NOT separable as whole vectors (within≈between, p=.37) — no letter→theme cipher. Distinctive roots are thematic (الر→Yūsuf, طس→Mūsā/Pharaoh, الم→law) but confounded with narrative content"],
+  ["#57",     70, "Canonical-order thematic coherence: adjacent sūras root-similar BEYOND length gradient (length-band null z=+3.1, p=.0007). The arrangement is locally thematically smooth; NMF recovers refuge/eschatology/creed themes. 3rd divinely-rooted positive"],
+  ["#62",     71, "fāṣila–content fit (munāsabat al-fawāṣil): the āyah-final attribute predicts body content — morphology grain mean z=+12.1 (16/16; قدیر/رحیم/حکیم), survives self-repetition control. Qur'an-internal; cross-text comparator pending"],
+  ["#63",     72, "fāṣila comparator: Qur'an heavily repeats SPECIFIC ending words (frac-recurs≥3x 0.28 vs saj' 0.04, ord 0.10, poetry 0.02) — EXCEEDS saj'. The fāṣila system (rhyme+recurrence+content-fit) is cross-text distinctive. Candidate Lens 17"],
+  ["E1",      72, "Coherence-length: order lives at fine scale (~few āyāt, decays by lag ~8–13). Comparator test: local coherence NOT distinctive — ordinary Arabic MORE locally coherent (1.82 vs 1.50). Tempers #57: signature is long-range return (#42), not local flow"],
+  ["#67–69",  73, "Muqaṭṭaʿāt arc completed: combinatorics survive degree-preserving nulls (reuse z=−12.6, anti-nested, families = real communities); letter ORDER near-ceiling consistent with one fixed sequence (the ancient-alphabet key — re-weighted to a HUMAN frame per stance); temporal family-waves (nuzūl z=−5.3)"],
+  ["#70–71",  73, "Lens 18 opens (temporal deployment): seal classes split into TRUE nuzūl waves vs register-only; wave CONTENT re-aimed over time (يعلمون cosmos→kitāb z=+3.4; اليم nations→community) under the cross-sūra/sūra-perm control; narrative anchors ALL NULL — return is a standing mode, not a phase"],
+  ["#72–75",  74, "Signal-geometry: sūra×root latent axes are interpretable and ORDER-TYPED (canonical/time/both/neither); early-Meccan devotional wave gated (restart-stable, within-period z=+3.2); first-revelations axis honestly demoted; letters ⊥ meaning re-confirmed at root grain (#73)"],
+  ["#76–77",  74, "Audits: #63 CORRECTED 0.28→0.18 (lemma-layer confound; survives 2nd tokenization, vs-ord ≈+2.2σ); fusion re-run = no synergy, the signature is a PROFILE; #62 fit survives referent split (referent-general). Paper → EIGHTEEN lenses; consolidation done"]
+];
+/* ===== compute ===== */
+const C = {ok:"#1D9E75", part:"#EF9F27", blk:"#888780"};
+const r = document.getElementById('root').dataset;
+const target = +r.target;
+const totW = LAYERS.reduce((s,l)=>s+l[3],0);
+const delivered = LAYERS.map(l=>l[3]*l[1]/100);
+const overall = Math.round(delivered.reduce((a,b)=>a+b,0)*100/totW);
+const blockedW = LAYERS.filter(l=>l[2]==="blk").reduce((s,l)=>s+l[3],0);
+/* gated points toward 95% = recited (fully blocked) + ~half of dependency & iltifāt remaining (parser/coref) */
+const gatedRem = blockedW
+  + 0.5*(LAYERS.find(l=>l[0].startsWith("dependency"))[3]*(100-LAYERS.find(l=>l[0].startsWith("dependency"))[1])/100)
+  + 0.45*(LAYERS.find(l=>l[0].startsWith("morpho"))[3]*(100-LAYERS.find(l=>l[0].startsWith("morpho"))[1])/100);
+const gap = target - overall;
+const ceiling = Math.round(overall + (gap - gatedRem)); /* reachable with text-only effort */
+
+document.getElementById('cards').innerHTML = `
+  <div class="card"><div class="lab">Full latent space</div><div class="big">~${overall}%</div><div class="note">46 → 53 → 56 → ${overall}</div></div>
+  <div class="card"><div class="lab">Text-only reachable ceiling</div><div class="big">~${ceiling}%</div><div class="note">95% needs blocked inputs</div></div>
+  <div class="card"><div class="lab">Gap to ${target}% target</div><div class="big">~${gap} pts</div><div class="note">~${Math.round(gatedRem)} of them data/parser-gated</div></div>`;
+
+/* impact table: sort by LEVER-LEFT (remaining points toward 95%) desc — the incremental-step ranking */
+const remOf = i => LAYERS[i][3]*(100-LAYERS[i][1])/100;
+const idx = LAYERS.map((l,i)=>i).sort((a,b)=>remOf(b)-remOf(a));
+const maxW = Math.max(...LAYERS.map(l=>l[3]));
+document.querySelector('#impact tbody').innerHTML = idx.map((i,k)=>{
+  const [n,c,s,w]=LAYERS[i]; const del=w*c/100, rem=w-del;
+  const scale = 150/maxW;
+  const tagtxt = s==='ok'?'covered':s==='part'?'open':'blocked';
+  return `<tr><td class="rank">${k+1}</td><td>${n}</td><td class="v">${w}</td><td class="v">${c}%</td>
+    <td><div class="ibar" style="width:${Math.max(w*scale,90)}px"><div class="idel" style="width:${del*scale}px;background:${C[s]}"></div><div class="irem" style="left:${del*scale}px;width:${rem*scale}px"></div></div></td>
+    <td class="v">${rem.toFixed(1)}</td><td><span class="tag t-${s}">${tagtxt}</span></td></tr>`;
+}).join('');
+
+/* biggest remaining levers callout */
+const levers = LAYERS.map(l=>[l[0], l[3]*(100-l[1])/100, l[2]]).sort((a,b)=>b[1]-a[1]).slice(0,3);
+document.getElementById('leverNote').innerHTML =
+  `<b>Biggest remaining levers toward ${target}%:</b> ` +
+  levers.map(([n,p,s])=>`${n} (~${p.toFixed(1)} pts${s==='blk'?', <b>data-blocked</b>':''})`).join(' · ') +
+  `. The recited/phonological layer is the single largest lever but needs a vocalized/recited corpus we don't have — so ${target}% is gated on outside inputs, not on more text-only lenses.`;
+
+/* coverage bars sorted by coverage */
+const byCov = [...LAYERS].sort((a,b)=>b[1]-a[1]);
+document.getElementById('bars').innerHTML = byCov.map(([n,c,s])=>`
+  <div class="bar"><div class="name" title="${n}">${n}</div>
+    <div class="track"><div class="fill" style="width:${Math.max(c,2)}%;background:${C[s]}"></div></div>
+    <div class="pct">${c}%${s==='blk'?' ·blk':''}</div></div>`).join('');
+
+const tag = s => `<span class="tag t-${s}">${s==='ok'?'covered':s==='part'?'open':'blocked'}</span>`;
+document.querySelector('#lenses tbody').innerHTML = LENSES.map(([l,reads,v,s])=>
+  `<tr><td>${l}</td><td style="color:var(--muted)">${reads}</td><td>${v}</td><td>${tag(s)}</td></tr>`).join('');
+document.querySelector('#history tbody').innerHTML = HISTORY.map(([d,o,note])=>
+  `<tr><td>${d}</td><td class="v">~${o}%</td><td>${note}</td></tr>`).join('');
+document.getElementById('foot').textContent = `Last updated ${r.updated} · last modality: ${r.lastModality} · standing structural distinctive: intratextual varied recurrence (#42, ~+3σ). Weights are signal-bearing-capacity estimates; the ranking, not the decimals, is the point.`;
+</script>
+</body>
+</html>

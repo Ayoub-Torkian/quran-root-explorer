@@ -1,0 +1,42 @@
+parser backend: stanza
+=== GATE ===
+  parsed 12 tokens; depth=4 dep_dist=2.18  [stanza]
+  scrambled dep_dist=2.27 (expect >= original 2.18)
+units: {'QURAN': 5636, 'ord-Arabic': 199, 'poetry': 536, "saj'": 188}
+equal-N per corpus = 188
+
+-- dep_dist --
+   QURAN       mean=2.189
+   ord-Arabic  mean=2.375
+   poetry      mean=1.656
+   saj'        mean=1.662
+   QURAN vs ord-Arabic : g=-0.36sd  P=0.37
+   QURAN vs poetry     : g=+1.10sd  P=0.76
+   QURAN vs saj'       : g=+0.87sd  P=0.80
+
+-- depth --
+   QURAN       mean=6.495
+   ord-Arabic  mean=8.734
+   poetry      mean=3.824
+   saj'        mean=5.027
+   QURAN vs ord-Arabic : g=-0.66sd  P=0.30
+   QURAN vs poetry     : g=+1.25sd  P=0.84
+   QURAN vs saj'       : g=+0.32sd  P=0.76
+
+-- long_rate --
+   QURAN       mean=0.064
+   ord-Arabic  mean=0.078
+   poetry      mean=0.009
+   saj'        mean=0.015
+   QURAN vs ord-Arabic : g=-0.27sd  P=0.39
+   QURAN vs poetry     : g=+1.15sd  P=0.80
+   QURAN vs saj'       : g=+0.99sd  P=0.74
+
+-- head_final --
+   QURAN       mean=0.359
+   ord-Arabic  mean=0.336
+   poetry      mean=0.289
+   saj'        mean=0.318
+   QURAN vs ord-Arabic : g=+0.22sd  P=0.55
+   QURAN vs poetry     : g=+0.48sd  P=0.66
+   QURAN vs saj'       : g=+0.31sd  P=0.60

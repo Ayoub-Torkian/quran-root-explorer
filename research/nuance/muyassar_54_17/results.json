@@ -1,0 +1,22 @@
+{
+  "claim": "muyassar 54:17 (easy to remember) facet: within-sura metrical (verse-length) regularity",
+  "M_obs": 0.4942,
+  "null_mean": 0.7378,
+  "null_sd": 0.0029,
+  "z": -84.91,
+  "p_one_sided": 0.00332,
+  "B": 300,
+  "pct_reduction_vs_null": 33.0,
+  "direction": "M_obs < null means MORE regular",
+  "exceed_le_obs": 0,
+  "stronger_null_within_period": {
+    "null": "within-period shuffle (Meccan/Medinan preserved)",
+    "M_obs": 0.4942,
+    "null_mean": 0.6782,
+    "null_sd": 0.0021,
+    "z": -86.22,
+    "p_one_sided": 0.00332,
+    "pct_reduction_vs_null": 27.1,
+    "exceed_le_obs": 0
+  }
+}

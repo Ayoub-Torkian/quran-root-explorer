@@ -1,0 +1,25 @@
+# Keep the Docker image small and reproducible
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Version control
+.git/
+.gitignore
+
+# Local-only / Windows-only artifacts
+exports/
+*.bat
+DEPLOY.md
+README.txt
+book5.xlsx
+.analytics/
+
+# Editor noise
+.vscode/
+.idea/
+*.swp
+.DS_Store

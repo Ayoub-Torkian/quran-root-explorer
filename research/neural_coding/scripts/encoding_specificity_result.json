@@ -1,0 +1,111 @@
+{
+  "n_subjects": 14,
+  "real_mean": 0.0368,
+  "mismatch_mean": 0.0346,
+  "floor_mean": 0.0048,
+  "real_gt_mismatch_n": 7,
+  "real_vs_mismatch_p": 0.48712,
+  "real_vs_mismatch_dz": 0.191,
+  "real_vs_floor_p": 7e-05,
+  "real_vs_floor_dz": 1.531,
+  "per_subject": [
+    {
+      "real": 0.0074,
+      "mismatch": 0.0168,
+      "floor": -0.0001,
+      "ceiling_r": 0.276,
+      "sub": "sub-001"
+    },
+    {
+      "real": 0.0508,
+      "mismatch": 0.0545,
+      "floor": 0.0036,
+      "ceiling_r": 0.344,
+      "sub": "sub-002"
+    },
+    {
+      "real": 0.0319,
+      "mismatch": 0.011,
+      "floor": 0.0097,
+      "ceiling_r": 0.38,
+      "sub": "sub-003"
+    },
+    {
+      "real": 0.0462,
+      "mismatch": 0.0454,
+      "floor": 0.0092,
+      "ceiling_r": 0.423,
+      "sub": "sub-004"
+    },
+    {
+      "real": 0.0567,
+      "mismatch": 0.062,
+      "floor": 0.0181,
+      "ceiling_r": 0.469,
+      "sub": "sub-005"
+    },
+    {
+      "real": 0.0518,
+      "mismatch": 0.0272,
+      "floor": -0.0025,
+      "ceiling_r": 0.327,
+      "sub": "sub-006"
+    },
+    {
+      "real": 0.0314,
+      "mismatch": 0.0157,
+      "floor": -0.0102,
+      "ceiling_r": 0.269,
+      "sub": "sub-008"
+    },
+    {
+      "real": 0.0217,
+      "mismatch": 0.0312,
+      "floor": 0.0096,
+      "ceiling_r": 0.39,
+      "sub": "sub-010"
+    },
+    {
+      "real": 0.015,
+      "mismatch": 0.0125,
+      "floor": 0.0024,
+      "ceiling_r": 0.232,
+      "sub": "sub-011"
+    },
+    {
+      "real": 0.0567,
+      "mismatch": 0.0528,
+      "floor": 0.0125,
+      "ceiling_r": 0.35,
+      "sub": "sub-012"
+    },
+    {
+      "real": 0.0214,
+      "mismatch": 0.0293,
+      "floor": -0.0009,
+      "ceiling_r": 0.236,
+      "sub": "sub-013"
+    },
+    {
+      "real": 0.0106,
+      "mismatch": 0.0118,
+      "floor": -0.0004,
+      "ceiling_r": 0.236,
+      "sub": "sub-014"
+    },
+    {
+      "real": 0.0858,
+      "mismatch": 0.0929,
+      "floor": 0.005,
+      "ceiling_r": 0.331,
+      "sub": "sub-015"
+    },
+    {
+      "real": 0.0273,
+      "mismatch": 0.0218,
+      "floor": 0.0111,
+      "ceiling_r": 0.365,
+      "sub": "sub-016"
+    }
+  ]
+}

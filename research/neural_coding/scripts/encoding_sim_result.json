@@ -1,0 +1,33 @@
+{
+  "results": {
+    "early_region": {
+      "low_level": {
+        "r2": 0.728,
+        "ceiling": 0.133,
+        "r2_over_ceiling": 5.491,
+        "floor_r2": -0.003
+      },
+      "semantic": {
+        "r2": 0.239,
+        "ceiling": 0.133,
+        "r2_over_ceiling": 1.804,
+        "floor_r2": -0.012
+      }
+    },
+    "assoc_region": {
+      "low_level": {
+        "r2": 0.021,
+        "ceiling": 0.143,
+        "r2_over_ceiling": 0.144,
+        "floor_r2": -0.001
+      },
+      "semantic": {
+        "r2": 0.721,
+        "ceiling": 0.143,
+        "r2_over_ceiling": 5.043,
+        "floor_r2": -0.007
+      }
+    }
+  },
+  "double_dissociation_ok": true
+}

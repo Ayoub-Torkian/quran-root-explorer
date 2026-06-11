@@ -1,0 +1,13 @@
+{
+  "audio": "pieman_audio.wav",
+  "n_words": 946,
+  "tr": 1.5,
+  "lag": 1,
+  "ceiling_r": 0.276,
+  "R2_low": 0.016,
+  "R2_sem": 0.0081,
+  "R2_both": 0.0172,
+  "unique_semantic": 0.0012,
+  "unique_sem_floor": 0.018,
+  "unique_low": 0.0092
+}

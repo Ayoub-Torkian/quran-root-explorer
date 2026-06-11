@@ -1,0 +1,17 @@
+{
+  "subject_runs": [
+    "sub-001_task-pieman_run-1_bold.nii.gz",
+    "sub-001_task-pieman_run-2_bold.nii.gz"
+  ],
+  "tr": 1.5,
+  "n_tr": 300,
+  "fwhm": 6.0,
+  "best_lag_tr": 7,
+  "n_voxels": 25969,
+  "n_reliable": 520,
+  "noise_ceiling_r": 0.265,
+  "test_r2_reliable": 0.0085,
+  "floor_r2": -0.0014,
+  "delta_over_floor": 0.01,
+  "test_r2_over_ceiling_R2": 0.121
+}
