@@ -205,10 +205,10 @@ def render_grouped_nav():
                 if l2:
                     st.markdown(f"<div class='dlnav-h2'>{l2}</div>", unsafe_allow_html=True)
                 for path, label, icon in items:
-                    if _nav_is_current(path):
-                        _ic = icon if isinstance(icon, str) and not icon.startswith(":") else ""
-                        st.markdown("<div class='dlnav-active'>%s %s</div>" % (_ic, label), unsafe_allow_html=True)
-                        continue
+                    # Every item is the SAME st.page_link — the current page is auto-highlighted by
+                    # Streamlit via a[aria-current='page'] (styled above). No custom taller element,
+                    # so overlap/masking is structurally impossible. (Settled — do not reintroduce a
+                    # bespoke active <div>.)
                     for _p in (path if isinstance(path, (list, tuple)) else [path]):
                         try:
                             st.page_link(_p, label=label, icon=icon)
