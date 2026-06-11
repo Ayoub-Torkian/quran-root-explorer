@@ -71,12 +71,72 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-m = st.columns(5)
+m = st.columns(6)
 m[0].metric("Bedrock (A)", "7", help="survived every scrutiny pass")
-m[1].metric("Attributes tested", "34")
-m[2].metric("Scrutiny passes", "7")
-m[3].metric("Strongest effect", "z = 125", help="propagation / self-replicating formulae")
-m[4].metric("Tested & rejected", "5", help="failed candidates — filed honestly, not as disproof")
+m[1].metric("Second tier (B)", "6", help="real but modest")
+m[2].metric("Tested & rejected", "5", help="filed honestly, not disproof")
+m[3].metric("Attributes tested", "34", help="across 7 scrutiny passes")
+m[4].metric("Sūras in the system", "114")
+m[5].metric("Strongest effect", "z = 125", help="propagation / self-replicating formulae")
+
+# ---------------- HERO: the one finding, visualized (a Sūra is an integrated unit) ----------------
+st.markdown('<div class="cl-sec">The one finding — a Sūra is an integrated unit</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:14px 18px;margin:2px 0 8px;max-width:1050px">'
+    '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:6px">'
+    '<b>In plain terms:</b> whether a sūra has 5 verses or 286, every one tests as the '
+    '<b style="color:#0F6E56">same kind of object</b> — a sealed edge, an ordered interior, and specific '
+    'wiring to other sūras. Size, content and position change; the structure does not. Like organs in a body: '
+    'a heart and a taste-bud differ wildly in size and place, yet each is a bounded, ordered, connected unit.</div>'
+    '<svg viewBox="0 0 680 230" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'
+    '<defs><pattern id="wv" width="7" height="7" patternUnits="userSpaceOnUse">'
+    '<path d="M0 3.5 H7 M3.5 0 V7" stroke="#BFE3D3" stroke-width="0.8"/></pattern></defs>'
+    '<path d="M158 66 Q200 24 242 68" fill="none" stroke="#1D9E75" stroke-width="1.6"/>'
+    '<text x="200" y="34" font-size="11" font-weight="600" fill="#0F6E56" text-anchor="middle">342 shared roots</text>'
+    '<path d="M515 86 Q545 62 575 86" fill="none" stroke="#1D9E75" stroke-width="1.6"/>'
+    '<text x="545" y="70" font-size="11" font-weight="600" fill="#0F6E56" text-anchor="middle">4 shared</text>'
+    '<circle cx="110" cy="104" r="56" fill="#EAF6F0"/><circle cx="110" cy="104" r="56" fill="url(#wv)"/>'
+    '<circle cx="110" cy="104" r="56" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
+    '<circle cx="158" cy="66" r="3.2" fill="#1D9E75"/>'
+    '<text x="110" y="186" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Baqara</text>'
+    '<text x="110" y="202" font-size="11" fill="#6A7480" text-anchor="middle">286 verses</text>'
+    '<circle cx="285" cy="104" r="48" fill="#EAF6F0"/><circle cx="285" cy="104" r="48" fill="url(#wv)"/>'
+    '<circle cx="285" cy="104" r="48" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
+    '<circle cx="242" cy="68" r="3.2" fill="#1D9E75"/>'
+    '<text x="285" y="186" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">Āl-ʿImrān</text>'
+    '<text x="285" y="202" font-size="11" fill="#6A7480" text-anchor="middle">200 verses</text>'
+    '<circle cx="500" cy="104" r="20" fill="#EAF6F0"/><circle cx="500" cy="104" r="20" fill="url(#wv)"/>'
+    '<circle cx="500" cy="104" r="20" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
+    '<circle cx="515" cy="86" r="3" fill="#1D9E75"/>'
+    '<text x="500" y="150" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Falaq</text>'
+    '<text x="500" y="166" font-size="11" fill="#6A7480" text-anchor="middle">5 verses</text>'
+    '<circle cx="590" cy="104" r="20" fill="#EAF6F0"/><circle cx="590" cy="104" r="20" fill="url(#wv)"/>'
+    '<circle cx="590" cy="104" r="20" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
+    '<circle cx="575" cy="86" r="3" fill="#1D9E75"/>'
+    '<text x="590" y="150" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Nās</text>'
+    '<text x="590" y="166" font-size="11" fill="#6A7480" text-anchor="middle">6 verses</text>'
+    '<text x="197" y="223" font-size="11" fill="#9AA4B2" text-anchor="middle">a giant pair</text>'
+    '<text x="545" y="190" font-size="11" fill="#9AA4B2" text-anchor="middle">a tiny pair</text>'
+    '</svg>'
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">'
+    '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
+    '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Edge &middot; the membrane</div>'
+    '<div style="font-size:11.5px;color:#46505F;line-height:1.4">Like an organ&#700;s membrane — the boundary is '
+    'detectable: root-overlap <b style="color:#0F6E56">0.87 inside &rarr; 0.28</b> at the seam.</div></div>'
+    '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
+    '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Interior &middot; the weave</div>'
+    '<div style="font-size:11.5px;color:#46505F;line-height:1.4">Like ordered tissue, not a cell-heap — shuffle the '
+    'verses and cohesion drops <b style="color:#0F6E56">0.73 &rarr; 0.52</b>. The order is load-bearing.</div></div>'
+    '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
+    '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Wiring &middot; the network</div>'
+    '<div style="font-size:11.5px;color:#46505F;line-height:1.4">Like vessels between organs — '
+    '<b style="color:#0F6E56">44% of sūra-pairs</b> link specifically (vs 1% by chance).</div></div>'
+    '</div>'
+    '<div style="background:#EAF6F0;border-radius:8px;padding:9px 13px;margin-top:10px;font-size:12.5px;'
+    'line-height:1.5;color:#04342C">Size ranges from <b>5 to 286 verses</b>; content and muṣḥaf position differ '
+    'entirely — yet each is the same kind of object: <b>bounded &middot; ordered &middot; connected</b>. '
+    'That is what &#8220;integrated unit&#8221; means, measured only against the text&#700;s own shuffle.</div>'
+    '</div>', unsafe_allow_html=True)
 
 # ---------------- what we got: the discovery payoff ----------------
 st.markdown(
@@ -259,6 +319,14 @@ st.markdown(
     ".cp-ar small{font-size:11px;color:#8A94A0;direction:ltr;unicode-bidi:embed}"
     ".cp-chart{margin:7px 0 1px}"
     ".cp-nums{font-size:10px;color:#7A8390;text-align:center;margin:0 0 1px}"
+    ".cp-rk{display:flex;flex-direction:column;gap:2px;margin:6px 0 1px}"
+    ".cp-rkrow{display:flex;align-items:center;gap:6px;font-size:10px}"
+    ".cp-rklab{width:98px;flex:none;color:#46505F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
+    ".cp-rkbt{flex:1;height:8px;background:#ECEFF3;border-radius:3px;overflow:hidden}"
+    ".cp-rkbt>i{display:block;height:100%}"
+    ".cp-rkv{width:34px;flex:none;text-align:right;font-weight:700;color:#16243B}"
+    ".cp-insight{font-size:11.5px;color:#0B3F2A;background:#EAF6F0;border-radius:6px;padding:6px 9px;margin:7px 0 2px;line-height:1.4}"
+    ".cp-out .cp-insight{background:#F4F1EC;color:#5E5340}"
     ".cp-bars{display:flex;flex-direction:column;gap:3px;margin-top:2px}"
     ".cp-bar{display:flex;align-items:center;gap:7px;font-size:11px}"
     ".cp-bar>span:first-child{width:74px;color:#6A7480;flex:none}"
@@ -269,40 +337,78 @@ st.markdown(
     ".cp-out .cp-eff{color:#9A7B4F}"
     "</style>", unsafe_allow_html=True)
 
-import math
+def _ds(series, target=120):
+    if len(series) <= target:
+        return list(series)
+    step = len(series) / float(target)
+    return [series[int(i * step)] for i in range(target)]
 
-_Z = {"Membrane": 5, "Internal weave": 10.9, "Propagation": 125, "Interface-zones": 17.6,
-      "Rhythm / pulse": 20, "Connectivity": 24, "Bilateral pairs": 5.4,
-      "Identity": 7.7, "Necessity": 6, "Digestive loop": 8, "Polarity": 3, "Error-correction": 4, "Signal": 9,
-      "Location": 0.5, "Folding contact-decay": 0.4, "Development": 0.6,
-      "Skeleton (muqaṭṭaʿāt)": 1.7, "Circulation": 2}
-
-def _spark(z, obs, color):
-    cx, base, sd, peak = 44.0, 42.0, 12.0, 28.0
-    n = 96
+def _line_svg(series, color, boundaries=None):
+    s = _ds(series, 120)
+    mx = max(s) or 1.0
+    n = len(s)
     pts = []
-    for i in range(n + 1):
-        x = 8.0 + i * (236.0 / n)
-        zz = (x - cx) / sd
-        y = base - peak * math.exp(-0.5 * zz * zz)
+    for i, v in enumerate(s):
+        x = 6.0 + (i / (n - 1.0)) * 240.0
+        y = 44.0 - (v / mx) * 34.0
         pts.append("%.1f,%.1f" % (x, y))
-    bell = "M" + " L".join(pts)
-    mag = abs(z)
-    xo = cx + min(mag, 26.0) * 7.7
-    if xo > 244.0:
-        xo = 244.0
-    anchor = "end" if xo > 176 else ("middle" if xo > 44 else "start")
-    arrow = " &#187;" if mag > 26 else ""
-    return (
-        '<svg viewBox="0 0 252 56" width="100%%" height="50" preserveAspectRatio="xMidYMid meet" role="img">'
-        '<line x1="6" y1="42" x2="246" y2="42" stroke="#E7ECF3" stroke-width="1"/>'
-        '<path d="%s L246,42 L8,42 Z" fill="#EEF1F5"/>'
-        '<path d="%s" fill="none" stroke="#C4CBD3" stroke-width="1"/>'
-        '<text x="44" y="53" font-size="8" fill="#9AA4B2" text-anchor="middle">shuffle null</text>'
-        '<line x1="%.1f" y1="14" x2="%.1f" y2="44" stroke="%s" stroke-width="2"/>'
-        '<circle cx="%.1f" cy="14" r="2.6" fill="%s"/>'
-        '<text x="%.1f" y="10" font-size="8.5" fill="#16243B" text-anchor="%s">%s%s</text>'
-        '</svg>' % (bell, bell, xo, xo, color, xo, color, xo, anchor, obs, arrow))
+    poly = "M" + " L".join(pts)
+    bl = ""
+    if boundaries:
+        L = len(series)
+        for b in boundaries:
+            if 0 <= b < L:
+                bx = 6.0 + (b / (L - 1.0)) * 240.0
+                bl += ('<line x1="%.1f" y1="6" x2="%.1f" y2="44" stroke="#E08A8A" '
+                       'stroke-width="1" stroke-dasharray="2,2"/>' % (bx, bx))
+    return ('<svg viewBox="0 0 252 50" width="100%%" height="46" preserveAspectRatio="xMidYMid meet" role="img">'
+            '<line x1="6" y1="44" x2="246" y2="44" stroke="#E7ECF3" stroke-width="1"/>'
+            '%s<path d="%s" fill="none" stroke="%s" stroke-width="1.4"/></svg>' % (bl, poly, color))
+
+def _ranked_html(items, color):
+    mx = max(v for _, v in items) or 1
+    rows = ""
+    for lab, v in items:
+        w = max(4, int(v / float(mx) * 100))
+        rows += ('<div class="cp-rkrow"><span class="cp-rklab">%s</span>'
+                 '<span class="cp-rkbt"><i style="width:%d%%;background:%s"></i></span>'
+                 '<span class="cp-rkv">%s</span></div>' % (lab, w, color, v))
+    return '<div class="cp-rk">%s</div>' % rows
+
+def _arcs_svg(pairs, color):
+    def _x(s):
+        return 8.0 + (s - 1) / 113.0 * 236.0
+    arcs = ""
+    for a, b, lab in pairs:
+        xa, xb = _x(a), _x(b)
+        mid = (xa + xb) / 2.0
+        apex = 44.0 - (6.0 + min(32.0, abs(xb - xa) * 0.45))
+        arcs += ('<path d="M%.1f 44 Q%.1f %.1f %.1f 44" fill="none" stroke="%s" stroke-width="1.4"/>'
+                 '<circle cx="%.1f" cy="44" r="2.2" fill="%s"/><circle cx="%.1f" cy="44" r="2.2" fill="%s"/>'
+                 '<text x="%.1f" y="%.1f" font-size="7.5" fill="#0F6E56" text-anchor="middle">%s</text>'
+                 % (xa, mid, apex - 3, xb, color, xa, color, xb, color, mid, apex - 5, lab))
+    return ('<svg viewBox="0 0 252 50" width="100%%" height="46" role="img">'
+            '<line x1="8" y1="44" x2="244" y2="44" stroke="#C4CBD3" stroke-width="1"/>'
+            '<text x="8" y="50" font-size="7" fill="#9AA4B2">sūra 1</text>'
+            '<text x="244" y="50" font-size="7" fill="#9AA4B2" text-anchor="end">114</text>'
+            '%s</svg>' % arcs)
+
+def _card_chart(d):
+    name, col = d["name"], "#1D9E75"
+    if name == "Rhythm / pulse" and VZ.get("wave"):
+        return _line_svg(VZ["wave"], col)
+    if name == "Membrane" and VZ.get("membrane", {}).get("overlap"):
+        mb = VZ["membrane"]
+        return _line_svg(mb["overlap"], col, mb.get("boundaries"))
+    if name == "Propagation" and VZ.get("formulae"):
+        ff = VZ["formulae"][:7]
+        return _ranked_html([(f["al"] + "·" + f["bl"], f["n"]) for f in ff], col)
+    if name == "Connectivity" and VZ.get("twins"):
+        tw = VZ["twins"][:6]
+        return _ranked_html([(t["nm"].split(" (")[0], t["n"]) for t in tw], col)
+    if name == "Bilateral pairs":
+        return _arcs_svg([(26, 28, "ṬSM"), (25, 67, "Tabāraka"), (62, 64, "Yusabbiḥ"), (85, 86, "wa-l-samāʾ")], col)
+    return None
 
 def _panel(d):
     is_out = d["grade"] == "OUT"
@@ -310,9 +416,16 @@ def _panel(d):
     gcolor = "#9A7B4F" if is_out else "#0F6E56"
     glabel = "instrument limit" if is_out else "grade %s" % d["grade"]
     mfill = "#C4CBD3" if is_out else "#1D9E75"
-    spark = _spark(_Z.get(d["name"], 0.0), d["bars"][0][3], "#D85A30" if is_out else "#1D9E75")
+    chart = _card_chart(d)
     nums = " &nbsp;&middot;&nbsp; ".join("%s %s" % (b[0], b[3]) for b in d["bars"])
     ar = '<div class="cp-ar">%s</div>' % d["arabic"] if d.get("arabic") else ""
+    if chart:
+        evid = ('<div class="cp-chart">%s</div><div class="cp-nums">%s</div>'
+                '<div class="cp-eff">%s</div>' % (chart, nums, d["eff"]))
+    else:
+        lbl = "Why it failed &mdash;" if is_out else "So what &mdash;"
+        evid = ('<div class="cp-insight"><b>%s</b> %s</div>'
+                '<div class="cp-nums">%s</div>' % (lbl, d["eff"], nums))
     return (
         '<div class="%s">'
         '<div class="cp-hd"><div class="cp-ttl">%s &middot; %s</div>'
@@ -324,12 +437,9 @@ def _panel(d):
         '<div class="cp-side cp-body"><div class="cp-slab">Body</div>%s</div>'
         '<div class="cp-arrow">&harr;</div>'
         '<div class="cp-side cp-quran"><div class="cp-slab">Qur&#700;ān</div>%s</div></div>'
-        '%s'
-        '<div class="cp-chart">%s</div>'
-        '<div class="cp-nums">%s</div>'
-        '<div class="cp-eff">%s</div>'
+        '%s%s'
         '</div>' % (cls, d["id"], d["name"], d["meter"], mfill, gcolor, glabel,
-                    d["aspect"], d["body"], d["quran"], ar, spark, nums, d["eff"]))
+                    d["aspect"], d["body"], d["quran"], ar, evid))
 
 def _section(title, items):
     st.markdown('<div class="cl-sec">%s</div>' % title, unsafe_allow_html=True)
