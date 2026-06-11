@@ -79,8 +79,79 @@ m[3].metric("Attributes tested", "34", help="across 7 scrutiny passes")
 m[4].metric("Sūras in the system", "114")
 m[5].metric("Strongest effect", "z = 125", help="propagation / self-replicating formulae")
 
-# ---------------- HERO: the one finding, visualized (a Sūra is an integrated unit) ----------------
-st.markdown('<div class="cl-sec">The one finding — a Sūra is an integrated unit</div>', unsafe_allow_html=True)
+# ---------------- discovery-visual builders (self-contained, used by the hero section) ----------------
+def _dv_line(series, color="#1D9E75"):
+    s = series
+    if len(s) > 160:
+        stp = len(s) / 160.0
+        s = [s[int(i * stp)] for i in range(160)]
+    mx = max(s) or 1.0
+    n = len(s)
+    pts = []
+    for i, v in enumerate(s):
+        x = 4.0 + (i / (n - 1.0)) * 316.0
+        y = 70.0 - (v / mx) * 58.0
+        pts.append("%.1f,%.1f" % (x, y))
+    return ('<svg viewBox="0 0 320 76" width="100%%" height="74" preserveAspectRatio="none" role="img">'
+            '<path d="M%s" fill="none" stroke="%s" stroke-width="1.3"/></svg>' % (" L".join(pts), color))
+
+def _dv_bars(items, color="#1D9E75"):
+    mx = max(v for _, v in items) or 1
+    rows = ""
+    for lab, v in items:
+        w = max(4, int(v / float(mx) * 100))
+        rows += ('<div style="display:flex;align-items:center;gap:6px;font-size:11px;margin:2px 0">'
+                 '<span style="width:104px;flex:none;color:#46505F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">%s</span>'
+                 '<span style="flex:1;height:9px;background:#ECEFF3;border-radius:3px;overflow:hidden">'
+                 '<i style="display:block;height:100%%;width:%d%%;background:%s"></i></span>'
+                 '<span style="width:36px;flex:none;text-align:right;font-weight:700;color:#16243B">%s</span></div>'
+                 % (lab, w, color, v))
+    return rows
+
+def _net_svg():
+    tw = VZ.get("twins", [])[:8]
+    forms = [(26, 28, "ṬSM"), (25, 67, "Tabāraka"), (62, 64, "Yusabbiḥ"), (85, 86, "wa-l-samāʾ"), (113, 114, "ʿawḏ")]
+    def X(s):
+        return 24.0 + (s - 1) / 113.0 * 632.0
+    P = ['<line x1="24" y1="116" x2="656" y2="116" stroke="#D7DEE6" stroke-width="1"/>']
+    for s in (1, 30, 60, 90, 114):
+        P.append('<text x="%.1f" y="130" font-size="9" fill="#9AA4B2" text-anchor="middle">%d</text>' % (X(s), s))
+    nodes = set()
+    if tw:
+        mxn = max(t.get("n", 1) for t in tw)
+        for t in tw:
+            try:
+                a, b = [int(x) for x in t["p"].split("·")]
+            except Exception:
+                continue
+            nodes.update((a, b))
+            xa, xb = X(a), X(b)
+            mid = (xa + xb) / 2.0
+            apex = 116.0 - (20.0 + min(72.0, abs(xb - xa) * 0.30))
+            w = 1.0 + (t.get("n", 1) / float(mxn)) * 2.6
+            P.append('<path d="M%.1f 116 Q%.1f %.1f %.1f 116" fill="none" stroke="#1D9E75" stroke-width="%.1f" opacity="0.85"/>' % (xa, mid, apex, xb, w))
+        t = tw[0]
+        try:
+            a, b = [int(x) for x in t["p"].split("·")]
+            mid = (X(a) + X(b)) / 2.0
+            apex = 116.0 - (20.0 + min(72.0, abs(X(b) - X(a)) * 0.30))
+            P.append('<text x="%.1f" y="%.1f" font-size="9" font-weight="600" fill="#0F6E56" text-anchor="middle">%s (%d)</text>' % (mid, apex - 4, t.get("nm", "").split(" (")[0], t.get("n", 0)))
+        except Exception:
+            pass
+    for a, b, lab in forms:
+        nodes.update((a, b))
+        xa, xb = X(a), X(b)
+        mid = (xa + xb) / 2.0
+        apex = 116.0 + (12.0 + min(22.0, abs(xb - xa) * 0.16))
+        P.append('<path d="M%.1f 116 Q%.1f %.1f %.1f 116" fill="none" stroke="#D85A30" stroke-width="1.4" stroke-dasharray="3,2"/>' % (xa, mid, apex, xb))
+    for s in nodes:
+        P.append('<circle cx="%.1f" cy="116" r="2.2" fill="#16243B"/>' % X(s))
+    return '<svg viewBox="0 0 680 150" width="100%" preserveAspectRatio="xMidYMid meet" role="img">' + "".join(P) + '</svg>'
+
+# ---------------- WHAT WE DISCOVERED — three results, each visualized ----------------
+st.markdown('<div class="cl-sec">What we discovered — three results, each visualized</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:13px;color:#46505F;margin:-2px 0 8px;max-width:1050px">Three discoveries cover all seven bedrock features — each measured only against the text&#700;s own shuffle (the One Law).</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:13.5px;font-weight:700;color:#1D3557;margin:8px 0 3px">Discovery 1 — a Sūra is an integrated unit <span style="font-weight:400;color:#6A7480">(A1 edge · A2 interior · A6 wiring)</span></div>', unsafe_allow_html=True)
 st.markdown(
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:14px 18px;margin:2px 0 8px;max-width:1050px">'
     '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:6px">'
@@ -136,6 +207,46 @@ st.markdown(
     'line-height:1.5;color:#04342C">Size ranges from <b>5 to 286 verses</b>; content and muṣḥaf position differ '
     'entirely — yet each is the same kind of object: <b>bounded &middot; ordered &middot; connected</b>. '
     'That is what &#8220;integrated unit&#8221; means, measured only against the text&#700;s own shuffle.</div>'
+    '</div>', unsafe_allow_html=True)
+
+# ---------------- Discovery 2: sūras form a modular network ----------------
+st.markdown('<div style="font-size:13.5px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 2 — sūras form a modular network <span style="font-weight:400;color:#6A7480">(A6 wiring · A7 twins)</span></div>', unsafe_allow_html=True)
+st.markdown(
+    '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:13px 16px;margin:2px 0 8px;max-width:1050px">'
+    '<div style="font-size:13px;line-height:1.5;color:#16243B;margin-bottom:4px">'
+    'Sūras are <b>not</b> a bag of independent texts. Specific pairs share far more roots than a degree-matched '
+    'shuffle would give (<b style="color:#0F6E56">teal arcs</b>, thicker = stronger — e.g. Baqara·Āl-ʿImrān 342), '
+    'and <b style="color:#993C1D">form-twin</b> sūras that open with the same template pair up above chance '
+    '(<b style="color:#993C1D">dashed arcs</b> — ṬSM 26·28, Tabāraka 25·67, wa-l-samāʾ 85·86). '
+    'The whole book reads as a wired, modular system.</div>'
+    + _net_svg() +
+    '<div style="font-size:11px;color:#6A7480;margin-top:4px">Horizontal axis = the 114 sūras in order. '
+    'Arcs above = strong shared-root links · arcs below = bilateral form-twins.</div>'
+    '</div>', unsafe_allow_html=True)
+
+# ---------------- Discovery 3: three confirming signatures ----------------
+st.markdown('<div style="font-size:13.5px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 3 — three system signatures <span style="font-weight:400;color:#6A7480">(A3 self-replication · A5 rhythm · A4 interface)</span></div>', unsafe_allow_html=True)
+_ff = [(f["al"] + "·" + f["bl"], f["n"]) for f in VZ.get("formulae", [])[:6]]
+st.markdown(
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:2px 0 8px;max-width:1050px">'
+    '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
+    '<div style="font-size:12.5px;font-weight:700;color:#16243B">Self-replication <span style="color:#0F6E56">z=+125</span></div>'
+    '<div style="font-size:11px;color:#46505F;line-height:1.4;margin:2px 0 5px">Fixed root-formulae recur far above chance, across every region — the text copies its own forms.</div>'
+    + _dv_bars(_ff) +
+    '</div>'
+    '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
+    '<div style="font-size:12.5px;font-weight:700;color:#16243B">Rhythm <span style="color:#0F6E56">DFA 0.95</span></div>'
+    '<div style="font-size:11px;color:#46505F;line-height:1.4;margin:2px 0 5px">Verse-lengths carry long-range 1/f memory across the whole book — a multi-scale pulse, not noise.</div>'
+    + _dv_line(VZ.get("wave", [1, 1])) +
+    '<div style="font-size:10px;color:#9AA4B2;margin-top:2px;text-align:center">words per verse · sūra 1 → 114</div>'
+    '</div>'
+    '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
+    '<div style="font-size:12.5px;font-weight:700;color:#16243B">Interface zones <span style="color:#0F6E56">z=+17.6</span></div>'
+    '<div style="font-size:11px;color:#46505F;line-height:1.4;margin:2px 0 7px">Outward-address verses (qul, yā-ayyuhā) cluster into zones rather than scattering — an outward-facing surface.</div>'
+    '<div style="display:flex;height:22px;border-radius:5px;overflow:hidden;font-size:10px;color:#fff;font-weight:700">'
+    '<div style="width:28%;background:#1D9E75;display:flex;align-items:center;justify-content:center">28% out</div>'
+    '<div style="width:72%;background:#C4CBD3;display:flex;align-items:center;justify-content:center;color:#46505F">72% inward</div></div>'
+    '</div>'
     '</div>', unsafe_allow_html=True)
 
 # ---------------- what we got: the discovery payoff ----------------
