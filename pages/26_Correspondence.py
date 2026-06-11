@@ -203,45 +203,207 @@ with cb:
         _chart("A3 · Propagation — most-repeated root-formulae (self-replicating phrases).",
                _f, lambda: st.bar_chart({x["al"] + "·" + x["bl"]: x["n"] for x in ff}))
 
-# ---------------- concept cards ----------------
-def cards(title, items, cls=""):
+# ---------------- correspondence panels (body <-> Qur'an, Arabic, mini-bars, objective meter) ----------------
+st.markdown(
+    "<style>"
+    ".cp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 10px}"
+    "@media(max-width:820px){.cp-wrap{grid-template-columns:1fr}}"
+    ".cp{background:#fff;border:1px solid #E7ECF3;border-left:4px solid #1D9E75;border-radius:10px;padding:10px 13px}"
+    ".cp-out{border-left-color:#C4CBD3;background:#FAFBFC}"
+    ".cp-hd{display:flex;justify-content:space-between;align-items:center;gap:8px}"
+    ".cp-ttl{font-size:14.5px;font-weight:800;color:#16243B}"
+    ".cp-meter{display:flex;align-items:center;gap:5px;font-size:10.5px;color:#8A94A0;flex:none}"
+    ".cp-track{width:58px;height:6px;background:#ECEFF3;border-radius:4px;overflow:hidden;display:inline-block}"
+    ".cp-track>i{display:block;height:100%}"
+    ".cp-grade{font-weight:800;font-size:10.5px}"
+    ".cp-aspect{font-size:11.5px;color:#6A7480;margin:5px 0 8px;line-height:1.35}"
+    ".cp-corr{display:grid;grid-template-columns:1fr 22px 1fr;align-items:stretch;gap:5px}"
+    ".cp-side{border-radius:7px;padding:6px 9px;font-size:12px;line-height:1.32}"
+    ".cp-body{background:#F4F6F8;color:#2B3440}.cp-quran{background:#E6F4EE;color:#0B3F2A}"
+    ".cp-slab{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}"
+    ".cp-body .cp-slab{color:#7A8390}.cp-quran .cp-slab{color:#0F6E56}"
+    ".cp-arrow{display:flex;align-items:center;justify-content:center;font-size:14px;color:#1D9E75;font-weight:800}"
+    ".cp-ar{text-align:center;font-size:18px;color:#16243B;margin:9px 0 7px;line-height:1.7;direction:rtl}"
+    ".cp-ar small{font-size:11px;color:#8A94A0;direction:ltr;unicode-bidi:embed}"
+    ".cp-bars{display:flex;flex-direction:column;gap:3px;margin-top:2px}"
+    ".cp-bar{display:flex;align-items:center;gap:7px;font-size:11px}"
+    ".cp-bar>span:first-child{width:74px;color:#6A7480;flex:none}"
+    ".cp-bt{flex:1;height:8px;background:#ECEFF3;border-radius:4px;overflow:hidden}"
+    ".cp-bt>i{display:block;height:100%}"
+    ".cp-bv{min-width:82px;text-align:right;font-weight:700;color:#16243B;flex:none}"
+    ".cp-eff{font-size:10.5px;text-align:right;margin-top:3px;color:#0F6E56}"
+    ".cp-out .cp-eff{color:#9A7B4F}"
+    "</style>", unsafe_allow_html=True)
+
+def _panel(d):
+    is_out = d["grade"] == "OUT"
+    cls = "cp cp-out" if is_out else "cp"
+    gcolor = "#9A7B4F" if is_out else "#0F6E56"
+    glabel = "instrument limit" if is_out else "grade %s" % d["grade"]
+    mfill = "#C4CBD3" if is_out else "#1D9E75"
+    bars = ""
+    for lab, pct, col, val in d["bars"]:
+        bars += ('<div class="cp-bar"><span>%s</span>'
+                 '<span class="cp-bt"><i style="width:%d%%;background:%s"></i></span>'
+                 '<span class="cp-bv">%s</span></div>' % (lab, pct, col, val))
+    ar = '<div class="cp-ar">%s</div>' % d["arabic"] if d.get("arabic") else ""
+    return (
+        '<div class="%s">'
+        '<div class="cp-hd"><div class="cp-ttl">%s &middot; %s</div>'
+        '<div class="cp-meter"><span>objective</span>'
+        '<span class="cp-track"><i style="width:%d%%;background:%s"></i></span>'
+        '<span class="cp-grade" style="color:%s">%s</span></div></div>'
+        '<div class="cp-aspect">%s</div>'
+        '<div class="cp-corr">'
+        '<div class="cp-side cp-body"><div class="cp-slab">Body</div>%s</div>'
+        '<div class="cp-arrow">&harr;</div>'
+        '<div class="cp-side cp-quran"><div class="cp-slab">Qur&#700;ān</div>%s</div></div>'
+        '%s'
+        '<div class="cp-bars">%s<div class="cp-eff">%s</div></div>'
+        '</div>' % (cls, d["id"], d["name"], d["meter"], mfill, gcolor, glabel,
+                    d["aspect"], d["body"], d["quran"], ar, bars, d["eff"]))
+
+def _section(title, items):
     st.markdown('<div class="cl-sec">%s</div>' % title, unsafe_allow_html=True)
-    parts = ['<div class="cl-grid">']
-    for ct, look, found, fl in items:
-        kind = "cl-found" if fl != "rej" else "cl-rej"
-        lbl = "Found:" if fl != "rej" else "Rejected:"
-        parts.append(
-            '<div class="cl-card %s"><div class="cl-ct">%s</div>'
-            '<div class="cl-look"><b>Looked for:</b> %s</div>'
-            '<div class="%s"><b>%s</b> %s</div></div>' % (cls, ct, look, kind, lbl, found))
-    parts.append('</div>')
-    st.markdown("".join(parts), unsafe_allow_html=True)
+    st.markdown('<div class="cp-wrap">' + "".join(_panel(d) for d in items) + "</div>", unsafe_allow_html=True)
 
-cards("Bedrock (A) — concept &amp; result", [
-    ("A1 · Membrane", "a real edge to each sura — a membrane that seals it from its neighbours.", "neighbouring verses share many roots inside a sura, and that sharing collapses at the boundary (0.28 vs 0.87, z=-5).", ""),
-    ("A2 · Internal weave", "a woven tissue (ordered) vs a loose pile of verses.", "shuffle a sura's verse order and the weave drops 0.73 → 0.52 (t=10.9).", ""),
-    ("A3 · Propagation", "self-replication — does the text copy its own forms, like cells copying code?", "fixed formulae recur far above chance and reach every region: samaʾ·ard x188 ('heavens & earth'), 'amal·salah x89 ('do righteous deeds'). z=+125.", ""),
-    ("A4 · Interface-zones", "an outward-facing surface (sense organs / skin), localized.", "28% of verses face outward (qul x270, ya-ayyuha x153) and they cluster into zones, z=+17.6.", ""),
-    ("A5 · Rhythm / pulse", "a multi-scale pulse, like a heartbeat.", "verse lengths show long memory across the whole book (DFA 0.95 vs 0.5); information flow is regulated (z=+20).", ""),
-    ("A6 · Connectivity", "specific wiring between suras, like vessels between organs.", "44% of sura-pairs are specifically linked (vs 1% chance); Baqara·Al-'Imran share 342 roots; the twins survive length control.", ""),
-    ("A7 · Bilateral pairs", "matched identical pairs, like two eyes or two ears.", "form-twin suras sharing an opening template: TSM → 26 & 28, Tabaraka → 25 & 67, wa-l-samaʾ → 85 & 86. z=+5.4.", ""),
-])
+_A_ITEMS = [
+    dict(id="A1", name="Membrane", grade="A", meter=90,
+         aspect="Does each sūra have a real edge that seals it from its neighbours?",
+         body="a membrane seals each organ from the next",
+         quran="shared roots collapse exactly at the sūra boundary",
+         arabic="بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيم <small>— the seam marker between sūras</small>",
+         bars=[("inside sūra", 87, "#1D9E75", "0.87 overlap"), ("at boundary", 28, "#D85A30", "0.28 overlap")],
+         eff="effect z = −5 · the edge is real"),
+    dict(id="A2", name="Internal weave", grade="A", meter=91,
+         aspect="Is a sūra a woven tissue (ordered) or a loose pile of verses?",
+         body="tissue is ordered, not a loose pile of cells",
+         quran="verse order carries structure beyond shared vocabulary; shuffle it and the weave drops",
+         arabic="ثُمَّ · فَ · وَ <small>— the connectives that chain āyāt in sequence</small>",
+         bars=[("real order", 73, "#1D9E75", "0.73 weave"), ("shuffled", 52, "#B4B2A9", "0.52 weave")],
+         eff="effect t = 10.9 · order is load-bearing"),
+    dict(id="A3", name="Propagation", grade="A", meter=94,
+         aspect="Does the text copy its own forms, like a system that self-replicates?",
+         body="cells copy their own code to reproduce",
+         quran="fixed root-formulae recur far above chance, reaching every region",
+         arabic="سَمَاء · أَرْض <small>×188</small> &nbsp; عَمِلُوا ٱلصَّالِحَات <small>×89</small>",
+         bars=[("observed", 96, "#1D9E75", "575 formulae"), ("shuffled", 7, "#B4B2A9", "chance")],
+         eff="effect z = +125 · strongest of the ledger"),
+    dict(id="A4", name="Interface-zones", grade="A", meter=88,
+         aspect="Does the text face outward, like skin and sense-organs facing the world?",
+         body="a body meets its environment through localized surfaces",
+         quran="outward-address verses cluster into zones, not scattered",
+         arabic="قُلْ <small>×270 “say”</small> &nbsp; يَا أَيُّهَا <small>×153 “O you…”</small>",
+         bars=[("outward", 28, "#1D9E75", "28% face out"), ("inward", 72, "#B4B2A9", "72% inward")],
+         eff="they cluster into zones · z = +17.6"),
+    dict(id="A5", name="Rhythm / pulse", grade="A", meter=89,
+         aspect="Is there a multi-scale pulse across the book, like a heartbeat?",
+         body="living systems beat with long-range, multi-scale rhythm",
+         quran="verse-lengths show long memory across all 114 sūras",
+         arabic="مُدْهَامَّتَان <small>— a one-word āyah, against verses of 100+ words</small>",
+         bars=[("Qur'ān (DFA)", 95, "#1D9E75", "0.95 memory"), ("random text", 50, "#B4B2A9", "0.50")],
+         eff="effect ≈ z 20 · regulated, not noise"),
+    dict(id="A6", name="Connectivity", grade="A", meter=90,
+         aspect="Do sūras wire to specific partners, like vessels between organs?",
+         body="organs connect to specific partners, not at random",
+         quran="specific sūra-pairs share many roots beyond a degree-matched null",
+         arabic="ٱلْبَقَرَة ↔ آل عِمْرَان <small>— 342 shared roots</small>",
+         bars=[("linked pairs", 44, "#1D9E75", "44% specific"), ("chance", 1, "#B4B2A9", "1%")],
+         eff="44× above chance · survives length control"),
+    dict(id="A7", name="Bilateral pairs", grade="A", meter=86,
+         aspect="Are there matched identical pairs, like two eyes or two ears?",
+         body="bodies carry matched bilateral pairs",
+         quran="form-twin sūras share a distinctive opening template",
+         arabic="طسم → ٢٦ · ٢٨ &nbsp; تَبَارَكَ → ٢٥ · ٦٧ &nbsp; وَٱلسَّمَاء → ٨٥ · ٨٦",
+         bars=[("observed twins", 100, "#1D9E75", "14 pairs"), ("expected", 41, "#B4B2A9", "5.7 pairs")],
+         eff="effect z = +5.4"),
+]
 
-cards("Second tier (B) — real but modest", [
-    ("Identity", "a unique function per sura — no two organs do the same job.", "a held-out verse traces to its home sura (7.2% vs 4.9% arbitrary).", ""),
-    ("Necessity", "irreplaceability — remove an organ and the body loses a function.", "Fatiha is the single most-isolated sura in function space (rank 1 of 114).", ""),
-    ("Digestive loop", "ingest a claim → process → output a response.", "'ask' (sa'al) is answered by 'say' (qul) within 2 verses, 25% vs 4% base.", ""),
-    ("Polarity", "a head-tail axis (anterior-posterior).", "a marked head (AUC 0.75), a faint tail (0.61).", ""),
-    ("Error-correction", "redundancy that repairs a damaged part.", "73% of verse-endings recoverable from the rhyme code (vs 50%).", ""),
-    ("Signal propagation", "content carrying verse → verse (a nervous signal).", "adjacent verses share content above chance (0.087 vs 0.009).", ""),
-], cls="b")
+_B_ITEMS = [
+    dict(id="B", name="Identity", grade="B", meter=62,
+         aspect="Does each sūra have a unique, non-redundant function?",
+         body="each organ does a job no other does",
+         quran="a held-out āyah classifies back to its home sūra above chance",
+         arabic="قُلْ هُوَ ٱللَّهُ أَحَد <small>— each sūra keeps its own fingerprint</small>",
+         bars=[("traced home", 72, "#1D9E75", "7.2%"), ("arbitrary", 49, "#B4B2A9", "4.9%")],
+         eff="real but modest · z ≈ 7.7"),
+    dict(id="B", name="Necessity", grade="B", meter=60,
+         aspect="Is any sūra irreplaceable — remove it and a function is lost?",
+         body="remove an organ and the body loses a function",
+         quran="al-Fātiḥa is the single most-isolated sūra in function space",
+         arabic="ٱلْفَاتِحَة <small>— most isolated, rank 1 / 114</small>",
+         bars=[("Fātiḥa isolation", 100, "#1D9E75", "rank 1 / 114")],
+         eff="one clear case; not yet a general law"),
+    dict(id="B", name="Digestive loop", grade="B", meter=58,
+         aspect="Does the text ingest a claim and return a processed response?",
+         body="a body ingests material and processes it",
+         quran="“ask” is answered by “say” within two verses, far above base-rate",
+         arabic="سَأَلَ ↔ قُلْ <small>— “ask” → “say”</small>",
+         bars=[("ask→say", 25, "#1D9E75", "25%"), ("base rate", 4, "#B4B2A9", "4%")],
+         eff="local loop · ~6× base"),
+    dict(id="B", name="Polarity", grade="B", meter=52,
+         aspect="Does a sūra have a head–tail (anterior–posterior) axis?",
+         body="organs have a head–tail body axis",
+         quran="the first verse is markedly detectable; the last only faintly",
+         arabic="أَوَّل ↔ آخِر <small>— a marked head, a faint tail</small>",
+         bars=[("head", 75, "#1D9E75", "AUC 0.75"), ("tail", 61, "#B4B2A9", "AUC 0.61")],
+         eff="head strong, tail weak · partial"),
+    dict(id="B", name="Error-correction", grade="B", meter=64,
+         aspect="Is there redundancy that can repair a damaged line?",
+         body="bodies carry redundancy for self-repair",
+         quran="most verse-endings are recoverable from the rhyme code",
+         arabic="ـِينَ · ـُونَ <small>— rhyme endings that recover the line</small>",
+         bars=[("from rhyme", 73, "#1D9E75", "73%"), ("baseline", 50, "#B4B2A9", "50%")],
+         eff="real redundancy · +23 pts"),
+    dict(id="B", name="Signal", grade="B", meter=55,
+         aspect="Does content carry verse-to-verse, like a nervous signal?",
+         body="a nervous system propagates a signal along a path",
+         quran="adjacent verses share content well above chance",
+         arabic="ذٰلِكَ · هُمْ <small>— anaphora linking adjacent āyāt</small>",
+         bars=[("adjacent", 87, "#1D9E75", "0.087"), ("distant", 9, "#B4B2A9", "0.009")],
+         eff="~10× above chance"),
+]
 
-cards("Tested &amp; rejected — what we looked for, why it failed", [
-    ("Location", "a fixed position per sura, like the heart fixed in the chest.", "position is just the mushaf's long→short ordering — remove length and nothing is left (residual R2=0.03).", "rej"),
-    ("Folding contact-decay", "the linear text folding into a network with a contact-decay curve, like the genome (Hi-C).", "the decay was a length artifact (residual r=-0.04); the network itself survives via Connectivity (A6).", "rej"),
-    ("Development", "developmental classes (ontogeny — early vs late forms).", "the two 'classes' are just the length gradient again.", "rej"),
-    ("Skeleton (muqatta'at)", "a structural frame — the disjoint-letter suras as a skeleton.", "strong in odd suras (t=10.3) but failed split-half replication (t=1.7 in even).", "rej"),
-    ("Circulation (substance)", "a circulating substance reaching every region, like blood.", "the core message clumps (no perfusion). The real 'flow' is the recitation itself (= Rhythm + Propagation).", "rej"),
-], cls="d")
+_OUT_ITEMS = [
+    dict(id="OUT", name="Location", grade="OUT", meter=15,
+         aspect="Does each sūra sit in a fixed position, like the heart in the chest?",
+         body="organs sit in fixed anatomical positions",
+         quran="position is just the mushaf’s long→short ordering — nothing left after length",
+         arabic="ٱلطُّوَل ↔ ٱلْمُفَصَّل <small>— long sūras first, short last</small>",
+         bars=[("after length", 3, "#B4B2A9", "R² 0.03")],
+         eff="length artifact · refine the instrument"),
+    dict(id="OUT", name="Folding contact-decay", grade="OUT", meter=14,
+         aspect="Does the 1-D text fold into a 3-D contact map, like the genome (Hi-C)?",
+         body="a 1-D genome folds into a 3-D contact map",
+         quran="the contact-decay curve was a length artifact — the network itself survives as A6",
+         arabic="",
+         bars=[("decay signal", 4, "#B4B2A9", "r −0.04")],
+         eff="length artifact · network lives in A6"),
+    dict(id="OUT", name="Development", grade="OUT", meter=16,
+         aspect="Do sūras fall into developmental classes (early vs late forms)?",
+         body="bodies develop through ontogenetic stages",
+         quran="the two “classes” are just the length gradient again",
+         arabic="",
+         bars=[("class signal", 6, "#B4B2A9", "= length")],
+         eff="length artifact"),
+    dict(id="OUT", name="Skeleton (muqaṭṭaʿāt)", grade="OUT", meter=22,
+         aspect="Do the disjoint-letter sūras form a rigid structural frame?",
+         body="a body has a rigid structural skeleton",
+         quran="strong in one half, fails split-half replication",
+         arabic="ٱلٓمٓ · طٰسٓ · حٰمٓ <small>— the muqaṭṭaʿāt</small>",
+         bars=[("odd sūras", 100, "#B4B2A9", "t 10.3"), ("even sūras", 17, "#D85A30", "t 1.7")],
+         eff="fails split-half · not reproducible"),
+    dict(id="OUT", name="Circulation", grade="OUT", meter=18,
+         aspect="Does a core substance perfuse every region evenly, like blood?",
+         body="blood circulates evenly to every tissue",
+         quran="the core message clumps; the real “flow” is recitation (= A5 + A3)",
+         arabic="",
+         bars=[("evenness", 10, "#D85A30", "gap-CV z +63")],
+         eff="clumped, not perfused · re-framed as A5+A3"),
+]
+
+_section("Bedrock (A) — the seven that hold", _A_ITEMS)
+_section("Second tier (B) — real but modest", _B_ITEMS)
+_section("Tested &amp; rejected (OUT) — what we looked for, why it failed", _OUT_ITEMS)
 
 st.caption("Method (locked): body = benchmark, one-directional · PROVEN needs a proper null + honest effect + reproducible script · all-or-none (refine the instrument, never 'void'). Full ledger & scripts: research/correspondence/.")
