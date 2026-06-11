@@ -78,10 +78,19 @@ m[2].metric("Scrutiny passes", "7")
 m[3].metric("Strongest effect", "z = 125", help="propagation / self-replicating formulae")
 m[4].metric("Demoted (length)", "4", help="length-gradient artifacts, not real")
 
-# ---------------- sortable master table ----------------
-st.markdown('<div class="cl-sec">All correspondences — click a column to sort</div>', unsafe_allow_html=True)
+# ---------------- master table (full-width HTML: every column visible, text wraps) ----------------
+st.markdown(
+    "<style>"
+    ".ct{width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.38;table-layout:fixed;margin:2px 0 6px}"
+    ".ct th{background:#1D3557;color:#fff;text-align:left;padding:6px 9px;font-size:11.5px;font-weight:700}"
+    ".ct td{padding:6px 9px;border-bottom:1px solid #EDF1F6;color:#2B3440;vertical-align:top;word-wrap:break-word;overflow-wrap:anywhere}"
+    ".ct .ct-id{width:40px;font-weight:800;color:#1D3557}"
+    ".ct .ct-c{width:108px;font-weight:700;color:#16243B}"
+    ".ct .ct-why{color:#46505F}.ct .ct-got{color:#0B3F2A}"
+    ".ct .ct-g{width:50px;text-align:center}"
+    "</style>", unsafe_allow_html=True)
+st.markdown('<div class="cl-sec">All correspondences — what we did · why · what we got</div>', unsafe_allow_html=True)
 try:
-    import pandas as pd
     ROWS = [
         ("A1", "Membrane", "measured adjacent-verse root overlap, inside a sura vs across its boundary", "organs are sealed by a membrane — a sura should have a real edge", "root-overlap collapses at the seam", "0.28 vs 0.87", "z=-5", "A"),
         ("A2", "Internal weave", "compared a sura's real verse order to its own shuffle", "tissue is ordered, not a loose pile of cells", "verses chained beyond vocabulary", "0.73 vs 0.52", "t=10.9", "A"),
@@ -102,16 +111,25 @@ try:
         ("OUT", "Skeleton", "tested if the muqatta'at suras cohere, split-half", "a body has a rigid structural frame", "fails split-half", "t=10.3 / 1.7", "OUT", "OUT"),
         ("OUT", "Circulation", "checked if a core root perfuses every region evenly", "blood circulates to every tissue", "message clumps, no perfusion", "gap-CV z=+63", "OUT", "OUT"),
     ]
-    df = pd.DataFrame(ROWS, columns=["ID", "Correspondence", "What we did", "Why we did it (body)", "What we found (Qur'an)", "Key value", "Effect", "Grade"])
-    cc = {
-        "What we did": st.column_config.TextColumn(width="large"),
-        "Why we did it (body)": st.column_config.TextColumn(width="large"),
-        "What we found (Qur'an)": st.column_config.TextColumn(width="medium"),
-    }
-    try:
-        st.dataframe(df, use_container_width=True, hide_index=True, height=520, column_config=cc)
-    except Exception:
-        st.dataframe(df, use_container_width=True, hide_index=True, height=520)
+    def _g(grade):
+        c = {"A": "#1D9E75", "B": "#C9962B"}.get(grade, "#9AA4B2")
+        return ('<span style="display:inline-block;min-width:28px;text-align:center;padding:1px 5px;'
+                'border-radius:6px;background:%s;color:#fff;font-weight:800;font-size:11px">%s</span>' % (c, grade))
+    rows_html = ""
+    for _id, corr, did, why, found, key, eff, grade in ROWS:
+        tone = "background:#f7f8f9;" if grade == "OUT" else ""
+        got = found
+        if key and key != "-":
+            got += " — <b>%s</b>" % key
+        if eff and eff not in ("-", "OUT"):
+            got += " <span style='color:#6b7480'>(%s)</span>" % eff
+        rows_html += ('<tr style="%s"><td class="ct-id">%s</td><td class="ct-c">%s</td>'
+                      '<td>%s</td><td class="ct-why">%s</td><td class="ct-got">%s</td>'
+                      '<td class="ct-g">%s</td></tr>' % (tone, _id, corr, did, why, got, _g(grade)))
+    st.markdown(
+        '<table class="ct"><thead><tr><th>ID</th><th>Correspondence</th><th>What we did</th>'
+        "<th>Why we did it (body)</th><th>What we got (Qur'an)</th><th>Grade</th></tr></thead><tbody>"
+        + rows_html + "</tbody></table>", unsafe_allow_html=True)
 except Exception as e:
     st.info("Table unavailable: %s" % e)
 
