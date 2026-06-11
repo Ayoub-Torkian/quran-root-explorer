@@ -1,4 +1,4 @@
-"""Latent Feature Ledger — intrinsic, self-referential discoveries.
+﻿"""Latent Feature Ledger — intrinsic, self-referential discoveries.
 
 Single source of truth: research/intrinsic/latent_features.json
 Weekly cadence. Every feature carries a four-question critical review with a
@@ -197,6 +197,22 @@ st.markdown(
     "<div style='font-size:14.5px;color:#46505F;margin:2px 0 14px'>"
     "<b style='color:#16243B'>%d things we now know about the Qur'an</b> that we didn't — each found by measuring the "
     "text only against itself. Tap a card to explore.</div>" % len(included), unsafe_allow_html=True)
+
+# det-journey: where this ledger started -> where we are
+st.markdown(r'''<svg viewBox="0 0 1120 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#fff;border:1px solid #E7ECF3;border-radius:12px;margin:2px 0 14px" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+ <line x1="70" y1="80" x2="1040" y2="80" stroke="#E7ECF3" stroke-width="3"/>
+ <g text-anchor="middle">
+  <g><circle cx="70" cy="80" r="8" fill="#9AA4B2"/><text x="70" y="42" font-size="11.5" font-weight="800" fill="#16243B">External sweep</text><text x="70" y="106" font-size="10" fill="#5B6675">is it distinctive?</text></g>
+  <g><circle cx="232" cy="80" r="8" fill="#E9A23B"/><text x="232" y="42" font-size="11.5" font-weight="800" fill="#16243B">Jun 7 · One Law</text><text x="232" y="106" font-size="10" fill="#5B6675">internal only</text></g>
+  <g><circle cx="394" cy="80" r="8" fill="#1D9E75"/><text x="394" y="42" font-size="11.5" font-weight="800" fill="#16243B">Wave &amp; rhyme</text><text x="394" y="106" font-size="10" fill="#5B6675">L01-07</text></g>
+  <g><circle cx="556" cy="80" r="8" fill="#1D9E75"/><text x="556" y="42" font-size="11.5" font-weight="800" fill="#16243B">Self-ref · twins</text><text x="556" y="106" font-size="10" fill="#5B6675">L08·21</text></g>
+  <g><circle cx="718" cy="80" r="8" fill="#1D9E75"/><text x="718" y="42" font-size="11.5" font-weight="800" fill="#16243B">Sūra &amp; Āyah</text><text x="718" y="106" font-size="10" fill="#5B6675">defined to necessity</text></g>
+  <g><circle cx="880" cy="80" r="8" fill="#1D9E75"/><text x="880" y="42" font-size="11.5" font-weight="800" fill="#16243B">Arrangement</text><text x="880" y="106" font-size="10" fill="#5B6675">determined L14-26</text></g>
+  <g><text x="1040" y="68" font-size="20" fill="#1D3557">★</text><text x="1040" y="42" font-size="11.5" font-weight="800" fill="#1D3557">NOW</text><text x="1040" y="106" font-size="10" fill="#1D3557">the wall: meaning</text></g>
+ </g>
+</svg>
+''', unsafe_allow_html=True)
+
 
 # (meta stats, grade chart, coverage and freshness moved to the "Method & overview" tab —
 #  the landing leads with the discoveries themselves.)
