@@ -76,7 +76,39 @@ m[0].metric("Bedrock (A)", "7", help="survived every scrutiny pass")
 m[1].metric("Attributes tested", "34")
 m[2].metric("Scrutiny passes", "7")
 m[3].metric("Strongest effect", "z = 125", help="propagation / self-replicating formulae")
-m[4].metric("Demoted (length)", "4", help="length-gradient artifacts, not real")
+m[4].metric("Tested & rejected", "5", help="failed candidates — filed honestly, not as disproof")
+
+# ---------------- what we got: the discovery payoff ----------------
+st.markdown(
+    '<div style="background:#F5F8FC;border-left:4px solid #1D3557;border-radius:8px;'
+    'padding:12px 16px;font-size:13px;line-height:1.55;color:#16243B;margin:12px 0 6px;max-width:1050px">'
+    '<b>What we got — the discovery payoff.</b> The question this ledger asked: treat the '
+    'Qur&#700;ān as a designed system, benchmark it against the body, and see which of the body&#700;s '
+    'organizational features it carries — each measured <b>only against the text&#700;s own shuffle</b> '
+    '(the One Law, on the rasm).'
+    '<br><br><b>The yield.</b> Seven features survive their own-shuffle null (grade A). Read against the '
+    'north star — what a <b>Sūra</b> is and why the current arrangement — three are load-bearing: a Sūra has '
+    'a detectable <b>edge</b> (A1, root-overlap collapses at the boundary), an ordered <b>interior</b> '
+    '(A2, shuffling its verses destroys cohesion), and specific <b>wiring</b> to other sūras (A6, a modular '
+    'network). Together: the Sūra is a <b>bounded, internally-ordered, specifically-connected unit</b> — the '
+    'raw material a necessary-and-sufficient definition needs. Propagation (A3, z=+125), interface-zones (A4), '
+    'rhythm (A5) and bilateral twins (A7) add self-replicating, outward-facing, pulse-like and paired structure.'
+    '<br><br><b>What is genuinely new.</b> Rhythm, boundaries and order were already in the Determinacy ledger; '
+    'this program&#700;s net-new contribution is the <b>network view</b> (A6 connectivity + A7 twins) and the '
+    'explicit <b>unit-definition</b> framing (edge + interior + wiring).'
+    '<br><br><b>What it ruled out</b> (equally a result). Five candidates failed: location, folding-decay and '
+    'development are <b>length-gradient artifacts</b>; the muqaṭṭaʿāt skeleton fails split-half; circulation '
+    'clumps instead of perfusing. Per the One Law a failed correspondence indicts the <i>instrument</i>, not the '
+    'text — so we file them honestly as not-yet-captured, never as disproof.'
+    '<br><br><b>Bottom line, ranked.</b> '
+    '<b>1)</b> The Sūra is now a <b>definable unit</b> — edge (A1) + ordered interior (A2) + specific wiring (A6); '
+    'this is the real advance toward the north star. '
+    '<b>2)</b> The <b>modular sūra-network</b> (A6/A7) is the main feature this effort added beyond Determinacy. '
+    '<b>3)</b> Five honest demotions map the text&#700;s limits — what it does <i>not</i> do. '
+    'The effort did <i>not</i> prove &#8220;the Qur&#700;ān is a body&#8221;; it produced an intrinsically-'
+    'validated catalogue of what the Sūra <i>is</i> structurally.</div>',
+    unsafe_allow_html=True,
+)
 
 # ---------------- master table (full-width HTML: every column visible, text wraps) ----------------
 st.markdown(
@@ -225,6 +257,8 @@ st.markdown(
     ".cp-arrow{display:flex;align-items:center;justify-content:center;font-size:14px;color:#1D9E75;font-weight:800}"
     ".cp-ar{text-align:center;font-size:18px;color:#16243B;margin:9px 0 7px;line-height:1.7;direction:rtl}"
     ".cp-ar small{font-size:11px;color:#8A94A0;direction:ltr;unicode-bidi:embed}"
+    ".cp-chart{margin:7px 0 1px}"
+    ".cp-nums{font-size:10px;color:#7A8390;text-align:center;margin:0 0 1px}"
     ".cp-bars{display:flex;flex-direction:column;gap:3px;margin-top:2px}"
     ".cp-bar{display:flex;align-items:center;gap:7px;font-size:11px}"
     ".cp-bar>span:first-child{width:74px;color:#6A7480;flex:none}"
@@ -235,17 +269,49 @@ st.markdown(
     ".cp-out .cp-eff{color:#9A7B4F}"
     "</style>", unsafe_allow_html=True)
 
+import math
+
+_Z = {"Membrane": 5, "Internal weave": 10.9, "Propagation": 125, "Interface-zones": 17.6,
+      "Rhythm / pulse": 20, "Connectivity": 24, "Bilateral pairs": 5.4,
+      "Identity": 7.7, "Necessity": 6, "Digestive loop": 8, "Polarity": 3, "Error-correction": 4, "Signal": 9,
+      "Location": 0.5, "Folding contact-decay": 0.4, "Development": 0.6,
+      "Skeleton (muqaṭṭaʿāt)": 1.7, "Circulation": 2}
+
+def _spark(z, obs, color):
+    cx, base, sd, peak = 44.0, 42.0, 12.0, 28.0
+    n = 96
+    pts = []
+    for i in range(n + 1):
+        x = 8.0 + i * (236.0 / n)
+        zz = (x - cx) / sd
+        y = base - peak * math.exp(-0.5 * zz * zz)
+        pts.append("%.1f,%.1f" % (x, y))
+    bell = "M" + " L".join(pts)
+    mag = abs(z)
+    xo = cx + min(mag, 26.0) * 7.7
+    if xo > 244.0:
+        xo = 244.0
+    anchor = "end" if xo > 176 else ("middle" if xo > 44 else "start")
+    arrow = " &#187;" if mag > 26 else ""
+    return (
+        '<svg viewBox="0 0 252 56" width="100%%" height="50" preserveAspectRatio="xMidYMid meet" role="img">'
+        '<line x1="6" y1="42" x2="246" y2="42" stroke="#E7ECF3" stroke-width="1"/>'
+        '<path d="%s L246,42 L8,42 Z" fill="#EEF1F5"/>'
+        '<path d="%s" fill="none" stroke="#C4CBD3" stroke-width="1"/>'
+        '<text x="44" y="53" font-size="8" fill="#9AA4B2" text-anchor="middle">shuffle null</text>'
+        '<line x1="%.1f" y1="14" x2="%.1f" y2="44" stroke="%s" stroke-width="2"/>'
+        '<circle cx="%.1f" cy="14" r="2.6" fill="%s"/>'
+        '<text x="%.1f" y="10" font-size="8.5" fill="#16243B" text-anchor="%s">%s%s</text>'
+        '</svg>' % (bell, bell, xo, xo, color, xo, color, xo, anchor, obs, arrow))
+
 def _panel(d):
     is_out = d["grade"] == "OUT"
     cls = "cp cp-out" if is_out else "cp"
     gcolor = "#9A7B4F" if is_out else "#0F6E56"
     glabel = "instrument limit" if is_out else "grade %s" % d["grade"]
     mfill = "#C4CBD3" if is_out else "#1D9E75"
-    bars = ""
-    for lab, pct, col, val in d["bars"]:
-        bars += ('<div class="cp-bar"><span>%s</span>'
-                 '<span class="cp-bt"><i style="width:%d%%;background:%s"></i></span>'
-                 '<span class="cp-bv">%s</span></div>' % (lab, pct, col, val))
+    spark = _spark(_Z.get(d["name"], 0.0), d["bars"][0][3], "#D85A30" if is_out else "#1D9E75")
+    nums = " &nbsp;&middot;&nbsp; ".join("%s %s" % (b[0], b[3]) for b in d["bars"])
     ar = '<div class="cp-ar">%s</div>' % d["arabic"] if d.get("arabic") else ""
     return (
         '<div class="%s">'
@@ -259,9 +325,11 @@ def _panel(d):
         '<div class="cp-arrow">&harr;</div>'
         '<div class="cp-side cp-quran"><div class="cp-slab">Qur&#700;ān</div>%s</div></div>'
         '%s'
-        '<div class="cp-bars">%s<div class="cp-eff">%s</div></div>'
+        '<div class="cp-chart">%s</div>'
+        '<div class="cp-nums">%s</div>'
+        '<div class="cp-eff">%s</div>'
         '</div>' % (cls, d["id"], d["name"], d["meter"], mfill, gcolor, glabel,
-                    d["aspect"], d["body"], d["quran"], ar, bars, d["eff"]))
+                    d["aspect"], d["body"], d["quran"], ar, spark, nums, d["eff"]))
 
 def _section(title, items):
     st.markdown('<div class="cl-sec">%s</div>' % title, unsafe_allow_html=True)
