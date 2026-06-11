@@ -124,7 +124,7 @@ def render_grouped_nav():
         # a real min-height via :has() so a label can never overflow into a card.
         "[data-testid='stSidebarNav']{display:none!important;}"
         "section[data-testid='stSidebar'] [data-testid='stElementContainer']{margin:0!important;}"
-        "section[data-testid='stSidebar'] div[data-testid='stVerticalBlock']{gap:3px!important;}"
+        "section[data-testid='stSidebar'] div[data-testid='stVerticalBlock']{gap:0.45rem!important;}"
         "section[data-testid='stSidebar'] [data-testid='stPageLink']{margin:0!important;}"
         "section[data-testid='stSidebar'] [data-testid='stPageLink'] a{"
         "border:0!important;border-radius:6px!important;"
@@ -157,7 +157,6 @@ def render_grouped_nav():
         "section[data-testid='stSidebar'] [data-testid='stElementContainer']"
         "{min-height:0!important;height:auto!important;overflow:visible!important;margin:0!important;}"
         "section[data-testid='stSidebar'] [data-testid='stElementContainer']:empty{display:none!important;}"
-        "section[data-testid='stSidebar'] [data-testid='stVerticalBlock']{gap:3px!important;}"
         ".dlnav-active{background:#1D3557!important;color:#FFFFFF!important;font-weight:800!important;"
         "font-size:14px!important;border-radius:6px!important;padding:4px 9px 4px 14px!important;"
         "border-left:4px solid #1D9E75!important;margin:0!important;line-height:1.3!important;"
