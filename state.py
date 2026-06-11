@@ -124,6 +124,9 @@ def render_grouped_nav():
         # a real min-height via :has() so a label can never overflow into a card.
         "[data-testid='stSidebarNav']{display:none!important;}"
         "section[data-testid='stSidebar'] [data-testid='stElementContainer']{margin:0!important;}"
+        # ROOT CAUSE of the nav overlap (confirmed via live DOM): Streamlit puts margin-bottom:-16px
+        # on stMarkdownContainer, collapsing the label's box so the next link overlaps it. Zero it.
+        "section[data-testid='stSidebar'] [data-testid='stMarkdownContainer']{margin:0!important;}"
         "section[data-testid='stSidebar'] div[data-testid='stVerticalBlock']{gap:0.45rem!important;}"
         "section[data-testid='stSidebar'] [data-testid='stPageLink']{margin:0!important;}"
         "section[data-testid='stSidebar'] [data-testid='stPageLink'] a{"
