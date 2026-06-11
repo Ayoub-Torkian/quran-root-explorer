@@ -127,7 +127,10 @@ try:
                       '<td>%s</td><td class="ct-why">%s</td><td class="ct-got">%s</td>'
                       '<td class="ct-g">%s</td></tr>' % (tone, _id, corr, did, why, got, _g(grade)))
     st.markdown(
-        '<table class="ct"><thead><tr><th>ID</th><th>Correspondence</th><th>What we did</th>'
+        '<table class="ct"><colgroup>'
+        '<col style="width:4%"><col style="width:12%"><col style="width:27%">'
+        '<col style="width:25%"><col style="width:26%"><col style="width:6%">'
+        '</colgroup><thead><tr><th>ID</th><th>Correspondence</th><th>What we did</th>'
         "<th>Why we did it (body)</th><th>What we got (Qur'an)</th><th>Grade</th></tr></thead><tbody>"
         + rows_html + "</tbody></table>", unsafe_allow_html=True)
 except Exception as e:
