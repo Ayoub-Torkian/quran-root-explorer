@@ -60,6 +60,7 @@ exports/
 # local dev tooling (do not deploy)
 apply_ui.py
 apply_ui.bat
+apply_ledgers.py
 fix_git_index.bat
 fix_push.bat
 deploy_full.log
@@ -91,5 +92,7 @@ research/two_books_genome/glove.6B.zip
 research/**/*.png
 research/**/*.jpg
 research/**/*.jpeg
-Creation_as_Signs_handout.docx
+HANDOFF.md
+ROADMAP.md
+_Signs_handout.docx
 research/two_books_genome/

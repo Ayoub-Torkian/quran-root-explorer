@@ -1,0 +1,139 @@
+<!doctype html><meta charset=utf-8><title>Qur'an discovery landscape — where we are</title>
+<style>
+body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:1200px;margin:24px auto;color:#222;padding:0 16px}
+h1{font-size:21px;margin:0 0 4px}.cap{color:#666;font-size:14px;margin:0 0 14px;line-height:1.5}
+h2{font-size:16px;margin:22px 0 6px}p{line-height:1.55}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:8px 26px}.cols b{color:#1b7837}
+.thin b{color:#b06a00}
+</style>
+<h1>Where are we in the Qur'ān discovery landscape?</h1>
+<p class=cap>A map, not a network. <b>Left→right = scale</b> (a single letter up to the whole book).
+<b>Bottom→top = from FORM to MEANING</b> (sound &amp; rhythm at the bottom, the arrangement in the middle,
+meaning/discourse at the top). Green = <b>charted</b> territory (where our 22 passed features live). Pale/striped
+= <b>frontier</b> — thin or unmapped. The ★ is the north star (define the Sūra &amp; Āyah, and why this
+arrangement). The dot is where we are now. The <b style="color:#c2611a">orange line</b> is the journey — where we started,
+where we went, and where we stand (waypoints 1→6, explained below).</p>
+
+<svg viewBox="0 0 1180 720" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<defs>
+<pattern id="hatch" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+<rect width="8" height="8" fill="#f3eee4"/><line x1="0" y1="0" x2="0" y2="8" stroke="#e4d8be" stroke-width="3"/></pattern>
+<pattern id="wallh" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+<rect width="8" height="8" fill="#f6e7e7"/><line x1="0" y1="0" x2="0" y2="8" stroke="#e3b9b9" stroke-width="3"/></pattern>
+<marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1b7837"/></marker>
+<marker id="arj" markerWidth="11" markerHeight="11" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#c2611a"/></marker>
+</defs>
+<rect x="0" y="0" width="1180" height="720" fill="#fbfbfc"/>
+
+<!-- frontier base (whole plot pale) -->
+<rect x="150" y="95" width="980" height="520" fill="#faf7f1"/>
+
+<!-- MEANING frontier band (top, unmapped) -->
+<rect x="150" y="95" width="980" height="120" fill="url(#hatch)" opacity="0.9"/>
+<text x="165" y="120" font-size="13" font-weight="800" fill="#b06a00">MEANING · DISCOURSE  —  the empty frontier (proxies only)</text>
+
+<!-- WALL band -->
+<rect x="150" y="215" width="980" height="46" fill="url(#wallh)"/>
+<text x="640" y="243" text-anchor="middle" font-size="12.5" font-weight="800" fill="#a64141">THE COMPREHENSION WALL — sufficiency needs meaning; on the rasm this is walled (One Law)</text>
+
+<!-- charted green territory (structure + form, verse→corpus) -->
+<path d="M455,261 L1130,261 L1130,615 L300,615 L300,360 Q300,300 455,261 Z" fill="#d7ece0" stroke="#1b7837" stroke-width="1.5" opacity="0.85"/>
+
+<!-- small-scale frontier (letter+word columns, left) -->
+<rect x="150" y="261" width="150" height="354" fill="url(#hatch)" opacity="0.8"/>
+<text x="225" y="450" text-anchor="middle" font-size="12" font-weight="800" fill="#b06a00" transform="rotate(-90 225 450)">SMALL-SCALE FRONTIER · word weak, letter detached</text>
+
+<!-- band labels (left) -->
+<text x="160" y="300" font-size="12.5" font-weight="800" fill="#2f7d4a">STRUCTURE · ORDER</text>
+<text x="160" y="560" font-size="12.5" font-weight="800" fill="#2f7d4a">FORM · SOUND · RHYTHM</text>
+
+<!-- scale axis (bottom) -->
+<line x1="150" y1="615" x2="1130" y2="615" stroke="#ccc"/>
+<text x="150" y="660" font-size="12" font-weight="700" fill="#666">SCALE →</text>
+<!-- columns -->
+<g font-size="12.5" fill="#777" text-anchor="middle">
+<text x="225" y="640">letter</text><text x="350" y="640">word</text><text x="480" y="640">verse</text>
+<text x="610" y="640">passage</text><text x="740" y="640">sūra</text><text x="880" y="640">chapter-order</text><text x="1040" y="640">corpus</text>
+</g>
+
+<!-- charted landmarks (dense clusters) -->
+<g font-size="11">
+<circle cx="495" cy="540" r="30" fill="#bfe3cd" stroke="#1b7837" stroke-width="1.3"/>
+<text x="495" y="538" text-anchor="middle" font-weight="800" fill="#1b6a33" font-size="11.5">pulse &amp; rhyme</text>
+<text x="495" y="554" text-anchor="middle" fill="#3a3a3a">L03–07,25</text>
+
+<circle cx="610" cy="470" r="26" fill="#bfe3cd" stroke="#1b7837" stroke-width="1.3"/>
+<text x="610" y="468" text-anchor="middle" font-weight="800" fill="#1b6a33" font-size="11.5">self-echo</text>
+<text x="610" y="483" text-anchor="middle" fill="#3a3a3a">L08,21</text>
+
+<circle cx="760" cy="360" r="40" fill="#a9d9bd" stroke="#1b7837" stroke-width="1.8"/>
+<text x="760" y="356" text-anchor="middle" font-weight="800" fill="#13592a" font-size="12">what a SŪRA is</text>
+<text x="760" y="372" text-anchor="middle" fill="#2a2a2a">L11,12,15,16,18,26</text>
+
+<circle cx="940" cy="430" r="36" fill="#b4dec6" stroke="#1b7837" stroke-width="1.6"/>
+<text x="940" y="426" text-anchor="middle" font-weight="800" fill="#13592a" font-size="11.5">the ORDER is</text>
+<text x="940" y="441" text-anchor="middle" font-weight="800" fill="#13592a" font-size="11.5">determined</text>
+<text x="940" y="456" text-anchor="middle" fill="#2a2a2a">L14,19,20,22,23,24</text>
+
+<circle cx="430" cy="430" r="20" fill="#cdead9" stroke="#1b7837" stroke-width="1.1"/>
+<text x="430" y="427" text-anchor="middle" font-weight="800" fill="#1b6a33">āyah</text>
+<text x="430" y="442" text-anchor="middle" fill="#3a3a3a" font-size="10">~85 rasm</text>
+</g>
+
+<!-- diminishing-returns note (in dense form region) -->
+<text x="660" y="585" text-anchor="middle" font-size="11" fill="#7a7a7a">↻ drilling finer FORM here = diminishing returns (last 3: ~85, null, null)</text>
+
+<!-- THE JOURNEY LINE (where we started -> where we are) -->
+<g>
+<path d="M175,598 C250,585 270,560 312,560 C420,560 430,535 497,532 C560,529 575,490 610,475 C720,432 760,360 850,400 C880,415 740,398 700,398" fill="none" stroke="#c2611a" stroke-width="3" opacity="0.92" stroke-linecap="round" marker-end="url(#arj)"/>
+<g font-size="11.5" font-weight="800" fill="#fff" text-anchor="middle">
+<circle cx="175" cy="598" r="12" fill="#c2611a"/><text x="175" y="602">1</text>
+<circle cx="312" cy="560" r="12" fill="#c2611a"/><text x="312" y="564">2</text>
+<circle cx="497" cy="532" r="12" fill="#c2611a"/><text x="497" y="536">3</text>
+<circle cx="610" cy="475" r="12" fill="#c2611a"/><text x="610" y="479">4</text>
+<circle cx="850" cy="400" r="12" fill="#c2611a"/><text x="850" y="404">5</text>
+<circle cx="700" cy="398" r="13" fill="#a64141"/><text x="700" y="402">6</text>
+</g>
+</g>
+
+<!-- you are here + direction arrow to north star -->
+<circle cx="690" cy="395" r="7" fill="#1b7837" stroke="#fff" stroke-width="2"/>
+<text x="690" y="418" text-anchor="middle" font-size="11.5" font-weight="800" fill="#1b7837">you are here</text>
+<path d="M690,388 C700,320 705,250 712,168" fill="none" stroke="#1b7837" stroke-width="2.2" stroke-dasharray="2 4" marker-end="url(#ar)"/>
+
+<!-- north star -->
+<text x="715" y="150" text-anchor="middle" font-size="26" fill="#b06a00">★</text>
+<text x="715" y="172" text-anchor="middle" font-size="11.5" font-weight="800" fill="#8a5200">define SŪRA &amp; ĀYAH</text>
+<text x="715" y="186" text-anchor="middle" font-size="10.5" fill="#8a5200">necessary AND sufficient</text>
+</svg>
+
+<h2>The journey — where we started → where we are (the orange line)</h2>
+<p style="line-height:1.55"><b>1 · Started outside</b> (pre-2026-06-07): the "is it <i>distinctive</i>?" phase —
+two-books genome, neural-coding, external comparator sweeps. &nbsp; <b>2 · The pivot</b> (2026-06-07): drop
+external evidence, go fully internal — the One Law. &nbsp; <b>3 · Form base</b>: verse-length waves, 1/f
+rhythm, rhyme runs (L01–07). &nbsp; <b>4 · Network &amp; constellation</b>: self-echo, structural twins, the
+sūra fingerprint (L08–09, L21). &nbsp; <b>5 · The conquest</b> (Phases B–D, 2026-06-09/10): the order is
+determined and the sūra is defined to <i>necessity</i> (L11–26). &nbsp; <b>6 · Now</b> (2026-06-11): the āyah
+opened on the rasm (~85), per-sūra necessity came back null — and we're pressed against the comprehension wall,
+where the form surface yields diminishing returns. The dashed green arrow is the only way on: cross into
+<i>meaning</i>, which the rasm can't reach alone.</p>
+
+<h2>Where we're off-balance</h2>
+<div class=cols>
+<div><p><b>Over-charted (lots of converging evidence):</b> the whole <b>FORM</b> side — sound, rhythm, and
+especially <b>ORDER / ARRANGEMENT</b> and <b>SŪRA BOUNDARIES</b>. We know the text's outer architecture, from
+the verse up to the whole book, extremely well. Six features each on order and on sūra-definition.</p></div>
+<div class=thin><p><b>Under-charted (thin or empty):</b> <b>MEANING / content</b> — almost nothing direct, only
+proxies; this is the single biggest gap. The <b>small end</b> (word weak, letter detached). The <b>Āyah</b>,
+only just opened (~85). And <b>sufficiency</b> in general — we have many "this pattern exists" results, few
+"this is <i>enough</i> to force the unit" results.</p></div>
+</div>
+<p style="margin-top:8px"><b>Direction check — are we on course or astray?</b> Not astray: form was the right
+first conquest, and it's nearly complete. But the north star sits in the <b>thin</b> region — meaning and
+sufficiency — and the last three ≥90 attempts on the form surface landed ~85, null, null. So <b>continued
+drilling of finer FORM features is the "going-astray" risk</b> (diminishing returns). The two honest ways
+forward both leave the charted green: go <b>small</b> (the word/letter rung), or cross the <b>comprehension
+wall</b> toward meaning — which on the rasm is walled, and only opens if you deliberately admit a second
+substrate (the recited/diacritic layer) as a declared, separate track.</p>
+<p class=cap style="margin-top:6px">One line: we have mapped <b>how the Qur'ān is arranged</b> very thoroughly,
+and barely touched <b>what it means</b> — and meaning is exactly what the definitions still need.</p>

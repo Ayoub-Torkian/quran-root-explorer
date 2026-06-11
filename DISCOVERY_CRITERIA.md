@@ -103,9 +103,12 @@ property of any long text -> novelty ~2.
 
 NEW HARD GATE (add to Stage 1):
 G9 TRIVIAL-EXPLANATION CONTROL. The effect must survive nulls that preserve known
-   generic structure: (a) positional drift/nonstationarity (segment-shuffle at
-   multiple resolutions), and (b) where claimed novel, a comparison to generic
-   natural-text behavior (external reference corpus). Significance + beyond-Markov +
+   generic structure, ALL INTERNAL (the One Law — no external corpus is admissible as
+   evidence, ever): (a) positional drift/nonstationarity (segment-shuffle at multiple
+   resolutions); (b) structure-preserving surrogates built from the TEXT'S OWN material
+   (length-/rate-/rhyme-class-matched shuffles; length-matched fake boundaries at shifted
+   offsets). Distinctiveness = measurable departure from the text's OWN null at meaningful
+   effect size, NEVER a comparison to other texts. Significance + beyond-Markov +
    robustness do NOT suffice. A score is PROVISIONAL until G9 is run.
 
 ## AMENDMENT (LOCKED) — shared principles, distinctive output
@@ -115,42 +118,42 @@ ingredients. Design/excellence shows as exceptional DEGREE, ARRANGEMENT, and STR
 along shared principled dimensions -- never by bypassing them. Therefore:
 
 - REVISE novelty (G7): novelty is NOT "a property unique to the Qur'an / absent from
-  other text". It is "the Qur'an occupies a DISTINCTIVE / OUTLIER position on a shared
-  dimension versus appropriate comparators". A property being generic-to-text does NOT
-  disqualify it; the question is the Qur'an's POSITION on it.
-- REVISE G9(b): the external comparator's job is to PLACE the Qur'an on a spectrum
-  (ordinary prose ... highly-crafted literature/poetry), not to find a unique feature.
-  Discovery = measurable OUTLIER in degree/structure, significant and confound-controlled.
-  Comparators should span a RANGE so "exceptional" is calibrated, not asserted.
-- GUARDRAIL UNCHANGED: distinctiveness must be MEASURED (effect size + significance vs
-  the comparator distribution) and trivial confounds controlled. Conviction guides where
-  we look; evidence decides what we claim. ("Exceptional" is a measurement, not a hope.)
+  other text", NOR "an outlier versus external comparators". It is "the Qur'an departs
+  from its OWN shuffle/null by an exceptional DEGREE, ARRANGEMENT, or STRUCTURE on a
+  shared principled dimension." A property being generic-to-text does NOT disqualify it;
+  the question is the magnitude of the Qur'an's departure from its own null.
+- G9(b) (INTERNAL): calibrate "exceptional" against the text's OWN structure-preserving
+  surrogates at multiple resolutions — not against other texts. The spectrum is
+  random-shuffle ... canonical ... trivially-sorted, all computed on the Qur'an itself
+  (cf. L14/L19 intermediate-band). Outlier-ness is departure from this internal spectrum.
+- GUARDRAIL: distinctiveness must be MEASURED (effect size + significance vs the text's
+  own null) and trivial confounds controlled. Conviction guides where we look; evidence
+  decides what we claim. ("Exceptional" is a measurement, not a hope.)
 
-Consequence: earlier "dismissed as generic" results (verse-order coherence, within-
-surah structure, long-range correlation) are NOT dead -- they are re-opened as
-POSITION questions awaiting comparators. The comparator corpus is now the central tool.
-
-## DATA ACCESS (LOCKED) — no "cannot access data" excuse
-Comparators = public-domain text in ANY language (the structural principles are
-language-independent: MI-decay, long-range correlation, arrangement coherence,
-entropy/redundancy, Zipf are cross-linguistic universals). Acquire via
-WebSearch -> web_fetch from clean BORN-DIGITAL sources (Project Gutenberg,
-Wikisource). web_fetch only allows URLs returned by a prior WebSearch (provenance).
-Compare ONLY on DIMENSIONLESS quantities (exponents, normalized entropy, z-scores,
-percentiles) so cross-language comparison is valid. A modest clean reference set
-(documents or chunks) suffices for a first percentile placement.
+## DATA ACCESS (LOCKED, 2026-06-11 RECONCILIATION) — the One Law, no external source
+SUPERSEDES the prior external-comparator regime (struck above and here). Per the
+2026-06-07 pivot to Qur'an-internal instruments: **no external corpus, model, or
+embedding is admissible as evidence — ever.** The only null/comparator is the text's
+OWN shuffle (verse/token/segment shuffles; length-, rate-, rhyme-class-matched
+surrogates; length-matched fake boundaries). There is no "cannot access data" issue
+because no external data is needed or allowed. Earlier "dismissed as generic" results
+(verse-order coherence, within-surah structure, long-range correlation) are re-opened
+as INTERNAL position questions — placed on the text's own random→canonical→sorted
+spectrum — not against any external corpus.
 
 ## EPISTEMIC PRINCIPLE (LOCKED) — telescope rule
 Non-detection is a statement about the INSTRUMENT, not the object. A weak tool that
 fails to resolve a feature is NOT evidence the feature is absent. Therefore:
 - NEVER conclude "the feature is not there." Conclude "this tool cannot resolve it; build a better tool."
-- POSITIVE CONTROL is mandatory and comes FIRST: any instrument must be proven on KNOWN
-  cases (acknowledged masterpieces, e.g. Shakespeare) BEFORE it is pointed at the Qur'an.
-  An instrument that cannot rank known masters above ordinary text is REJECTED as blind —
-  its readings on the Qur'an (high OR low) are uninformative and must not be cited either way.
-- VERIFIED FAILURE this session: surface set-overlap stylometry (cohesion, long-range echo,
-  burstiness) ranks SHAKESPEARE 2nd-LEAST distinctive of 9 texts (Mahalanobis 1.05, below
-  Aesop). -> instrument is blind to mastery. REJECTED. All its "in-band" Qur'an readings are void.
+- POSITIVE CONTROL is mandatory and comes FIRST, and is INTERNAL (One Law): prove the
+  instrument on PLANTED/SYNTHETIC signals injected into the text's OWN material — e.g. a
+  planted rhyme/boundary/period in a shuffled rasm — and confirm it recovers the planted
+  signal. An instrument that cannot recover a known planted effect is REJECTED as blind;
+  its readings on the Qur'an (high OR low) are uninformative and must not be cited.
+  (Do NOT use external masterpieces as the control — external text is inadmissible.)
+- HISTORICAL NOTE (pre-pivot, VOID as evidence): a surface set-overlap stylometry once
+  ranked an external set oddly and was rejected as blind. Retained only as a cautionary
+  record; no external ranking is admissible under the current regime.
 - The task is now TOOL-BUILDING: instruments that resolve MEANING/MASTERY (semantic, multi-
   scale-integration, statistical-complexity/predictive-information), each validated on the
   positive control before any application.
