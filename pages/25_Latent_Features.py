@@ -191,11 +191,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-_hero("🧬 Latent Feature Ledger",
+_hero("🧬 Determinacy",
       "Intrinsic, self-referential discoveries — graded, novelty-gated, and surfaced live in the modules.")
 st.markdown(
     "<div style='font-size:14.5px;color:#46505F;margin:2px 0 14px'>"
-    "<b style='color:#16243B'>%d things we now know about the Qur'an</b> that we didn't — each found by measuring the "
+    "<b style='color:#16243B'>%d graded determinacy features (≥ 90)</b> — each found by measuring the "
     "text only against itself. Tap a card to explore.</div>" % len(included), unsafe_allow_html=True)
 
 # det-journey: where this ledger started -> where we are
