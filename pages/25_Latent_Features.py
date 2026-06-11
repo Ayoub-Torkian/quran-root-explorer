@@ -215,18 +215,18 @@ except Exception:
 
 # ---------------- WHAT WE DISCOVERED — three results, each visualized ----------------
 if VZ:
-    def _d_bars(items, hi=None):
+    def _d_bars(items, hi=None, lw=132, lsz=12.5):
         mx = max(v for _, v in items) or 1
         rows = ""
         for lab, v in items:
             w = max(4, int(v / float(mx) * 100))
             c = "#1D9E75" if (hi and lab == hi) else "#9AA4B2"
             rows += ('<div style="display:flex;align-items:center;gap:8px;font-size:12.5px;margin:3px 0">'
-                     '<span style="width:132px;flex:none;color:#46505F">%s</span>'
+                     '<span style="width:%dpx;flex:none;color:#16243B;font-size:%spx">%s</span>'
                      '<span style="flex:1;height:13px;background:#ECEFF3;border-radius:3px;overflow:hidden">'
                      '<i style="display:block;height:100%%;width:%d%%;background:%s"></i></span>'
                      '<span style="width:64px;flex:none;text-align:right;font-weight:700;color:#16243B">%s</span></div>'
-                     % (lab, w, c, format(v, ",")))
+                     % (lw, lsz, lab, w, c, format(v, ",")))
         return rows
 
     def _d_heat(pt):
@@ -331,7 +331,7 @@ if VZ:
         '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 14px">'
         '<div style="font-size:14px;font-weight:700;color:#16243B">Rhyme <span style="color:#0F6E56">fāṣila cohesion</span></div>'
         '<div style="font-size:12px;color:#46505F;margin:3px 0 6px">A few verse-ending sounds dominate the whole text — strong, structured rhyme.</div>'
-        + _d_bars([(w, c) for w, c in VZ.get("fasila", [])[:6]]) +
+        + _d_bars([(w, c) for w, c in VZ.get("fasila", [])[:6]], lw=44, lsz=16) +
         '</div>'
         '</div>', unsafe_allow_html=True)
 

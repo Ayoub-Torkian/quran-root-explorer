@@ -151,14 +151,13 @@ def render_grouped_nav():
         "section[data-testid='stSidebar'] [data-testid='stPageLink'] a[aria-current='page']:hover span,"
         "section[data-testid='stSidebar'] [data-testid='stPageLink'] a[aria-current='page']:hover p{"
         "color:#FFFFFF!important;}"
-        "section[data-testid='stSidebar'] [data-testid='stElementContainer']:has(.dlnav-h2)"
-        "{min-height:0!important;height:auto!important;overflow:visible!important;}"
-        "section[data-testid='stSidebar'] [data-testid='stElementContainer']:has(.dlnav-h1)"
-        "{min-height:24px!important;height:auto!important;overflow:visible!important;}"
-        "section[data-testid='stSidebar'] [data-testid='stElementContainer']:has(.dlnav-active)"
-        "{min-height:30px!important;height:auto!important;overflow:visible!important;margin:0 0 2px 0!important;}"
-        "section[data-testid='stSidebar'] [data-testid='stElementContainer']:empty"
-        "{display:none!important;min-height:0!important;height:0!important;margin:0!important;padding:0!important;border:0!important;}"
+        # SIDEBAR NAV — layout-driven, once and for all: every nav container auto-sizes to its
+        # content and never clips (kills overlap), with ONE uniform flex gap (kills stray empty
+        # space). No per-item min-height magic numbers — those were the cause of the back-and-forth.
+        "section[data-testid='stSidebar'] [data-testid='stElementContainer']"
+        "{min-height:0!important;height:auto!important;overflow:visible!important;margin:0!important;}"
+        "section[data-testid='stSidebar'] [data-testid='stElementContainer']:empty{display:none!important;}"
+        "section[data-testid='stSidebar'] [data-testid='stVerticalBlock']{gap:3px!important;}"
         ".dlnav-active{background:#1D3557!important;color:#FFFFFF!important;font-weight:800!important;"
         "font-size:14px!important;border-radius:6px!important;padding:4px 9px 4px 14px!important;"
         "border-left:4px solid #1D9E75!important;margin:0!important;line-height:1.3!important;"
