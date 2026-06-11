@@ -36,12 +36,14 @@ st.markdown(
     "font-size:14px;line-height:1.55;color:#16243B;margin:6px 0 10px;max-width:980px}"
     ".cl-sec{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#1D3557;"
     "margin:22px 0 8px;border-bottom:2px solid #E7ECF3;padding-bottom:5px}"
-    ".cl-card{background:#fff;border:1px solid #E7ECF3;border-left:5px solid #1D9E75;border-radius:10px;padding:10px 15px;margin:8px 0}"
+    ".cl-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:2px 0}"
+    "@media(max-width:820px){.cl-grid{grid-template-columns:1fr}}"
+    ".cl-card{background:#fff;border:1px solid #E7ECF3;border-left:4px solid #1D9E75;border-radius:7px;padding:6px 11px;margin:0}"
     ".cl-card.b{border-left-color:#7FB069}.cl-card.d{border-left-color:#C4CBD3;background:#f7f8f9}"
-    ".cl-ct{font-size:15px;font-weight:800;color:#16243B;margin:0 0 3px}"
-    ".cl-look{font-size:14px;color:#46505F;line-height:1.5;margin:2px 0}.cl-look b{color:#1D3557}"
-    ".cl-found{font-size:14px;color:#0B3F2A;line-height:1.5;margin:2px 0}.cl-found b{color:#13592a}"
-    ".cl-rej{font-size:14px;color:#9a4a4a;line-height:1.5;margin:2px 0}.cl-rej b{color:#7a2a2a}"
+    ".cl-ct{font-size:13px;font-weight:800;color:#16243B;margin:0 0 1px}"
+    ".cl-look{font-size:12.5px;color:#46505F;line-height:1.35;margin:0}.cl-look b{color:#1D3557}"
+    ".cl-found{font-size:12.5px;color:#0B3F2A;line-height:1.35;margin:1px 0 0}.cl-found b{color:#13592a}"
+    ".cl-rej{font-size:12.5px;color:#9a4a4a;line-height:1.35;margin:1px 0 0}.cl-rej b{color:#7a2a2a}"
     "</style>",
     unsafe_allow_html=True,
 )
@@ -54,10 +56,18 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(
-    '<div class="cl-why"><b>Why this ledger &amp; what we got:</b> a designed system (a body) has identity, '
-    "membranes, wiring, rhythm, paired organs. We asked whether the Qurʾān does too. The yield is a "
-    "<b>7-property form-level core</b> that survives the hardest scrutiny (proper nulls + length de-confounding + "
-    "split-half replication), each shown below with its <b>actual data</b>.</div>",
+    '<div class="cl-why"><b>The idea &amp; what we got.</b> A designed system — a body, but equally a society, a '
+    "genome, a geography — is recognisable by a fixed set of structural properties: parts with a unique "
+    "<b>identity</b>, sealed by <b>membranes</b>, joined by specific <b>wiring</b>, paced by a <b>rhythm</b>, "
+    "some arriving as matched <b>pairs</b>. The body is our <b>benchmark</b>: for each such property we ask, "
+    "one-directionally, whether the Qurʾān measurably has it — and on which sūras, āyāt and roots — never "
+    "reading a Qurʾān feature and retrofitting a body label. A property counts as <b>found</b> only with a "
+    "proper null (the text’s own shuffle), an honest effect size, and a re-runnable script; a failed test "
+    "indicts the <i>instrument</i>, not the text (all-or-none — refine, never declare it absent). After "
+    "<b>7 scrutiny passes</b> the yield is a <b>7-property form-level core</b> that survives proper nulls, "
+    "length de-confounding <i>and</i> split-half replication — shown below with its actual sūras, roots and "
+    "charts. The headline is the synthesis: scattered, separately-known measures cohere as one "
+    "<b>designed-system signature</b>.</div>",
     unsafe_allow_html=True,
 )
 
@@ -73,89 +83,118 @@ st.markdown('<div class="cl-sec">All correspondences — click a column to sort<
 try:
     import pandas as pd
     ROWS = [
-        ("A1", "Membrane", "sealed organ", "root-overlap collapses at the seam", "0.28 vs 0.87", "z=-5", "random adjacency", "A"),
-        ("A2", "Internal weave", "ordered tissue", "verses chained beyond vocabulary", "0.73 vs 0.52", "t=10.9", "own order-shuffle", "A"),
-        ("A3", "Propagation", "self-replication", "formulae repeat (samaʾard x188)", "575 formulae", "z=+125", "stream shuffle", "A"),
-        ("A4", "Interface-zones", "sense organs / skin", "outward address clusters (qul x270)", "28% of verses", "z=+17.6", "label shuffle", "A"),
-        ("A5", "Rhythm / pulse", "heartbeat 1/f", "verse-length long memory", "DFA 0.95", "z~20", "shuffle", "A"),
-        ("A6", "Connectivity", "organ wiring", "specific pairs (2.3 share 342 roots)", "44% of pairs", "vs 1%", "degree-preserving", "A"),
-        ("A7", "Bilateral pairs", "two eyes / two ears", "form-twins (TSM 26.28 ...)", "14 pairs vs 5.7", "z=+5.4", "length-residual", "A"),
-        ("B", "Identity", "unique function", "verse traces to home sura", "7.2% vs 4.9%", "z~7.7", "arbitrary segments", "B"),
-        ("B", "Necessity", "irreplaceable", "Fatiha most-isolated", "rank 1/114", "-", "function space", "B"),
-        ("B", "Digestive loop", "ingest -> process", "'ask' -> 'say' in 2 verses", "25% vs 4%", "-", "random position", "B"),
-        ("B", "Polarity", "head-tail axis", "marked head, faint tail", "0.75 / 0.61", "AUC", "-", "B"),
-        ("B", "Error-correction", "repair redundancy", "endings rhyme-recoverable", "73% vs 50%", "-", "baseline", "B"),
-        ("B", "Signal", "nervous signal", "content carries verse->verse", "0.087 vs 0.009", "~10x", "random pair", "B"),
-        ("OUT", "Location", "fixed position", "just the length ordering", "resid R2=0.03", "OUT", "length-residual", "OUT"),
-        ("OUT", "Folding-decay", "genome Hi-C curve", "a length artifact", "r=-0.04", "OUT", "length-residual", "OUT"),
-        ("OUT", "Development", "ontogeny classes", "the length gradient", "-", "OUT", "-", "OUT"),
-        ("OUT", "Skeleton", "structural frame", "fails split-half", "t=10.3 / 1.7", "OUT", "odd vs even", "OUT"),
-        ("OUT", "Circulation", "blood substance", "message clumps, no perfusion", "gap-CV z=+63", "OUT", "random placement", "OUT"),
+        ("A1", "Membrane", "measured adjacent-verse root overlap, inside a sura vs across its boundary", "organs are sealed by a membrane — a sura should have a real edge", "root-overlap collapses at the seam", "0.28 vs 0.87", "z=-5", "A"),
+        ("A2", "Internal weave", "compared a sura's real verse order to its own shuffle", "tissue is ordered, not a loose pile of cells", "verses chained beyond vocabulary", "0.73 vs 0.52", "t=10.9", "A"),
+        ("A3", "Propagation", "counted recurring root-formulae vs a shuffled stream", "designed systems copy their own forms (self-replication)", "formulae repeat (samaʾ-ard x188)", "575 formulae", "z=+125", "A"),
+        ("A4", "Interface-zones", "located outward markers (qul, ya-ayyuha) and tested their clustering", "a body faces its environment through localized surfaces (skin, senses)", "outward address clusters (qul x270)", "28% of verses", "z=+17.6", "A"),
+        ("A5", "Rhythm / pulse", "ran DFA / 1-f on the verse-length signal", "living systems have a multi-scale pulse (heartbeat)", "verse-length long memory", "DFA 0.95", "z~20", "A"),
+        ("A6", "Connectivity", "associated all sura-pairs by shared roots vs a degree-preserving null", "organs wire to specific partners, not at random", "specific pairs (2.3 share 342 roots)", "44% of pairs", "vs 1%", "A"),
+        ("A7", "Bilateral pairs", "searched for suras sharing a distinctive opening template", "bodies have matched identical pairs (two eyes, two ears)", "form-twins (TSM 26.28 ...)", "14 pairs vs 5.7", "z=+5.4", "A"),
+        ("B", "Identity", "classified a held-out verse back to its home sura", "each organ has a unique, non-redundant function", "verse traces to home sura", "7.2% vs 4.9%", "z~7.7", "B"),
+        ("B", "Necessity", "found each sura's nearest neighbour in a function space", "remove an organ and the body loses a function", "Fatiha most-isolated", "rank 1/114", "-", "B"),
+        ("B", "Digestive loop", "tested whether 'ask' (sa'al) is answered by 'say' (qul)", "bodies ingest external material and process it", "'ask' -> 'say' within 2 verses", "25% vs 4%", "-", "B"),
+        ("B", "Polarity", "detected the first vs last verse of each sura", "organs have a head-tail (anterior-posterior) axis", "marked head, faint tail", "0.75 / 0.61", "AUC", "B"),
+        ("B", "Error-correction", "tested if a verse-ending is recoverable from the rhyme", "bodies carry redundancy for self-repair", "endings rhyme-recoverable", "73% vs 50%", "-", "B"),
+        ("B", "Signal", "measured root-overlap between adjacent verses", "a nervous system propagates signals", "content carries verse->verse", "0.087 vs 0.009", "~10x", "B"),
+        ("OUT", "Location", "predicted sura position from its profile, controlling for length", "organs sit in fixed anatomical positions", "just the length ordering", "resid R2=0.03", "OUT", "OUT"),
+        ("OUT", "Folding-decay", "correlated sura association with sequence distance, minus length", "a 1-D genome folds into a 3-D contact map (Hi-C)", "a length artifact", "r=-0.04", "OUT", "OUT"),
+        ("OUT", "Development", "clustered suras into two size/style classes", "bodies develop through ontogenetic stages", "the length gradient", "-", "OUT", "OUT"),
+        ("OUT", "Skeleton", "tested if the muqatta'at suras cohere, split-half", "a body has a rigid structural frame", "fails split-half", "t=10.3 / 1.7", "OUT", "OUT"),
+        ("OUT", "Circulation", "checked if a core root perfuses every region evenly", "blood circulates to every tissue", "message clumps, no perfusion", "gap-CV z=+63", "OUT", "OUT"),
     ]
-    df = pd.DataFrame(ROWS, columns=["ID", "Correspondence", "Body property", "What we found (Qur'an)", "Key value", "Effect", "Null", "Grade"])
-    st.dataframe(df, use_container_width=True, hide_index=True, height=440)
+    df = pd.DataFrame(ROWS, columns=["ID", "Correspondence", "What we did", "Why we did it (body)", "What we found (Qur'an)", "Key value", "Effect", "Grade"])
+    cc = {
+        "What we did": st.column_config.TextColumn(width="large"),
+        "Why we did it (body)": st.column_config.TextColumn(width="large"),
+        "What we found (Qur'an)": st.column_config.TextColumn(width="medium"),
+    }
+    try:
+        st.dataframe(df, use_container_width=True, hide_index=True, height=520, column_config=cc)
+    except Exception:
+        st.dataframe(df, use_container_width=True, hide_index=True, height=520)
 except Exception as e:
     st.info("Table unavailable: %s" % e)
 
-# ---------------- charts ----------------
-st.markdown('<div class="cl-sec">The evidence — interactive charts</div>', unsafe_allow_html=True)
+# ---------------- charts (rendered directly, no tabs; each isolated + native fallback) ----------------
+st.markdown('<div class="cl-sec">The evidence — results &amp; charts</div>', unsafe_allow_html=True)
 try:
     import plotly.graph_objects as go
-    GRID = "#E7ECF3"
+    _PLOTLY = True
+except Exception:
+    _PLOTLY = False
+GRID = "#E7ECF3"
 
-    def style(fig, h=240, xt="", yt=""):
-        fig.update_layout(height=h, margin=dict(l=12, r=12, t=14, b=12), plot_bgcolor="#fff",
-                          paper_bgcolor="#fff", xaxis_title=xt, yaxis_title=yt, font=dict(size=12.5),
-                          showlegend=False)
-        fig.update_xaxes(gridcolor=GRID, zeroline=False)
-        fig.update_yaxes(gridcolor=GRID, zeroline=False)
-        return fig
+def _style(fig, h=230, xt="", yt=""):
+    fig.update_layout(height=h, margin=dict(l=10, r=10, t=8, b=8), plot_bgcolor="#fff",
+                      paper_bgcolor="#fff", xaxis_title=xt, yaxis_title=yt,
+                      font=dict(size=12), showlegend=False)
+    fig.update_xaxes(gridcolor=GRID, zeroline=False)
+    fig.update_yaxes(gridcolor=GRID, zeroline=False)
+    return fig
 
-    t1, t2, t3, t4 = st.tabs(["🫀 Rhythm (A5)", "🔗 Connectivity (A6)", "🧫 Membrane (A1)", "🔁 Propagation (A3)"])
-    with t1:
-        st.caption("Words per verse across the whole Qur'an — short and long verses come in waves (DFA Hurst 0.95 vs 0.5 for random). A5.")
-        if VZ.get("wave"):
+def _chart(caption, plotly_fn, fallback=None):
+    st.caption(caption)
+    try:
+        if _PLOTLY:
+            plotly_fn()
+            return
+    except Exception:
+        pass
+    if fallback is not None:
+        try:
+            fallback()
+        except Exception as e:
+            st.caption("chart unavailable (%s)" % e)
+
+ca, cb = st.columns(2)
+with ca:
+    if VZ.get("wave"):
+        def _w():
             f = go.Figure(go.Scatter(y=VZ["wave"], mode="lines", line=dict(color="#1D9E75", width=1),
                                      hovertemplate="verse %{x}<br>%{y} words<extra></extra>"))
-            st.plotly_chart(style(f, 250, "verse (sura 1 → 114)", "words / verse"), use_container_width=True, config={"displayModeBar": False})
-    with t2:
-        st.caption("114×114 sura-to-sura wiring — colour = shared roots. Hover any cell for the two sura numbers and the strength. A6.")
-        if VZ.get("heatmap"):
-            f = go.Figure(go.Heatmap(z=VZ["heatmap"], x=VZ.get("suras"), y=VZ.get("suras"), colorscale="Tealgrn",
-                                     hovertemplate="Sura %{x} ↔ Sura %{y}<br>wiring %{z}<extra></extra>", colorbar=dict(title="shared")))
-            f.update_yaxes(autorange="reversed")
-            st.plotly_chart(style(f, 560, "sura", "sura"), use_container_width=True, config={"displayModeBar": False})
-    with t3:
-        st.caption("Adjacent-verse root overlap for the first ~220 verses — high inside a sura, dips at each boundary (red dotted lines). A1.")
-        mb = VZ.get("membrane", {})
-        if mb.get("overlap"):
+            st.plotly_chart(_style(f, 230, "verse (1 → 114)", "words / verse"), use_container_width=True, config={"displayModeBar": False})
+        _chart("A5 · Rhythm — words per verse across the whole book; short & long come in waves (DFA 0.95).",
+               _w, lambda: st.line_chart(VZ["wave"], height=200))
+    mb = VZ.get("membrane", {})
+    if mb.get("overlap"):
+        def _m():
             f = go.Figure(go.Scatter(y=mb["overlap"], mode="lines", line=dict(color="#1D3557", width=1.2),
                                      hovertemplate="pair %{x}<br>overlap %{y}<extra></extra>"))
             for b in mb.get("boundaries", []):
                 f.add_vline(x=b, line_color="#E08A8A", line_width=1, line_dash="dot")
-            st.plotly_chart(style(f, 250, "adjacent verse pair", "shared-root overlap"), use_container_width=True, config={"displayModeBar": False})
-    with t4:
-        st.caption("The most-repeated root pairs (formulae) — the text's self-replicating phrases. A3.")
-        ff = VZ.get("formulae", [])
-        if ff:
+            st.plotly_chart(_style(f, 230, "adjacent verse pair", "shared-root overlap"), use_container_width=True, config={"displayModeBar": False})
+        _chart("A1 · Membrane — adjacent-verse overlap; dips at every sūra seam (red lines).",
+               _m, lambda: st.line_chart(mb["overlap"], height=200))
+with cb:
+    if VZ.get("heatmap"):
+        def _h():
+            f = go.Figure(go.Heatmap(z=VZ["heatmap"], x=VZ.get("suras"), y=VZ.get("suras"), colorscale="Tealgrn",
+                                     hovertemplate="Sūra %{x} ↔ Sūra %{y}<br>wiring %{z}<extra></extra>", colorbar=dict(title="shared")))
+            f.update_yaxes(autorange="reversed")
+            st.plotly_chart(_style(f, 300, "sūra", "sūra"), use_container_width=True, config={"displayModeBar": False})
+        _chart("A6 · Connectivity — 114×114 sūra wiring; hover a cell for the two sūras & strength.", _h)
+    ff = VZ.get("formulae", [])
+    if ff:
+        def _f():
             f = go.Figure(go.Bar(x=[x["n"] for x in ff][::-1], y=[x["al"] + " · " + x["bl"] for x in ff][::-1],
                                  orientation="h", marker_color="#1D9E75", hovertemplate="%{y}: x%{x}<extra></extra>"))
-            st.plotly_chart(style(f, 320, "times repeated", ""), use_container_width=True, config={"displayModeBar": False})
-except Exception as e:
-    st.info("Charts unavailable: %s" % e)
+            st.plotly_chart(_style(f, 300, "times repeated", ""), use_container_width=True, config={"displayModeBar": False})
+        _chart("A3 · Propagation — most-repeated root-formulae (self-replicating phrases).",
+               _f, lambda: st.bar_chart({x["al"] + "·" + x["bl"]: x["n"] for x in ff}))
 
 # ---------------- concept cards ----------------
 def cards(title, items, cls=""):
     st.markdown('<div class="cl-sec">%s</div>' % title, unsafe_allow_html=True)
+    parts = ['<div class="cl-grid">']
     for ct, look, found, fl in items:
         kind = "cl-found" if fl != "rej" else "cl-rej"
         lbl = "Found:" if fl != "rej" else "Rejected:"
-        st.markdown(
+        parts.append(
             '<div class="cl-card %s"><div class="cl-ct">%s</div>'
             '<div class="cl-look"><b>Looked for:</b> %s</div>'
-            '<div class="%s"><b>%s</b> %s</div></div>' % (cls, ct, look, kind, lbl, found),
-            unsafe_allow_html=True,
-        )
+            '<div class="%s"><b>%s</b> %s</div></div>' % (cls, ct, look, kind, lbl, found))
+    parts.append('</div>')
+    st.markdown("".join(parts), unsafe_allow_html=True)
 
 cards("Bedrock (A) — concept &amp; result", [
     ("A1 · Membrane", "a real edge to each sura — a membrane that seals it from its neighbours.", "neighbouring verses share many roots inside a sura, and that sharing collapses at the boundary (0.28 vs 0.87, z=-5).", ""),

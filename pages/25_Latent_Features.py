@@ -198,20 +198,9 @@ st.markdown(
     "<b style='color:#16243B'>%d graded determinacy features (≥ 90)</b> — each found by measuring the "
     "text only against itself. Tap a card to explore.</div>" % len(included), unsafe_allow_html=True)
 
-# det-journey: where this ledger started -> where we are
-st.markdown(r'''<svg viewBox="0 0 1120 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#fff;border:1px solid #E7ECF3;border-radius:12px;margin:2px 0 14px" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
- <line x1="70" y1="80" x2="1040" y2="80" stroke="#E7ECF3" stroke-width="3"/>
- <g text-anchor="middle">
-  <g><circle cx="70" cy="80" r="8" fill="#9AA4B2"/><text x="70" y="42" font-size="11.5" font-weight="800" fill="#16243B">External sweep</text><text x="70" y="106" font-size="10" fill="#5B6675">is it distinctive?</text></g>
-  <g><circle cx="232" cy="80" r="8" fill="#E9A23B"/><text x="232" y="42" font-size="11.5" font-weight="800" fill="#16243B">Jun 7 · One Law</text><text x="232" y="106" font-size="10" fill="#5B6675">internal only</text></g>
-  <g><circle cx="394" cy="80" r="8" fill="#1D9E75"/><text x="394" y="42" font-size="11.5" font-weight="800" fill="#16243B">Wave &amp; rhyme</text><text x="394" y="106" font-size="10" fill="#5B6675">L01-07</text></g>
-  <g><circle cx="556" cy="80" r="8" fill="#1D9E75"/><text x="556" y="42" font-size="11.5" font-weight="800" fill="#16243B">Self-ref · twins</text><text x="556" y="106" font-size="10" fill="#5B6675">L08·21</text></g>
-  <g><circle cx="718" cy="80" r="8" fill="#1D9E75"/><text x="718" y="42" font-size="11.5" font-weight="800" fill="#16243B">Sūra &amp; Āyah</text><text x="718" y="106" font-size="10" fill="#5B6675">defined to necessity</text></g>
-  <g><circle cx="880" cy="80" r="8" fill="#1D9E75"/><text x="880" y="42" font-size="11.5" font-weight="800" fill="#16243B">Arrangement</text><text x="880" y="106" font-size="10" fill="#5B6675">determined L14-26</text></g>
-  <g><text x="1040" y="68" font-size="20" fill="#1D3557">★</text><text x="1040" y="42" font-size="11.5" font-weight="800" fill="#1D3557">NOW</text><text x="1040" y="106" font-size="10" fill="#1D3557">the wall: meaning</text></g>
- </g>
-</svg>
-''', unsafe_allow_html=True)
+# det-concept: conceptual foundation
+st.markdown(r'''<div style="background:#F5F8FC;border-left:4px solid #1D3557;border-radius:8px;padding:11px 15px;font-size:14px;line-height:1.55;color:#16243B;margin:6px 0 12px;max-width:980px"><b>The idea &amp; what determinacy means.</b> The Qurʾān is read as a <b>determined system</b> — nothing arbitrary, every part load-bearing (احسن تقویم). Each feature below is a property of the text measured <b>only against its own shuffle</b> — the One Law: no external corpus, on the consonantal <b>rasm</b> (the preserved skeleton); diacritics are a human layer, corroborative only. A feature enters the ledger only at grade <b>≥ 90</b>, with <b>≥ 3 converging modalities</b> (symbol · wave · network) and a named natural-systems analog (1/f, long-range correlation, scale-free, modular). Together they answer one question — <i>what do we now know about the Qurʾān’s intrinsic structure that we did not before</i>: from the verse-length <b>rhythm</b> and the <b>rhyme</b>, to objectively-detectable <b>sūra boundaries</b>, to an <b>order</b> that carries ≈ 9,900 bits of real information — defining the units to <b>necessity</b> and mapping exactly where <b>meaning</b> takes over (the rasm’s honest limit).</div>''', unsafe_allow_html=True)
+
 
 
 # (meta stats, grade chart, coverage and freshness moved to the "Method & overview" tab —
