@@ -286,36 +286,46 @@ def kpis(items):
 
 
 def vbars(rows, ymax=None, ymin=None, fmt="{:.2f}", color=TEAL):
-    """rows = [(label, value, color_or_None, tip)] -> vertical bar chart with grid + hover tooltips."""
+    """Clean editorial HORIZONTAL comparison bars. rows = [(label, value, color_or_None, tip)]."""
     vals = [r[1] for r in rows]
-    hi = ymax if ymax is not None else (max(vals + [0]) * 1.18 or 1)
+    hi = ymax if ymax is not None else max(vals + [0]) * 1.04
     lo = ymin if ymin is not None else min(vals + [0])
     if lo > 0:
         lo = 0
     n = len(rows)
-    # fixed wide-and-short viewBox so full-width rendering stays ~1:1 (compact height, readable fonts)
-    W, H, L, Rr, T, B = 960, 196, 54, 16, 24, 46
-    pw, ph = W - L - Rr, H - T - B
-    Y = (lambda v: T + ph * (1 - (v - lo) / ((hi - lo) or 1)))
-    bw = min(74, pw / n * 0.5)
+    W = 960
+    rowh, barh, padT, padB = 40, 22, 28, 10
+    labelW, valW = 176, 54
+    tx, tw = labelW, W - labelW - valW
+    span = (hi - lo) or 1
+    H = padT + n * rowh + padB
+    X = (lambda v: tx + tw * (v - lo) / span)
+    x0 = X(0)
     p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
     for t in range(5):
-        gv = lo + (hi - lo) * t / 4
-        gy = Y(gv)
-        p.append(f"<line x1='{L}' y1='{gy:.1f}' x2='{W-Rr}' y2='{gy:.1f}' stroke='#E1E9F1' stroke-width='1'/>"
-                 f"<text x='{L-8}' y='{gy+4:.1f}' text-anchor='end' font-size='12.5' fill='{MUTE}'>{gv:.2g}</text>")
-    y0 = Y(0)
-    p.append(f"<line x1='{L}' y1='{y0:.1f}' x2='{W-Rr}' y2='{y0:.1f}' stroke='#9FB4C8' stroke-width='1.4'/>")
+        gv = lo + span * t / 4
+        gx = X(gv)
+        p.append(f"<line x1='{gx:.0f}' y1='{padT-5}' x2='{gx:.0f}' y2='{H-padB}' stroke='#ECF1F6' stroke-width='1'/>"
+                 f"<text x='{gx:.0f}' y='{padT-11}' text-anchor='middle' font-size='12' fill='{MUTE}'>{gv:.2g}</text>")
+    if lo < 0:
+        p.append(f"<line x1='{x0:.0f}' y1='{padT-5}' x2='{x0:.0f}' y2='{H-padB}' stroke='#9FB4C8' stroke-width='1.3'/>")
     for i, (lab, v, c, tip) in enumerate(rows):
-        cx = L + pw * (i + 0.5) / n
-        by = Y(max(v, 0)); bh = max(1, abs(Y(v) - y0))
+        cy = padT + i * rowh + rowh / 2
         col = c or color
-        ty = (by - 7) if v >= 0 else (by + bh + 17)
-        p.append(f"<g><title>{_e(tip)}</title>"
-                 f"<rect x='{cx-bw/2:.1f}' y='{by:.1f}' width='{bw:.1f}' height='{bh:.1f}' rx='4' fill='{col}'/>"
-                 f"<text x='{cx:.1f}' y='{ty:.1f}' text-anchor='middle' font-size='15' font-weight='800' "
-                 f"fill='{INK}'>{_e(fmt.format(v))}</text></g>"
-                 f"<text x='{cx:.1f}' y='{H-B+19:.1f}' text-anchor='middle' font-size='13.5' "
-                 f"fill='#34506A'>{_e(lab)}</text>")
+        bx = min(x0, X(v)); bw = max(2, abs(X(v) - x0))
+        vstr = fmt.format(v)
+        p.append(f"<text x='{labelW-13}' y='{cy+5:.0f}' text-anchor='end' font-size='14' font-weight='600' "
+                 f"fill='{INK}'>{_e(lab)}</text>"
+                 f"<rect x='{tx}' y='{cy-barh/2:.0f}' width='{tw}' height='{barh}' rx='3' fill='{PANEL}'/>"
+                 f"<g><title>{_e(tip)}</title><rect x='{bx:.0f}' y='{cy-barh/2:.0f}' width='{bw:.0f}' height='{barh}' "
+                 f"rx='3' fill='{col}'/></g>")
+        if bw > 50 and v >= 0:
+            p.append(f"<text x='{X(v)-10:.0f}' y='{cy+5:.0f}' text-anchor='end' font-size='13.5' font-weight='800' "
+                     f"fill='#fff'>{_e(vstr)}</text>")
+        else:
+            vx = X(v) + (9 if v >= 0 else -9)
+            anc = "start" if v >= 0 else "end"
+            p.append(f"<text x='{vx:.0f}' y='{cy+5:.0f}' text-anchor='{anc}' font-size='13.5' font-weight='800' "
+                     f"fill='{INK}'>{_e(vstr)}</text>")
     p.append("</svg>")
     st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
