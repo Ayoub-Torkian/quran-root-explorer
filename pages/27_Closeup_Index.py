@@ -36,8 +36,8 @@ PILLARS = [
          "Frozen pairs (سماء→أرض, دنيا→آخرة) — real, but the universal binomial effect."),
     ]),
     ("📜 SŪRA", "the chapter as a unit", [
-        (None, "The Sūra, defined", "CANDIDATE", "—",
-         "Next program — onset register, internal cohesion, closure. Same frame."),
+        ("pages/30_Closeup_Sura.py", "The Sūra, characterised", "CANDIDATE", 62,
+         "A cohesive, register-bracketed block with soft seams — real, but softer than the āyah."),
     ]),
     ("🗺️ ARRANGEMENT", "why this order", [
         ("pages/29_Closeup_InterSura.py", "Inter-Sūra coherence", "REFUTED-ARTIFACT", 30,

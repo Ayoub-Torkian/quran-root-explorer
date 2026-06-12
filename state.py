@@ -38,6 +38,7 @@ NAV_SECTIONS = [
                 ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
         ("🔎 Close-up", [("pages/27_Closeup_Index.py", "Map · index", "🗺️"),
                          ("pages/28_Closeup_Ayah.py", "The Āyah, defined", "📐"),
+                         ("pages/30_Closeup_Sura.py", "The Sūra, characterised", "📜"),
                          ("pages/29_Closeup_InterSura.py", "Inter-Sūra coherence", "⚠️")]),
     ]),
     ("📖 READER", [

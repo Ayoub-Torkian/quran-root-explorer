@@ -293,28 +293,29 @@ def vbars(rows, ymax=None, ymin=None, fmt="{:.2f}", color=TEAL):
     if lo > 0:
         lo = 0
     n = len(rows)
-    W, H, L, Rr, T, B = max(360, 70 * n + 64), 214, 48, 14, 22, 50
+    # fixed wide-and-short viewBox so full-width rendering stays ~1:1 (compact height, readable fonts)
+    W, H, L, Rr, T, B = 960, 196, 54, 16, 24, 46
     pw, ph = W - L - Rr, H - T - B
     Y = (lambda v: T + ph * (1 - (v - lo) / ((hi - lo) or 1)))
-    bw = pw / n * 0.6
+    bw = min(74, pw / n * 0.5)
     p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
     for t in range(5):
         gv = lo + (hi - lo) * t / 4
         gy = Y(gv)
         p.append(f"<line x1='{L}' y1='{gy:.1f}' x2='{W-Rr}' y2='{gy:.1f}' stroke='#E1E9F1' stroke-width='1'/>"
-                 f"<text x='{L-7}' y='{gy+4:.1f}' text-anchor='end' font-size='11' fill='{MUTE}'>{gv:.2g}</text>")
+                 f"<text x='{L-8}' y='{gy+4:.1f}' text-anchor='end' font-size='12.5' fill='{MUTE}'>{gv:.2g}</text>")
     y0 = Y(0)
     p.append(f"<line x1='{L}' y1='{y0:.1f}' x2='{W-Rr}' y2='{y0:.1f}' stroke='#9FB4C8' stroke-width='1.4'/>")
     for i, (lab, v, c, tip) in enumerate(rows):
         cx = L + pw * (i + 0.5) / n
         by = Y(max(v, 0)); bh = max(1, abs(Y(v) - y0))
         col = c or color
-        ty = (by - 6) if v >= 0 else (by + bh + 15)
+        ty = (by - 7) if v >= 0 else (by + bh + 17)
         p.append(f"<g><title>{_e(tip)}</title>"
                  f"<rect x='{cx-bw/2:.1f}' y='{by:.1f}' width='{bw:.1f}' height='{bh:.1f}' rx='4' fill='{col}'/>"
-                 f"<text x='{cx:.1f}' y='{ty:.1f}' text-anchor='middle' font-size='12.5' font-weight='800' "
+                 f"<text x='{cx:.1f}' y='{ty:.1f}' text-anchor='middle' font-size='15' font-weight='800' "
                  f"fill='{INK}'>{_e(fmt.format(v))}</text></g>"
-                 f"<text x='{cx:.1f}' y='{H-B+18:.1f}' text-anchor='middle' font-size='11.5' "
+                 f"<text x='{cx:.1f}' y='{H-B+19:.1f}' text-anchor='middle' font-size='13.5' "
                  f"fill='#34506A'>{_e(lab)}</text>")
     p.append("</svg>")
     st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
