@@ -252,16 +252,36 @@ def verdict(status, text, confidence, flip, revise):
         f"<b style='color:{INK}'>Revise-up</b> {_e(revise)}</div></div>", unsafe_allow_html=True)
 
 
+def para(text):
+    """Discussion prose paragraph."""
+    st.markdown(f"<div style='font-size:14.5px;line-height:1.62;color:#283A4D;margin:3px 2px 9px'>{text}</div>",
+                unsafe_allow_html=True)
+
+
+def callout(label, text, accent=SLATE):
+    """Labelled discussion block (Hypothesis / Method / Interpretation / Caveats)."""
+    st.markdown(
+        f"<div class='cu-card' style='border-left:5px solid {accent};background:{accent}0c'>"
+        f"<div class='cu-eye' style='color:{accent}'>{_e(label)}</div>"
+        f"<div style='font-size:14.5px;line-height:1.6;color:#283A4D'>{text}</div></div>", unsafe_allow_html=True)
+
+
 def kpis(items):
     """items = [(value, label, tip, color_or_None)] -> compact KPI boxes with hover tooltips."""
     cells = ""
     for v, lab, tip, c in items:
-        cells += (f"<div title='{_e(tip)}' style='flex:1 1 96px;min-width:96px;background:#fff;"
-                  f"border:1px solid #E7EEF5;border-radius:9px;padding:6px 10px;cursor:help'>"
+        cells += (f"<div title='{_e(tip)}' style='position:relative;flex:1 1 96px;min-width:96px;background:#fff;"
+                  f"border:1px solid #E7EEF5;border-radius:9px;padding:6px 10px 7px;cursor:help'>"
+                  f"<div style='position:absolute;top:4px;right:6px;width:14px;height:14px;border-radius:50%;"
+                  f"background:#EEF3F8;color:#8FA6BC;font-size:10px;font-weight:800;text-align:center;"
+                  f"line-height:14px'>i</div>"
                   f"<div style='font-size:19px;font-weight:800;color:{c or INK};line-height:1.05;"
                   f"font-variant-numeric:tabular-nums'>{_e(v)}</div>"
-                  f"<div style='font-size:11px;color:{MUTE};line-height:1.18;margin-top:1px'>{_e(lab)}</div></div>")
-    st.markdown(f"<div style='display:flex;flex-wrap:wrap;gap:6px;margin:5px 0'>{cells}</div>",
+                  f"<div style='font-size:11px;color:{MUTE};line-height:1.18;margin-top:1px;display:inline;"
+                  f"border-bottom:1px dotted #B9C8D6'>{_e(lab)}</div></div>")
+    st.markdown(f"<div style='font-size:10.5px;color:#8FA6BC;margin:2px 2px 0;font-weight:700;"
+                f"letter-spacing:.3px'>ⓘ hover any box for its definition</div>"
+                f"<div style='display:flex;flex-wrap:wrap;gap:6px;margin:3px 0 5px'>{cells}</div>",
                 unsafe_allow_html=True)
 
 
