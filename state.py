@@ -33,8 +33,13 @@ NORMALIZE_VERSION = "v4-full-unicode-fold-2026-05"
 # now sits under the question it answers (UI_REORG_NOTES: consolidate by QUESTION).
 NAV_SECTIONS = [
     (None, [(None, [("app.py", "Home", "🏠")])]),
-    ("📜 DISCOVERIES", [(None, [("pages/25_Latent_Features.py", "Determinacy", "🧬"),
-                                ("pages/26_Correspondence.py", "Correspondence", "🫀")])]),
+    ("📜 DISCOVERIES", [
+        (None, [("pages/25_Latent_Features.py", "Determinacy", "🧬"),
+                ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
+        ("🔎 Close-up", [("pages/27_Closeup_Index.py", "Map · index", "🗺️"),
+                         ("pages/28_Closeup_Ayah.py", "The Āyah, defined", "📐"),
+                         ("pages/29_Closeup_InterSura.py", "Inter-Sūra coherence", "⚠️")]),
+    ]),
     ("📖 READER", [
         (None, [
             ("pages/4_Ayah_Browser.py", "Ayah Browser", "📖"),
