@@ -1,4 +1,4 @@
-"""Close-up · Map — index of deep-dive investigations, placed on the north-star territory."""
+"""Close-up · Map — index of deep-dive investigations on the north-star territory (horizontal pillars)."""
 import os
 import streamlit as st
 
@@ -22,48 +22,50 @@ if S:
 C.inject()
 
 st.markdown(
-    "<div class='cu-wrap'><div style='font-size:27px;font-weight:800;color:#1D3557'>🔎 Close-up</div>"
-    "<div class='cu-lede'><b>What this is.</b> A close-up zooms into one structural question about the "
-    "Qur'ān's text, runs it through a battery of instruments, and reports an <b>honest verdict</b> — including "
-    "the times a promising signal collapsed under a tougher control. Each card below carries a status badge so "
-    "nothing reads as more than it is. Every result is measured against the text's own shuffle, on the bare "
-    "consonantal skeleton (rasm).</div></div>", unsafe_allow_html=True)
+    "<div style='font-size:24px;font-weight:800;color:#10243A'>🔎 Close-up</div>"
+    "<div style='font-size:13px;color:#5B7188;line-height:1.5;margin:2px 0 4px'>One structural question per card — "
+    "run through a battery of instruments, badged with an <b>honest verdict</b> (including signals that collapsed). "
+    "Everything measured against the text's own shuffle, on the bare consonantal skeleton (rasm).</div>",
+    unsafe_allow_html=True)
 
-# ---- north-star spine ----------------------------------------------------
 PILLARS = [
-    ("📐 ĀYAH — the verse as a unit", [
+    ("📐 ĀYAH", "the verse as a unit", [
         ("pages/28_Closeup_Ayah.py", "The Āyah, defined", "DEFINED", 78,
-         "Recoverable from the rasm as a connective-opened, grammatically-complete, fāṣila-closed clause-span."),
-        (None, "Inter-Āyah order (frozen binomials)", "REDUCES-TO-KNOWN", 65,
-         "Fixed conceptual pairs (سماء→أرض, دنيا→آخرة) — real, but the universal frozen-binomial effect."),
+         "Rebuilt from the rasm: connective-opened, grammatically-complete, fāṣila-closed."),
+        (None, "Inter-Āyah order", "REDUCES-TO-KNOWN", 65,
+         "Frozen pairs (سماء→أرض, دنيا→آخرة) — real, but the universal binomial effect."),
     ]),
-    ("📜 SŪRA — the chapter as a unit", [
+    ("📜 SŪRA", "the chapter as a unit", [
         (None, "The Sūra, defined", "CANDIDATE", "—",
-         "Next program — onset register, internal cohesion, closure. Drops into this same frame."),
+         "Next program — onset register, internal cohesion, closure. Same frame."),
     ]),
-    ("🗺️ ARRANGEMENT — why this order", [
-        ("pages/29_Closeup_InterSura.py", "Inter-Sūra coherence (munāsabāt)", "REFUTED-ARTIFACT", 30,
-         "Looked like the muṣḥaf groups similar sūras (z up to 9.8) — then collapsed under nonlinear size."),
+    ("🗺️ ARRANGEMENT", "why this order", [
+        ("pages/29_Closeup_InterSura.py", "Inter-Sūra coherence", "REFUTED-ARTIFACT", 30,
+         "Looked designed (z up to 9.8) — collapsed under nonlinear size control."),
     ]),
 ]
-for title, items in PILLARS:
-    st.markdown(f"<div class='cu-wrap'><div class='cu-sec'>{title}</div></div>", unsafe_allow_html=True)
-    for path, name, status, grade, blurb in items:
-        col = C.STATUS.get(status, (C.SLATE, ""))[0]
-        st.markdown(
-            f"<div class='cu-wrap cu-card' style='border-left:5px solid {col}'>"
-            f"<span class='cu-badge' style='background:{col};font-size:11px'>{status}</span>"
-            f"<span class='cu-grade'>grade {grade}</span>"
-            f"<div style='font-size:16px;font-weight:800;color:#1D3557;margin-top:4px'>{name}</div>"
-            f"<div style='font-size:13.5px;color:#475569;margin-top:2px'>{blurb}</div></div>",
-            unsafe_allow_html=True)
-        if path:
-            st.page_link(path, label=f"Open · {name}", icon="→")
 
-# ---- journey line --------------------------------------------------------
-st.markdown("<div class='cu-wrap'><div class='cu-sec'>The journey so far</div>"
-            "<div style='font-size:14px;color:#475569;line-height:1.7'>"
-            "ledger cards (scoreboard) → graded ledger (two-tier, provisional) → <b>close-ups (the method &amp; the "
-            "story)</b>. The Āyah is <b>defined to necessity</b>; the inter-Sūra arrangement was pushed hard and "
-            "<b>honestly refuted</b> as a size artifact; the Sūra is next, in the same frame. Close-ups are living "
-            "— a refuted finding can revive if a better instrument arrives.</div></div>", unsafe_allow_html=True)
+cols = st.columns(3, gap="small")
+for (head, sub, items), cm in zip(PILLARS, cols):
+    with cm:
+        st.markdown(f"<div class='cu-sec'><span class='b'></span><b>{head}</b></div>"
+                    f"<div style='font-size:13px;color:#566B82;margin:-2px 0 4px 16px'>{sub}</div>",
+                    unsafe_allow_html=True)
+        for path, name, status, grade, blurb in items:
+            col = C.STATUS.get(status, (C.SLATE, ""))[0]
+            st.markdown(
+                f"<div class='cu-card' style='border-left:5px solid {col};min-height:128px'>"
+                f"<span class='cu-badge' style='background:{col};font-size:11px'>{status}</span>"
+                f"<span style='font-weight:800;color:#10243A;font-size:13px;margin-left:7px'>grade {grade}</span>"
+                f"<div style='font-size:15.5px;font-weight:800;color:#10243A;margin-top:6px'>{name}</div>"
+                f"<div style='font-size:13.5px;color:#41566C;margin-top:4px;line-height:1.5'>{blurb}</div></div>",
+                unsafe_allow_html=True)
+            if path:
+                st.page_link(path, label=f"Open {name}")
+
+st.markdown("<div class='cu-sec'><span class='b'></span><b>The journey</b></div>"
+            "<div style='font-size:12.5px;color:#475569;line-height:1.6'>"
+            "ledger cards (scoreboard) → graded ledger (provisional) → <b>close-ups (method &amp; story)</b>. "
+            "The Āyah is <b>defined to necessity</b>; the inter-Sūra arrangement was pushed hard and <b>honestly "
+            "refuted</b> as a size artifact; the Sūra is next. Close-ups are living — a refuted finding can revive "
+            "if a better instrument arrives.</div>", unsafe_allow_html=True)
