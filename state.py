@@ -32,9 +32,9 @@ NORMALIZE_VERSION = "v4-full-unicode-fold-2026-05"
 # Old build-history groups (EXPLORE / DEEP DIVES / TWO BOOKS) retired; every page
 # now sits under the question it answers (UI_REORG_NOTES: consolidate by QUESTION).
 NAV_SECTIONS = [
-    ("🧭 MAIN", [(None, [("app.py", "Home", "🏠")])]),
-    ("📜 LEDGERS", [(None, [("pages/25_Latent_Features.py", "Determinacy", "🧬"),
-                            ("pages/26_Correspondence.py", "Correspondence", "🫀")])]),
+    (None, [(None, [("app.py", "Home", "🏠")])]),
+    ("📜 DISCOVERIES", [(None, [("pages/25_Latent_Features.py", "Determinacy", "🧬"),
+                                ("pages/26_Correspondence.py", "Correspondence", "🫀")])]),
     ("📖 READER", [
         (None, [
             ("pages/4_Ayah_Browser.py", "Ayah Browser", "📖"),
