@@ -250,3 +250,51 @@ def verdict(status, text, confidence, flip, revise):
         f"<b style='color:{INK}'>Confidence</b> {_e(confidence)} &nbsp;·&nbsp; "
         f"<b style='color:{INK}'>Flips if</b> {_e(flip)} &nbsp;·&nbsp; "
         f"<b style='color:{INK}'>Revise-up</b> {_e(revise)}</div></div>", unsafe_allow_html=True)
+
+
+def kpis(items):
+    """items = [(value, label, tip, color_or_None)] -> compact KPI boxes with hover tooltips."""
+    cells = ""
+    for v, lab, tip, c in items:
+        cells += (f"<div title='{_e(tip)}' style='flex:1 1 96px;min-width:96px;background:#fff;"
+                  f"border:1px solid #E7EEF5;border-radius:9px;padding:6px 10px;cursor:help'>"
+                  f"<div style='font-size:19px;font-weight:800;color:{c or INK};line-height:1.05;"
+                  f"font-variant-numeric:tabular-nums'>{_e(v)}</div>"
+                  f"<div style='font-size:11px;color:{MUTE};line-height:1.18;margin-top:1px'>{_e(lab)}</div></div>")
+    st.markdown(f"<div style='display:flex;flex-wrap:wrap;gap:6px;margin:5px 0'>{cells}</div>",
+                unsafe_allow_html=True)
+
+
+def vbars(rows, ymax=None, ymin=None, fmt="{:.2f}", color=TEAL):
+    """rows = [(label, value, color_or_None, tip)] -> vertical bar chart with grid + hover tooltips."""
+    vals = [r[1] for r in rows]
+    hi = ymax if ymax is not None else (max(vals + [0]) * 1.18 or 1)
+    lo = ymin if ymin is not None else min(vals + [0])
+    if lo > 0:
+        lo = 0
+    n = len(rows)
+    W, H, L, Rr, T, B = max(360, 70 * n + 64), 214, 48, 14, 22, 50
+    pw, ph = W - L - Rr, H - T - B
+    Y = (lambda v: T + ph * (1 - (v - lo) / ((hi - lo) or 1)))
+    bw = pw / n * 0.6
+    p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
+    for t in range(5):
+        gv = lo + (hi - lo) * t / 4
+        gy = Y(gv)
+        p.append(f"<line x1='{L}' y1='{gy:.1f}' x2='{W-Rr}' y2='{gy:.1f}' stroke='#E1E9F1' stroke-width='1'/>"
+                 f"<text x='{L-7}' y='{gy+4:.1f}' text-anchor='end' font-size='11' fill='{MUTE}'>{gv:.2g}</text>")
+    y0 = Y(0)
+    p.append(f"<line x1='{L}' y1='{y0:.1f}' x2='{W-Rr}' y2='{y0:.1f}' stroke='#9FB4C8' stroke-width='1.4'/>")
+    for i, (lab, v, c, tip) in enumerate(rows):
+        cx = L + pw * (i + 0.5) / n
+        by = Y(max(v, 0)); bh = max(1, abs(Y(v) - y0))
+        col = c or color
+        ty = (by - 6) if v >= 0 else (by + bh + 15)
+        p.append(f"<g><title>{_e(tip)}</title>"
+                 f"<rect x='{cx-bw/2:.1f}' y='{by:.1f}' width='{bw:.1f}' height='{bh:.1f}' rx='4' fill='{col}'/>"
+                 f"<text x='{cx:.1f}' y='{ty:.1f}' text-anchor='middle' font-size='12.5' font-weight='800' "
+                 f"fill='{INK}'>{_e(fmt.format(v))}</text></g>"
+                 f"<text x='{cx:.1f}' y='{H-B+18:.1f}' text-anchor='middle' font-size='11.5' "
+                 f"fill='#34506A'>{_e(lab)}</text>")
+    p.append("</svg>")
+    st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)

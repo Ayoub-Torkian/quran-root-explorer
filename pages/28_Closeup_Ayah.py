@@ -1,4 +1,4 @@
-"""Close-up · The Āyah, defined — DEFINED. Story-first, full-width, readable."""
+"""Close-up · The Āyah, defined — DEFINED. Dense, real-data charts."""
 import os
 import streamlit as st
 
@@ -31,24 +31,39 @@ C.story(
     "The verse is a real structural unit encoded in the text, not just a reciter's convention — the first half "
     "of the north star, achieved.")
 
-C.headline([("0.85", "ayah-recovery AUC", C.TEAL), ("81.8", "onset signal z", C.INK),
-            ("0.73", "closure F1 (words)", C.INK), ("78", "grade", C.GOLD)])
+C.kpis([
+    ("0.85", "recovery AUC", "Held-out-sūra boundary recovery from the bare root sequence", C.TEAL),
+    ("0.97", "AUC · words", "With morphology on the rasm-word substrate", C.TEAL),
+    ("+81.8", "onset z", "Connective opening vs within-āyah shuffle null", C.INK),
+    ("−48.6", "completeness z", "Dependency-opener depletion at the verse-end", C.INK),
+    ("0.73", "closure F1", "Best boundary F1 (word substrate)", C.INK),
+    ("80%", "ends covered", "16 two-letter rasm endings cover 80% of all 6,236 verse-ends", C.INK),
+    ("0.55", "sufficiency F1", "Root-only — substantially recoverable, not yet unique", C.GOLD),
+    ("78", "grade", "Provisional · DEFINED tier", C.GOLD),
+])
 
 C.foundation(
     "A unit is real only if the text marks where it begins and ends. We hide the breaks, reduce the text to the "
     "bare consonants (rasm), and ask whether the boundaries rebuild from internal evidence alone — opening words, "
     "grammatical completeness, and the rhyme-cadence (fāṣila). If they do, the āyah is a <b>self-marking unit</b>.")
 
-C.section("The four necessary conditions")
-C.table(["Condition — measured against the text's own null", "Measured"], [
-    ["① Connective-opened — ~47% of āyāt open with و / ف / ثم (3.7× mid-verse)", "z +81.8"],
-    ["② Grammatically complete — never end on a dangling preposition/connective", "z −48.6"],
-    ["③ Fāṣila-closed — rhyme + a recurring set of closing roots", "AUC 0.85–0.97"],
-    ["④ Characteristic length — ~8 roots per verse, a weak length prior", "AUC 0.60"],
-])
+C.section("Boundary recovery — what carries it")
+a, b = st.columns(2, gap="small")
+with a:
+    C.note("Recovery AUC by substrate — content, not the length cue")
+    C.vbars([("length", 0.60, C.SLATE, "Length cue alone: AUC 0.60"),
+             ("roots", 0.85, C.TEAL, "Bare content roots: AUC 0.85"),
+             ("words", 0.97, C.TEAL, "+ rasm morphology: AUC 0.97")], ymax=1.0)
+with b:
+    C.note("Ablation — cumulative AUC as each feature is added")
+    C.vbars([("length", 0.596, C.SLATE, "length prior only"),
+             ("+close", 0.802, C.TEAL, "+ closing-root lexicon"),
+             ("+onset", 0.816, C.TEAL, "+ opener lexicon"),
+             ("+order", 0.835, C.TEAL, "+ pair transitions"),
+             ("+len", 0.850, C.INK, "+ length feature")], ymax=1.0)
 
-C.section("③ The closure lexicon — what verses end on")
-C.note("Share of each root's occurrences that land at a verse-end (root substrate). These are the semantic fawāṣil — the cadence the ear already knows.")
+C.section("③ Closure — the fāṣila, and its two faces")
+C.note("Share of each root's occurrences that land at a verse-end (root substrate, n ≥ 30) — the semantic fawāṣil.")
 C.bars([
     (C.ar("عقل"), 0.88, "…أفلا تعقلون · reason"),
     (C.ar("عظم"), 0.84, "…العظيم · the Magnificent"),
@@ -58,15 +73,42 @@ C.bars([
     (C.ar("فلح"), 0.65, "…المفلحون · the successful"),
     (C.ar("خسر"), 0.65, "…الخاسرين · the losers"),
 ], fmt="{:.0%}", color=C.TEAL)
+c, d = st.columns(2, gap="small")
+with c:
+    C.note("Morphological vs lexical closure (boundary AUC) — same fāṣila")
+    C.vbars([("suffix", 0.859, C.TEAL, "rasm suffix only (L27 morphology)"),
+             ("root", 0.818, C.TEAL, "cadential root identity only"),
+             ("both", 0.862, C.INK, "combined — root adds only +0.003")], ymax=1.0)
+with d:
+    C.note("Closing rasm-endings · frequency vs mid-text")
+    C.table(["Ending", "verse-end ×"], [
+        [C.ar("ـيم"), "30×"], [C.ar("ـون"), "12×"], [C.ar("ـين"), "7×"],
+        ["16 forms", "80% of all ends"],
+    ])
 
-C.section("How recoverable is the boundary?")
-C.note("Recovery AUC across held-out sūras climbs as the substrate carries more of the closure signal — real structure, not the length cue.")
-C.scale("length cue", 0.60, "from roots", 0.85, "from words", 0.97)
+C.section("Bracketing — opens joined, never dangles")
+e, f = st.columns(2, gap="small")
+with e:
+    C.note("Connective (و/ف/ثم) rate at verse-START vs mid-verse")
+    C.vbars([("start", 0.474, C.TEAL, "47% of āyāt open with a connective"),
+             ("mid", 0.128, C.SLATE, "mid-verse baseline")], ymax=0.6, fmt="{:.0%}")
+with f:
+    C.note("Dangling dependency-opener at verse-END vs mid-verse")
+    C.vbars([("end", 0.001, C.CORAL, "āyāt never end on a word needing continuation"),
+             ("mid", 0.256, C.SLATE, "mid-verse baseline")], ymax=0.3, fmt="{:.0%}")
 
-C.section("The honest edge — necessary, not yet sufficient")
-C.note("Full reconstruction tops out at F1 0.55 (roots) / 0.73 (words): the āyah is substantially recoverable, not "
-       "uniquely determined. The cut falls at a grammatically-valid, fāṣila-marked point — but which valid point "
-       "becomes the end isn't fully fixed by the rasm alone. That gap is the open, instrument-limited frontier.")
+C.section("The four conditions, and the honest edge")
+g, h = st.columns([3, 2], gap="small")
+with g:
+    C.table(["Condition — vs the text's own null", "Measured"], [
+        ["① Connective-opened (و/ف/ثم start)", "z +81.8"],
+        ["② Grammatically complete (no dangling end)", "z −48.6"],
+        ["③ Fāṣila-closed (rhyme + closing roots)", "AUC 0.85–0.97"],
+        ["④ Characteristic length (~8 roots)", "AUC 0.60"],
+    ])
+with h:
+    C.note("Sufficiency — recoverable, not yet uniquely determined")
+    C.scale("roots", 0.55, "words", 0.73, "target", 0.85)
 
 C.verdict("DEFINED",
           "The four conditions co-occur at āyah boundaries far beyond the text's own null. The verse is defined "
