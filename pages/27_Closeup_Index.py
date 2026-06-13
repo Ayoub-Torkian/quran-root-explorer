@@ -63,6 +63,20 @@ for (head, sub, items), cm in zip(PILLARS, cols):
             if path:
                 st.page_link(path, label=f"Open {name}")
 
+st.markdown("<div class='cu-sec'><span class='b'></span><b>🔢 CLAIMS REVIEWED</b></div>"
+            "<div style='font-size:13px;color:#566B82;margin:-2px 0 4px 16px'>famous numerical claims, "
+            "held to the same gates</div>", unsafe_allow_html=True)
+_col = C.STATUS["REFUTED-ARTIFACT"][0]
+st.markdown(
+    f"<div class='cu-card' style='border-left:5px solid {_col}'>"
+    f"<span class='cu-badge' style='background:{_col};font-size:11px'>REFUTED-ARTIFACT</span>"
+    f"<span style='font-weight:800;color:#10243A;font-size:13px;margin-left:7px'>grade 22</span>"
+    f"<div style='font-size:15.5px;font-weight:800;color:#10243A;margin-top:6px'>Code 19 (Rashad Khalifa), reviewed</div>"
+    f"<div style='font-size:13.5px;color:#41566C;margin-top:4px;line-height:1.5'>Across 1,202 natural counts, 19 "
+    f"holds no statistical privilege (hit-rate 3.2% ≤ 5.3% chance, not above rival numbers). A multiple-comparisons "
+    f"artifact — fair, measured, methodological.</div></div>", unsafe_allow_html=True)
+st.page_link("pages/31_Closeup_Code19.py", label="Open Code 19, reviewed")
+
 st.markdown("<div class='cu-sec'><span class='b'></span><b>The journey</b></div>"
             "<div style='font-size:12.5px;color:#475569;line-height:1.6'>"
             "ledger cards (scoreboard) → graded ledger (provisional) → <b>close-ups (method &amp; story)</b>. "

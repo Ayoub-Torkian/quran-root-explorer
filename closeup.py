@@ -211,6 +211,41 @@ def bars(rows, fmt="{:.2f}", color=TEAL):
     st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
 
 
+def hist(values, labels, highlight=None, ref=None, reflabel="expected", color=SLATE, hcolor=CORAL):
+    """Compact distribution histogram (many thin vertical bars). highlight one bar; optional reference line."""
+    n = len(values)
+    mx = (max(list(values) + ([ref] if ref else [])) or 1) * 1.16
+    W, H, L, Rr, T, B = 960, 216, 50, 16, 18, 42
+    pw, ph = W - L - Rr, H - T - B
+    Y = (lambda v: T + ph * (1 - v / mx))
+    bw = pw / n * 0.72
+    p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
+    for t in range(4):
+        gv = mx * t / 3
+        gy = Y(gv)
+        p.append(f"<line x1='{L}' y1='{gy:.0f}' x2='{W-Rr}' y2='{gy:.0f}' stroke='#ECF1F6' stroke-width='1'/>"
+                 f"<text x='{L-8}' y='{gy+4:.0f}' text-anchor='end' font-size='11.5' fill='{MUTE}'>{gv:.0f}</text>")
+    if ref is not None:
+        ry = Y(ref)
+        p.append(f"<line x1='{L}' y1='{ry:.0f}' x2='{W-Rr}' y2='{ry:.0f}' stroke='{INK}' stroke-width='1.3' "
+                 f"stroke-dasharray='5 4'/>"
+                 f"<text x='{W-Rr}' y='{ry-5:.0f}' text-anchor='end' font-size='11.5' font-weight='700' "
+                 f"fill='{INK}'>{_e(reflabel)}</text>")
+    for i, (v, lab) in enumerate(zip(values, labels)):
+        cx = L + pw * (i + 0.5) / n
+        col = hcolor if i == highlight else color
+        by = Y(v); bh = (T + ph) - by
+        p.append(f"<g><title>{_e(lab)}: {_e(v)}</title>"
+                 f"<rect x='{cx-bw/2:.1f}' y='{by:.1f}' width='{bw:.1f}' height='{bh:.1f}' rx='2' fill='{col}'/></g>"
+                 f"<text x='{cx:.1f}' y='{H-B+16:.0f}' text-anchor='middle' font-size='11' "
+                 f"fill='{INK if i==highlight else MUTE}'>{_e(lab)}</text>")
+        if i == highlight:
+            p.append(f"<text x='{cx:.1f}' y='{by-6:.0f}' text-anchor='middle' font-size='12' font-weight='800' "
+                     f"fill='{hcolor}'>{_e(v)}</text>")
+    p.append("</svg>")
+    st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
+
+
 def scale(lo_label, lo, mid_label, mid, hi_label, hi):
     W, H, L, R = 1000, 92, 26, 26
     bw = W - L - R
