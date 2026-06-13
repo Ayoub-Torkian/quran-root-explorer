@@ -27,12 +27,15 @@ C.hero("Code 19 (Rashad Khalifa), reviewed",
        "Does a mathematical code based on 19 govern the Qur'ān — or is it selected from countless possible counts?",
        "REFUTED-ARTIFACT", 22, "rasm counts (Basmalas included)", "DIVINE-DEFAULT · RANDOM null")
 st.markdown(
-    "<div style='display:flex;justify-content:flex-end;margin:7px 0 2px'>"
-    "<div style='background:linear-gradient(135deg,#138A74,#10243A);color:#fff;border-radius:10px;"
-    "padding:9px 15px;font-weight:800;font-size:13.5px;box-shadow:0 3px 10px rgba(16,36,58,.25);"
-    "border:1px solid rgba(255,255,255,.25)'>"
-    "📄 خلاصهٔ کامل به فارسی و العربية در پایان صفحه ↓ &nbsp;·&nbsp; "
-    "Full plain-language abstract — Persian &amp; Arabic — at the end ↓</div></div>", unsafe_allow_html=True)
+    "<div style='display:flex;justify-content:flex-end;gap:9px;margin:7px 0 2px;flex-wrap:wrap'>"
+    "<a href='#cu-fa-abstract' style='text-decoration:none'>"
+    "<div style='background:linear-gradient(135deg,#138A74,#10243A);color:#fff;border-radius:9px;padding:7px 13px;"
+    "font-weight:800;font-size:13px;box-shadow:0 2px 8px rgba(16,36,58,.25);border:1px solid rgba(255,255,255,.3)'>"
+    "📄 Persian abstract · خلاصهٔ فارسی ↓</div></a>"
+    "<a href='#cu-ar-abstract' style='text-decoration:none'>"
+    "<div style='background:linear-gradient(135deg,#4E6E92,#10243A);color:#fff;border-radius:9px;padding:7px 13px;"
+    "font-weight:800;font-size:13px;box-shadow:0 2px 8px rgba(16,36,58,.25);border:1px solid rgba(255,255,255,.3)'>"
+    "📄 Arabic abstract · الملخّص العربي ↓</div></a></div>", unsafe_allow_html=True)
 C.story(
     "Anchored on Q 74:30 (<i>“over it is nineteen”</i>), the claim is a pervasive 19-code in letters, words and "
     "sūras. Every major claim is tested here on the text itself, Basmalas included. The result is honest and split: "
@@ -287,7 +290,7 @@ C.callout("In one line — for every reader",
 # ── PERSIAN ABSTRACT ──
 C.section("خلاصهٔ کامل — Persian abstract")
 st.markdown(
-    "<div dir='rtl' style='font-family:Vazirmatn,Tahoma,\"Segoe UI\",sans-serif;font-size:15.5px;line-height:2.0;"
+    "<div dir='rtl' id='cu-fa-abstract' style='font-family:Vazirmatn,Tahoma,\"Segoe UI\",sans-serif;font-size:15px;line-height:1.7;"
     "color:#243b53;text-align:right;background:#F6F9FC;border-right:5px solid #138A74;border-radius:11px;"
     "padding:16px 20px'>"
     "<b>ادعا.</b> رشاد خلیفه با تکیه بر آیهٔ «عَلَیْهَا تِسْعَةَ عَشَرَ» (مدّثر ۷۴:۳۰) مدّعی شد عددی به نام ۱۹ بر سراسر "
@@ -302,15 +305,22 @@ st.markdown(
     "دومین کمیاب‌ترین حالت است.<br><br>"
     "<b>نکتهٔ کلیدی.</b> رمز دقیقاً جایی «درست» درمی‌آید که املا قطعی است (ق و ص که گونهٔ نوشتاری ندارند) و دقیقاً جایی "
     "«شکست» می‌خورد که املا اختلافی است (الف، یاء). این، نشانهٔ یک «مصنوعِ شمارش» است، نه یک قانونِ عددی.<br><br>"
+    "<b>حروفِ مقطّعه.</b> مشهورترین ادعاها دربارهٔ حروفِ مقطّعه‌اند و آن‌ها را جداگانه آزمودیم. حروفی که گونهٔ نوشتاری "
+    "ندارند درست درمی‌آیند: «ق» در سوره‌های ۵۰ و ۴۲ هر یک ۵۷، و «ص» در سوره‌های ۷ و ۱۹ و ۳۸ روی‌هم ۱۵۲ (۱۹×۸). اما "
+    "حروفِ پراختلاف نادرست‌اند: «یس»=۲۴۸ به‌جای ۲۸۵، «ن»=۱۳۸ به‌جای ۱۳۳، و حروفِ الف‌دار صدها واحد خطا دارند "
+    "(الم=۱۸٬۰۷۲). همین، «شکافِ املایی» را آشکار می‌کند.<br><br>"
+    "<b>آزمونِ آماری.</b> در توزیعِ باقیمانده‌ها بر ۱۹ (۱۹ حالت)، اگر ۱۹ بر متن حاکم بود باید باقیماندهٔ صفر بلندترین "
+    "ستون می‌بود؛ اما در عمل کوتاه‌ترین‌هاست و آزمونِ خی‌دو یکنواختی را رد می‌کند — ولی در جهتِ خلافِ ادعا: مضربِ ۱۹ "
+    "سرکوب شده است، نه برجسته. در میانِ اعدادِ ۲ تا ۳۰ نیز هیچ‌کدام از شانس فراتر نمی‌رود و ۱۹ از همه پایین‌تر است.<br><br>"
     "<b>نتیجه.</b> خوشه‌ای کوچک و واقعی از حقایقِ ۱۹ پیرامونِ بسمله هست و آن را به‌انصاف می‌پذیریم؛ اما «رمزی فراگیر» "
-    "در کار نیست. این داوری <b>آماری</b> است، نه کلامی.<br><br>"
+    "در کار نیست. این داوری <b>آماری و روش‌شناختی</b> است، نه کلامی.<br><br>"
     "<b>درس.</b> هر ادعا دربارهٔ قرآن — از جمله ادعاهای خودِ ما — باید داده‌محور، دارای آزمونِ پوچِ درست، روش‌مند، "
     "آماری‌معتبر و تکرارپذیر باشد؛ نه عوام‌گرایانه و عوام‌پسند.</div>", unsafe_allow_html=True)
 
 # ── ARABIC ABSTRACT ──
 C.section("الملخّص الكامل — Arabic abstract")
 st.markdown(
-    "<div dir='rtl' style='font-family:Amiri,\"Scheherazade New\",Tahoma,serif;font-size:16px;line-height:2.0;"
+    "<div dir='rtl' id='cu-ar-abstract' style='font-family:Amiri,\"Scheherazade New\",Tahoma,serif;font-size:15.5px;line-height:1.75;"
     "color:#243b53;text-align:right;background:#F6F9FC;border-right:5px solid #4E6E92;border-radius:11px;"
     "padding:16px 20px'>"
     "<b>الدعوى.</b> استناداً إلى آية «عَلَيْهَا تِسْعَةَ عَشَرَ» (المدّثّر ۷۴:۳۰)، زعم رشاد خليفة أنّ عدداً هو ۱۹ "
@@ -325,8 +335,15 @@ st.markdown(
     "۱۹) ثاني أندرِ الحالات.<br><br>"
     "<b>الجوهر.</b> «الرمز» يصحّ تماماً حيث يكون الرسمُ قاطعاً (الحرفان ق وص بلا صورٍ إملائية)، ويفشل تماماً حيث يكون "
     "الرسمُ خلافياً (الألف، الياء). وهذه علامةُ «مصنوعٍ إحصائيّ»، لا قانونٍ عدديّ.<br><br>"
+    "<b>الحروف المقطَّعة.</b> أشهرُ الدعاوى هي الحروف المقطَّعة، واختبرناها على حِدة. الحروفُ التي لا صورةَ إملائية "
+    "لها تصحّ: «ق» في السورتين ٥٠ و٤٢ يساوي ٥٧، و«ص» في السور ٧ و١٩ و٣٨ مجموعها ١٥٢ (١٩×٨). أمّا المتغيّرةُ الرسمِ "
+    "فتفشل: «يس»=٢٤٨ لا ٢٨٥، و«ن»=١٣٨ لا ١٣٣، والحروفُ ذاتُ الألف تُخطئ بمئات الوحدات (الم=١٨٬٠٧٢). هذا هو "
+    "«الانقسامُ الإملائيّ».<br><br>"
+    "<b>الاختبار الإحصائيّ.</b> في توزيع البواقي على ١٩ (تسعةَ عشرَ احتمالاً)، لو حكم ١٩ النصَّ لكان الباقي صفرٌ أعلى "
+    "عمودٍ؛ لكنّه من أدناها، ويرفض اختبارُ كاي‑تربيع التوحّدَ — في الاتجاه المعاكس للدعوى: مضاعفاتُ ١٩ مكبوتةٌ لا "
+    "بارزة. وبين الأعداد ٢ إلى ٣٠ لا يتجاوز أيٌّ منها الصُّدفة، و١٩ أدناها جميعاً.<br><br>"
     "<b>الخلاصة.</b> يوجد عنقودٌ صغيرٌ حقيقيّ من حقائق ۱۹ حول البسملة، ونعترف به بإنصاف؛ لكن لا «رمزَ شاملاً». وهذا "
-    "حُكمٌ <b>إحصائيّ</b> لا لاهوتيّ.<br><br>"
+    "حُكمٌ <b>إحصائيّ ومنهجيّ</b> لا لاهوتيّ.<br><br>"
     "<b>الدرس.</b> كلُّ دعوى عن القرآن — بما فيها دعاوانا — يجب أن تكون قائمةً على البيانات، ذاتَ اختبارٍ عدميٍّ سليم، "
     "منهجيّةً، وصحيحةً إحصائياً وقابلةً للتكرار؛ لا تملّقاً للعامّة (عوام‌گرایی / عوام‌پسند).</div>", unsafe_allow_html=True)
 

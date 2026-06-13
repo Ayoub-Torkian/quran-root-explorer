@@ -40,7 +40,8 @@ NAV_SECTIONS = [
                          ("pages/28_Closeup_Ayah.py", "The Āyah, defined", "📐"),
                          ("pages/30_Closeup_Sura.py", "The Sūra, characterised", "📜"),
                          ("pages/29_Closeup_InterSura.py", "Inter-Sūra coherence", "⚠️"),
-                         ("pages/31_Closeup_Code19.py", "Code 19, reviewed", "🔢")]),
+                         ("pages/31_Closeup_Code19.py", "Code 19, reviewed", "🔢"),
+                         ("pages/32_Closeup_Nuzul.py", "Revelation order, reviewed", "🕰️")]),
     ]),
     ("📖 READER", [
         (None, [
