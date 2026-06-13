@@ -245,10 +245,10 @@ def render_grouped_nav():
             "<a href='https://drive.google.com/drive/folders/1Iz34p_uD7tAL7To8HaVGPFoCJYpp3fPc' "
             "target='_blank' rel='noopener' style='text-decoration:none'>"
             "<div style='margin:14px 6px 2px;padding:9px 12px;border-radius:9px;"
-            "background:linear-gradient(135deg,#1D3557,#138A74);color:#FFFFFF;font-size:13px;font-weight:800;"
+            "background:linear-gradient(135deg,#1D3557,#138A74);font-size:13px;"
             "line-height:1.4;box-shadow:0 1px 3px rgba(16,36,58,.28)'>"
-            "📚 Papers · presentations · courses"
-            "<div style='font-size:12px;font-weight:600;margin-top:2px;color:#EAF6F0'>"
+            "<div style='color:#FFFFFF!important;font-size:13px;font-weight:800'>📚 Papers · presentations · courses</div>"
+            "<div style='font-size:12px;font-weight:600;margin-top:2px;color:#EAF6F0!important'>"
             "More research &amp; learning resources ↗</div></div></a>", unsafe_allow_html=True)
         # v2.1: per-page feedback widgets removed (Feedback page stays in the nav)
 
