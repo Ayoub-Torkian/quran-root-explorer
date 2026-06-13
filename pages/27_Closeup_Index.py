@@ -76,6 +76,17 @@ st.markdown(
     f"holds no statistical privilege (hit-rate 3.2% ≤ 5.3% chance, not above rival numbers). A multiple-comparisons "
     f"artifact — fair, measured, methodological.</div></div>", unsafe_allow_html=True)
 st.page_link("pages/31_Closeup_Code19.py", label="Open Code 19, reviewed")
+st.markdown(
+    f"<div class='cu-card' style='border-left:5px solid {_col}'>"
+    f"<span class='cu-badge' style='background:{_col};font-size:12px'>REFUTED-ARTIFACT</span>"
+    f"<span style='font-weight:800;color:#10243A;font-size:13px;margin-left:7px'>grade 35</span>"
+    f"<div style='font-size:15.5px;font-weight:800;color:#10243A;margin-top:6px'>Word-count miracle "
+    f"(al-iʿjāz al-ʿadadī), reviewed</div>"
+    f"<div style='font-size:13.5px;color:#10243A;margin-top:4px;line-height:1.5'>A few pairs really are equal "
+    f"(dunyā = ākhira = 114; Ādam = ʿĪsā = 25, with Q 3:59) — <b>credited</b>. But most fail (life ≠ death, angels "
+    f"≠ devils), the matches ride on spelling, and equal counts are ~3–24% by chance. Code 19's twin, for words."
+    f"</div></div>", unsafe_allow_html=True)
+st.page_link("pages/33_Closeup_Adadi.py", label="Open Word-count miracle, reviewed")
 _c2 = C.STATUS["CANDIDATE"][0]
 st.markdown(
     f"<div class='cu-card' style='border-left:5px solid {_c2}'>"

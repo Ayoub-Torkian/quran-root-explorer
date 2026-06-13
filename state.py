@@ -45,6 +45,7 @@ NAV_SECTIONS = [
             ("pages/29_Closeup_InterSura.py", "Inter-Sūra", "⚠️")]),
         ("Claims reviewed", [
             ("pages/31_Closeup_Code19.py", "Code 19", "🔢"),
+            ("pages/33_Closeup_Adadi.py", "Word-count miracle", "🧮"),
             ("pages/32_Closeup_Nuzul.py", "Revelation order", "🕰️")]),
     ]),
     ("📖 READER", [
