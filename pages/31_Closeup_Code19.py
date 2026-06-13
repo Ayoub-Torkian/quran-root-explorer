@@ -51,6 +51,16 @@ C.kpis([
     ("0", "above chance", "No candidate number beats chance; 19 is the rarest of all", C.CORAL),
     ("22", "grade", "REFUTED-ARTIFACT — the pervasive code, not the genuine anchors", C.CORAL),
 ])
+st.markdown(
+    "<div style='font-size:12.5px;color:#10243A;background:#EEF3F8;border:1px solid #DCE6F0;border-radius:9px;"
+    "padding:8px 13px;margin:5px 0 2px;line-height:1.75'><b>On this page —</b> "
+    "① Problem &nbsp;·&nbsp; ② Hypothesis &nbsp;·&nbsp; ③ Method &nbsp;·&nbsp; "
+    "<b>④ Results</b> every claim by category (tables A–D) &nbsp;·&nbsp; "
+    "<b>⑤ Statistical core</b> six views that 19 has no privilege &nbsp;·&nbsp; "
+    "⑥ Gating &nbsp;·&nbsp; ⑦ Interpretation &nbsp;·&nbsp; ⑧ Caveats &nbsp;·&nbsp; ⑨ Verdict &nbsp;→&nbsp; "
+    "Reflection · Summary · Lessons · Takeaway · "
+    "<a href='#cu-fa-abstract' style='color:#138A74;font-weight:700'>Persian</a> / "
+    "<a href='#cu-ar-abstract' style='color:#138A74;font-weight:700'>Arabic</a> abstracts</div>", unsafe_allow_html=True)
 
 # ── 2 · HYPOTHESIS ──
 C.section("Hypothesis")
