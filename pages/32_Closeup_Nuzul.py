@@ -58,6 +58,16 @@ C.kpis([
     ("✓ Sadeghi", "program vindicated", "2011 morphological stylometry confirmed the chronology the tradition & Bazargan drew", C.TEAL),
     ("70", "grade", "CANDIDATE — sūra-level clock real & converged; only passage-level dating over-reaches", C.GOLD),
 ])
+st.markdown(
+    "<div style='font-size:12.5px;color:#10243A;background:#EEF3F8;border:1px solid #DCE6F0;border-radius:9px;"
+    "padding:8px 13px;margin:5px 0 2px;line-height:1.75'><b>On this page —</b> "
+    "① Problem &nbsp;·&nbsp; ② Hypothesis &nbsp;·&nbsp; ③ Method &nbsp;·&nbsp; "
+    "<b>④ Results Part 1</b> the measured clock (5 charts) &nbsp;·&nbsp; "
+    "<b>⑤ Results Part 2</b> the field, school by school (timeline + 6 profiles) &nbsp;·&nbsp; "
+    "⑥ Gating &nbsp;·&nbsp; ⑦ Interpretation &nbsp;·&nbsp; ⑧ Caveats &nbsp;·&nbsp; ⑨ Verdict &nbsp;→&nbsp; "
+    "Reflection · Summary · Lessons · Takeaway · "
+    "<a href='#nz-fa' style='color:#138A74;font-weight:700'>Persian</a> / "
+    "<a href='#nz-ar' style='color:#138A74;font-weight:700'>Arabic</a> abstracts</div>", unsafe_allow_html=True)
 
 # ── 2 · HYPOTHESIS ──
 C.section("Hypothesis")
@@ -94,40 +104,8 @@ C.callout("The apparatus — substrate, the divine-alternative order, and four t
           "rasm differs from Bazargan's own tallies; we test his <i>method</i>, not reproduce his figures.",
           accent=C.SLATE)
 
-# ── 4 · RESULTS — THE FIELD ──
-C.section("The landscape — eleven centuries of chronology, and where each stands")
-C.note("SCHOLARSHIP (not our measurement). Nearly every system — traditional and Western, old and new — agrees on "
-       "the broad shape the data shows: short, rhymed, eschatological Meccan sūras early; long, legal, prosaic "
-       "Medinan sūras late. They differ on granularity — and that is the whole question.")
-cOld, cNew = st.columns(2, gap="medium")
-with cOld:
-    C.note("A · Traditional & orientalist — the classical chronologies.")
-    C.table(["System · year", "basis", "on our data"], [
-        ["Tradition · Cairo 1924 / Ibn ʿAbbās", "asbāb al-nuzūl, reports", "= col 8 baseline"],
-        ["G. Weil · 1844", "first Western; 4 periods", "broad shape ✔"],
-        ["T. Nöldeke · 1860", "style + content; 3 Meccan + Medinan", "the standard ✔"],
-        ["W. Muir · 1861", "tone; 6 periods", "broad shape ✔"],
-        ["H. Grimme · 1895", "2 Meccan periods", "coarser ~"],
-        ["H. Hirschfeld · 1902", "typological, ~6 kinds", "not a sequence ~"],
-        ["R. Bell · 1937", "passage/verse re-dating", "over-reach ✗"],
-        ["R. Blachère · 1947", "refined Nöldeke; chrono. transl.", "sūra ✔ / passage ✗"],
-    ])
-with cNew:
-    C.note("B · Modern & quantitative — the data-driven program.")
-    C.table(["System · year", "basis", "on our data"], [
-        ["M. Bazargan · ~1980s", "mean verse length as clock", "r = 0.66 ✔ (pioneer)"],
-        ["B. Sadeghi · 2011", "morphological stylometry", "vindicates ✔✔"],
-        ["N. Sinai · 2017", "verse length + text-criticism", "supports Nöldeke ✔"],
-    ])
-    C.note("The quantitative turn did not overturn the tradition — it <b>confirmed</b> it, and put numbers on it. "
-           "Bazargan reached the verse-length clock decades before Western stylometry; Sadeghi's richer features "
-           "later placed the same chronology on a rigorous statistical footing.")
-    C.callout("Convergence, in one line",
-              "Three independent roads — the tradition's reports, Nöldeke's stylistic reading, and Bazargan/Sadeghi's "
-              "numbers — arrive at the <b>same</b> Mecca→Medina drift. That triangulation is the strong part of the "
-              "chronology, and it is real.", accent=C.TEAL)
-
-C.section("The clock, measured — sūra level")
+# ── 4 · RESULTS · PART 1 — THE MEASURED CLOCK (our data) ──
+C.section("Results · Part 1 — the measured clock (our data)")
 C.note("MEASURED. Mean verse length rises with revelation order (Pearson r = 0.66, Spearman 0.69, R² 0.44), broadly "
        "reproducing the traditional sequence — and the extremes are exactly where the tradition puts them.")
 L, R = st.columns(2, gap="medium")
@@ -176,31 +154,7 @@ C.vbars([("within a sūra (σ)", 8.4, C.GOLD, "Mean within-sūra SD of āyah len
          ("between sūras (σ)", 11.1, C.INK, "SD of the 114 sūra-means ≈ 11.1 words")],
         ymax=13, fmt="{:.1f}")
 
-# ── 5 · GATING CHAIN ──
-C.section("Gating chain — strong at the sūra, weak at the passage")
-C.para("<b>Naive look</b> — verse length climbs across the revelation; ordering by it reproduces the tradition. "
-       "<b>Control 1 · convergence</b> — independent chronologies (tradition, Nöldeke, Bazargan, Sadeghi) agree on "
-       "the same Mecca→Medina drift; the signal is not one analyst's artifact. <b>Control 2 · effect size</b> — the "
-       "correlation is real and moderate (r = 0.66, R² 0.44); credited. <b>Control 3 · granularity</b> — push from "
-       "sūra to passage and the ground gives way: the 'composite' rate is method-dependent (2–74%), and within-sūra "
-       "spread (8.4) ≈ between-sūra spread (11.1). <b>Control 4 · degrees of freedom</b> — letting the analyst draw "
-       "the passage boundaries supplies all the freedom needed to 'date' anything. The sūra-level clock survives "
-       "every gate; passage-level dating fails at Control 3.")
-
-# ── 6 · INTERPRETATION ──
-C.section("Interpretation")
-C.para("The clock is <b>genuine at the level of the sūra</b> — the divine unit. The traditional order is broadly "
-       "confirmed from the text's own statistics; Nöldeke's stylistic reading, Bazargan's verse-length clock, and "
-       "Sadeghi's morphological stylometry all <b>converge</b> on it. Bazargan's central claim is correct and "
-       "pioneering, and Sadeghi's 2011 program vindicated the quantitative road he opened. That is a real, shared "
-       "success — and the credit is genuinely distributed across the field.<br><br>"
-       "It fails only at the level of the <b>passage</b> — a unit the analyst draws, not one the text marks. "
-       "Internal length-variation is real but is not a datable boundary (method-dependent 2–74%, and within ≈ "
-       "between), so cutting a sūra into separately-dated passages over-reaches. This is the divine-division-vs-"
-       "human-construct line, and the over-reach is <b>shared</b> with Richard Bell and Blachère, who re-ordered the "
-       "text at passage/verse level — it is not unique to Bazargan, nor a flaw in his core insight.")
-
-# ── 7 · THE SCHOOLS — ELABORATE, FAIR, CROSS-REFERENCED ──
+# ── 5 · RESULTS · PART 2 — THE FIELD, REVIEWED SCHOOL BY SCHOOL ──
 def _field(icon, label, txt, lc):
     return (f"<div style='background:#F6F9FC;border-radius:8px;padding:7px 10px'>"
             f"<div style='font-size:12px;font-weight:800;color:{lc};letter-spacing:.3px'>{icon} {label}</div>"
@@ -248,7 +202,7 @@ def timeline(nodes):
     st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
 
 
-C.section("The schools of Qur'ān chronology — what each built, and its limit")
+C.section("Results · Part 2 — the field, reviewed school by school")
 C.para("This is the fair core of the review: not a verdict, but an account. Each school below gets its due — what it "
        "did, what it got right, what it missed, how much it moved the field, and what it could not yet see — before "
        "the one-line summary at the very end. Read top to bottom it is also the story of an <b>instrument "
@@ -387,6 +341,30 @@ C.table(["Approach", "Where it falls short", "Suggested fix"], tight=False, rows
     ["Bazargan — verse length only", "one feature; length conflates with genre/topic (R² 0.44)", "multivariate stylometry (the modest 0.44 → 0.49 gain, extended)"],
     ["Sadeghi — morphological stylometry", "powerful but sūra-level; needs many features", "the right tool to PROBE passages — only where a real style-break is detectable"],
 ])
+
+# ── 6 · GATING CHAIN ──
+C.section("Gating chain — strong at the sūra, weak at the passage")
+C.para("<b>Naive look</b> — verse length climbs across the revelation; ordering by it reproduces the tradition. "
+       "<b>Control 1 · convergence</b> — independent chronologies (tradition, Nöldeke, Bazargan, Sadeghi) agree on "
+       "the same Mecca→Medina drift; the signal is not one analyst's artifact. <b>Control 2 · effect size</b> — the "
+       "correlation is real and moderate (r = 0.66, R² 0.44); credited. <b>Control 3 · granularity</b> — push from "
+       "sūra to passage and the ground gives way: the 'composite' rate is method-dependent (2–74%), and within-sūra "
+       "spread (8.4) ≈ between-sūra spread (11.1). <b>Control 4 · degrees of freedom</b> — letting the analyst draw "
+       "the passage boundaries supplies all the freedom needed to 'date' anything. The sūra-level clock survives "
+       "every gate; passage-level dating fails at Control 3.")
+
+# ── 7 · INTERPRETATION ──
+C.section("Interpretation")
+C.para("The clock is <b>genuine at the level of the sūra</b> — the divine unit. The traditional order is broadly "
+       "confirmed from the text's own statistics; Nöldeke's stylistic reading, Bazargan's verse-length clock, and "
+       "Sadeghi's morphological stylometry all <b>converge</b> on it. Bazargan's central claim is correct and "
+       "pioneering, and Sadeghi's 2011 program vindicated the quantitative road he opened. That is a real, shared "
+       "success — and the credit is genuinely distributed across the field.<br><br>"
+       "It fails only at the level of the <b>passage</b> — a unit the analyst draws, not one the text marks. "
+       "Internal length-variation is real but is not a datable boundary (method-dependent 2–74%, and within ≈ "
+       "between), so cutting a sūra into separately-dated passages over-reaches. This is the divine-division-vs-"
+       "human-construct line, and the over-reach is <b>shared</b> with Richard Bell and Blachère, who re-ordered the "
+       "text at passage/verse level — it is not unique to Bazargan, nor a flaw in his core insight.")
 
 # ── 8 · CAVEATS & CONFOUNDS ──
 C.section("Caveats & confounds")
