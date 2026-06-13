@@ -118,20 +118,33 @@ C.table(["Claim · count", "realistic ±τ", "÷19 in band", "specific to 19?", 
     ["Verses + Basmala = 6348", "±35 (schemes)", "~ gap 2 · 3 mults", "✗ vacuous", "23"],
 ])
 
-C.note("E · No statistical privilege — every number side by side. Across 1,084 natural counts, each number's "
-       "exact-multiple rate tracks chance (1/d); 19's is the LOWEST relative to chance, not the highest.")
-C.table(["divisor d", "exact mult.", "rate", "chance", "obs ÷ chance"], [
-    ["7", "149", "13.7%", "14.3%", "0.96"], ["11", "92", "8.5%", "9.1%", "0.93"],
-    ["13", "78", "7.2%", "7.7%", "0.94"], ["17", "48", "4.4%", "5.9%", "0.74"],
-    ["19  ← claimed special", "31", "2.9%", "5.3%", "0.55"], ["23", "25", "2.3%", "4.3%", "0.53"],
-    ["29", "27", "2.5%", "3.4%", "0.74"],
-])
-C.note("F · The decisive picture — remainder when each of the 1,084 counts is divided by 19. If 19 governed the "
-       "text, remainder 0 (a multiple of 19) would tower. Instead it is the 2nd-rarest of 19 remainders, below the "
-       "chance line. The bulge at small remainders is the ordinary small-number effect; χ² rejects uniformity, but "
-       "in the WRONG direction — remainder 0 is suppressed, not favoured.")
+C.section("Statistical core — six views of one fact: 19 has no special place")
+
+C.note("① The raw material — most natural counts in the Qur'ān are small (verse counts, root frequencies). "
+       "Context for everything below: small counts dominate.")
+C.hist([258, 219, 263, 130, 102, 63, 49], ["<10", "10–19", "20–49", "50–99", "100–199", "200–499", "500+"],
+       color=C.SLATE)
+
+C.note("② Exact-multiple rate ÷ chance, for every divisor from 2 to 30. If a number were special its bar would rise "
+       "above 1.0 (the dashed line). None does — and 19 (highlighted) is among the very lowest.")
+C.hist([0.94, 1.03, 0.94, 1.25, 1.13, 0.96, 1.01, 0.94, 0.94, 0.93, 1.03, 0.94, 0.76, 0.77, 0.84, 0.75, 0.63,
+        0.54, 0.83, 0.77, 0.71, 0.53, 0.80, 0.88, 0.77, 0.62, 0.59, 0.72, 0.64],
+       [str(d) for d in range(2, 31)], highlight=17, ref=1.0, reflabel="chance")
+
+C.note("③ The decisive chart — the remainder when each of the 1,084 counts is divided by 19. If 19 governed the "
+       "text, remainder 0 (an exact multiple) would tower. Instead it is the 2nd-rarest of all 19 remainders, below "
+       "the chance line. (The bulge at small remainders is the ordinary small-number effect; χ² rejects uniformity — "
+       "but in the WRONG direction for the claim: remainder 0 is suppressed, not favoured.)")
 C.hist([31, 40, 40, 37, 31, 131, 93, 72, 66, 64, 66, 64, 73, 60, 46, 40, 50, 34, 46],
        [str(i) for i in range(19)], highlight=0, ref=57, reflabel="chance (uniform)")
+
+C.note("④ The same picture for a RIVAL number, 7 — remainders mod 7 are just as lumpy. Nothing distinguishes 19; "
+       "every divisor shows the same small-number texture.")
+C.hist([149, 144, 122, 145, 137, 208, 179], [str(i) for i in range(7)], ref=155, reflabel="chance (uniform)")
+
+C.note("⑤ The distance from each count to its NEAREST multiple of 19 (0–9). If 19 pulled, gap 0 would spike. It is "
+       "instead the rarest gap of all — exact divisibility by 19 is the least common outcome, not the most.")
+C.hist([31, 86, 74, 87, 71, 177, 153, 145, 130, 130], [str(i) for i in range(10)], highlight=0, color=C.SLATE)
 
 # ── 5 · GATING CHAIN ──
 C.section("Gating chain — striking, then ordinary")
@@ -188,7 +201,7 @@ C.para("Three things make this case instructive. <b>The pull is real:</b> a hand
 # ── SUMMARY ──
 C.section("Summary — what held, what failed")
 C.note("In the plainest terms — the genuine 19-facts on the left, the claims that do not survive a neutral count on the right.")
-C.table(["✔ Holds — exactly divisible by 19", "✗ Fails — under a neutral count"], [
+C.table(["✔ Holds — exactly divisible by 19", "✗ Fails — under a neutral count"], tight=False, rows=[
     ["Basmala = 19 letters · 114 sūras = 19×6", C.ar("الله") + " = 2695 — exactly ÷ 7 and ÷ 11, not 19"],
     ["Sūra 96 — 19 verses, 19th from the end", "Sūra 96 = 288 letters, not 285; 96:1–5 = 29 words, not 19"],
     [C.ar("الرحمن") + " = 57 · " + C.ar("ق") + " = 57 · " + C.ar("ص") + " = 152", C.ar("ن") + " = 138 · " + C.ar("ي س") + " = 248 · " + C.ar("الم") + " = 18,072"],
@@ -200,7 +213,7 @@ C.table(["✔ Holds — exactly divisible by 19", "✗ Fails — under a neutral
 C.section("Lessons learned — for every claim about the Book")
 C.para("This is a template, not a verdict on one person. Any claim about the Qur'ān — including our own — must clear "
        "the same gates, applied without favour. Each principle below earned its place by catching something here.")
-C.table(["Principle", "What it caught in this review"], [
+C.table(["Principle", "What it caught in this review"], tight=False, rows=[
     ["Data-driven — re-count on the text, never assert", C.ar("الله", 17) + " = 2695, not the asserted 2698"],
     ["A proper null — test against chance AND rival numbers", "19's rate (2.9%) is below chance and the lowest of all numbers"],
     ["Robust — survive spelling & counting conventions", C.ar("ن", 17) + ", " + C.ar("ي", 17) + ", alif shift off 19; " + C.ar("ق", 17) + ", " + C.ar("ص", 17) + " do not"],

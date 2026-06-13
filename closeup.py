@@ -48,14 +48,15 @@ def inject():
       .cu-note{{font-size:14px;color:{MUTE};line-height:1.55;margin:0 0 5px}}
       .cu-lede{{font-size:15px;line-height:1.6;color:#283A4D}}
       .cu-eye{{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}}
-      table.cu-tbl{{border-collapse:separate;border-spacing:0;width:100%;font-size:13px;
+      table.cu-tbl{{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px;table-layout:auto;
                    border:1px solid #E7EEF5;border-radius:10px;overflow:hidden}}
-      table.cu-tbl td,table.cu-tbl th{{padding:6px 9px;text-align:left;border-bottom:1px solid #EDF3F8;
-                   vertical-align:top;line-height:1.35}}
+      table.cu-tbl td,table.cu-tbl th{{padding:4px 8px;text-align:left;border-bottom:1px solid #EDF3F8;
+                   vertical-align:top;line-height:1.3}}
       table.cu-tbl tr:last-child td{{border-bottom:none}}
-      table.cu-tbl th{{background:{PANEL};color:{MUTE};font-size:10.5px;text-transform:uppercase;letter-spacing:.4px}}
+      table.cu-tbl th{{background:{PANEL};color:{MUTE};font-size:10.5px;text-transform:uppercase;letter-spacing:.3px}}
       table.cu-tbl td:first-child{{font-weight:600}}
       table.cu-tbl td:last-child{{font-weight:800;color:{INK};font-variant-numeric:tabular-nums;white-space:nowrap}}
+      table.cu-tbl.cu-tight td:not(:first-child),table.cu-tbl.cu-tight th:not(:first-child){{white-space:nowrap;width:1%}}
     </style>""", unsafe_allow_html=True)
 
 
@@ -239,10 +240,10 @@ def hist(values, labels, highlight=None, ref=None, reflabel="expected", color=SL
         by = Y(v); bh = (T + ph) - by
         p.append(f"<g><title>{_e(lab)}: {_e(v)}</title>"
                  f"<rect x='{cx-bw/2:.1f}' y='{by:.1f}' width='{bw:.1f}' height='{bh:.1f}' rx='2' fill='{col}'/></g>"
-                 f"<text x='{cx:.1f}' y='{H-B+16:.0f}' text-anchor='middle' font-size='11' "
+                 f"<text x='{cx:.1f}' y='{H-B+17:.0f}' text-anchor='middle' font-size='12' "
                  f"fill='{INK if i==highlight else MUTE}'>{_e(lab)}</text>")
         if i == highlight:
-            p.append(f"<text x='{cx:.1f}' y='{by-6:.0f}' text-anchor='middle' font-size='12' font-weight='800' "
+            p.append(f"<text x='{cx:.1f}' y='{by-6:.0f}' text-anchor='middle' font-size='13' font-weight='800' "
                      f"fill='{hcolor}'>{_e(v)}</text>")
     p.append("</svg>")
     st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
@@ -267,13 +268,14 @@ def scale(lo_label, lo, mid_label, mid, hi_label, hi):
     st.markdown("<div class='cu-card'>" + svg + "</div>", unsafe_allow_html=True)
 
 
-def table(headers, rows):
+def table(headers, rows, tight=True):
+    cls = "cu-tbl cu-tight" if tight else "cu-tbl"
     th = "".join(f"<th>{_e(h)}</th>" for h in headers)
     trs = []
     for r in rows:
         tds = "".join(f"<td>{c if '<span' in str(c) else _e(c)}</td>" for c in r)
         trs.append(f"<tr>{tds}</tr>")
-    st.markdown(f"<table class='cu-tbl'><tr>{th}</tr>{''.join(trs)}</table>", unsafe_allow_html=True)
+    st.markdown(f"<table class='{cls}'><tr>{th}</tr>{''.join(trs)}</table>", unsafe_allow_html=True)
 
 
 def verdict(status, text, confidence, flip, revise):
