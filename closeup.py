@@ -55,8 +55,7 @@ def inject():
       table.cu-tbl tr:last-child td{{border-bottom:none}}
       table.cu-tbl th{{background:{PANEL};color:{MUTE};font-size:10.5px;text-transform:uppercase;letter-spacing:.3px}}
       table.cu-tbl td:first-child{{font-weight:600}}
-      table.cu-tbl td:last-child{{font-weight:800;color:{INK};font-variant-numeric:tabular-nums;white-space:nowrap}}
-      table.cu-tbl.cu-tight td:not(:first-child),table.cu-tbl.cu-tight th:not(:first-child){{white-space:nowrap;width:1%}}
+      table.cu-tbl td:last-child{{font-weight:800;color:{INK};font-variant-numeric:tabular-nums}}
     </style>""", unsafe_allow_html=True)
 
 

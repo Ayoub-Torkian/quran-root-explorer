@@ -71,43 +71,37 @@ C.callout("The apparatus",
 # ── 4 · RESULTS ──
 C.section("Results — every claim, by category")
 
-C.note("A · Structural & positional claims. The counts of sūras, verses and positions — exact, and they mostly HOLD.")
-C.table(["Claim (Khalifa)", "claimed", "measured", "÷19", "verdict"], [
-    ["Basmala has 19 letters", "19", "19", "19×1", Y],
-    ["114 sūras", "114 = 19×6", "114", "19×6", Y],
-    ["Sūra 96 (first revealed) is 19th from the end", "19", "19", "19×1", Y],
-    ["Sūra 96 has 19 verses", "19", "19", "19×1", Y],
-    ["Basmala occurs 114 times (heads + 1:1 + 27:30)", "114 = 19×6", "114", "19×6", Y],
-    ["Span sūra 9 → 27 = 19 sūras; Σ(9..27)", "342 = 19×18", "342", "19×18", Y],
-    ["Sūra 96 verse 1 has 19 letters", "19", "18", "r = 18", N],
-    ["Sūra 96 has 285 letters", "285 = 19×15", "288", "r = 3", N],
-    ["First revelation 96:1–5 has 19 words", "19", "29", "r = 10", N],
-    ["Total verses incl. Basmalas", "6346 = 19×334", "6348", "r = 17", N],
-])
+cA, cC = st.columns(2, gap="medium")
+with cA:
+    C.note("A · Structural & positional — sūras, verses, positions. These mostly HOLD.")
+    C.table(["Claim", "claim", "meas.", "÷19", "v"], [
+        ["Basmala = 19 letters", "19", "19", "19×1", Y],
+        ["114 sūras", "114", "114", "19×6", Y],
+        ["Sūra 96 is 19th from the end", "19", "19", "19×1", Y],
+        ["Sūra 96 has 19 verses", "19", "19", "19×1", Y],
+        ["Basmala occurs 114× (heads+1:1+27:30)", "114", "114", "19×6", Y],
+        ["Span sūra 9→27 = 19; Σ(9..27)", "342", "342", "19×18", Y],
+        ["Sūra 96:1 has 19 letters", "19", "18", "r=18", N],
+        ["Sūra 96 has 285 letters", "285", "288", "r=3", N],
+        ["First revelation 96:1–5 = 19 words", "19", "29", "r=10", N],
+        ["Total verses incl. Basmalas", "6346", "6348", "r=17", N],
+    ])
+with cC:
+    C.note("C · Quranic Initials (muqaṭṭaʿāt) — the famous claims. Split by spelling: stable ق/ص exact, variable ن/ي/alif off.")
+    C.table(["Initial · sūra", "claim", "meas.", "÷19", "letter"], [
+        [C.ar("ق") + " · 50 (Qāf)", "57", "57", "19×3", "stable ✔"],
+        [C.ar("ق") + " · 42", "57", "57", "19×3", "stable ✔"],
+        [C.ar("ص") + " · 7,19,38", "152", "152", "19×8", "stable ✔"],
+        [C.ar("ن") + " · 68 (Nūn)", "133", "138", "r=5", "variable ✗"],
+        [C.ar("ح م") + " · 40–46", "2147", "2112", "r=3", "variable ✗"],
+        [C.ar("ي س") + " · 36 (Yā-Sīn)", "285", "248", "r=1", "variable ✗"],
+        [C.ar("ك ه ي ع ص") + " · 19", "798", "729", "r=7", "variable ✗"],
+        [C.ar("ا ل م") + " · 2,3,29–32", "19×k", "18,072", "r=3", "alif ✗✗"],
+        [C.ar("ا ل م ص") + " · 7", "19×k", "4,759", "r=9", "alif ✗✗"],
+    ])
 
-C.note("B · Basmala word-frequencies (numbered text + 112 Basmalas). The famous cluster — partly exact, partly not.")
-C.table(["Word", "claimed", "measured", "÷19", "verdict"], [
-    [C.ar("الرحمن") + " Ar-Raḥmān", "57 = 19×3", "57", "19×3", Y],
-    [C.ar("الرحيم") + " Ar-Raḥīm", "114 = 19×6", "95", "19×5 (value differs)", Y],
-    [C.ar("الله") + " Allah", "2698 = 19×142", "2695", "÷7 and ÷11, not 19", N],
-    [C.ar("اسم") + " Ism", "19", "convention-dependent", "—", "~"],
-])
-
-C.note("C · Quranic Initials (muqaṭṭaʿāt) — the most famous claims. Re-counted neutrally, the split is the whole "
-       "story: the orthographically STABLE letters (ق, ص) reproduce EXACTLY; the spelling-VARIABLE ones (ن, ي, ع, alif) shift off 19.")
-C.table(["Initial · sūra(s)", "claimed", "measured", "÷19", "letter is"], [
-    [C.ar("ق") + " · Sūra 50 (Qāf)", "57 = 19×3", "57", "19×3", "stable ✔"],
-    [C.ar("ق") + " · Sūra 42", "57 = 19×3", "57", "19×3", "stable ✔"],
-    [C.ar("ص") + " · Sūras 7, 19, 38", "152 = 19×8", "152", "19×8", "stable ✔"],
-    [C.ar("ن") + " · Sūra 68 (Nūn)", "133 = 19×7", "138", "r = 5", "variable ✗"],
-    [C.ar("ح م") + " · Sūras 40–46", "2147 = 19×113", "2112", "r = 3", "variable ✗"],
-    [C.ar("ي س") + " · Sūra 36 (Yā-Sīn)", "285 = 19×15", "248", "r = 1*", "variable ✗"],
-    [C.ar("ك ه ي ع ص") + " · Sūra 19", "798 = 19×42", "729", "r = 7", "variable ✗"],
-    [C.ar("ا ل م") + " · Sūras 2,3,29–32", "= 19×k", "18,072", "r = 3", "alif — very variable ✗"],
-    [C.ar("ا ل م ص") + " · Sūra 7", "= 19×k", "4,759", "r = 9", "alif — very variable ✗"],
-])
-C.note("Discrepancy between Khalifa's count and a neutral re-count, per initial-letter claim. Zero for the stable "
-       "letters (ق, ص); 5–69 for the spelling-variable ones. The code lives precisely in the spelling.")
+C.note("Discrepancy — Khalifa's count vs a neutral re-count, per initial. Zero for the stable letters (ق, ص); 5–69 "
+       "for the spelling-variable ones. The code lives precisely in the spelling.")
 C.vbars([(C.ar("ق") + "·50", 0, C.TEAL, "Qāf sūra 50: 57 = 57, exact"),
          (C.ar("ق") + "·42", 0, C.TEAL, "Qāf sūra 42: 57 = 57, exact"),
          (C.ar("ص"), 0, C.TEAL, "Ṣād: 152 = 152, exact"),
@@ -116,14 +110,23 @@ C.vbars([(C.ar("ق") + "·50", 0, C.TEAL, "Qāf sūra 50: 57 = 57, exact"),
          (C.ar("ي س"), 37, C.CORAL, "Yā-Sīn: 285 vs 248"),
          (C.ar("ك..ص"), 69, C.CORAL, "KHYʿṢ sūra 19: 798 vs 729")], ymax=75, fmt="{:.0f}")
 
-C.note("D · Tolerance done right. A flat ±5% is bad method (for الله it admits 14 multiples of 19). Each claim gets "
-       "a REALISTIC band from its true variance — and we ask if it still pins a SINGLE multiple of 19, specific to 19.")
-C.table(["Claim · count", "realistic ±τ", "÷19 in band", "specific to 19?", "exactly ÷"], [
-    ["Basmala = 19 letters", "±1 spelling", "✔ exact · 1", "yes", "19"],
-    [C.ar("الرحمن") + " = 57", "±1 form", "✔ exact · 1", "yes", "19×3"],
-    [C.ar("الله") + " = 2695", "±20 (1%)", "~ gap 3 · 2 mults", "✗ vacuous", "7 and 11"],
-    ["Verses + Basmala = 6348", "±35 (schemes)", "~ gap 2 · 3 mults", "✗ vacuous", "23"],
-])
+cB, cD = st.columns(2, gap="medium")
+with cB:
+    C.note("B · Basmala word-frequencies (+ 112 Basmalas). Partly exact, partly not.")
+    C.table(["Word", "claim", "meas.", "÷19", "v"], [
+        [C.ar("الرحمن"), "57", "57", "19×3", Y],
+        [C.ar("الرحيم"), "114", "95", "19×5*", Y],
+        [C.ar("الله"), "2698", "2695", "÷7,11 not 19", N],
+        [C.ar("اسم"), "19", "convention-dep.", "—", "~"],
+    ])
+with cD:
+    C.note("D · Realistic per-claim tolerance — does the band still pin ONE multiple of 19, specific to 19?")
+    C.table(["Claim · count", "±τ", "÷19 in band", "exact ÷"], [
+        ["Basmala = 19", "±1", "✔ exact · 1", "19"],
+        [C.ar("الرحمن") + " = 57", "±1", "✔ exact · 1", "19×3"],
+        [C.ar("الله") + " = 2695", "±20", "~ 2 mults", "7, 11"],
+        ["Verses = 6348", "±35", "~ 3 mults", "23"],
+    ])
 
 C.section("Statistical core — six views of one fact: 19 has no special place")
 
