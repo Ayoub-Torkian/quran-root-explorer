@@ -48,11 +48,13 @@ def inject():
       .cu-note{{font-size:14px;color:{MUTE};line-height:1.55;margin:0 0 5px}}
       .cu-lede{{font-size:15px;line-height:1.6;color:#283A4D}}
       .cu-eye{{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}}
-      table.cu-tbl{{border-collapse:separate;border-spacing:0;width:100%;font-size:14.5px;
-                   border:1px solid #E7EEF5;border-radius:11px;overflow:hidden}}
-      table.cu-tbl td,table.cu-tbl th{{padding:10px 13px;text-align:left;border-bottom:1px solid #EDF3F8}}
+      table.cu-tbl{{border-collapse:separate;border-spacing:0;width:100%;font-size:13px;
+                   border:1px solid #E7EEF5;border-radius:10px;overflow:hidden}}
+      table.cu-tbl td,table.cu-tbl th{{padding:6px 9px;text-align:left;border-bottom:1px solid #EDF3F8;
+                   vertical-align:top;line-height:1.35}}
       table.cu-tbl tr:last-child td{{border-bottom:none}}
-      table.cu-tbl th{{background:{PANEL};color:{MUTE};font-size:12px;text-transform:uppercase;letter-spacing:.5px}}
+      table.cu-tbl th{{background:{PANEL};color:{MUTE};font-size:10.5px;text-transform:uppercase;letter-spacing:.4px}}
+      table.cu-tbl td:first-child{{font-weight:600}}
       table.cu-tbl td:last-child{{font-weight:800;color:{INK};font-variant-numeric:tabular-nums;white-space:nowrap}}
     </style>""", unsafe_allow_html=True)
 

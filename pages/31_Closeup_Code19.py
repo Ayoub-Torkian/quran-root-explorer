@@ -1,4 +1,4 @@
-"""Close-up · Code 19 (Rashad Khalifa), reviewed — REFUTED-ARTIFACT. Claim-by-claim critical review."""
+"""Close-up · Code 19 (Rashad Khalifa), reviewed — REFUTED-ARTIFACT. Comprehensive claim-by-claim critical review."""
 import os
 import streamlit as st
 
@@ -20,8 +20,7 @@ if S:
         except Exception:
             pass
 C.inject()
-
-OK, MAYBE, NO = "✔ holds", "~ method-dependent", "✗ fails neutral"
+Y, P, N = "✔ holds", "~ partial", "✗ fails"
 
 # ── 1 · PROBLEM ──
 C.hero("Code 19 (Rashad Khalifa), reviewed",
@@ -29,17 +28,17 @@ C.hero("Code 19 (Rashad Khalifa), reviewed",
        "REFUTED-ARTIFACT", 22, "rasm counts (Basmalas included)", "DIVINE-DEFAULT · RANDOM null")
 C.story(
     "Anchored on Q 74:30 (<i>“over it is nineteen”</i>), the claim is a pervasive 19-code in letters, words and "
-    "sūras. We test <b>every</b> major claim on the text itself — Basmalas included — and the result is honest and "
-    "split: <b>a real cluster of 19-facts around the Basmala, inside a wider claim that does not survive.</b>",
-    "Written to be مقبول for the general reader (a clear scorecard) and مطلوب for the specialist (every count in a "
-    "table, every divisor controlled). A methodological verdict, not a theological one.", accent=C.CORAL)
+    "sūras. Every major claim is tested here on the text itself, Basmalas included. The result is honest and split: "
+    "<b>the code reproduces EXACTLY where the spelling is fixed, and FAILS wherever spelling can vary.</b>",
+    "Written to be مقبول for the general reader (a clear scorecard) and مطلوب for the specialist (every count, its "
+    "tolerance, and the χ² in a table). A methodological verdict, not a theological one.", accent=C.CORAL)
 C.kpis([
-    ("6", "exact ÷19 facts", "Counts exactly divisible by 19 under a neutral count (see scorecard)", C.TEAL),
-    ("57 = 19×3", "الرحمن ✔", "Ar-Raḥmān occurs 57 times in this corpus — matches the claim exactly", C.TEAL),
-    ("÷ 7 and 11", "الله, not 19", "Allah: measured 2695 = exactly divisible by 7 and 11, not 19 (claim: 2698)", C.CORAL),
-    ("18 ≠ 19", "96:1 letters", "Sūra 96 verse 1 has 18 rasm letters here, not the claimed 19", C.CORAL),
-    ("2.9%", "÷19 rate", "Share of 1,084 natural counts divisible by 19 — vs 5.3% chance (2nd-rarest remainder)", C.CORAL),
-    ("0.55×", "19 vs chance", "Observed ÷ chance for 19 — lowest of all candidate numbers", C.CORAL),
+    ("9", "exact ÷19 facts", "Claims that reproduce exactly and are divisible by 19 (see tables)", C.TEAL),
+    ("ق = 57 ✔", "stable letter", "Qāf in sūra 50 and 42 = 57 = 19×3 — reproduces exactly", C.TEAL),
+    ("ي+س ≠ 285", "variable letter", "Yā-Sīn in sūra 36 = 248, not 285 — fails under a neutral count", C.CORAL),
+    ("الله ÷ 7,11", "not 19", "Allah = 2695, exactly divisible by 7 and 11 — not 19 (claim: 2698)", C.CORAL),
+    ("2.9%", "÷19 rate", "Share of 1,084 natural counts divisible by 19 — vs 5.3% chance; the lowest", C.CORAL),
+    ("0", "above chance", "No candidate number beats chance; 19 is the rarest of all", C.CORAL),
     ("22", "grade", "REFUTED-ARTIFACT — the pervasive code, not the genuine anchors", C.CORAL),
 ])
 
@@ -48,157 +47,161 @@ C.section("Hypothesis")
 C.callout("If 19 truly governs the text, it must show privilege, robustness, and need no discarding",
           "A real numerical law would show three things: multiples of 19 appearing <b>above chance</b> and 19 "
           "<b>out-performing rival numbers</b> (7, 11, 13, 17, 23…); the key counts <b>robust</b> to spelling and to "
-          "the choice of what to count; and <b>no text rejected</b> to make the totals balance. A genuine cluster of "
-          "19-facts can exist without these — but the <i>pervasive code</i> needs all three.", accent=C.SLATE)
+          "the choice of what to count; and <b>no text rejected</b> to make totals balance. A small genuine cluster "
+          "of 19-facts can exist without these — but the <i>pervasive code</i> needs all three.", accent=C.SLATE)
 
 # ── 3 · METHOD & INSTRUMENTS ──
 C.section("Method & instruments")
 C.callout("The apparatus",
-          "<b>Substrate</b> — Book6 rasm; word-forms counted as whole tokens. <b>Basmala</b> — the 112 unnumbered "
-          "chapter-opening Basmalas are added to the word counts, as the theory requires. <b>Tests</b> — (a) verify "
-          "each structural and word claim against the text; (b) the privilege test: divisibility of 1,202 natural "
-          "counts by 19 vs by 7/11/13/17/23/29 vs chance (1/d); (c) the robustness test: re-count letters under a "
-          "neutral spelling and see whether the totals still land on 19.", accent=C.SLATE)
+          "<b>Substrate</b> — Book6 rasm; words as whole tokens, letters counted directly. <b>Basmala</b> — the 112 "
+          "unnumbered chapter-opening Basmalas are added where the theory requires. <b>Tests</b> — (a) verify each "
+          "structural, word, and initial-letter claim against the text; (b) the privilege test: divisibility of "
+          "1,084 natural counts by 19 vs 7/11/13/17/23/29 vs chance; (c) the robustness test: re-count under a "
+          "neutral spelling and see whether the totals still land on 19. <b>Note</b> — my normalised rasm differs "
+          "from the exact Uthmānī orthography, which is the very point: counts that need a fixed spelling are fragile.",
+          accent=C.SLATE)
 
 # ── 4 · RESULTS ──
-C.section("Results — every claim, stated and tested")
+C.section("Results — every claim, by category")
 
-C.note("A · Structural claims — counts of sūras and verses. These are exact and they HOLD.")
-C.table(["Claim (Khalifa)", "This study", "÷19", "Status"], [
-    ["The Basmala has 19 letters", "19 letters", "19×1", OK],
-    ["The Qur'ān has 114 sūras = 19×6", "114 sūras", "19×6", OK],
-    ["Sūra 96 (first revealed) is 19th from the end", "114−96+1 = 19", "19×1", OK],
-    ["Sūra 96 has 19 verses", "19 verses", "19×1", OK],
-    ["Q 74:30 names the number nineteen", "textual anchor", "—", OK],
+C.note("A · Structural & positional claims. The counts of sūras, verses and positions — exact, and they mostly HOLD.")
+C.table(["Claim (Khalifa)", "claimed", "measured", "÷19", "verdict"], [
+    ["Basmala has 19 letters", "19", "19", "19×1", Y],
+    ["114 sūras", "114 = 19×6", "114", "19×6", Y],
+    ["Sūra 96 (first revealed) is 19th from the end", "19", "19", "19×1", Y],
+    ["Sūra 96 has 19 verses", "19", "19", "19×1", Y],
+    ["Basmala occurs 114 times (heads + 1:1 + 27:30)", "114 = 19×6", "114", "19×6", Y],
+    ["Span sūra 9 → 27 = 19 sūras; Σ(9..27)", "342 = 19×18", "342", "19×18", Y],
+    ["Sūra 96 verse 1 has 19 letters", "19", "18", "r = 18", N],
+    ["Sūra 96 has 285 letters", "285 = 19×15", "288", "r = 3", N],
+    ["First revelation 96:1–5 has 19 words", "19", "29", "r = 10", N],
+    ["Total verses incl. Basmalas", "6346 = 19×334", "6348", "r = 17", N],
 ])
 
-C.note("B · Basmala word-frequencies (numbered text + 112 opening Basmalas). The famous cluster — partly real, "
-       "partly count-dependent.")
-C.table(["Word", "Khalifa", "This study", "÷19?", "Status"], [
-    [C.ar("الرحمن") + " Ar-Raḥmān", "57 = 19×3", "57", "✔ 19×3", OK],
-    [C.ar("الرحيم") + " Ar-Raḥīm", "114 = 19×6", "95", "✔ 19×5 — different count", MAYBE],
-    [C.ar("الله") + " Allah", "2698 = 19×142", "2695", "✗ 2695 not ÷19", NO],
-    [C.ar("اسم") + " Ism", "19", "convention-dependent", "—", MAYBE],
+C.note("B · Basmala word-frequencies (numbered text + 112 Basmalas). The famous cluster — partly exact, partly not.")
+C.table(["Word", "claimed", "measured", "÷19", "verdict"], [
+    [C.ar("الرحمن") + " Ar-Raḥmān", "57 = 19×3", "57", "19×3", Y],
+    [C.ar("الرحيم") + " Ar-Raḥīm", "114 = 19×6", "95", "19×5 (value differs)", Y],
+    [C.ar("الله") + " Allah", "2698 = 19×142", "2695", "÷7 and ÷11, not 19", N],
+    [C.ar("اسم") + " Ism", "19", "convention-dependent", "—", "~"],
 ])
 
-C.note("C · Letter & total claims — re-counted under a neutral spelling, they do NOT replicate. The counts are "
-       "spelling-dependent.")
-C.table(["Claim (Khalifa)", "Khalifa", "This study", "Match?"], [
-    ["Sūra 96, verse 1 — letters", "19", "18", NO],
-    ["Sūra 96 — total letters", "285 = 19×15", "288", NO],
-    ["Total verses incl. Basmalas", "6346 = 19×334", "6348", NO],
-    ["Muqaṭṭaʿāt (initials) letter tallies", "various = 19×k", "spelling-dependent, disputed", NO],
+C.note("C · Quranic Initials (muqaṭṭaʿāt) — the most famous claims. Re-counted neutrally, the split is the whole "
+       "story: the orthographically STABLE letters (ق, ص) reproduce EXACTLY; the spelling-VARIABLE ones (ن, ي, ع, alif) shift off 19.")
+C.table(["Initial · sūra(s)", "claimed", "measured", "÷19", "letter is"], [
+    [C.ar("ق") + " · Sūra 50 (Qāf)", "57 = 19×3", "57", "19×3", "stable ✔"],
+    [C.ar("ق") + " · Sūra 42", "57 = 19×3", "57", "19×3", "stable ✔"],
+    [C.ar("ص") + " · Sūras 7, 19, 38", "152 = 19×8", "152", "19×8", "stable ✔"],
+    [C.ar("ن") + " · Sūra 68 (Nūn)", "133 = 19×7", "138", "r = 5", "variable ✗"],
+    [C.ar("ح م") + " · Sūras 40–46", "2147 = 19×113", "2112", "r = 3", "variable ✗"],
+    [C.ar("ي س") + " · Sūra 36 (Yā-Sīn)", "285 = 19×15", "248", "r = 1*", "variable ✗"],
+    [C.ar("ك ه ي ع ص") + " · Sūra 19", "798 = 19×42", "729", "r = 7", "variable ✗"],
+    [C.ar("ا ل م") + " · Sūras 2,3,29–32", "= 19×k", "18,072", "r = 3", "alif — very variable ✗"],
+    [C.ar("ا ل م ص") + " · Sūra 7", "= 19×k", "4,759", "r = 9", "alif — very variable ✗"],
 ])
+C.note("Discrepancy between Khalifa's count and a neutral re-count, per initial-letter claim. Zero for the stable "
+       "letters (ق, ص); 5–69 for the spelling-variable ones. The code lives precisely in the spelling.")
+C.vbars([(C.ar("ق") + "·50", 0, C.TEAL, "Qāf sūra 50: 57 = 57, exact"),
+         (C.ar("ق") + "·42", 0, C.TEAL, "Qāf sūra 42: 57 = 57, exact"),
+         (C.ar("ص"), 0, C.TEAL, "Ṣād: 152 = 152, exact"),
+         (C.ar("ن") + "·68", 5, C.CORAL, "Nūn: 133 claimed, 138 measured"),
+         (C.ar("ح م"), 35, C.CORAL, "Ḥā-Mīm: 2147 vs 2112"),
+         (C.ar("ي س"), 37, C.CORAL, "Yā-Sīn: 285 vs 248"),
+         (C.ar("ك..ص"), 69, C.CORAL, "KHYʿṢ sūra 19: 798 vs 729")], ymax=75, fmt="{:.0f}")
 
-C.note("D · Tolerance done right. A flat ±5% is itself bad method — for الله it would admit 14 multiples of 19, "
-       "for the verse-total 33, so 'near a multiple' becomes automatic. Instead each claim gets a REALISTIC band "
-       "from its true variance source — spelling for letters, form-inclusion for words, numbering-scheme spread for "
-       "verse totals — and we ask whether that band still pins a SINGLE multiple of 19, and whether the count is "
-       "specific to 19 rather than equally near 7, 11, 13…")
-C.table(["Claim · count", "realistic ±τ", "÷19 in band", "specific to 19?", "exactly divisible by"], [
+C.note("D · Tolerance done right. A flat ±5% is bad method (for الله it admits 14 multiples of 19). Each claim gets "
+       "a REALISTIC band from its true variance — and we ask if it still pins a SINGLE multiple of 19, specific to 19.")
+C.table(["Claim · count", "realistic ±τ", "÷19 in band", "specific to 19?", "exactly ÷"], [
     ["Basmala = 19 letters", "±1 spelling", "✔ exact · 1", "yes", "19"],
-    ["114 sūras", "±0 fixed", "✔ exact · 1", "—", "19 (also 2,3,6)"],
-    ["Sūra 96 · 19 verses, 19th from end", "±0–1", "✔ exact · 1", "yes", "19"],
     [C.ar("الرحمن") + " = 57", "±1 form", "✔ exact · 1", "yes", "19×3"],
-    [C.ar("الرحيم") + " = 95", "±3 form", "✔ exact · 1", "yes", "19×5 (claim: 114)"],
-    [C.ar("الله") + " = 2695", "±20 (1% forms)", "~ gap 3 · 2 mults", "✗ vacuous", "7 and 11, NOT 19"],
-    ["Sūra 96 = 288 letters", "±5 (1.5%)", "~ gap 3 · 1", "✗ near 7,11,13,17", "—"],
-    ["Verses + Basmala = 6348", "±35 (schemes)", "~ gap 2 · 3 mults", "✗ vacuous", "23, NOT 19"],
+    [C.ar("الله") + " = 2695", "±20 (1%)", "~ gap 3 · 2 mults", "✗ vacuous", "7 and 11"],
+    ["Verses + Basmala = 6348", "±35 (schemes)", "~ gap 2 · 3 mults", "✗ vacuous", "23"],
 ])
-C.note("The split is clean. Where a count is intrinsically PRECISE — structure, clean words — the 19-facts are "
-       "EXACT and real (basmala, 114 sūras, sūra 96, الرحمن = 57, الرحيم = 95 = 19×5). Where a count is intrinsically "
-       "VARIABLE — الله's forms, verse totals — even a realistic band spans 2–3 multiples of 19 and the count is "
-       "exactly divisible by OTHER numbers (الله by 7 and 11; the verse-total by 23). The genuine 19-cluster is the "
-       "precise small counts; the 'pervasive' part is the variable large ones, where 19 is not specific.")
-C.note("E · No statistical privilege — every candidate number, side by side. Across 1,084 natural counts of the "
-       "text, the exact-multiple rate of each number tracks pure chance (1/d); 19's rate is the LOWEST relative to "
-       "chance, not the highest.")
-C.table(["divisor d", "exact multiples", "observed rate", "chance 1/d", "obs ÷ chance"], [
-    ["7", "149", "13.7%", "14.3%", "0.96"],
-    ["11", "92", "8.5%", "9.1%", "0.93"],
-    ["13", "78", "7.2%", "7.7%", "0.94"],
-    ["17", "48", "4.4%", "5.9%", "0.74"],
-    ["19   ← claimed special", "31", "2.9%", "5.3%", "0.55"],
-    ["23", "25", "2.3%", "4.3%", "0.53"],
+
+C.note("E · No statistical privilege — every number side by side. Across 1,084 natural counts, each number's "
+       "exact-multiple rate tracks chance (1/d); 19's is the LOWEST relative to chance, not the highest.")
+C.table(["divisor d", "exact mult.", "rate", "chance", "obs ÷ chance"], [
+    ["7", "149", "13.7%", "14.3%", "0.96"], ["11", "92", "8.5%", "9.1%", "0.93"],
+    ["13", "78", "7.2%", "7.7%", "0.94"], ["17", "48", "4.4%", "5.9%", "0.74"],
+    ["19  ← claimed special", "31", "2.9%", "5.3%", "0.55"], ["23", "25", "2.3%", "4.3%", "0.53"],
     ["29", "27", "2.5%", "3.4%", "0.74"],
 ])
-C.note("F · The decisive picture — the remainder when each of the 1,084 counts is divided by 19. If 19 governed "
-       "the text, remainder 0 (an exact multiple of 19) would tower above the rest. Instead it is the 2nd-rarest of "
-       "the 19 possible remainders — 31 counts, below the chance line. The bulge at small remainders is the ordinary "
-       "small-number effect, unrelated to 19; the χ² test rejects uniformity, but in the WRONG direction for the "
-       "claim — remainder 0 is suppressed, not favoured.")
+C.note("F · The decisive picture — remainder when each of the 1,084 counts is divided by 19. If 19 governed the "
+       "text, remainder 0 (a multiple of 19) would tower. Instead it is the 2nd-rarest of 19 remainders, below the "
+       "chance line. The bulge at small remainders is the ordinary small-number effect; χ² rejects uniformity, but "
+       "in the WRONG direction — remainder 0 is suppressed, not favoured.")
 C.hist([31, 40, 40, 37, 31, 131, 93, 72, 66, 64, 66, 64, 73, 60, 46, 40, 50, 34, 46],
        [str(i) for i in range(19)], highlight=0, ref=57, reflabel="chance (uniform)")
 
 # ── 5 · GATING CHAIN ──
 C.section("Gating chain — striking, then ordinary")
-C.para("<b>Naive look</b> — basmala 19 letters, 114 = 6×19 sūras, sūra 96's 19 verses and 19th-from-end, "
-       "الرحمن = 57: arresting, and genuinely real. <b>Control 1 · rival numbers</b> — 7, 11, 13, 17, 23 each hit "
-       "their own multiples just as often; 19 is not special. <b>Control 2 · chance</b> — across 1,202 counts 19's "
-       "hit-rate (3.2%) is <i>below</i> its arithmetic chance (5.3%). <b>Control 3 · spelling</b> — re-counted "
-       "neutrally, the letter totals shift off 19 (96:1 → 18; sūra 96 → 288; total → 6348). <b>Control 4 · degrees "
-       "of freedom</b> — choosing which forms to count, whether to add the 112 Basmalas, and (historically) "
-       "rejecting 9:128–129, supplies all the freedom needed. The <i>pervasive</i> code collapses; the Basmala "
-       "cluster remains a real curiosity.")
+C.para("<b>Naive look</b> — basmala 19 letters, 114 = 6×19 sūras, sūra 96's 19 verses, الرحمن = 57, ق = 57: "
+       "arresting, and genuinely real. <b>Control 1 · rival numbers</b> — 7, 11, 13, 17, 23 each hit their own "
+       "multiples just as often; 19 is not special. <b>Control 2 · chance</b> — across 1,084 counts 19's hit-rate "
+       "(2.9%) is below its arithmetic chance (5.3%). <b>Control 3 · spelling</b> — re-counted neutrally, the "
+       "variable-letter and total claims shift off 19 (ن → 138, ي+س → 248, الم → 18,072). <b>Control 4 · degrees of "
+       "freedom</b> — choosing which forms to count, whether to add the 112 Basmalas, which spelling to use, and "
+       "(historically) rejecting 9:128–129, supplies all the freedom needed. The <i>pervasive</i> code collapses; "
+       "the stable-letter cluster remains a real curiosity.")
 
 # ── 6 · INTERPRETATION ──
 C.section("Interpretation")
-C.para("Two truths sit together. First, a genuine knot of 19-facts surrounds the Basmala and the muṣḥaf's frame "
-       "(19 letters; 114 = 6×19 sūras; sūra 96; الرحمن = 57) — real, and the honest source of the theory's pull. "
-       "Second, the move from that knot to a <b>governing code</b> is where it fails: any rich text offers thousands "
-       "of countable quantities, about one in nineteen is a multiple of 19 by arithmetic, and reporting the hits "
-       "while dropping the misses (the <b>multiple-comparisons</b> / 'Texas sharpshooter' problem) manufactures a "
-       "pattern the data do not privilege. The letter-level claims, re-counted neutrally, simply do not hold.")
+C.para("The single most telling result is the orthographic split. Code 19 reproduces <b>exactly</b> for counts that "
+       "no one can dispute — the number of sūras, a verse count, the letters ق and ص (which have no spelling "
+       "variants) — and it <b>fails</b> for every count that depends on a contested spelling: the letter alif "
+       "(written or omitted hundreds of times), the yāʾ, the long word-totals. A genuine numerical law would not "
+       "care whether a letter has orthographic variants. A counting artifact would live <i>precisely</i> in those "
+       "variants — which is exactly what we see. The real anchors are the handful of unambiguous facts; the "
+       "'pervasive code' is the freedom to pick a spelling, a word-form, and which counts to report.")
 
 # ── 7 · CAVEATS & CONFOUNDS ──
 C.section("Caveats & confounds")
-C.para("<b>In fairness:</b> the anchors are real and some word-counts (الرحمن = 57) replicate exactly — this review "
-       "does not pretend everything is bogus. <b>On method:</b> we count on a normalised rasm, not Khalifa's exact "
-       "letter-by-letter Uthmānī tally (whose spelling is itself contested) — so we refute the <i>statistical "
-       "privilege</i> and the <i>letter totals</i>, while granting the genuine word/structure facts. <b>On record:</b> "
-       "the framework needs a fixed spelling, free inclusion of the Basmalas, and the rejection of two verses to "
-       "balance; it is rejected by mainstream Sunnī and Shīʿī scholarship. <b>This is a statistical verdict, not a "
+C.para("<b>In fairness:</b> the anchors are real, and some claims reproduce <i>exactly</i> (الرحمن = 57, ق = 57, "
+       "ص = 152) — this review does not pretend everything is bogus. <b>On method:</b> we count on a normalised "
+       "rasm, not Khalifa's exact Uthmānī tally (whose spelling is itself contested) — so we refute the statistical "
+       "privilege and the variable-letter totals, while granting the unambiguous facts. <b>On record:</b> the "
+       "framework needs a fixed spelling, free inclusion of the Basmalas, and the rejection of two verses to "
+       "balance, and is rejected by mainstream Sunnī and Shīʿī scholarship. <b>This is a statistical verdict, not a "
        "theological one.</b>")
 
 # ── 8 · VERDICT ──
 C.section("Verdict")
 C.verdict("REFUTED-ARTIFACT",
-          "A genuine cluster of 19-facts exists around the Basmala and the muṣḥaf's structure — and is fairly "
-          "credited. But the <b>pervasive code</b> fails: under a proper null 19 holds no privilege (rate ≤ chance, "
-          "below rival numbers), the letter totals do not replicate under a neutral spelling, and the system needs "
-          "selectable conventions and discarded text. Not established as a governing code.",
-          "~85% the pervasive code is a multiple-comparisons artifact; the Basmala anchors are real",
-          "a pre-registered, spelling-fixed count scheme (no choices) showing 19-multiples far above chance and rivals",
+          "A genuine cluster of 19-facts exists around the Basmala, the muṣḥaf's structure, and the stable initial "
+          "letters — fairly credited. But the <b>pervasive code</b> fails: under a proper null 19 holds no privilege "
+          "(rate ≤ chance, the rarest number), the variable-letter and total claims do not replicate under a neutral "
+          "spelling, and the system needs selectable conventions and discarded text. Not a governing code.",
+          "~85% the pervasive code is a counting artifact; the stable anchors are real",
+          "a pre-registered, spelling-fixed scheme (no choices) showing 19-multiples far above chance and rivals",
           "such a scheme would reopen it — none has survived independent replication to date")
 
 # ── REFLECTION ──
 C.section("Reflection")
 C.para("Three things make this case instructive. <b>The pull is real:</b> a handful of exact 19-facts genuinely "
-       "exist — the Basmala's 19 letters, 114 = 6×19 sūras, الرحمن = 57 — and the mind naturally reads design into "
-       "them. <b>The over-reach is equally real:</b> any long text offers thousands of countable quantities, so "
-       "roughly one in nineteen is a multiple of 19 by arithmetic alone — collect the hits, forget the misses, and "
-       "a 'code' appears. <b>The cure is to count everything, not just the hits:</b> across 1,084 natural counts, "
-       "multiples of 19 turned out to be the <i>rarest</i>, not the commonest. The real lesson is not about 19 at "
-       "all — it is that a pattern is only as strong as the null it was tested against.")
+       "exist — basmala 19 letters, 114 = 6×19 sūras, الرحمن = 57, ق = 57 — and the mind reads design into them. "
+       "<b>The over-reach is equally real:</b> any long text offers thousands of countable quantities, so roughly "
+       "one in nineteen is a multiple of 19 by arithmetic; collect the hits, forget the misses, and a 'code' "
+       "appears. <b>The cure is to count everything, not just the hits:</b> across 1,084 counts, multiples of 19 are "
+       "the rarest, not the commonest. The lesson is not about 19 — a pattern is only as strong as the null it is "
+       "tested against.")
 
 # ── SUMMARY ──
 C.section("Summary — what held, what failed")
-C.note("Side by side, in the plainest terms — the genuine 19-facts on the left, the claims that do not survive a "
-       "neutral count on the right.")
+C.note("In the plainest terms — the genuine 19-facts on the left, the claims that do not survive a neutral count on the right.")
 C.table(["✔ Holds — exactly divisible by 19", "✗ Fails — under a neutral count"], [
-    ["Basmala = 19 letters", C.ar("الله") + " = 2695 — exactly ÷ 7 and ÷ 11, not 19"],
-    ["114 sūras = 19 × 6", "Sūra 96 = 288 letters, not the claimed 285"],
-    ["Sūra 96 — 19 verses, and 19th from the end", "Verses + Basmalas = 6348, not the claimed 6346"],
-    [C.ar("الرحمن") + " = 57 = 19 × 3", "19's exact-multiple rate 2.9% — lowest of any number"],
-    [C.ar("الرحيم") + " = 95 = 19 × 5", "remainder 0 is the 2nd-rarest of the 19 remainders"],
+    ["Basmala = 19 letters · 114 sūras = 19×6", C.ar("الله") + " = 2695 — exactly ÷ 7 and ÷ 11, not 19"],
+    ["Sūra 96 — 19 verses, 19th from the end", "Sūra 96 = 288 letters, not 285; 96:1–5 = 29 words, not 19"],
+    [C.ar("الرحمن") + " = 57 · " + C.ar("ق") + " = 57 · " + C.ar("ص") + " = 152", C.ar("ن") + " = 138 · " + C.ar("ي س") + " = 248 · " + C.ar("الم") + " = 18,072"],
+    ["Basmala occurs 114× · Σ(9..27) = 342", "Verses + Basmalas = 6348, not 6346"],
+    ["— the unambiguous, stable counts —", "19's rate 2.9% (lowest); remainder 0 the 2nd-rarest"],
 ])
 
 # ── TAKEAWAY ──
 C.section("Takeaway")
 C.callout("In one line — for every reader",
-          "A small, genuine cluster of 19-facts surrounds the Basmala — but there is <b>no governing 19-code</b>. "
-          "Under a proper null, 19 holds no special place in the Qur'ān's counts; it is the <i>least</i> common "
-          "multiple, not the most. The Qur'ān's structure is real and measurable — see the Āyah and Sūra close-ups — "
-          "but this particular numerical claim is not where it lives.", accent=C.CORAL)
+          "A small, genuine cluster of 19-facts surrounds the Basmala and the stable letters — but there is <b>no "
+          "governing 19-code</b>. Under a proper null, 19 holds no special place in the Qur'ān's counts; it is the "
+          "<i>least</i> common multiple, not the most. The Qur'ān's structure is real and measurable — see the Āyah "
+          "and Sūra close-ups — but this particular numerical claim is not where it lives.", accent=C.CORAL)
 
 st.page_link("pages/27_Closeup_Index.py", label="← Back to the Close-up map", icon="🔎")
