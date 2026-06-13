@@ -51,22 +51,38 @@ C.kpis([
 
 # ── 2 · HYPOTHESIS ──
 C.section("Hypothesis")
-C.callout("If 19 truly governs the text, it must show privilege, robustness, and need no discarding",
-          "A real numerical law would show three things: multiples of 19 appearing <b>above chance</b> and 19 "
-          "<b>out-performing rival numbers</b> (7, 11, 13, 17, 23…); the key counts <b>robust</b> to spelling and to "
-          "the choice of what to count; and <b>no text rejected</b> to make totals balance. A small genuine cluster "
-          "of 19-facts can exist without these — but the <i>pervasive code</i> needs all three.", accent=C.SLATE)
+C.callout("If 19 truly governs the text, three things must ALL hold — and a single hit is never enough",
+          "Two claims are usually blurred together, and we separate them. The <i>weak</i> claim is that some counts "
+          "happen to be multiples of 19 — easy, and partly true. The <i>strong</i> claim is that 19 <b>governs</b> "
+          "the text — and that is what we test, through three predictions it must make.<br>"
+          "&nbsp;&nbsp;<b>(1) Privilege.</b> Multiples of 19 must appear <i>above</i> chance — more than the "
+          "~1/19 = 5.3% that <i>any</i> number gives — and 19 must out-perform its rivals 7, 11, 13, 17, 23. "
+          "<br>&nbsp;&nbsp;<b>(2) Robustness.</b> The headline counts must survive a change of spelling, of "
+          "word-form definition, and of whether the 112 Basmalas are counted; a law of the text cannot hinge on a "
+          "scribe's choice. <br>&nbsp;&nbsp;<b>(3) No discarding.</b> No verse may be rejected to make a total "
+          "balance.<br>"
+          "The null hypothesis is deliberately mundane: 19 is an ordinary number, its multiples occur at chance, and "
+          "the famous hits are selection from thousands of possible counts. We let the data choose between the two.",
+          accent=C.SLATE)
 
 # ── 3 · METHOD & INSTRUMENTS ──
 C.section("Method & instruments")
-C.callout("The apparatus",
-          "<b>Substrate</b> — Book6 rasm; words as whole tokens, letters counted directly. <b>Basmala</b> — the 112 "
-          "unnumbered chapter-opening Basmalas are added where the theory requires. <b>Tests</b> — (a) verify each "
-          "structural, word, and initial-letter claim against the text; (b) the privilege test: divisibility of "
-          "1,084 natural counts by 19 vs 7/11/13/17/23/29 vs chance; (c) the robustness test: re-count under a "
-          "neutral spelling and see whether the totals still land on 19. <b>Note</b> — my normalised rasm differs "
-          "from the exact Uthmānī orthography, which is the very point: counts that need a fixed spelling are fragile.",
-          accent=C.SLATE)
+C.callout("The apparatus — substrate, counts, three tests, and one honest limitation",
+          "<b>Substrate.</b> Book6 rasm — the consonantal skeleton, diacritics demoted as a human artifact; words "
+          "counted as whole tokens, letters counted directly. The 112 unnumbered chapter-opening Basmalas are "
+          "<i>added</i> to the word counts wherever the theory needs them — i.e. we grant the most generous reading "
+          "of the claim, not the least.<br>"
+          "&nbsp;&nbsp;<b>The count battery.</b> We assemble 1,084 natural quantities of the text: verses per sūra, "
+          "root-tokens per sūra, unique roots per sūra, every individual root-frequency, and the global totals — the "
+          "honest universe of things one could count.<br>"
+          "&nbsp;&nbsp;<b>Three tests.</b> (a) <i>Verification</i> — re-count every structural, word, and "
+          "initial-letter claim directly against the text. (b) <i>Privilege</i> — measure how often each of the 1,084 "
+          "counts is divisible by 19, set against 7, 11, 13, 17, 23, 29 and against arithmetic chance (1/d), then a "
+          "remainder histogram and a χ² test of uniformity. (c) <i>Robustness</i> — re-count the letters under a "
+          "neutral spelling and apply a realistic per-claim tolerance, to see whether the totals still land on 19.<br>"
+          "&nbsp;&nbsp;<b>The honest limitation — which is the whole point.</b> Our normalised rasm is not Khalifa's "
+          "exact Uthmānī tally; a claim whose verdict flips when the spelling is normalised was never a law of the "
+          "text to begin with.", accent=C.SLATE)
 
 # ── 4 · RESULTS ──
 C.section("Results — every claim, by category")
@@ -133,24 +149,25 @@ C.section("Statistical core — six views of one fact: 19 has no special place")
 C.note("① The raw material — most natural counts in the Qur'ān are small (verse counts, root frequencies). "
        "Context for everything below: small counts dominate.")
 C.hist([258, 219, 263, 130, 102, 63, 49], ["<10", "10–19", "20–49", "50–99", "100–199", "200–499", "500+"],
-       color=C.SLATE)
+       color=C.TEAL)
 
 C.note("② Exact-multiple rate ÷ chance, for every divisor from 2 to 30. If a number were special its bar would rise "
        "above 1.0 (the dashed line). None does — and 19 (highlighted) is among the very lowest.")
 C.hist([0.94, 1.03, 0.94, 1.25, 1.13, 0.96, 1.01, 0.94, 0.94, 0.93, 1.03, 0.94, 0.76, 0.77, 0.84, 0.75, 0.63,
         0.54, 0.83, 0.77, 0.71, 0.53, 0.80, 0.88, 0.77, 0.62, 0.59, 0.72, 0.64],
-       [str(d) for d in range(2, 31)], highlight=17, ref=1.0, reflabel="chance")
+       [str(d) for d in range(2, 31)], highlight=17, ref=1.0, reflabel="chance", color="#3E78B2")
 
 C.note("③ The decisive chart — the remainder when each of the 1,084 counts is divided by 19. If 19 governed the "
        "text, remainder 0 (an exact multiple) would tower. Instead it is the 2nd-rarest of all 19 remainders, below "
        "the chance line. (The bulge at small remainders is the ordinary small-number effect; χ² rejects uniformity — "
        "but in the WRONG direction for the claim: remainder 0 is suppressed, not favoured.)")
 C.hist([31, 40, 40, 37, 31, 131, 93, 72, 66, 64, 66, 64, 73, 60, 46, 40, 50, 34, 46],
-       [str(i) for i in range(19)], highlight=0, ref=57, reflabel="chance (uniform)")
+       [str(i) for i in range(19)], highlight=0, ref=57, reflabel="chance (uniform)", color="#6B5B95")
 
 C.note("④ The same picture for a RIVAL number, 7 — remainders mod 7 are just as lumpy. Nothing distinguishes 19; "
        "every divisor shows the same small-number texture.")
-C.hist([149, 144, 122, 145, 137, 208, 179], [str(i) for i in range(7)], ref=155, reflabel="chance (uniform)")
+C.hist([149, 144, 122, 145, 137, 208, 179], [str(i) for i in range(7)], ref=155, reflabel="chance (uniform)",
+       color=C.GOLD)
 
 C.note("⑤ The distance from each count to its NEAREST multiple of 19 (0–9). If 19 pulled, gap 0 would spike. It is "
        "instead the rarest gap of all — exact divisibility by 19 is the least common outcome, not the most.")
@@ -169,23 +186,37 @@ C.para("<b>Naive look</b> — basmala 19 letters, 114 = 6×19 sūras, sūra 96's
 
 # ── 6 · INTERPRETATION ──
 C.section("Interpretation")
-C.para("The single most telling result is the orthographic split. Code 19 reproduces <b>exactly</b> for counts that "
-       "no one can dispute — the number of sūras, a verse count, the letters ق and ص (which have no spelling "
-       "variants) — and it <b>fails</b> for every count that depends on a contested spelling: the letter alif "
-       "(written or omitted hundreds of times), the yāʾ, the long word-totals. A genuine numerical law would not "
-       "care whether a letter has orthographic variants. A counting artifact would live <i>precisely</i> in those "
-       "variants — which is exactly what we see. The real anchors are the handful of unambiguous facts; the "
-       "'pervasive code' is the freedom to pick a spelling, a word-form, and which counts to report.")
+C.para("<b>The orthographic split is the single most telling result.</b> Sort every claim by one question — does its "
+       "count depend on a spelling choice? — and the verdicts sort almost perfectly along with it. Code 19 reproduces "
+       "<b>exactly</b> for the counts no one can dispute: the number of sūras (114), a verse count (19), and the "
+       "initials ق and ص, which have no orthographic variants at all. It <b>fails</b> for every count that rides on a "
+       "contested spelling: the alif (written or dropped hundreds of times across the muṣḥaf — the الم total comes to "
+       "18,072, off by 3), the yāʾ (ي+س = 248, not 285), and the long word-totals (الله = 2,695, which is exactly "
+       "÷ 7 and ÷ 11, not ÷ 19).<br><br>"
+       "<b>Why this is decisive.</b> A genuine numerical law could not care whether a letter happens to have spelling "
+       "variants — arithmetic is indifferent to orthography. A <i>counting artifact</i>, by contrast, lives precisely "
+       "in those variants, because that is the only place a counter's freedom can act. What we observe is the "
+       "fingerprint of the artifact, not of a law. The real anchors are the handful of unambiguous facts around the "
+       "Basmala and the muṣḥaf's frame; the 'pervasive code' is the accumulated freedom to choose a spelling, a "
+       "word-form, whether to add the 112 Basmalas, and which of a thousand possible counts to report.")
 
 # ── 7 · CAVEATS & CONFOUNDS ──
 C.section("Caveats & confounds")
-C.para("<b>In fairness:</b> the anchors are real, and some claims reproduce <i>exactly</i> (الرحمن = 57, ق = 57, "
-       "ص = 152) — this review does not pretend everything is bogus. <b>On method:</b> we count on a normalised "
-       "rasm, not Khalifa's exact Uthmānī tally (whose spelling is itself contested) — so we refute the statistical "
-       "privilege and the variable-letter totals, while granting the unambiguous facts. <b>On record:</b> the "
-       "framework needs a fixed spelling, free inclusion of the Basmalas, and the rejection of two verses to "
-       "balance, and is rejected by mainstream Sunnī and Shīʿī scholarship. <b>This is a statistical verdict, not a "
-       "theological one.</b>")
+C.para("<b>In fairness — what we are NOT claiming.</b> The anchors are real, and several claims reproduce "
+       "<i>exactly</i> on a neutral count (الرحمن = 57, ق = 57, ص = 152). This review does not pretend everything is "
+       "bogus, nor that those who find 19 compelling are careless — the genuine facts are striking. We refute the "
+       "<i>pervasive code</i>, not the existence of a small, real 19-cluster.<br><br>"
+       "<b>On method — the limits of our instrument.</b> We count on a normalised rasm, not Khalifa's exact Uthmānī "
+       "tally, whose own spelling is contested. So our verdict is precise about two things — the <i>statistical "
+       "privilege</i> of 19 (refuted: across 1,084 counts it is the rarest of all candidate numbers) and the "
+       "<i>variable-letter and total claims</i> (refuted: re-counted neutrally they shift off 19) — while it grants "
+       "the unambiguous structural and stable-letter facts outright. We do not adjudicate each Uthmānī count "
+       "letter-by-letter; we show that any claim needing a fixed spelling is, by that fact alone, fragile.<br><br>"
+       "<b>On the record.</b> The framework as a whole requires a fixed spelling, the free inclusion of the 112 "
+       "Basmalas, and the rejection of 9:128–129 to make a total balance; it is rejected by mainstream Sunnī and "
+       "Shīʿī scholarship. <b>This is a statistical and methodological verdict, not a theological one</b> — and the "
+       "same gates were turned, without favour, on one of our own findings (the inter-sūra coherence), which we "
+       "recorded honestly as a size artifact.")
 
 # ── 8 · VERDICT ──
 C.section("Verdict")
@@ -200,13 +231,19 @@ C.verdict("REFUTED-ARTIFACT",
 
 # ── REFLECTION ──
 C.section("Reflection")
-C.para("Three things make this case instructive. <b>The pull is real:</b> a handful of exact 19-facts genuinely "
-       "exist — basmala 19 letters, 114 = 6×19 sūras, الرحمن = 57, ق = 57 — and the mind reads design into them. "
-       "<b>The over-reach is equally real:</b> any long text offers thousands of countable quantities, so roughly "
-       "one in nineteen is a multiple of 19 by arithmetic; collect the hits, forget the misses, and a 'code' "
-       "appears. <b>The cure is to count everything, not just the hits:</b> across 1,084 counts, multiples of 19 are "
-       "the rarest, not the commonest. The lesson is not about 19 — a pattern is only as strong as the null it is "
-       "tested against.")
+C.para("Three things make this case instructive, and they generalise far beyond it.<br><br>"
+       "<b>The pull is real.</b> A handful of exact 19-facts genuinely exist — basmala 19 letters, 114 = 6×19 sūras, "
+       "الرحمن = 57, ق = 57 — and the human mind is built to read design into coincidence. Dismissing those moved by "
+       "such facts would be both unkind and unscientific; the facts are striking, and an honest review begins by "
+       "granting them.<br><br>"
+       "<b>The over-reach is equally real.</b> Any long text offers thousands of countable quantities — letters, "
+       "words, verses, sūras, their sums and their positions. By arithmetic alone, about one in nineteen of them is a "
+       "multiple of 19. Search hard enough, report the hits, quietly drop the misses, and a 'code' assembles itself "
+       "out of nothing but selection. This is the multiple-comparisons trap, and from the inside it is invisible.<br><br>"
+       "<b>The cure is simple: count everything, not only the hits.</b> When we did — all 1,084 natural counts — "
+       "multiples of 19 turned out to be the <i>rarest</i> outcome, not the commonest, and 19 the least distinguished "
+       "of every candidate number. The lesson, in the end, is not about 19 at all: a pattern is worth exactly as much "
+       "as the null hypothesis it was tested against — and not one bit more.")
 
 # ── SUMMARY ──
 C.section("Summary — what held, what failed")

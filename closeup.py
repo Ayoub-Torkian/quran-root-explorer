@@ -33,7 +33,8 @@ def ar(txt, size=26):
 def inject():
     st.markdown(f"""
     <style>
-      section.main .block-container{{padding-top:2.4rem;padding-bottom:1rem;max-width:1020px}}
+      .block-container,section.main .block-container,div[data-testid='stMainBlockContainer']{{
+          max-width:1000px!important;padding-top:2rem!important;padding-bottom:1rem!important;margin:0 auto!important}}
       .cu-card{{background:#fff;border:1px solid #E7EEF5;border-radius:12px;padding:12px 15px;margin:6px 0;
                box-shadow:0 1px 2px rgba(16,36,58,.05)}}
       .cu-badge{{display:inline-block;padding:4px 12px;border-radius:999px;color:#fff;font-weight:800;
@@ -45,8 +46,8 @@ def inject():
       .cu-sec span.b{{width:6px;height:19px;border-radius:3px;background:{TEAL}}}
       .cu-sec b{{font-size:16px;font-weight:800;color:{INK};letter-spacing:.2px;
                 background:linear-gradient(transparent 58%, {TEAL}30 0);padding:0 3px}}
-      .cu-note{{font-size:14px;color:{MUTE};line-height:1.55;margin:0 0 5px}}
-      .cu-lede{{font-size:15px;line-height:1.6;color:#283A4D}}
+      .cu-note{{font-size:14.5px;color:{MUTE};line-height:1.5;margin:1px 0 5px}}
+      .cu-lede{{font-size:16px;line-height:1.62;color:#243b53}}
       .cu-eye{{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}}
       table.cu-tbl{{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px;table-layout:auto;
                    border:1px solid #E7EEF5;border-radius:10px;overflow:hidden}}
