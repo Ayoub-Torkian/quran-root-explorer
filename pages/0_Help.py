@@ -1,7 +1,7 @@
-"""Help — tabbed layout, current with v2.0 (re-spine · Lens Lab · Āyah hero · masks ·
-surface-form input).  📌 summary metrics first, then: Overview · Concepts · Glossary ·
-Chart reading · Page tour (grouped like the sidebar) · Case study (live numbers) ·
-Scales & Lens Lab · Troubleshooting."""
+"""Help — tabbed layout, current with v2.1 (re-spine · Lens Lab · Āyah hero · masks ·
+surface-form input · 🔎 Close-up module: Discoveries + claims reviewed).  📌 summary metrics
+first, then: Overview · Concepts · Glossary · Chart reading · Page tour (grouped like the
+sidebar) · Case study (live numbers) · Scales & Lens Lab · Troubleshooting."""
 import streamlit as st
 from state import inject_css, hero, log_page
 
@@ -486,6 +486,12 @@ GLOSSARY = [
     ("PPMI", "Positive PMI — PMI with negatives floored at 0, the standard weighting before building distributional vectors.  Its whole point: <b>frequency ≠ association</b> — two roots can share many verses merely because both are common; PPMI asks whether they share MORE than their frequencies predict."),
     ("GLOBAL motif vs LOCAL formula (#66)", "Two usage modes of a root: a <b>GLOBAL motif</b> spans many sūras (≥20) — a corpus-wide theme; a <b>LOCAL formula</b> concentrates in a few — a situational expression.  Equal frequencies can hide opposite geographies."),
     ("📍 takeaway line", "Every chart in the app ends with a computed 'What to take from this' line, generated from the numbers on YOUR screen — never canned text.  ❓ tooltips on metrics do the same job for single numbers."),
+    ("🔎 Close-up · the 8-section standard", "A deep-dive investigation in the 🔎 Close-up module.  Every one follows the SAME anatomy — <b>Problem → Hypothesis → Method → Results → Gating chain → Interpretation → Caveats → Verdict</b>, then Reflection · Summary · Lessons · Takeaway · and full Persian + Arabic abstracts.  Read one and you can read them all; each opens with an 'On this page' strip."),
+    ("Status badge (close-up verdict)", "The honest verdict each close-up carries.  <b>DEFINED</b> — characterised to necessity.  <b>CANDIDATE</b> — real, gated, still climbing.  <b>REDUCES-TO-KNOWN</b> — resolves to an existing/known effect.  <b>REFUTED-ARTIFACT</b> — looked real, killed by a later control.  A grade (0–100) sits beside it."),
+    ("MEASURED vs INFERRED", "A discipline tag used throughout the close-ups.  <b>MEASURED</b> = a proper null + effect size on THIS text actually produced the number.  <b>INFERRED</b> = an interpretation or estimate built on top.  A claim is never allowed to wear a MEASURED tone when it is really INFERRED."),
+    ("Substrate · rasm vs ROOT", "WHAT a result was measured on.  <b>rasm-WORD</b> = the bare consonantal skeleton, keeping morphology, function-words and the fāṣila (verse-end).  <b>ROOT</b> = content lemmas only, with NO grammar.  Diacritics (vowels) are a human artifact — corroborative only, never divine evidence."),
+    ("Arrangement legitimacy", "WHICH ordering a finding was measured on.  <b>Divine-default</b> = the canonical muṣḥaf order (sūra→āyah).  <b>Divine-alt</b> = a principled re-indexing that can carry real findings (e.g. revelation order).  <b>Human-construct</b> = an analyst's re-indexing — explorable but tagged.  <b>Random shuffle</b> = the null/yardstick only.  Only divine-substrate + divine-arrangement findings speak to the text's design."),
+    ("Path forward", "The closing section of each claims-reviewed close-up: a probability-RANKED, evidence-grounded roadmap.  For an open objective (the revelation order) it ranks how to attain it; for a refuted claim (Code 19, the word-count miracle) it ranks the single pre-registered test that would settle it.  Every move names the MEASURED result it builds on."),
 ]
 
 CHART_GUIDES = [
@@ -529,6 +535,30 @@ PAGE_TOUR = [
         ("📖 Home", "Tabs: 🔁 Process · 📊 Visualize · ⬇️ Export · 🎨 Display · 🧭 Explore.",
          "Type roots — or surface forms like عليم (a transparency chip shows every form→root "
          "mapping) — press 🚀 Analyze, click per-root cards to drill in."),
+    ]),
+    ("📜 DISCOVERIES", [
+        ("🧬 Determinacy", "The latent-feature ledger — intrinsic, self-referential discoveries, each "
+         "scored against the text's own shuffle and carrying a status badge.",
+         "The scoreboard: what the program has found, and what collapsed under control."),
+        ("🫀 Correspondence", "The Qur'ān-as-designed-system ledger — body/structure correspondence "
+         "panels with a per-card signal chart each.",
+         "The 'telescope' view: properties proven for designed systems, tested for a Qur'ān correspondence."),
+    ]),
+    ("🔎 CLOSE-UP", [
+        ("🗺️ Map · start here", "The index of deep-dive investigations — three pillars (Āyah · Sūra · "
+         "Arrangement) plus 🔢 Claims reviewed — each badged with an honest verdict. Every close-up follows "
+         "ONE 8-section standard: Problem → Hypothesis → Method → Results → Gating → Interpretation → "
+         "Caveats → Verdict, plus Reflection · Summary · Lessons · and full Persian + Arabic abstracts.",
+         "Begin here. Each page opens with an 'On this page' strip so you always know where you are."),
+        ("📐 The Āyah · 📜 The Sūra · ⚠️ Inter-Sūra", "Units & arrangement: the āyah rebuilt to necessity "
+         "(DEFINED), the sūra characterised (CANDIDATE), the inter-sūra coherence pushed hard and honestly "
+         "refuted as a size artifact (REFUTED-ARTIFACT).",
+         "What a Qur'ānic unit IS — measured on the rasm against its own shuffle, verdict included."),
+        ("🔢 Code 19 · 🧮 Word-count miracle · 🕰️ Revelation order", "Claims reviewed: famous numerical and "
+         "chronological claims held to the same gates — fair, fully data-driven, crediting what is real and "
+         "refuting the over-reach. Each ends with a probability-ranked, evidence-grounded 'Path forward'.",
+         "مقبول for the general reader (a clear scorecard) · مطلوب for the specialist (every count, its null, "
+         "its tolerance). A statistical & methodological verdict, never a theological one."),
     ]),
     ("📖 READER", [
         ("📖 Ayah Browser", "Every matched ayah with diacritized text.",
