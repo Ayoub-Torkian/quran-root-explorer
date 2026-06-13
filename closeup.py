@@ -9,7 +9,7 @@ Public API: ar · inject · hero · story · headline · foundation · section �
 import html as _h
 import streamlit as st
 
-INK, MUTE = "#10243A", "#566B82"
+INK, MUTE = "#10243A", "#10243A"  # LOCKED: no grey. MUTE==INK so every label/tick/note renders near-black.
 TEAL, CORAL, GOLD, SLATE = "#138A74", "#DD5A47", "#CC8A3C", "#4E6E92"
 GRID, PANEL = "#E4ECF3", "#F4F8FB"
 GREEN, RED = TEAL, CORAL
@@ -54,7 +54,7 @@ def inject():
       table.cu-tbl td,table.cu-tbl th{{padding:4px 8px;text-align:left;border-bottom:1px solid #EDF3F8;
                    vertical-align:top;line-height:1.3}}
       table.cu-tbl tr:last-child td{{border-bottom:none}}
-      table.cu-tbl th{{background:{PANEL};color:{MUTE};font-size:10.5px;text-transform:uppercase;letter-spacing:.3px}}
+      table.cu-tbl th{{background:{PANEL};color:{MUTE};font-size:12px;text-transform:uppercase;letter-spacing:.3px}}
       table.cu-tbl td:first-child{{font-weight:600}}
       table.cu-tbl td:last-child{{font-weight:800;color:{INK};font-variant-numeric:tabular-nums}}
     </style>""", unsafe_allow_html=True)
@@ -72,7 +72,7 @@ def hero(title, question, status, grade, substrate, arrangement, plain=""):
         f"{_e(status)} · grade {grade}</span></div>"
         f"<div style='background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);border-radius:9px;"
         f"padding:9px 13px;margin-top:9px'>"
-        f"<div style='font-size:11.5px;font-weight:800;letter-spacing:1.1px;color:#c6e4dc'>THE PROBLEM</div>"
+        f"<div style='font-size:12px;font-weight:800;letter-spacing:1.1px;color:#c6e4dc'>THE PROBLEM</div>"
         f"<div style='font-size:17px;font-weight:800;line-height:1.4;margin-top:2px'>{_e(question)}</div></div>"
         f"<div style='margin-top:9px'><span class='cu-chip' style='{chip}'>🧬 {_e(substrate)}</span>"
         f"<span class='cu-chip' style='{chip}'>🗺️ {_e(arrangement)}</span></div></div>", unsafe_allow_html=True)
@@ -84,7 +84,7 @@ def story(what, why, accent=TEAL):
         f"background:linear-gradient(135deg,{accent}16,#fff 58%);padding:14px 18px'>"
         f"<div style='font-size:18.5px;font-weight:800;color:{INK};line-height:1.42'>{what}</div>"
         f"<div style='margin-top:10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap'>"
-        f"<span style='flex:0 0 auto;font-size:11px;font-weight:800;letter-spacing:.6px;color:#fff;"
+        f"<span style='flex:0 0 auto;font-size:12px;font-weight:800;letter-spacing:.6px;color:#fff;"
         f"background:{accent};padding:4px 10px;border-radius:6px'>WHY IT MATTERS</span>"
         f"<span style='font-size:14.5px;color:#283A4D;line-height:1.5;flex:1;min-width:240px'>{why}</span>"
         f"</div></div>", unsafe_allow_html=True)
@@ -159,7 +159,7 @@ def cascade(steps, zmax=12.0):
         dots += (f"<circle cx='{x:.1f}' cy='{y:.1f}' r='6' fill='#fff' stroke='{c}' stroke-width='3'/>"
                  f"<text x='{x:.1f}' y='{y-13:.1f}' text-anchor='middle' font-size='14.5' font-weight='800' "
                  f"fill='{c}'>{_e(val)}</text>"
-                 f"<text x='{x:.1f}' y='{H-B+20:.1f}' text-anchor='end' font-size='13' fill='#34506A' "
+                 f"<text x='{x:.1f}' y='{H-B+20:.1f}' text-anchor='end' font-size='13' fill='#10243A' "
                  f"transform='rotate(-26 {x:.1f},{H-B+20:.1f})'>{_e(lab)}</text>")
     svg = (
         f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"
@@ -225,7 +225,7 @@ def hist(values, labels, highlight=None, ref=None, reflabel="expected", color=SL
     show = n <= 12
     p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
     if not show:
-        p.append(f"<text x='{W-Rr}' y='11' text-anchor='end' font-size='11' fill='#8FA6BC'>ⓘ hover bars for exact counts</text>")
+        p.append(f"<text x='{W-Rr}' y='11' text-anchor='end' font-size='12' fill='#10243A'>ⓘ hover bars for exact counts</text>")
     for t in range(4):
         gv = mx * t / 3
         gy = Y(gv)
@@ -235,7 +235,7 @@ def hist(values, labels, highlight=None, ref=None, reflabel="expected", color=SL
         ry = Y(ref)
         p.append(f"<line x1='{L}' y1='{ry:.0f}' x2='{W-Rr}' y2='{ry:.0f}' stroke='{INK}' stroke-width='1.2' "
                  f"stroke-dasharray='5 4'/>"
-                 f"<text x='{L}' y='11' font-size='11.5' font-weight='700' fill='{INK}'>– – {_e(reflabel)}</text>")
+                 f"<text x='{L}' y='11' font-size='12' font-weight='700' fill='{INK}'>– – {_e(reflabel)}</text>")
     for i, (v, lab) in enumerate(zip(values, labels)):
         cx = L + pw * (i + 0.5) / n
         col = hcolor if i == highlight else color
@@ -245,7 +245,7 @@ def hist(values, labels, highlight=None, ref=None, reflabel="expected", color=SL
                  f"<text x='{cx:.1f}' y='{H-B+17:.0f}' text-anchor='middle' font-size='12' "
                  f"fill='{INK if i==highlight else MUTE}'>{_e(lab)}</text>")
         if show or i == highlight:
-            fs, fw = (13, 800) if i == highlight else (11, 700)
+            fs, fw = (13, 800) if i == highlight else (12, 700)
             fc = hcolor if i == highlight else INK
             p.append(f"<text x='{cx:.1f}' y='{by-5:.0f}' text-anchor='middle' font-size='{fs}' font-weight='{fw}' "
                      f"fill='{fc}'>{_e(v)}</text>")
@@ -315,14 +315,14 @@ def kpis(items):
     for v, lab, tip, c in items:
         cells += (f"<div title='{_e(tip)}' style='position:relative;flex:1 1 96px;min-width:96px;background:#fff;"
                   f"border:1px solid #E7EEF5;border-radius:9px;padding:6px 10px 7px;cursor:help'>"
-                  f"<div style='position:absolute;top:4px;right:6px;width:14px;height:14px;border-radius:50%;"
-                  f"background:#EEF3F8;color:#8FA6BC;font-size:10px;font-weight:800;text-align:center;"
-                  f"line-height:14px'>i</div>"
+                  f"<div style='position:absolute;top:4px;right:6px;width:16px;height:16px;border-radius:50%;"
+                  f"background:#EEF3F8;color:#10243A;font-size:12px;font-weight:800;text-align:center;"
+                  f"line-height:16px'>i</div>"
                   f"<div style='font-size:19px;font-weight:800;color:{c or INK};line-height:1.05;"
                   f"font-variant-numeric:tabular-nums'>{_e(v)}</div>"
-                  f"<div style='font-size:11px;color:{MUTE};line-height:1.18;margin-top:1px;display:inline;"
+                  f"<div style='font-size:12px;color:{MUTE};line-height:1.18;margin-top:1px;display:inline;"
                   f"border-bottom:1px dotted #B9C8D6'>{_e(lab)}</div></div>")
-    st.markdown(f"<div style='font-size:10.5px;color:#8FA6BC;margin:2px 2px 0;font-weight:700;"
+    st.markdown(f"<div style='font-size:12px;color:#10243A;margin:2px 2px 0;font-weight:700;"
                 f"letter-spacing:.3px'>ⓘ hover any box for its definition</div>"
                 f"<div style='display:flex;flex-wrap:wrap;gap:6px;margin:3px 0 5px'>{cells}</div>",
                 unsafe_allow_html=True)

@@ -1,4 +1,6 @@
-"""Close-up · Revelation order & the verse-length clock (Bazargan), reviewed — CANDIDATE. Credit-forward."""
+"""Close-up · Qur'ān chronology — dating the revelation, reviewed (CANDIDATE). Comprehensive across the
+main schools (traditional, orientalist, modern/quantitative); credit-forward to Bazargan. All counts MEASURED
+on Book6 (rasm-WORD, col 8 revelation order); the scholarship survey is tagged as such."""
 import os
 import streamlit as st
 
@@ -8,7 +10,7 @@ except Exception:
     S = None
 import closeup as C
 
-st.set_page_config(page_title="Close-up · Revelation order", page_icon="🕰️", layout="wide")
+st.set_page_config(page_title="Close-up · Qur'ān chronology", page_icon="🕰️", layout="wide")
 if S:
     try:
         S.log_page("closeup_nuzul")
@@ -20,188 +22,351 @@ if S:
         except Exception:
             pass
 C.inject()
+Y, P, N = "✔ holds", "~ partial", "✗ over-reach"
 
 # ── 1 · PROBLEM ──
-C.hero("Revelation order & the verse-length clock (Bazargan), reviewed",
-       "Can the Qur'ān's chapters be ordered in time from the text itself — and may we date the pieces inside a sūra?",
-       "CANDIDATE", 70, "rasm-WORD", "DIVINE-ALT (revelation order, col 8)")
+C.hero("Qur'ān chronology — dating the revelation, reviewed",
+       "Can the Qur'ān's chapters be ordered in time from the text itself — and how far down may we date: "
+       "the sūra, or the passages inside it?",
+       "CANDIDATE", 70, "rasm-WORD (Book6 col 6)", "DIVINE-ALT · revelation order (col 8)")
 st.markdown(
     "<div style='display:flex;justify-content:flex-end;gap:9px;margin:7px 0 2px;flex-wrap:wrap'>"
-    "<a href='#nz-fa' style='text-decoration:none'><div style='background:linear-gradient(135deg,#138A74,#10243A);"
-    "color:#fff;border-radius:9px;padding:7px 13px;font-weight:800;font-size:13px;border:1px solid "
-    "rgba(255,255,255,.3)'>📄 Persian abstract · خلاصهٔ فارسی ↓</div></a>"
-    "<a href='#nz-ar' style='text-decoration:none'><div style='background:linear-gradient(135deg,#4E6E92,#10243A);"
-    "color:#fff;border-radius:9px;padding:7px 13px;font-weight:800;font-size:13px;border:1px solid "
-    "rgba(255,255,255,.3)'>📄 Arabic abstract · الملخّص العربي ↓</div></a></div>", unsafe_allow_html=True)
+    "<a href='#nz-fa' style='text-decoration:none'>"
+    "<div style='background:linear-gradient(135deg,#138A74,#10243A);color:#fff;border-radius:9px;padding:7px 13px;"
+    "font-weight:800;font-size:13px;box-shadow:0 2px 8px rgba(16,36,58,.25);border:1px solid rgba(255,255,255,.3)'>"
+    "📄 Persian abstract · خلاصهٔ فارسی ↓</div></a>"
+    "<a href='#nz-ar' style='text-decoration:none'>"
+    "<div style='background:linear-gradient(135deg,#4E6E92,#10243A);color:#fff;border-radius:9px;padding:7px 13px;"
+    "font-weight:800;font-size:13px;box-shadow:0 2px 8px rgba(16,36,58,.25);border:1px solid rgba(255,255,255,.3)'>"
+    "📄 Arabic abstract · الملخّص العربي ↓</div></a></div>", unsafe_allow_html=True)
 C.story(
-    "Bazargan's quantitative insight is <b>real and measurable</b>: mean verse length grows over the revelation "
-    "period, and that trend orders the sūras and confirms the traditional sequence. The one over-reach is using it "
-    "to date arbitrary <i>passages</i> cut from inside a sūra.",
-    "Revelation order is a legitimate (divine‑alternative) arrangement, and Bazargan pioneered data‑driven Qur'ānic "
-    "study decades before stylometry — a program later <b>vindicated</b> by Behnam Sadeghi (2011). We credit it, and "
-    "scope the single criticism precisely.", accent=C.TEAL)
+    "The chronology of the Qur'ān is a <b>real, measurable signal</b>: mean verse length climbs steadily from the "
+    "short, rhymed Meccan sūras (≈ 14 words/āyah) to the long, legal Medinan ones (≈ 30) — and that single trend "
+    "orders the sūras and broadly confirms the traditional sequence. Eleven centuries of scholars, from the "
+    "tradition to Nöldeke to Bazargan to Sadeghi, <b>converge</b> on it. The one over-reach they also share is "
+    "dating analyst-cut <i>passages</i> inside a sūra.",
+    "Revelation order is a legitimate divine-<i>alternative</i> arrangement. This reviews the whole field — not one "
+    "author — credits each where credit is due (Bazargan pioneered the quantitative clock; Sadeghi vindicated it), "
+    "and scopes the single shared criticism precisely. مقبول for the general reader, مطلوب for the specialist.",
+    accent=C.TEAL)
 C.kpis([
-    ("r = 0.66", "length ↔ time", "Mean āyah length vs the traditional revelation order (col 8) — a real trend", C.TEAL),
-    ("R² 0.44", "variance explained", "By verse length alone; broadly confirms the traditional sequence", C.TEAL),
-    ("→ 0.49", "multivariate", "Adding word-length features — a modest, honest gain", C.INK),
-    ("8.5 ≈ 11.1", "within ≈ between", "Verse-length spread INSIDE a sūra ≈ the spread ACROSS sūras", C.GOLD),
-    ("2–74%", "change-point band", "Sūras with a detectable internal break — wildly method-dependent", C.GOLD),
-    ("✓ Sadeghi", "program vindicated", "2011 stylometry confirmed the broader chronology Bazargan pioneered", C.TEAL),
-    ("70", "grade", "CANDIDATE — sūra-level signal real; only passage-level dating overreaches", C.GOLD),
+    ("r = 0.66", "length ↔ time", "Mean āyah length (words) vs the traditional revelation order, col 8 — MEASURED on 114 sūras", C.TEAL),
+    ("R² 0.44", "variance explained", "Verse length alone explains 44% of the revelation-order variance", C.TEAL),
+    ("14 → 30", "Mecca → Medina", "Mean words/āyah: Meccan 14.0 (n=86) vs Medinan 29.7 (n=28) — the clock, plainly", C.TEAL),
+    ("8.4 ≈ 11.1", "within ≈ between", "Verse-length spread INSIDE a sūra (8.4) ≈ the spread of sūra-means ACROSS the corpus (11.1)", C.GOLD),
+    ("2–74%", "change-point band", "Share of sūras with a detectable internal break — wildly method-dependent", C.GOLD),
+    ("✓ Sadeghi", "program vindicated", "2011 morphological stylometry confirmed the chronology the tradition & Bazargan drew", C.TEAL),
+    ("70", "grade", "CANDIDATE — sūra-level clock real & converged; only passage-level dating over-reaches", C.GOLD),
 ])
 
 # ── 2 · HYPOTHESIS ──
 C.section("Hypothesis")
-C.callout("If verse length is a chronological clock, it makes three predictions — two for it, one against over-reach",
-          "<b>(1) Correlation.</b> Mean verse length should track the revelation order. <b>(2) Recovery.</b> "
-          "Ordering the sūras by length alone should approximate the traditional sequence. <b>(3) The boundary "
-          "test.</b> One may date <i>passages</i> inside a sūra by length only if sūras actually contain "
-          "<b>detectable internal style-breaks</b> — otherwise the 'passages' are drawn by the analyst, not the "
-          "text. Predictions 1–2 vindicate Bazargan; prediction 3 is where passage-level dating must earn its keep.",
+C.callout("If verse length is a chronological clock, it makes three predictions — two FOR it, one against over-reach",
+          "Two claims are routinely blurred, and we separate them. The <i>weak, true</i> claim: style drifts over "
+          "the revelation period. The <i>strong</i> claim: that drift can <b>date</b> any slice of text. We test "
+          "three predictions.<br>"
+          "&nbsp;&nbsp;<b>(1) Correlation.</b> Mean verse length must track the revelation order. "
+          "<br>&nbsp;&nbsp;<b>(2) Recovery.</b> Ordering the sūras by length alone must approximate the traditional "
+          "sequence — and the independent scholarly chronologies must converge on the same shape. "
+          "<br>&nbsp;&nbsp;<b>(3) The boundary test.</b> One may date a <i>passage</i> inside a sūra by length only "
+          "if sūras carry <b>detectable internal style-breaks</b>; otherwise the 'passages' are drawn by the analyst, "
+          "not the text.<br>"
+          "Predictions 1–2 vindicate the tradition, Nöldeke and Bazargan alike; prediction 3 is where passage-level "
+          "dating — Bell's, Blachère's, and Bazargan's finest-grained move — must earn its keep.",
           accent=C.SLATE)
 
 # ── 3 · METHOD & INSTRUMENTS ──
 C.section("Method & instruments")
-C.callout("The apparatus",
-          "<b>Substrate</b> — rasm-WORD (Book6 col 6); āyah length in words. <b>Arrangement</b> — the divine-"
-          "alternative: the traditional revelation order (col 8, sūra granularity), the standard reference. "
-          "<b>Tests</b> — (a) Pearson/Spearman of mean āyah length vs revelation rank; (b) a multivariate clock "
-          "(length + letters-per-word + letter-length); (c) the boundary test: detect an internal verse-length "
-          "change-point in each sūra, run across <i>several</i> thresholds and a multiple-comparison-corrected "
-          "t-test so the result can't be tuned; (d) within-sūra vs between-sūra length variance. <b>Note</b> — our "
-          "normalised rasm differs from Bazargan's own counts; we test his <i>method</i>, not reproduce his figures.",
+C.callout("The apparatus — substrate, the divine-alternative order, and four tests",
+          "<b>Substrate.</b> rasm-WORD (Book6 col 6): āyah length counted in whole word-tokens on the consonantal "
+          "skeleton, diacritics demoted. <b>Arrangement.</b> the divine-<i>alternative</i>: the traditional "
+          "revelation order (col 8, sūra granularity — the 1924 Cairo standard), the reference every modern study "
+          "uses.<br>"
+          "&nbsp;&nbsp;<b>Four tests.</b> (a) <i>Correlation</i> — Pearson/Spearman of mean āyah length vs "
+          "revelation rank, across all 114 sūras. (b) <i>Multivariate clock</i> — length + letters-per-word + "
+          "letter-length, to see how much more than raw length is carried. (c) <i>Convergence</i> — line up the "
+          "main scholarly chronologies (traditional, orientalist, quantitative) and check they agree on the shape "
+          "the data shows. (d) <i>Boundary test</i> — detect an internal verse-length change-point in each sūra "
+          "across <i>several</i> thresholds and a multiplicity-corrected t-test, so 'is this sūra composite?' cannot "
+          "be tuned; plus within-sūra vs between-sūra variance.<br>"
+          "&nbsp;&nbsp;<b>MEASURED vs SCHOLARSHIP.</b> Every number below is MEASURED on Book6. The survey of who "
+          "said what is historical scholarship, tagged as such — never dressed as our measurement. Our normalised "
+          "rasm differs from Bazargan's own tallies; we test his <i>method</i>, not reproduce his figures.",
           accent=C.SLATE)
 
-# ── 4 · RESULTS ──
-C.section("Results — the clock works at sūra level")
-C.note("The genuine trend, credited. Mean verse length rises with revelation order (r = 0.66, Spearman 0.69), "
-       "broadly confirming the traditional sequence — and the extremes are exactly as expected.")
+# ── 4 · RESULTS — THE FIELD ──
+C.section("The landscape — eleven centuries of chronology, and where each stands")
+C.note("SCHOLARSHIP (not our measurement). Nearly every system — traditional and Western, old and new — agrees on "
+       "the broad shape the data shows: short, rhymed, eschatological Meccan sūras early; long, legal, prosaic "
+       "Medinan sūras late. They differ on granularity — and that is the whole question.")
+cOld, cNew = st.columns(2, gap="medium")
+with cOld:
+    C.note("A · Traditional & orientalist — the classical chronologies.")
+    C.table(["System · year", "basis", "on our data"], [
+        ["Tradition · Cairo 1924 / Ibn ʿAbbās", "asbāb al-nuzūl, reports", "= col 8 baseline"],
+        ["G. Weil · 1844", "first Western; 4 periods", "broad shape ✔"],
+        ["T. Nöldeke · 1860", "style + content; 3 Meccan + Medinan", "the standard ✔"],
+        ["W. Muir · 1861", "tone; 6 periods", "broad shape ✔"],
+        ["H. Grimme · 1895", "2 Meccan periods", "coarser ~"],
+        ["H. Hirschfeld · 1902", "typological, ~6 kinds", "not a sequence ~"],
+        ["R. Bell · 1937", "passage/verse re-dating", "over-reach ✗"],
+        ["R. Blachère · 1947", "refined Nöldeke; chrono. transl.", "sūra ✔ / passage ✗"],
+    ])
+with cNew:
+    C.note("B · Modern & quantitative — the data-driven program.")
+    C.table(["System · year", "basis", "on our data"], [
+        ["M. Bazargan · ~1980s", "mean verse length as clock", "r = 0.66 ✔ (pioneer)"],
+        ["B. Sadeghi · 2011", "morphological stylometry", "vindicates ✔✔"],
+        ["N. Sinai · 2017", "verse length + text-criticism", "supports Nöldeke ✔"],
+    ])
+    C.note("The quantitative turn did not overturn the tradition — it <b>confirmed</b> it, and put numbers on it. "
+           "Bazargan reached the verse-length clock decades before Western stylometry; Sadeghi's richer features "
+           "later placed the same chronology on a rigorous statistical footing.")
+    C.callout("Convergence, in one line",
+              "Three independent roads — the tradition's reports, Nöldeke's stylistic reading, and Bazargan/Sadeghi's "
+              "numbers — arrive at the <b>same</b> Mecca→Medina drift. That triangulation is the strong part of the "
+              "chronology, and it is real.", accent=C.TEAL)
+
+C.section("The clock, measured — sūra level")
+C.note("MEASURED. Mean verse length rises with revelation order (Pearson r = 0.66, Spearman 0.69, R² 0.44), broadly "
+       "reproducing the traditional sequence — and the extremes are exactly where the tradition puts them.")
 L, R = st.columns(2, gap="medium")
 with L:
-    C.table(["Shortest mean verse (early end)", "sūra"], [
-        ["al-Ikhlāṣ — terse, hymnic", "112"], ["al-Nās", "114"], ["ʿAbasa", "80"], ["al-Ghāshiya", "88"],
+    C.table(["Shortest mean āyah — early/Meccan", "sūra", "w/āyah"], [
+        ["al-Ikhlāṣ — terse, hymnic", "112", "4.8"], ["al-Nās", "114", "5.0"],
+        ["ʿAbasa", "80", "5.1"], ["al-Ghāshiya", "88", "5.2"],
     ])
 with R:
-    C.table(["Longest mean verse (late end)", "sūra"], [
-        ["al-Baqara — long, legal", "2"], ["al-Māʾida", "5"], ["al-Mujādila", "58"], ["al-Ṭalāq", "65"],
+    C.table(["Longest mean āyah — late/Medinan", "sūra", "w/āyah"], [
+        ["al-Mumtaḥina — long, legal", "60", "49.6"], ["al-Māʾida", "5", "41.1"],
+        ["al-Ṭalāq", "65", "39.4"], ["al-Baqara", "2", "38.0"],
     ])
-C.note("A multivariate clock improves the fit only modestly — verse length already carries almost all the signal "
-       "(letters-per-word alone correlates just 0.09). Honest gain, not transformative.")
+
+C.section("Statistical core — five measured views of the clock")
+
+C.note("① The clock itself — mean words/āyah by revelation-order quintile (Q1 earliest → Q5 latest). The rise is "
+       "real and large (7 → 29 words), but NOT perfectly monotonic: Q4 dips below Q3. The trend is a drift, not a "
+       "metronome — already a caution against fine-grained dating.")
+C.hist([7.3, 11.7, 22.0, 16.7, 29.3], ["Q1 early", "Q2", "Q3", "Q4", "Q5 late"], highlight=4, color=C.TEAL)
+
+C.note("② The plainest cut — Meccan vs Medinan mean āyah length. The single fact under the whole chronology: "
+       "Medinan verses are more than twice as long. MEASURED on the traditional Makkī/Madanī split.")
+C.vbars([("Meccan (n=86)", 14.0, C.TEAL, "Mean 14.0 words/āyah across 86 Meccan sūras"),
+         ("Medinan (n=28)", 29.7, C.INK, "Mean 29.7 words/āyah across 28 Medinan sūras")],
+        ymax=34, fmt="{:.1f}")
+
+C.note("③ A multivariate clock improves the fit only modestly — verse length already carries almost all the signal "
+       "(letters-per-word alone correlates just ~0.09). An honest gain, not a transformation.")
 C.vbars([("verse length", 0.44, C.TEAL, "length alone: R² 0.44"),
          ("+ letters/word", 0.46, C.TEAL, "+ word length"),
-         ("+ letter length", 0.49, C.INK, "+ āyah length in letters")], ymax=0.6, fmt="{:.2f}")
+         ("+ letter length", 0.49, C.INK, "+ āyah length in letters: R² 0.49")], ymax=0.6, fmt="{:.2f}")
 
-# ── 5 · GATING CHAIN ──
-C.section("The boundary test — where passage-dating fails")
-C.note("Can one date a PASSAGE inside a sūra by its length? Only if sūras have detectable internal breaks. The "
-       "fraction that do swings from 2% to 74% depending on the test — so 'is this sūra composite?' has no stable "
-       "answer, and passage-level dating cannot be grounded. (We show the whole band, not a cherry-picked figure.)")
+C.note("④ The boundary test — share of sūras with a 'detectable' internal break, by method. It swings from 2% to "
+       "74%, so 'is this sūra composite?' has NO stable answer — and passage-level dating cannot be grounded. We "
+       "show the whole band, never a cherry-picked figure.")
 C.vbars([("Δ > 1.0σ", 33, C.SLATE, "mean-diff threshold 1.0×σ"), ("Δ > 1.25σ", 18, C.SLATE, "1.25×σ"),
          ("Δ > 1.5σ", 10, C.SLATE, "1.5×σ"), ("Δ > 2.0σ", 2, C.SLATE, "2.0×σ"),
-         ("t-test p<.05", 74, C.GOLD, "uncorrected"), ("t-test Bonferroni", 38, C.GOLD, "multiplicity-corrected")],
-        ymax=80, fmt="{:.0f}%")
-C.para("And the deeper reason: the spread of verse length <b>inside</b> a single sūra (σ ≈ 8.5 words) is almost as "
-       "large as the spread of sūra-means <b>across the whole corpus</b> (σ ≈ 11.1). So a passage's length carries "
-       "little information about its date — the within‑sūra noise nearly swamps the between‑sūra signal.")
+         ("t-test p<.05", 74, C.GOLD, "uncorrected — inflated by multiplicity"),
+         ("t-test Bonferroni", 38, C.GOLD, "multiplicity-corrected")], ymax=80, fmt="{:.0f}%")
+
+C.note("⑤ The deepest reason passage-dating fails — the spread of verse length INSIDE one sūra (σ ≈ 8.4) is almost "
+       "as large as the spread of sūra-means ACROSS the whole corpus (σ ≈ 11.1). A passage's length says little "
+       "about its date: within-sūra noise nearly swamps the between-sūra signal.")
+C.vbars([("within a sūra (σ)", 8.4, C.GOLD, "Mean within-sūra SD of āyah length ≈ 8.4 words"),
+         ("between sūras (σ)", 11.1, C.INK, "SD of the 114 sūra-means ≈ 11.1 words")],
+        ymax=13, fmt="{:.1f}")
+
+# ── 5 · GATING CHAIN ──
+C.section("Gating chain — strong at the sūra, weak at the passage")
+C.para("<b>Naive look</b> — verse length climbs across the revelation; ordering by it reproduces the tradition. "
+       "<b>Control 1 · convergence</b> — independent chronologies (tradition, Nöldeke, Bazargan, Sadeghi) agree on "
+       "the same Mecca→Medina drift; the signal is not one analyst's artifact. <b>Control 2 · effect size</b> — the "
+       "correlation is real and moderate (r = 0.66, R² 0.44); credited. <b>Control 3 · granularity</b> — push from "
+       "sūra to passage and the ground gives way: the 'composite' rate is method-dependent (2–74%), and within-sūra "
+       "spread (8.4) ≈ between-sūra spread (11.1). <b>Control 4 · degrees of freedom</b> — letting the analyst draw "
+       "the passage boundaries supplies all the freedom needed to 'date' anything. The sūra-level clock survives "
+       "every gate; passage-level dating fails at Control 3.")
 
 # ── 6 · INTERPRETATION ──
 C.section("Interpretation")
-C.para("The clock is <b>genuine at the level of the sūra</b> — the divine unit. Bazargan's central claim is correct, "
-       "the traditional order is broadly confirmed, and the quantitative program he opened was <b>later vindicated "
-       "by Sadeghi's (2011) stylometry</b>, which placed the chronology on a firm statistical footing. That is a "
-       "real success and it is his.<br><br>"
-       "It fails only at the level of the <b>passage</b> — a unit the analyst draws, not one the text marks. Internal "
-       "length-variation is real but is not a datable boundary (it is method-dependent, 2–74%, and within ≈ between), "
-       "so cutting a sūra into separately-dated passages over-reaches. This is the divine-division‑vs‑human-construct "
-       "line, and the over-reach is shared with <b>Richard Bell and Blachère</b>, who re-ordered the text at "
-       "passage/verse level — it is not unique to Bazargan, nor a flaw in his core insight.")
+C.para("The clock is <b>genuine at the level of the sūra</b> — the divine unit. The traditional order is broadly "
+       "confirmed from the text's own statistics; Nöldeke's stylistic reading, Bazargan's verse-length clock, and "
+       "Sadeghi's morphological stylometry all <b>converge</b> on it. Bazargan's central claim is correct and "
+       "pioneering, and Sadeghi's 2011 program vindicated the quantitative road he opened. That is a real, shared "
+       "success — and the credit is genuinely distributed across the field.<br><br>"
+       "It fails only at the level of the <b>passage</b> — a unit the analyst draws, not one the text marks. "
+       "Internal length-variation is real but is not a datable boundary (method-dependent 2–74%, and within ≈ "
+       "between), so cutting a sūra into separately-dated passages over-reaches. This is the divine-division-vs-"
+       "human-construct line, and the over-reach is <b>shared</b> with Richard Bell and Blachère, who re-ordered the "
+       "text at passage/verse level — it is not unique to Bazargan, nor a flaw in his core insight.")
 
-# ── 7 · CAVEATS & CONFOUNDS ──
+# ── 7 · WHERE EACH FALLS SHORT, AND THE FIX ──
+C.section("Where each approach falls short — and the fix")
+C.note("Critical but fair: every school contributed; each also has a limit our data exposes. The remedy is usually "
+       "to respect the sūra as the atomic unit and to add features, not to discard the approach.")
+C.table(["Approach", "Where it falls short", "Suggested fix"], tight=False, rows=[
+    ["Traditional asbāb al-nuzūl", "many occasion-reports are late, contested, or absent", "validate against the intrinsic stylometric signal — which broadly confirms the order"],
+    ["Nöldeke — 3 sharp Meccan periods", "boundaries are gradiental, not discrete; periods blur", "read the drift as a continuum (as Sadeghi's gradual evolution shows)"],
+    ["Weil / Muir — tone & content", "subjective, hard to replicate", "quantify: verse length + morphology give a reproducible proxy"],
+    ["Bell — passage/verse re-dating", "not robust: composite-rate 2–74%; within ≈ between", "confine dating to the sūra; treat passage cuts as hypotheses, not dates"],
+    ["Blachère — chronological translation", "inherits passage-level precision it can't support", "present sūra-level order; flag intra-sūra cuts as uncertain"],
+    ["Bazargan — verse length only", "one feature; length conflates with genre/topic (R² 0.44)", "multivariate stylometry (the modest 0.44 → 0.49 gain, extended)"],
+    ["Sadeghi — morphological stylometry", "powerful but sūra-level; needs many features", "the right tool to PROBE passages — only where a real style-break is detectable"],
+])
+
+# ── 8 · CAVEATS & CONFOUNDS ──
 C.section("Caveats & confounds")
 C.para("<b>Credit first, and in context.</b> Bazargan worked in the 1970s–80s, applying quantitative method to "
-       "scripture before stylometry existed; he should be read as a pioneer whose central intuition the later, "
-       "sharper tools confirmed — not judged anachronistically against them. <b>The critique is narrow and shared.</b> "
-       "It targets only passage-level <i>dating precision</i>, a move common to the whole chronological-rearrangement "
-       "tradition (Bell, Blachère), not Bazargan's integrity or his sūra-level result. <b>On our instrument.</b> We "
-       "count on a normalised rasm and the traditional order (col 8), not his exact figures; and we deliberately "
-       "report the full 2–74% change-point band so the criticism cannot be tuned to indict him — the same gate we "
-       "turned on one of our own findings.")
+       "scripture before stylometry existed; he is a pioneer whose central intuition the later, sharper tools "
+       "confirmed — not to be judged anachronistically against them. <b>The critique is narrow and shared.</b> It "
+       "targets only passage-level <i>dating precision</i> — a move common to the whole chronological-rearrangement "
+       "tradition (Bell, Blachère) — not anyone's integrity or the sūra-level result. <b>On our instrument.</b> We "
+       "count on a normalised rasm and the traditional order (col 8), not any author's exact figures; the "
+       "Makkī/Madanī split itself has a few contested sūras (we use the standard list). <b>Same gate on ourselves.</b> "
+       "We deliberately report the full 2–74% change-point band so the criticism cannot be tuned to indict anyone — "
+       "the very gate we turned on one of our own findings (the inter-sūra coherence), recorded honestly as a size "
+       "artifact.")
 
-# ── 8 · VERDICT ──
+# ── 9 · VERDICT ──
 C.section("Verdict")
 C.verdict("CANDIDATE",
-          "Bazargan's core claim holds: verse length tracks revelation time (r = 0.66), the sūra-level chronological "
-          "signal is real, and the program he pioneered was vindicated by Sadeghi's stylometry. The single, scoped "
-          "criticism — shared with Bell and Blachère — is that passage-level dating inside sūras is not justified by "
-          "length (method-dependent 2–74%; within ≈ between). A genuine, partly-validated contribution; credit stands.",
+          "The Qur'ān's chronology is a real, measurable property of the text: verse length tracks revelation time "
+          "(r = 0.66; Meccan 14 → Medinan 30 words/āyah), and the traditional, orientalist and quantitative schools "
+          "<b>converge</b> on it. Bazargan's clock is credited and Sadeghi's stylometry vindicates the program. The "
+          "single, scoped criticism — shared with Bell and Blachère — is that passage-level dating inside sūras is "
+          "not justified (method-dependent 2–74%; within ≈ between). A genuine, partly-validated contribution.",
           "sūra-level clock ~80% MEASURED · passage-level dating ~75% unjustified",
           "a stylometric feature that dates passages above chance and survives multiplicity correction",
-          "richer features (function-word stylometry à la Sadeghi) at the passage level could revise this upward")
+          "richer function-word stylometry (à la Sadeghi) at the passage level could revise the boundary upward")
 
 # ── REFLECTION ──
 C.section("Reflection")
 C.para("This is the mirror-image of the Code 19 case, and the contrast is the lesson. There, a striking pattern had "
-       "<i>no</i> data support and earned a refutation. Here, a quantitative claim has <b>real</b> data support and "
-       "earns credit — the same impartial gate produces opposite, deserved verdicts. The only fault is a unit error: "
+       "<i>no</i> data support and earned a refutation. Here, a quantitative claim has <b>real</b> data support, "
+       "<b>independent convergence</b> across eleven centuries of scholarship, and a later vindication — so it earns "
+       "credit. The same impartial gate produces opposite, deserved verdicts. The only fault is a unit error: "
        "applying a sūra-level signal to analyst-drawn passages. Respect the divine division as the atomic unit, and "
-       "Bazargan's clock is a genuine, useful instrument; over-reach below it, and it becomes noise.")
+       "the chronology is a genuine, useful instrument; over-reach below it, and it becomes noise.")
 
 # ── SUMMARY ──
-C.section("Summary — what holds, what overreaches")
-C.table(["✔ Holds — credited", "✗ Overreaches — scoped"], tight=False, rows=[
+C.section("Summary — what holds, what over-reaches")
+C.note("In the plainest terms — the credited, converged findings on the left; the single shared over-reach on the right.")
+C.table(["✔ Holds — credited & converged", "✗ Over-reaches — scoped"], tight=False, rows=[
     ["Verse length tracks revelation time (r = 0.66)", "Dating arbitrary passages inside a sūra"],
-    ["Sūra-order broadly confirms the tradition", "Within-sūra spread (8.5) ≈ between (11.1)"],
-    ["Pioneering data method, vindicated by Sadeghi", "'Composite' is method-dependent (2–74%)"],
-    ["Extremes sane (Meccan short, Medinan long)", "Over-reach shared with Bell / Blachère"],
+    ["Meccan 14 → Medinan 30 words/āyah", "Within-sūra spread (8.4) ≈ between (11.1)"],
+    ["Sūra-order broadly confirms the tradition", "'Composite?' is method-dependent (2–74%)"],
+    ["Tradition + Nöldeke + Bazargan + Sadeghi converge", "Over-reach shared with Bell / Blachère"],
+    ["Bazargan pioneered it; Sadeghi vindicated it", "One feature; length conflates with genre"],
 ])
+
+# ── LESSONS LEARNED ──
+C.section("Lessons learned — for every chronological claim")
+C.para("A template, not a verdict on one person. Any dating claim — traditional, orientalist, or quantitative — must "
+       "clear the same gates, applied without favour. Each principle below earned its place in this review.")
+C.table(["Principle", "What it caught here"], tight=False, rows=[
+    ["≥3 converging modalities, not one road", "tradition + style + numbers agree → the sūra-level clock is trustworthy"],
+    ["Match the claim to the unit it can support", "length dates the sūra, not the analyst's passage"],
+    ["Effect size, reported honestly (R², not a hit)", "r = 0.66 / R² 0.44 — real and moderate, neither hidden nor inflated"],
+    ["Robustness — show the whole band", "composite-rate 2–74%; a single figure would mislead either way"],
+    ["Credit pioneers in their context", "Bazargan judged as a 1980s pioneer, not against tools that postdate him"],
+    ["Same gate on our own findings", "the change-point gate that scoped this also refuted our inter-sūra coherence"],
+])
+C.callout("The discipline, in plain terms",
+          "A chronology earns belief by <b>convergence and proper effect sizes</b>, and by daring no finer than its "
+          "instrument allows — not by the elegance of a single re-ordering. Credit the real signal generously; bound "
+          "the over-reach precisely. The same gates that credit Bazargan also refuse passage-level dating, and also "
+          "refuted one of <i>our own</i> findings. Rigour without favour.", accent=C.SLATE)
 
 # ── TAKEAWAY ──
 C.section("Takeaway")
 C.callout("In one line — for every reader",
-          "Bazargan was <b>right</b> that verse length is a chronological clock for the Qur'ān's chapters — a real, "
-          "pioneering, later-vindicated finding. The only correction: that clock works on the <b>sūra</b> (the "
-          "text's own unit), not on passages the analyst slices out of it. Credit the insight; bound the over-reach.",
-          accent=C.TEAL)
+          "The Qur'ān's chapters <b>can</b> be ordered in time from the text itself — verse length is a real clock, "
+          "and the tradition, Nöldeke, Bazargan and Sadeghi all agree on it. The only correction: that clock works "
+          "on the <b>sūra</b> (the text's own unit), not on passages an analyst slices out of it. Credit the insight; "
+          "bound the over-reach.", accent=C.TEAL)
 
 # ── PERSIAN ABSTRACT ──
 C.section("خلاصهٔ کامل — Persian abstract")
 st.markdown(
     "<div dir='rtl' id='nz-fa' style='font-family:Vazirmatn,Tahoma,\"Segoe UI\",sans-serif;font-size:15px;"
-    "line-height:1.75;color:#243b53;text-align:right;background:#F6F9FC;border-right:5px solid #138A74;"
-    "border-radius:11px;padding:15px 20px'>"
-    "<b>زمینه.</b> مهدی بازرگان در «سیر تحولِ قرآن» با روشی کمّی نشان داد که <b>میانگینِ طولِ آیه‌ها در طولِ دورهٔ "
-    "نزول افزایش می‌یابد</b> و از این «ساعتِ» سبکی برای ترتیبِ زمانیِ سوره‌ها بهره گرفت. این، کارِ پیشگامانه‌ای در "
-    "قرآن‌پژوهیِ داده‌محور بود، دهه‌ها پیش از سبک‌سنجیِ نوین.<br><br>"
-    "<b>یافتهٔ مثبت (اعتبارِ کار).</b> ادعای اصلیِ او <b>درست</b> است: طولِ آیه با ترتیبِ سنّتیِ نزول هم‌بستگی دارد "
-    "(r = ۰٫۶۶؛ اسپیرمن ۰٫۶۹) و ترتیبِ سوره‌ها را تقریباً بازتولید می‌کند؛ سوره‌های کوتاهِ مکّی در یک سو و سوره‌های "
-    "بلندِ مدنی در سوی دیگر. افزون بر این، بهنام صادقی (۲۰۱۱) با سبک‌سنجی همان گاه‌شماری را تأیید کرد — یعنی "
-    "<b>برنامهٔ بازرگان موفق بود</b>.<br><br>"
+    "line-height:1.85;color:#10243A;text-align:right;background:#F6F9FC;border-right:5px solid #138A74;"
+    "border-radius:11px;padding:16px 20px'>"
+    "<b>پرسش.</b> آیا می‌توان سوره‌های قرآن را از روی خودِ متن به‌ترتیبِ زمانِ نزول چید؟ و تا کجا می‌توان دقیق شد — "
+    "تا سطحِ «سوره»، یا تا «بخش‌های» درونِ سوره؟<br><br>"
+    "<b>چشم‌اندازِ پژوهش (نه فقط بازرگان).</b> این بررسی بر تمامِ میدان است. سنّتِ اسلامی (ترتیبِ نزولِ منسوب به ابن‌عباس "
+    "و چاپِ استانداردِ قاهره ۱۹۲۴) بر پایهٔ اسبابِ نزول و روایات است. خاورشناسان نیز کوشیدند: <b>گوستاو وایل</b> "
+    "(۱۸۴۴، نخستین گاه‌شماریِ غربی)، <b>تئودور نولدکه</b> (۱۸۶۰، سه دورهٔ مکّی + مدنی بر پایهٔ سبک و محتوا — معیارِ "
+    "مرجع)، <b>ویلیام میور</b> (۱۸۶۱، شش دوره)، <b>گریمه</b> و <b>هیرشفلد</b>، و در سدهٔ بیستم <b>ریچارد بل</b> "
+    "(۱۹۳۷) و <b>رژیس بلاشر</b> (۱۹۴۷). نکتهٔ مهم: همهٔ این‌ها بر یک «شکلِ کلان» هم‌داستان‌اند — سوره‌های کوتاه و "
+    "مقفّای مکّی در آغاز، سوره‌های بلند و فقهیِ مدنی در پایان.<br><br>"
+    "<b>پیشگامِ کمّی.</b> <b>مهدی بازرگان</b> در «سیر تحولِ قرآن» با روشی کمّی نشان داد که <b>میانگینِ طولِ آیه در طولِ "
+    "دورهٔ نزول افزایش می‌یابد</b> و از این «ساعتِ» سبکی برای ترتیبِ سوره‌ها بهره گرفت — دهه‌ها پیش از سبک‌سنجیِ نوینِ "
+    "غربی. این کارِ پیشگامانه را به‌تمامی به او نسبت می‌دهیم.<br><br>"
+    "<b>یافتهٔ سنجیده (اعتبارِ کار).</b> ادعای اصلی <b>درست</b> است: طولِ آیه با ترتیبِ سنّتیِ نزول هم‌بستگی دارد "
+    "(r = ۰٫۶۶؛ اسپیرمن ۰٫۶۹؛ R² = ۰٫۴۴). به‌زبانِ ساده: میانگینِ واژه در هر آیه از ۱۴ واژه در سوره‌های مکّی به ۲۹٫۷ "
+    "واژه در سوره‌های مدنی می‌رسد — بیش از دو برابر. سوره‌های کوتاه (اخلاص، ناس، عبس) در یک سو و بلند (ممتحنه، مائده، "
+    "طلاق، بقره) در سوی دیگرند. افزون بر این، <b>بهنام صادقی</b> (۲۰۱۱) با سبک‌سنجیِ صرفی همان گاه‌شماری را تأیید کرد — "
+    "یعنی برنامهٔ بازرگان <b>موفق</b> بود. سه راهِ مستقل — روایات، سبکِ نولدکه، و اعدادِ بازرگان/صادقی — به یک نتیجه "
+    "می‌رسند؛ این هم‌گرایی، بخشِ نیرومندِ گاه‌شماری است.<br><br>"
     "<b>نقدِ محدود و منصفانه.</b> تنها اشکال، تاریخ‌گذاریِ «بخش‌ها» در درونِ یک سوره است. پراکندگیِ طولِ آیه در "
-    "<i>درونِ</i> یک سوره (≈۸٫۵) تقریباً به‌اندازهٔ پراکندگیِ میانگین‌ها <i>میانِ</i> سوره‌هاست (≈۱۱٫۱)، و «آیا این "
+    "<i>درونِ</i> یک سوره (≈۸٫۴) تقریباً به‌اندازهٔ پراکندگیِ میانگین‌ها <i>میانِ</i> سوره‌هاست (≈۱۱٫۱)، و «آیا این "
     "سوره مرکّب است؟» بسته به آزمون از ۲٪ تا ۷۴٪ نوسان دارد — یعنی بی‌پاسخ. پس بریدنِ سوره به بخش‌ها و تاریخ‌گذاریِ "
-    "جداگانهٔ آن‌ها از طریقِ طول، موجّه نیست. این خطا — که با ریچارد بل و بلاشر مشترک است — اشتباهی در «واحد» است: "
-    "اعمالِ سیگنالی سوره‌ای بر بخش‌هایی که خودِ پژوهشگر می‌بُرد، نه متن.<br><br>"
-    "<b>نتیجه.</b> ساعتِ سبکیِ بازرگان در سطحِ <b>سوره</b> (واحدِ متن) واقعی و سودمند است و به‌انصاف اعتبارش را "
-    "می‌پذیریم؛ تنها در سطحِ «بخش» فروتر می‌رود. اعتبارِ کار بر جای می‌ماند و دامنهٔ زیاده‌روی روشن می‌شود.</div>",
-    unsafe_allow_html=True)
+    "جداگانهٔ آن‌ها از راهِ طول موجّه نیست. این خطا — که با ریچارد بل و بلاشر مشترک است — خطایی در «واحد» است: اعمالِ "
+    "سیگنالی سوره‌ای بر بخش‌هایی که خودِ پژوهشگر می‌بُرد، نه متن.<br><br>"
+    "<b>کجا هر روش کم می‌آورد و راهِ بهبود.</b> اسبابِ نزولِ سنّتی گاه دیرهنگام و مورد اختلاف است → با سیگنالِ درونیِ "
+    "سبک اعتبارسنجی شود (که ترتیبِ کلان را تأیید می‌کند). مرزهای تیزِ سه‌دورهٔ نولدکه پیوسته‌اند نه گسسته → آن‌ها را "
+    "طیف ببینیم. روشِ ذوقیِ وایل/میور تکرارناپذیر است → کمّی شود. تاریخ‌گذاریِ بخش‌محورِ بل/بلاشر ناپایدار است → به سطحِ "
+    "سوره محدود شود. تک‌ویژگیِ بازرگان (فقط طول) → سبک‌سنجیِ چندمتغیّره (همان بهبودِ ۰٫۴۴ به ۰٫۴۹). و سبک‌سنجیِ صادقی، "
+    "ابزارِ درست برای کاوشِ بخش‌هاست — تنها آن‌جا که شکستِ سبکیِ واقعی آشکار باشد.<br><br>"
+    "<b>انصافِ بی‌طرفانه.</b> این داوری از سرِ خصومت نیست؛ همان دروازه‌ای که تاریخ‌گذاریِ بخش‌ها را رد کرد، بر یافتهٔ "
+    "خودِ ما (هم‌بستگیِ میان‌سوره‌ای) نیز اعمال شد و آن را «مصنوعِ اندازه» ثبت کردیم. باندِ کاملِ ۲–۷۴٪ را آگاهانه نشان "
+    "می‌دهیم تا نقد قابلِ تنظیم نباشد.<br><br>"
+    "<b>نتیجه.</b> گاه‌شماریِ قرآن خاصیتی واقعی و سنجش‌پذیرِ متن است؛ ساعتِ سبکی در سطحِ <b>سوره</b> (واحدِ متن) معتبر "
+    "است و میدانِ سنّتی، خاورشناسانه و کمّی بر آن هم‌گرایند. اعتبارِ کارِ بازرگان بر جای می‌ماند؛ تنها در سطحِ «بخش» "
+    "فروتر می‌رود.<br><br>"
+    "<b>درس.</b> هر ادعای گاه‌شناختی — سنّتی، خاورشناسانه یا کمّی — باید بر هم‌گراییِ چند مدرک و اندازهٔ اثرِ صادقانه "
+    "استوار باشد و از مرزِ ابزار فراتر نرود؛ سیگنالِ واقعی را سخاوتمندانه ارج نهیم و زیاده‌روی را دقیق محدود کنیم — نه "
+    "عوام‌گرایانه و عوام‌پسند.</div>", unsafe_allow_html=True)
 
 # ── ARABIC ABSTRACT ──
 C.section("الملخّص الكامل — Arabic abstract")
 st.markdown(
     "<div dir='rtl' id='nz-ar' style='font-family:Amiri,\"Scheherazade New\",Tahoma,serif;font-size:15.5px;"
-    "line-height:1.8;color:#243b53;text-align:right;background:#F6F9FC;border-right:5px solid #4E6E92;"
-    "border-radius:11px;padding:15px 20px'>"
-    "<b>السياق.</b> أظهر مهدي بازركان في «سير تطوّر القرآن» بمنهجٍ كمّيّ أنّ <b>متوسّط طول الآيات يتزايد عبر مدّة "
-    "النزول</b>، واتّخذ من هذه «الساعة» الأسلوبية ترتيباً زمنياً للسور؛ وهو عملٌ رائدٌ في الدراسة القرآنية القائمة "
-    "على البيانات قبل علم الأسلوب الإحصائي بعقود.<br><br>"
-    "<b>النتيجة الإيجابية (تقديرُ العمل).</b> دعواه الأساسية <b>صحيحة</b>: طولُ الآية يرتبط بالترتيب التقليديّ للنزول "
-    "(r = ٠٫٦٦؛ سبيرمان ٠٫٦٩) ويعيد إنتاج تسلسل السور تقريباً؛ السورُ المكّيّة القصيرة في طرفٍ والمدنيّة الطويلة في "
-    "طرف. كما أنّ بهنام صادقي (٢٠١١) أيّد بالأسلوب الإحصائيّ الترتيبَ نفسَه — أي أنّ <b>برنامج بازركان نجح</b>.<br><br>"
+    "line-height:1.9;color:#10243A;text-align:right;background:#F6F9FC;border-right:5px solid #4E6E92;"
+    "border-radius:11px;padding:16px 20px'>"
+    "<b>السؤال.</b> هل يمكن ترتيبُ سُوَر القرآن زمنياً من النصّ نفسِه؟ وإلى أيّ حدٍّ نُدقّق — إلى مستوى «السورة» أم إلى "
+    "«المقاطع» داخلها؟<br><br>"
+    "<b>مسحُ الميدان كلِّه (لا بازركان وحده).</b> التقليدُ الإسلاميّ (ترتيبُ النزول المنسوب إلى ابن عبّاس وطبعةُ القاهرة "
+    "المعياريّة ١٩٢٤) يقوم على أسباب النزول والروايات. واجتهد المستشرقون: <b>غوستاف فايل</b> (١٨٤٤، أوّل ترتيب غربيّ)، "
+    "و<b>تيودور نولدكه</b> (١٨٦٠، ثلاثُ مراحل مكّيّة + مدنيّة بناءً على الأسلوب والمضمون — وهو المرجع)، و<b>وليم ميور</b> "
+    "(١٨٦١، ستُّ مراحل)، و<b>غريمه</b> و<b>هيرشفلد</b>، ثمّ في القرن العشرين <b>ريتشارد بِل</b> (١٩٣٧) و<b>ريجيس "
+    "بلاشير</b> (١٩٤٧). والمهمّ أنّ هذه المدارس تتّفق على «الشكل العامّ»: سورٌ مكّيّةٌ قصيرةٌ مقفّاةٌ أوّلاً، ومدنيّةٌ "
+    "طويلةٌ تشريعيّةٌ آخِراً.<br><br>"
+    "<b>الرائد الكمّيّ.</b> أظهر <b>مهدي بازركان</b> في «سير تطوّر القرآن» بمنهجٍ كمّيّ أنّ <b>متوسّط طول الآية يتزايد "
+    "عبر مدّة النزول</b>، واتّخذ من هذه «الساعة» الأسلوبية ترتيباً للسور — قبل علم الأسلوب الغربيّ بعقود. ننسب هذا "
+    "الفضل إليه كاملاً.<br><br>"
+    "<b>النتيجة المقيسة (تقديرُ العمل).</b> الدعوى الأساسية <b>صحيحة</b>: طولُ الآية يرتبط بترتيب النزول التقليديّ "
+    "(r = ٠٫٦٦؛ سبيرمان ٠٫٦٩؛ R² = ٠٫٤٤). وببساطة: يرتفع متوسّطُ الكلمات في الآية من ١٤ كلمة في السور المكّيّة إلى ٢٩٫٧ "
+    "في المدنيّة — أكثر من الضعف. القصارُ (الإخلاص، الناس، عبس) في طرفٍ والطوالُ (الممتحنة، المائدة، الطلاق، البقرة) في "
+    "طرف. كما أيّد <b>بهنام صادقي</b> (٢٠١١) بالأسلوب الإحصائيّ الصرفيّ الترتيبَ نفسَه — أي أنّ برنامج بازركان <b>نجح</b>. "
+    "ثلاثُ طرقٍ مستقلّة — الروايات، وأسلوبُ نولدكه، وأرقامُ بازركان/صادقي — تبلغ النتيجةَ نفسَها؛ وهذا التقاطعُ هو الجزءُ "
+    "القويّ من التأريخ.<br><br>"
     "<b>النقد المحدود والمنصف.</b> العيبُ الوحيد هو تأريخُ «المقاطع» داخل السورة. فتشتّتُ طول الآية <i>داخل</i> السورة "
-    "(≈٨٫٥) يقارب تشتّتَ المتوسّطات <i>بين</i> السور (≈١١٫١)، و«هل هذه السورة مركّبة؟» يتراوح حسب الاختبار من ٢٪ إلى "
-    "٧٤٪ — أي بلا جواب. فتقطيعُ السورة إلى مقاطع وتأريخُ كلٍّ منها بالطول غيرُ مبرَّر. وهذا الخطأ — المشترَك مع ريتشارد "
-    "بِل وبلاشير — خطأٌ في «الوحدة»: تطبيقُ إشارةٍ على مستوى السورة على مقاطعَ يرسمها الباحث لا النصّ.<br><br>"
-    "<b>الخلاصة.</b> ساعةُ بازركان الأسلوبية حقيقيةٌ ونافعةٌ على مستوى <b>السورة</b> (وحدة النصّ) ونعترف بها بإنصاف؛ "
-    "وإنّما تقصر على مستوى «المقطع». يبقى التقديرُ قائماً ويُحدَّد نطاقُ التجاوز.</div>", unsafe_allow_html=True)
+    "(≈٨٫٤) يقارب تشتّتَ المتوسّطات <i>بين</i> السور (≈١١٫١)، و«هل هذه السورة مركّبة؟» يتراوح حسب الاختبار من ٢٪ إلى "
+    "٧٤٪ — أي بلا جواب. فتقطيعُ السورة وتأريخُ كلٍّ بالطول غيرُ مبرَّر. وهذا الخطأ — المشترَك مع بِل وبلاشير — خطأٌ في "
+    "«الوحدة»: تطبيقُ إشارةٍ على مستوى السورة على مقاطعَ يرسمها الباحثُ لا النصّ.<br><br>"
+    "<b>أين يقصر كلُّ منهجٍ وكيف يُصلَح.</b> أسبابُ النزول التقليديّة قد تكون متأخّرةً أو خلافيّة → تُعاضَد بالإشارة "
+    "الأسلوبية الداخلية (التي تؤكّد الترتيبَ العامّ). وحدودُ مراحل نولدكه الثلاث متدرّجةٌ لا قاطعة → تُقرأ طيفاً. ومنهجُ "
+    "فايل/ميور الذوقيّ غيرُ قابلٍ للتكرار → يُكمَّم. وتأريخُ بِل/بلاشير المقطعيّ غيرُ مستقرّ → يُقصَر على السورة. "
+    "وأحاديّةُ بازركان (الطول فقط) → أسلوبٌ متعدّد المتغيّرات (تحسّنُ ٠٫٤٤ إلى ٠٫٤٩). وأسلوبُ صادقي هو الأداةُ الصحيحة "
+    "لسبر المقاطع — حيث يظهر انكسارٌ أسلوبيٌّ حقيقيّ فقط.<br><br>"
+    "<b>الإنصافُ بلا محاباة.</b> ليس هذا خصومةً؛ فالبوّابةُ نفسُها التي ردّت تأريخَ المقاطع طُبِّقت على اكتشافنا "
+    "(التماسكِ بين السور) فسجّلناه «مصنوعَ حجمٍ». ونعرض نطاقَ ٢–٧٤٪ كاملاً عمداً كي لا يكون النقدُ قابلاً للضبط.<br><br>"
+    "<b>الخلاصة.</b> تأريخُ القرآن خاصّيةٌ حقيقيّةٌ قابلةٌ للقياس؛ والساعةُ الأسلوبية صحيحةٌ على مستوى <b>السورة</b> "
+    "(وحدة النصّ)، ويتقاطع عليها الميدانُ التقليديّ والاستشراقيّ والكمّيّ. يبقى تقديرُ عملِ بازركان قائماً؛ وإنّما يقصر "
+    "على مستوى «المقطع».<br><br>"
+    "<b>الدرس.</b> كلُّ دعوى تأريخيّة — تقليديّةً كانت أم استشراقيّةً أم كمّيّة — يجب أن تقوم على تقاطُع الأدلّة وحجمِ "
+    "الأثر الصادق، وألّا تتجاوز حدَّ الأداة؛ نُقدّر الإشارةَ الحقيقيّة بسخاء ونحدّ التجاوزَ بدقّة — لا تملّقاً للعامّة "
+    "(عوام‌گرایی / عوام‌پسند).</div>", unsafe_allow_html=True)
 
 st.page_link("pages/27_Closeup_Index.py", label="← Back to the Close-up map", icon="🔎")
