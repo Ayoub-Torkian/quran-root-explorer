@@ -356,7 +356,7 @@ C.note("③ The crux, visualised — how well the data supports dating at each r
        "whole-corpus down to the SŪRA, then falls off a cliff at the passage and verse. Every school's verdict "
        "tracks the resolution it aimed at — the timeline's colours, quantified. [INFERRED — a schematic of the "
        "measured results ②–⑤ above, not a separate measurement.]")
-C.vbars([("whole-corpus (Mecca/Medina)", 0.95, C.TEAL, "the split — essentially certain (14 vs 30 words/āyah)"),
+C.vbars([("Mecca/Medina split", 0.95, C.TEAL, "the whole-corpus split — essentially certain (14 vs 30 words/āyah)"),
          ("period (Nöldeke)", 0.85, C.TEAL, "three periods — well supported"),
          ("sūra — the clock", 0.80, C.TEAL, "r = 0.66; the sweet spot"),
          ("passage (Bell)", 0.25, C.CORAL, "2–74% composite rate — unstable"),

@@ -338,7 +338,7 @@ def vbars(rows, ymax=None, ymin=None, fmt="{:.2f}", color=TEAL):
     n = len(rows)
     W = 960
     rowh, barh, padT, padB = 40, 22, 28, 10
-    labelW, valW = 176, 54
+    labelW, valW = 212, 54
     tx, tw = labelW, W - labelW - valW
     span = (hi - lo) or 1
     H = padT + n * rowh + padB
@@ -357,7 +357,7 @@ def vbars(rows, ymax=None, ymin=None, fmt="{:.2f}", color=TEAL):
         col = c or color
         bx = min(x0, X(v)); bw = max(2, abs(X(v) - x0))
         vstr = fmt.format(v)
-        p.append(f"<text x='{labelW-13}' y='{cy+5:.0f}' text-anchor='end' font-size='14' font-weight='600' "
+        p.append(f"<text x='{labelW-13}' y='{cy+5:.0f}' text-anchor='end' font-size='13' font-weight='600' "
                  f"fill='{INK}'>{_e(lab)}</text>"
                  f"<rect x='{tx}' y='{cy-barh/2:.0f}' width='{tw}' height='{barh}' rx='3' fill='{PANEL}'/>"
                  f"<g><title>{_e(tip)}</title><rect x='{bx:.0f}' y='{cy-barh/2:.0f}' width='{bw:.0f}' height='{barh}' "
