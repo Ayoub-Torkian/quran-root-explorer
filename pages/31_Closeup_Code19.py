@@ -171,4 +171,34 @@ C.verdict("REFUTED-ARTIFACT",
           "a pre-registered, spelling-fixed count scheme (no choices) showing 19-multiples far above chance and rivals",
           "such a scheme would reopen it — none has survived independent replication to date")
 
+# ── REFLECTION ──
+C.section("Reflection")
+C.para("Three things make this case instructive. <b>The pull is real:</b> a handful of exact 19-facts genuinely "
+       "exist — the Basmala's 19 letters, 114 = 6×19 sūras, الرحمن = 57 — and the mind naturally reads design into "
+       "them. <b>The over-reach is equally real:</b> any long text offers thousands of countable quantities, so "
+       "roughly one in nineteen is a multiple of 19 by arithmetic alone — collect the hits, forget the misses, and "
+       "a 'code' appears. <b>The cure is to count everything, not just the hits:</b> across 1,084 natural counts, "
+       "multiples of 19 turned out to be the <i>rarest</i>, not the commonest. The real lesson is not about 19 at "
+       "all — it is that a pattern is only as strong as the null it was tested against.")
+
+# ── SUMMARY ──
+C.section("Summary — what held, what failed")
+C.note("Side by side, in the plainest terms — the genuine 19-facts on the left, the claims that do not survive a "
+       "neutral count on the right.")
+C.table(["✔ Holds — exactly divisible by 19", "✗ Fails — under a neutral count"], [
+    ["Basmala = 19 letters", C.ar("الله") + " = 2695 — exactly ÷ 7 and ÷ 11, not 19"],
+    ["114 sūras = 19 × 6", "Sūra 96 = 288 letters, not the claimed 285"],
+    ["Sūra 96 — 19 verses, and 19th from the end", "Verses + Basmalas = 6348, not the claimed 6346"],
+    [C.ar("الرحمن") + " = 57 = 19 × 3", "19's exact-multiple rate 2.9% — lowest of any number"],
+    [C.ar("الرحيم") + " = 95 = 19 × 5", "remainder 0 is the 2nd-rarest of the 19 remainders"],
+])
+
+# ── TAKEAWAY ──
+C.section("Takeaway")
+C.callout("In one line — for every reader",
+          "A small, genuine cluster of 19-facts surrounds the Basmala — but there is <b>no governing 19-code</b>. "
+          "Under a proper null, 19 holds no special place in the Qur'ān's counts; it is the <i>least</i> common "
+          "multiple, not the most. The Qur'ān's structure is real and measurable — see the Āyah and Sūra close-ups — "
+          "but this particular numerical claim is not where it lives.", accent=C.CORAL)
+
 st.page_link("pages/27_Closeup_Index.py", label="← Back to the Close-up map", icon="🔎")
