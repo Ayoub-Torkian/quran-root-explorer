@@ -218,13 +218,14 @@ def hist(values, labels, highlight=None, ref=None, reflabel="expected", color=SL
     """Compact distribution histogram (many thin vertical bars). highlight one bar; optional reference line."""
     n = len(values)
     mx = (max(list(values) + ([ref] if ref else [])) or 1) * 1.18
-    W, H, L, Rr, T, B = 960, 226, 50, 16, 28, 42
+    W, H, L, Rr, T, B = 960, 150, 50, 16, 24, 32
     pw, ph = W - L - Rr, H - T - B
     Y = (lambda v: T + ph * (1 - v / mx))
-    bw = min(46, pw / n * 0.5)
+    bw = min(44, pw / n * 0.5)
     show = n <= 12
     p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
-    p.append(f"<text x='{W-Rr}' y='13' text-anchor='end' font-size='11' fill='#9AAEC2'>ⓘ hover bars for exact counts</text>")
+    if not show:
+        p.append(f"<text x='{W-Rr}' y='11' text-anchor='end' font-size='11' fill='#8FA6BC'>ⓘ hover bars for exact counts</text>")
     for t in range(4):
         gv = mx * t / 3
         gy = Y(gv)
@@ -232,11 +233,9 @@ def hist(values, labels, highlight=None, ref=None, reflabel="expected", color=SL
                  f"<text x='{L-8}' y='{gy+4:.0f}' text-anchor='end' font-size='12' fill='{MUTE}'>{gv:.0f}</text>")
     if ref is not None:
         ry = Y(ref)
-        lw = len(str(reflabel)) * 6.6 + 10
-        p.append(f"<line x1='{L}' y1='{ry:.0f}' x2='{W-Rr}' y2='{ry:.0f}' stroke='{INK}' stroke-width='1.3' "
+        p.append(f"<line x1='{L}' y1='{ry:.0f}' x2='{W-Rr}' y2='{ry:.0f}' stroke='{INK}' stroke-width='1.2' "
                  f"stroke-dasharray='5 4'/>"
-                 f"<rect x='{L+5}' y='{ry-15:.0f}' width='{lw:.0f}' height='15' rx='3' fill='#fff' opacity='.92'/>"
-                 f"<text x='{L+9}' y='{ry-4:.0f}' font-size='11.5' font-weight='700' fill='{INK}'>{_e(reflabel)}</text>")
+                 f"<text x='{L}' y='11' font-size='11.5' font-weight='700' fill='{INK}'>– – {_e(reflabel)}</text>")
     for i, (v, lab) in enumerate(zip(values, labels)):
         cx = L + pw * (i + 0.5) / n
         col = hcolor if i == highlight else color
