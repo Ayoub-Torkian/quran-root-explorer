@@ -263,7 +263,7 @@ def inject_css():
     section[data-testid="stMain"] h3 { margin: 0.35rem 0 0.25rem !important; font-size: 19px !important; }
     section[data-testid="stMain"] [data-testid="stCaptionContainer"],
     section[data-testid="stMain"] [data-testid="stCaptionContainer"] * {
-        font-size: 13.5px !important; color: #3D4757 !important; line-height: 1.45 !important;
+        font-size: 13.5px !important; color: #10243A !important; line-height: 1.45 !important;
     }
     section[data-testid="stMain"] [data-testid="stMetric"] {
         background: #FFFFFF; border: 1px solid #E2E8F1; border-radius: 10px;
@@ -286,13 +286,13 @@ def inject_css():
     section[data-testid="stMain"] [data-testid="stSelectbox"] label,
     section[data-testid="stMain"] [data-testid="stMultiSelect"] label,
     section[data-testid="stMain"] [data-testid="stSlider"] label {
-        font-size: 13.5px !important; color: #243447 !important;
+        font-size: 13.5px !important; color: #10243A !important;
     }
     section[data-testid="stMain"] [data-testid="stAlert"] { padding: 0.5rem 0.9rem !important; }
     /* ===== CONTRAST SWEEP (user mandate: gray only masks readability) ===== */
     section[data-testid="stMain"] .stMarkdown,
     section[data-testid="stMain"] .stMarkdown p,
-    section[data-testid="stMain"] .stMarkdown li { color: #243447; }
+    section[data-testid="stMain"] .stMarkdown li { color: #10243A; }
     .stButton button:not([kind="primary"]) {
         color: #16365C !important; font-weight: 600 !important;
         background: #FFFFFF !important; border: 1px solid #C9D6E8 !important;
@@ -300,8 +300,8 @@ def inject_css():
     .stButton button:not([kind="primary"]):hover {
         border-color: #1D9E75 !important; color: #0F6E56 !important;
     }
-    input::placeholder, textarea::placeholder { color: #3D4757 !important; opacity: 1 !important; }
-    section[data-testid="stMain"] [data-testid="stWidgetLabel"] p { color: #243447 !important; }
+    input::placeholder, textarea::placeholder { color: #10243A !important; opacity: 1 !important; }
+    section[data-testid="stMain"] [data-testid="stWidgetLabel"] p { color: #10243A !important; }
     /* ===== ONE progress language app-wide (v2.0): slim ribbon + pill only ===== */
     div[data-testid="stStatusWidget"] { visibility: hidden !important; }
     @keyframes dlribbon2 { 0% {background-position:0 0} 100% {background-position:300% 0} }
@@ -326,7 +326,7 @@ def inject_css():
         background: #FFFFFF !important;
         border: 1.5px solid #C9D6E8 !important;
         border-radius: 9px !important;
-        color: #243447 !important;
+        color: #10243A !important;
     }
     section[data-testid="stMain"] [data-testid="stTextInput"] div[data-baseweb="input"],
     section[data-testid="stMain"] [data-testid="stTextArea"] div[data-baseweb="textarea"] {
@@ -418,12 +418,12 @@ def inject_css():
     [data-testid="stSidebar"] .stMarkdown p,
     [data-testid="stSidebar"] label {
         font-size: 13px !important;
-        color: #243447 !important;
+        color: #10243A !important;
     }
     [data-testid="stSidebar"] .stCaption,
     [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
         font-size: 12px !important;
-        color: #3D4757 !important;
+        color: #10243A !important;
     }
 
     /* ===== HERO BANNER ===== */
@@ -445,7 +445,7 @@ def inject_css():
         font-family: 'Amiri Quran', 'Amiri', 'Scheherazade New', 'Noto Naskh Arabic',
                      'Traditional Arabic', serif;
         font-size: 26px; line-height: 2.1;
-        color: #243447;
+        color: #10243A;
         background: #EEF3FB;
         border: 1px solid #E2E8F1;
         border-left: 4px solid #1D3557;
@@ -454,7 +454,7 @@ def inject_css():
         box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
     .ayah-meta {
-        font-size: 12px; color: #3D4757; text-align: center;
+        font-size: 12px; color: #10243A; text-align: center;
         margin-top: -6px; margin-bottom: 12px;
         letter-spacing: 0.5px;
     }
@@ -532,7 +532,7 @@ def inject_css():
     }
     .top-input-hint {
         display: inline-block;
-        color: #243447;
+        color: #10243A;
         font-size: 13px;
         font-weight: 600;
     }
@@ -584,7 +584,7 @@ def inject_css():
     .insight-card .icon { font-size: 22px; }
     .insight-card .headline { font-size: 15px; color: #1D3557; font-weight: 700; margin-bottom: 4px; }
     .insight-card .value { font-size: 23px; color: #1D3557; font-weight: 700; line-height: 1.2; }
-    .insight-card .sub { font-size: 13px; color: #3D4757; margin-top: 2px; }
+    .insight-card .sub { font-size: 13px; color: #10243A; margin-top: 2px; }
 
     /* ===== MAIN HEADINGS — bigger ===== */
     .main h3, .main .stMarkdown h3 { font-size: 19px !important; color: #1D3557; font-weight: 700; }
@@ -631,7 +631,7 @@ def inject_css():
     .top-input-box [class*="TextInput"] input {
         font-size: 28px !important;
         font-weight: 700 !important;
-        color: #243447 !important;
+        color: #10243A !important;
         background: #FFFFFF !important;
         border: 3px solid #1D3557 !important;
         border-top: none !important;
@@ -662,7 +662,7 @@ def inject_css():
     }
     .top-input-box input::placeholder,
     .top-input-box [data-testid="stTextInput"] input::placeholder {
-        color: #3D4757 !important;
+        color: #10243A !important;
         opacity: 0.45 !important;
         font-weight: 700 !important;
         font-size: 22px !important;
@@ -939,7 +939,7 @@ def inject_css():
             inp.style.setProperty('border-top', 'none', 'important');
             inp.style.setProperty('border-radius', '0 0 12px 12px', 'important');
             inp.style.setProperty('background', '#FFFFFF', 'important');
-            inp.style.setProperty('color', '#243447', 'important');
+            inp.style.setProperty('color', '#10243A', 'important');
             // wrapper should not add its own gap
             const wrap = inp.closest('[data-testid="stTextInput"]');
             if (wrap) {
@@ -1173,7 +1173,7 @@ def per_root_hint(input_roots=None, compact=False):
                       letter-spacing:0.4px; margin-bottom:6px;">
             👉 WANT THE FULL PROFILE OF JUST ONE ROOT?
           </div>
-          <div style="font-size:14.5px; color:#243447; line-height:1.6;">
+          <div style="font-size:14.5px; color:#10243A; line-height:1.6;">
             Click any per-root jump button below, or open
             <b style="background:#1D3557; color:#fff; padding:2px 10px;
                       border-radius:6px;">🔍 Per Root Profile</b>
@@ -1238,7 +1238,7 @@ def get_corpus():
                 '<span style="background:#1D9E75;color:#fff;padding:3px 10px;border-radius:6px;">✓ Booted</span>'
                 '<span style="background:#1D9E75;color:#fff;padding:3px 10px;border-radius:6px;">✓ Started</span>'
                 '<span style="background:#1D3557;color:#fff;padding:3px 10px;border-radius:6px;">~ Indexing...</span>'
-                '<span style="background:#E2E8F1;color:#3D4757;padding:3px 10px;border-radius:6px;">○ Ready</span>'
+                '<span style="background:#E2E8F1;color:#10243A;padding:3px 10px;border-radius:6px;">○ Ready</span>'
                 '</div>',
                 unsafe_allow_html=True,
             )
@@ -1583,7 +1583,7 @@ def render_top_input_bar(corpus):
                 f"border-radius:6px;padding:2px 10px;margin-right:4px;"
                 f"display:inline-block;'>{f} ⇒ root <b>{r}</b></span>"
                 for f, r in _fn[:6])
-            + " <span style='color:#3D4757;'>surface form mapped — analysis is "
+            + " <span style='color:#10243A;'>surface form mapped — analysis is "
               "root-based (standard practice)</span></div>",
             unsafe_allow_html=True)
     _fa = st.session_state.pop("_form_ambigs", None)

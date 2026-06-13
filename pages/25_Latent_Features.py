@@ -121,12 +121,12 @@ st.markdown(
 .block-container{padding-top:1.1rem;max-width:1180px;}
 #lfwrap, #lfwrap *{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;}
 /* ===== LEDGER DESIGN SYSTEM — one scale, one rhythm, one palette =====
-   Tokens:  ink #16243B (primary) · slate #25364A (secondary, never gray)
+   Tokens:  ink #16243B (primary) · slate #10243A (secondary, never gray)
             navy #1D3557 (headings) · teal #1D9E75 (accent) · line #E7ECF3
    Scale:   title 30 · section 13 · cat 15 · lead 15.5 · body 14.5 · micro 12
    Rhythm:  blocks 6–8px apart; line-height 1.55 body, 1.5 dense.            */
 .lf-h1{font-size:30px;font-weight:800;letter-spacing:-.5px;color:#16243B;margin:0 0 2px;}
-.lf-law{font-size:13.5px;line-height:1.5;color:#25364A;margin:0 0 14px;max-width:880px;font-weight:500;}
+.lf-law{font-size:13.5px;line-height:1.5;color:#10243A;margin:0 0 14px;max-width:880px;font-weight:500;}
 .lf-kpis{display:flex;gap:10px;flex-wrap:wrap;margin:2px 0 14px;}
 .lf-kpi{flex:1 1 150px;background:#fff;border:1px solid #E7ECF3;border-left:4px solid #1D9E75;
   border-radius:10px;padding:10px 14px;box-shadow:0 1px 2px rgba(20,40,80,.04);}
@@ -143,7 +143,7 @@ st.markdown(
 .lf-lead{font-size:15.5px;line-height:1.55;color:#16243B;margin:6px 0;font-weight:500;}
 .lf-why{background:#E7F6EF;border-left:4px solid #1D9E75;border-radius:8px;padding:8px 12px;
   font-size:14.5px;line-height:1.5;color:#0B3F2A;margin:7px 0;}
-.lf-meta{font-size:14.5px;line-height:1.5;color:#25364A;margin:4px 0;}
+.lf-meta{font-size:14.5px;line-height:1.5;color:#10243A;margin:4px 0;}
 .lf-q{font-size:14.5px;line-height:1.5;color:#1F2D3D;margin:4px 0;}
 [data-testid="stCaptionContainer"],[data-testid="stCaptionContainer"] p{color:#243039!important;}
 .ectitle,.ectitle span{color:#243039!important;}

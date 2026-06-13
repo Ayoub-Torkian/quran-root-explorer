@@ -24,22 +24,22 @@ log_page("ayah_deep_dive")
 corpus = get_corpus()
 st.markdown("<style>section[data-testid='stMain'] [data-testid='stCaptionContainer'],"
             "section[data-testid='stMain'] [data-testid='stCaptionContainer'] *"
-            "{color:#3D4757 !important;font-size:14px !important;}</style>",
+            "{color:#10243A !important;font-size:14px !important;}</style>",
             unsafe_allow_html=True)
 
 
 def _show_chips(items, n=8):
     items = [str(x) for x in items]
     if not items:
-        st.markdown("<span style='font-size:20px;color:#243447'>—</span>",
+        st.markdown("<span style='font-size:20px;color:#10243A'>—</span>",
                     unsafe_allow_html=True)
         return
     out = " ".join(
-        "<span style='font-size:22px;color:#243447;background:#EEF3FB;border-radius:7px;"
+        "<span style='font-size:22px;color:#10243A;background:#EEF3FB;border-radius:7px;"
         "padding:3px 14px;margin:4px 3px;display:inline-block;font-weight:600'>" + r + "</span>"
         for r in items[:n])
     if len(items) > n:
-        out += f" <span style='font-size:14px;color:#3D4757'>+{len(items) - n} more</span>"
+        out += f" <span style='font-size:14px;color:#10243A'>+{len(items) - n} more</span>"
     st.markdown(out, unsafe_allow_html=True)
 
 hero("🔭 Ayah-content Deep-Dive", "explain an ayah in light of all relevant ayahs")
@@ -67,7 +67,7 @@ try:
             st.markdown("<div dir='rtl'>%s</div>" % _out, unsafe_allow_html=True)
         if _vz17.get("fasila"):
             st.markdown("**The actual verse-endings** (fāṣila) with counts — the vowels (-ūna/-īna) are the rhyme:")
-            _fc = "".join("<span style='display:inline-block;font-size:21px;background:#EEF3FB;border:1px solid #DEE7F2;border-radius:8px;padding:1px 12px;margin:3px;font-family:\"Traditional Arabic\",Amiri,serif'>%s<sub style='font-size:10px;color:#5A6573'>%d</sub></span>" % (w, c) for w, c in _vz17["fasila"][:12])
+            _fc = "".join("<span style='display:inline-block;font-size:21px;background:#EEF3FB;border:1px solid #DEE7F2;border-radius:8px;padding:1px 12px;margin:3px;font-family:\"Traditional Arabic\",Amiri,serif'>%s<sub style='font-size:10px;color:#10243A'>%d</sub></span>" % (w, c) for w, c in _vz17["fasila"][:12])
             st.markdown("<div dir='rtl'>%s</div>" % _fc, unsafe_allow_html=True)
         try:
             st.page_link("pages/25_Latent_Features.py", label="See L06 · L17 in the Latent Feature Ledger", icon="🧬")
@@ -384,7 +384,7 @@ else:
                 if cb.checkbox(f"{_n}", value=(conf >= 0.90), key=f"m_{s}_{a}"):
                     _sel.append(f"{s}:{a}")
                 txt.markdown(
-                    f"**{s}:{a}**  <span style='color:#3D4757;font-size:12px'>"
+                    f"**{s}:{a}**  <span style='color:#10243A;font-size:12px'>"
                     f"({int(conf * 100)}%)</span><br>"
                     f"<span style='font-size:15px'>{_dt.get((s, a), '')[:140]}</span>",
                     unsafe_allow_html=True)
@@ -429,7 +429,7 @@ except Exception as e:
 for sd in res["seed"]:
     st.markdown(f"### {sd['ref']}")
     st.markdown(f"<div style='font-size:29px;line-height:1.95;margin:6px 0 8px;"
-                f"color:#243447'>{sd['text']}</div>", unsafe_allow_html=True)
+                f"color:#10243A'>{sd['text']}</div>", unsafe_allow_html=True)
     st.markdown("**concepts:**")
     _show_chips(sd["roots"])
     _hero_strip(sd["ref"], res)
@@ -578,10 +578,10 @@ for t in ["consensus", "resonant", "direct", "co-located", "orthogonal", "diverg
             ax = d["axes"]
             st.markdown(
                 f"<div style='margin:0 0 12px'>"
-                f"<span style='color:#243447;font-weight:700'>{d['ref']}</span> "
-                f"<span style='color:#243447'>· L={ax['lexical']:+.1f} S={ax['semantic']:+.1f} "
+                f"<span style='color:#10243A;font-weight:700'>{d['ref']}</span> "
+                f"<span style='color:#10243A'>· L={ax['lexical']:+.1f} S={ax['semantic']:+.1f} "
                 f"P={ax['spatial']:+.1f} · shared: {' '.join(d['shared_roots']) or '—'}</span>"
-                f"<div style='font-size:18px;color:#243447;line-height:1.95;margin-top:2px'>"
+                f"<div style='font-size:18px;color:#10243A;line-height:1.95;margin-top:2px'>"
                 f"{d['text']}</div></div>",
                 unsafe_allow_html=True)
 

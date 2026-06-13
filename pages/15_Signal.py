@@ -127,7 +127,7 @@ try:
             st.plotly_chart(_mini(_f), width="stretch", key="sig_offset_L12")
         if _vz.get("onset_words"):
             st.markdown("**Sūra openings (L18)** — the actual opening words")
-            _chips = "".join("<span style='display:inline-block;font-size:20px;background:#EEF3FB;border:1px solid #DEE7F2;border-radius:8px;padding:1px 11px;margin:3px;font-family:\"Traditional Arabic\",Amiri,serif'>%s<sub style='font-size:10px;color:#5A6573'>%d</sub></span>" % (w, c) for w, c in _vz["onset_words"][:10])
+            _chips = "".join("<span style='display:inline-block;font-size:20px;background:#EEF3FB;border:1px solid #DEE7F2;border-radius:8px;padding:1px 11px;margin:3px;font-family:\"Traditional Arabic\",Amiri,serif'>%s<sub style='font-size:10px;color:#10243A'>%d</sub></span>" % (w, c) for w, c in _vz["onset_words"][:10])
             st.markdown("<div dir='rtl'>%s</div>" % _chips, unsafe_allow_html=True)
     if _vz.get("chaining"):
         _ch = _vz["chaining"]
@@ -183,9 +183,9 @@ try:
         for i, v in enumerate(_o["verses"]):
             _lk = _o["links"][i - 1]["s"] if i > 0 else []
             _bridge = ("<span style='color:#2A9D8F;font-size:11px'>↑ shares %s</span>" %
-                       " ".join("<b>%s</b>" % r for r in _lk)) if _lk else ("<span style='color:#C9CFD8;font-size:11px'>↑ —</span>" if i > 0 else "")
+                       " ".join("<b>%s</b>" % r for r in _lk)) if _lk else ("<span style='color:#10243A;font-size:11px'>↑ —</span>" if i > 0 else "")
             _rows += ("<div style='display:flex;gap:8px;align-items:baseline;padding:1px 0'>"
-                      "<span style='color:#5A6573;font-size:11px;min-width:46px'>%s</span>"
+                      "<span style='color:#10243A;font-size:11px;min-width:46px'>%s</span>"
                       "<span dir='rtl' style='font-family:\"Traditional Arabic\",Amiri,serif;font-size:18px;color:#10171F;flex:1'>%s</span>"
                       "<span style='min-width:120px'>%s</span></div>") % (v["ref"], v["t"], _bridge)
         st.markdown("<div style='max-height:300px;overflow-y:auto;border:1px solid #E6EBF2;border-radius:8px;padding:6px 10px'>%s</div>" % _rows, unsafe_allow_html=True)

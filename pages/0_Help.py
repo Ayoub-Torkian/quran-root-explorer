@@ -110,9 +110,9 @@ def _cs_chart_motif_uniqueness():
     """3 disconnected dyads vs a closed triad — what motifs detect that
     pair-counts miss."""
     fig = make_subplots(rows=1, cols=2, subplot_titles=[
-        '<b>❌ 3 disconnected pairs</b><br><span style="font-size:12px;color:#3D4757;">'
+        '<b>❌ 3 disconnected pairs</b><br><span style="font-size:12px;color:#10243A;">'
         '3 dyads · count of pair edges = 3 · NOT a motif</span>',
-        '<b>✅ Closed triad (triangle)</b><br><span style="font-size:12px;color:#3D4757;">'
+        '<b>✅ Closed triad (triangle)</b><br><span style="font-size:12px;color:#10243A;">'
         '3 mutually connected nodes · IS a motif</span>'])
 
     # LEFT: 3 disconnected dyads — show 6 nodes (A-B), (C-D), (E-F)
@@ -160,7 +160,7 @@ def _cs_chart_motif_uniqueness():
                    x=0.5, xanchor='center', font=dict(size=14)),
         height=380, paper_bgcolor='#FFFFFF', plot_bgcolor='#FAFBFD',
         margin=dict(l=20, r=20, t=80, b=20),
-        font=dict(family="Arial, 'Segoe UI', sans-serif", color='#243447'),
+        font=dict(family="Arial, 'Segoe UI', sans-serif", color='#10243A'),
         showlegend=False,
     )
     return fig
@@ -219,25 +219,25 @@ st.markdown("""
 .help-card{ border:1px solid #E2E8F1; border-radius:10px; padding:11px 16px;
    margin:6px 0; background:#FFFFFF; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
 .help-card h4{ margin:0 0 3px 0; color:#1D3557; font-size:17px; font-weight:700; }
-.help-card .what{ font-size:13.5px; color:#243447; }
-.help-card .how{ font-size:13px; color:#3D4757; margin-top:6px;
+.help-card .what{ font-size:13.5px; color:#10243A; }
+.help-card .how{ font-size:13px; color:#10243A; margin-top:6px;
    background:#EEF3FB; padding:6px 10px; border-radius:6px; border-left:4px solid #1D3557; }
 .glossary-row{ display:grid; grid-template-columns:170px 1fr; gap:10px; padding:9px 12px;
    border-bottom:1px solid #E2E8F1; }
 .glossary-row .term{ font-weight:700; color:#1D3557; font-size:14.5px; }
-.glossary-row .defn{ font-size:13.5px; color:#243447; line-height:1.55; }
+.glossary-row .defn{ font-size:13.5px; color:#10243A; line-height:1.55; }
 .glossary-row .defn b{ color:#1D3557; }
 .help-analogy{ background:#EEF3FB; border-left:5px solid #1D3557; border-radius:8px;
-   padding:10px 16px; margin:8px 0; font-size:14px; line-height:1.6; color:#243447; }
+   padding:10px 16px; margin:8px 0; font-size:14px; line-height:1.6; color:#10243A; }
 .help-analogy b{ color:#1D3557; }
 .concept-card{ background:#FFFFFF; border:1px solid #E2E8F1; border-radius:10px;
    padding:12px 16px; margin:10px 0; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
 .concept-card h4{ color:#1D3557; font-size:17px; font-weight:700;
    margin:0 0 6px 0; }
-.concept-card .why{ font-size:14px; color:#243447; line-height:1.6; }
+.concept-card .why{ font-size:14px; color:#10243A; line-height:1.6; }
 .concept-card .why b{ color:#1D3557; }
 .concept-card .ana{ background:#EEF3FB; border-left:4px solid #1D3557;
-   padding:8px 12px; margin-top:8px; font-size:13.5px; color:#243447; }
+   padding:8px 12px; margin-top:8px; font-size:13.5px; color:#10243A; }
 .tab-back{ background:#1D9E75; color:#fff; padding:6px 14px; border-radius:8px;
    font-size:13px; font-weight:700; display:inline-block; margin:10px 0;
    text-decoration:none !important; }

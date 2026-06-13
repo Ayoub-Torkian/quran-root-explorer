@@ -216,10 +216,10 @@ def _card(num, name, scales, verdict, claim, stat, boundary, refs):
         f"<div style='display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;'>"
         f"<b style='color:{NAVY};font-size:15px;'>Lens {n} — {name}</b>"
         f"<span style='font-size:12px;font-weight:700;color:{color};'>{badge}</span></div>"
-        f"<div style='font-size:12px;color:#3D4757;margin:2px 0 6px;'>{scales} &nbsp;·&nbsp; EVIDENCE {refs}</div>"
+        f"<div style='font-size:12px;color:#10243A;margin:2px 0 6px;'>{scales} &nbsp;·&nbsp; EVIDENCE {refs}</div>"
         f"<div style='font-size:13.5px;margin-bottom:4px;'><b>Claim:</b> {claim}</div>"
         f"<div style='font-size:13.5px;margin-bottom:4px;'><b>Statistic vs null:</b> {stat}</div>"
-        f"<div style='font-size:13px;color:#3D4757;'><b>Boundary:</b> {boundary}</div>"
+        f"<div style='font-size:13px;color:#10243A;'><b>Boundary:</b> {boundary}</div>"
         "</div>", unsafe_allow_html=True)
 
 

@@ -51,7 +51,10 @@ ABORT = an intrinsic hard gate fails (provenance, redundancy, FDR-null w/ no pat
 - Transfer entropy: G7 FAIL (r=0.80 w/ co-location; redundant w/ lead-lag) -> ABORT.
 - Verse-length DFA: G4 FAIL (0.97 -> 0.53 within-surah) -> ABORT.
 - Revelation vs richness: G4 FAIL (partial r = -0.08) -> ABORT.
-- Within-surah rasm sequence structure: UNTESTED -> next candidate to run the gates on.
+- Within-surah/unit-boundary recovery (rasm): TESTED 2026-06-12. G0-G6 PASS; G4 PASS (AUC survives length
+  removal 0.87->0.84; 3 converging modalities); G7 FAIL (corr 0.71 with rhyme L06) -> ABORT as new feature.
+  Durable value = multi-modal convergence + surface-sufficiency BOUND (AUC~0.85, no recoverable partition
+  F1~0.3). See research/intrinsic/FINDING_unit_recovery.md.
 
 ## DISCOVERY VALUE SCORE (1-10) — LOCKED scoring scheme for every candidate
 Two stages. Eligibility first, then a weighted score. No score is assigned until
@@ -152,8 +155,15 @@ fails to resolve a feature is NOT evidence the feature is absent. Therefore:
   its readings on the Qur'an (high OR low) are uninformative and must not be cited.
   (Do NOT use external masterpieces as the control — external text is inadmissible.)
 - HISTORICAL NOTE (pre-pivot, VOID as evidence): a surface set-overlap stylometry once
-  ranked an external set oddly and was rejected as blind. Retained only as a cautionary
-  record; no external ranking is admissible under the current regime.
-- The task is now TOOL-BUILDING: instruments that resolve MEANING/MASTERY (semantic, multi-
-  scale-integration, statistical-complexity/predictive-information), each validated on the
-  positive control before any application.
+  ranked 
+## G4b — REDUCTION / INVARIANCE TEST (MANDATORY before any grade ≥90). LOCKED 2026-06-12.
+A feature is NOT a discovery if the signal it claims is reproduced by a simpler/known thing.
+Before grading ≥90, you MUST run BOTH and pass BOTH:
+  (a) INVARIANCE: strip the structure the claim depends on (order/position/sequence/neighbours) and re-measure.
+      If a position/order-free version reproduces it (e.g. word-only ≈ full), the "structure" claim is FALSE —
+      it is a vocabulary/marginal fact, not the claimed structural law. → fail / recast.
+  (b) KNOWN-MEASURE ABLATION: train/measure using ONLY each nearest existing measure (rhyme L06, length,
+      co-occurrence, onset L18…); if any reproduces the signal, or if corr(full, known) > 0.5, → G7 fail.
+Lesson that forced this (L27 āyah-recovery, banked 91 then DEMOTED to 84): it was ORDER-INVARIANT
+(word-only AUC 0.939 ≈ full 0.957) and the closure forms ARE the fāṣila — a morphological restatement of rhyme,
+not a segmentation discovery. NEVER grade ≥90 before G4b passes.

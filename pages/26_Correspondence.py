@@ -31,7 +31,7 @@ st.markdown(
     "<style>"
     ".block-container{max-width:1200px;padding-top:1rem}"
     ".cl-h1{font-size:30px;font-weight:800;color:#16243B;margin:0 0 2px}"
-    ".cl-sub{font-size:14px;color:#46505F;line-height:1.55;margin:0 0 6px;max-width:920px}"
+    ".cl-sub{font-size:14px;color:#10243A;line-height:1.55;margin:0 0 6px;max-width:920px}"
     ".cl-why{background:#F5F8FC;border-left:4px solid #1D3557;border-radius:8px;padding:10px 14px;"
     "font-size:14px;line-height:1.55;color:#16243B;margin:6px 0 10px;max-width:980px}"
     ".cl-sec{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#1D3557;"
@@ -41,7 +41,7 @@ st.markdown(
     ".cl-card{background:#fff;border:1px solid #E7ECF3;border-left:4px solid #1D9E75;border-radius:7px;padding:6px 11px;margin:0}"
     ".cl-card.b{border-left-color:#7FB069}.cl-card.d{border-left-color:#C4CBD3;background:#f7f8f9}"
     ".cl-ct{font-size:13px;font-weight:800;color:#16243B;margin:0 0 1px}"
-    ".cl-look{font-size:12.5px;color:#46505F;line-height:1.35;margin:0}.cl-look b{color:#1D3557}"
+    ".cl-look{font-size:12.5px;color:#10243A;line-height:1.35;margin:0}.cl-look b{color:#1D3557}"
     ".cl-found{font-size:12.5px;color:#0B3F2A;line-height:1.35;margin:1px 0 0}.cl-found b{color:#13592a}"
     ".cl-rej{font-size:12.5px;color:#9a4a4a;line-height:1.35;margin:1px 0 0}.cl-rej b{color:#7a2a2a}"
     "</style>",
@@ -101,7 +101,7 @@ def _dv_bars(items, color="#1D9E75"):
     for lab, v in items:
         w = max(4, int(v / float(mx) * 100))
         rows += ('<div style="display:flex;align-items:center;gap:6px;font-size:11px;margin:2px 0">'
-                 '<span style="width:104px;flex:none;color:#46505F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">%s</span>'
+                 '<span style="width:104px;flex:none;color:#10243A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">%s</span>'
                  '<span style="flex:1;height:9px;background:#ECEFF3;border-radius:3px;overflow:hidden">'
                  '<i style="display:block;height:100%%;width:%d%%;background:%s"></i></span>'
                  '<span style="width:36px;flex:none;text-align:right;font-weight:700;color:#16243B">%s</span></div>'
@@ -116,7 +116,7 @@ def _net_svg():
         return 28.0 + (s - 1) / 113.0 * 626.0
     P = ['<line x1="28" y1="%g" x2="654" y2="%g" stroke="#D7DEE6" stroke-width="1.2"/>' % (Y0, Y0)]
     for s in (1, 30, 60, 90, 114):
-        P.append('<text x="%.1f" y="%g" font-size="12" fill="#7A8390" text-anchor="middle">%d</text>' % (X(s), Y0 + 17, s))
+        P.append('<text x="%.1f" y="%g" font-size="12" fill="#10243A" text-anchor="middle">%d</text>' % (X(s), Y0 + 17, s))
     nodes = set()
     if tw:
         mxn = max(t.get("n", 1) for t in tw)
@@ -147,14 +147,14 @@ def _net_svg():
         P.append('<text x="%.1f" y="%.1f" font-size="10" fill="#A8542F" text-anchor="middle">%s</text>' % (mid, apex - 4, lab))
     for s in nodes:
         P.append('<circle cx="%.1f" cy="%g" r="3" fill="#16243B"/>' % (X(s), Y0))
-    P.append('<line x1="500" y1="12" x2="524" y2="12" stroke="#1D9E75" stroke-width="2.6"/><text x="529" y="16" font-size="11" fill="#46505F">shared-root link</text>')
-    P.append('<line x1="500" y1="28" x2="524" y2="28" stroke="#D85A30" stroke-width="1.7" stroke-dasharray="4,3"/><text x="529" y="32" font-size="11" fill="#46505F">form-twin (same opening)</text>')
+    P.append('<line x1="500" y1="12" x2="524" y2="12" stroke="#1D9E75" stroke-width="2.6"/><text x="529" y="16" font-size="11" fill="#10243A">shared-root link</text>')
+    P.append('<line x1="500" y1="28" x2="524" y2="28" stroke="#D85A30" stroke-width="1.7" stroke-dasharray="4,3"/><text x="529" y="32" font-size="11" fill="#10243A">form-twin (same opening)</text>')
     return '<svg viewBox="0 0 680 128" width="100%" preserveAspectRatio="xMidYMid meet" role="img">' + "".join(P) + '</svg>'
 
 # ---------------- WHAT WE DISCOVERED — three results, each visualized ----------------
 st.markdown('<div class="cl-sec">What we discovered — three results, each visualized</div>', unsafe_allow_html=True)
-st.markdown('<div style="font-size:13px;color:#46505F;margin:-2px 0 8px;max-width:1050px">Three discoveries cover all seven bedrock features — each measured only against the text&#700;s own shuffle (the One Law).</div>', unsafe_allow_html=True)
-st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:8px 0 3px">Discovery 1 — a Sūra is an integrated unit <span style="font-weight:400;color:#6A7480">(A1 edge · A2 interior · A6 wiring)</span></div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:13px;color:#10243A;margin:-2px 0 8px;max-width:1050px">Three discoveries cover all seven bedrock features — each measured only against the text&#700;s own shuffle (the One Law).</div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:8px 0 3px">Discovery 1 — a Sūra is an integrated unit <span style="font-weight:400;color:#10243A">(A1 edge · A2 interior · A6 wiring)</span></div>', unsafe_allow_html=True)
 st.markdown(
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:14px 18px;margin:2px 0 8px;max-width:1050px">'
     '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:6px">'
@@ -173,37 +173,37 @@ st.markdown(
     '<circle cx="110" cy="104" r="56" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
     '<circle cx="158" cy="66" r="3.2" fill="#1D9E75"/>'
     '<text x="110" y="186" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Baqara</text>'
-    '<text x="110" y="202" font-size="11" fill="#6A7480" text-anchor="middle">286 verses</text>'
+    '<text x="110" y="202" font-size="11" fill="#10243A" text-anchor="middle">286 verses</text>'
     '<circle cx="285" cy="104" r="48" fill="#EAF6F0"/><circle cx="285" cy="104" r="48" fill="url(#wv)"/>'
     '<circle cx="285" cy="104" r="48" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
     '<circle cx="242" cy="68" r="3.2" fill="#1D9E75"/>'
     '<text x="285" y="186" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">Āl-ʿImrān</text>'
-    '<text x="285" y="202" font-size="11" fill="#6A7480" text-anchor="middle">200 verses</text>'
+    '<text x="285" y="202" font-size="11" fill="#10243A" text-anchor="middle">200 verses</text>'
     '<circle cx="500" cy="104" r="20" fill="#EAF6F0"/><circle cx="500" cy="104" r="20" fill="url(#wv)"/>'
     '<circle cx="500" cy="104" r="20" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
     '<circle cx="515" cy="86" r="3" fill="#1D9E75"/>'
     '<text x="500" y="150" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Falaq</text>'
-    '<text x="500" y="166" font-size="11" fill="#6A7480" text-anchor="middle">5 verses</text>'
+    '<text x="500" y="166" font-size="11" fill="#10243A" text-anchor="middle">5 verses</text>'
     '<circle cx="590" cy="104" r="20" fill="#EAF6F0"/><circle cx="590" cy="104" r="20" fill="url(#wv)"/>'
     '<circle cx="590" cy="104" r="20" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
     '<circle cx="575" cy="86" r="3" fill="#1D9E75"/>'
     '<text x="590" y="150" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Nās</text>'
-    '<text x="590" y="166" font-size="11" fill="#6A7480" text-anchor="middle">6 verses</text>'
+    '<text x="590" y="166" font-size="11" fill="#10243A" text-anchor="middle">6 verses</text>'
     '<text x="197" y="223" font-size="11" fill="#9AA4B2" text-anchor="middle">a giant pair</text>'
     '<text x="545" y="190" font-size="11" fill="#9AA4B2" text-anchor="middle">a tiny pair</text>'
     '</svg>'
     '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">'
     '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
     '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Edge &middot; the membrane</div>'
-    '<div style="font-size:11.5px;color:#46505F;line-height:1.4">Like an organ&#700;s membrane — the boundary is '
+    '<div style="font-size:11.5px;color:#10243A;line-height:1.4">Like an organ&#700;s membrane — the boundary is '
     'detectable: root-overlap <b style="color:#0F6E56">0.87 inside &rarr; 0.28</b> at the seam.</div></div>'
     '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
     '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Interior &middot; the weave</div>'
-    '<div style="font-size:11.5px;color:#46505F;line-height:1.4">Like ordered tissue, not a cell-heap — shuffle the '
+    '<div style="font-size:11.5px;color:#10243A;line-height:1.4">Like ordered tissue, not a cell-heap — shuffle the '
     'verses and cohesion drops <b style="color:#0F6E56">0.73 &rarr; 0.52</b>. The order is load-bearing.</div></div>'
     '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
     '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Wiring &middot; the network</div>'
-    '<div style="font-size:11.5px;color:#46505F;line-height:1.4">Like vessels between organs — '
+    '<div style="font-size:11.5px;color:#10243A;line-height:1.4">Like vessels between organs — '
     '<b style="color:#0F6E56">44% of sūra-pairs</b> link specifically (vs 1% by chance).</div></div>'
     '</div>'
     '<div style="background:#EAF6F0;border-radius:8px;padding:9px 13px;margin-top:10px;font-size:12.5px;'
@@ -213,7 +213,7 @@ st.markdown(
     '</div>', unsafe_allow_html=True)
 
 # ---------------- Discovery 2: sūras form a modular network ----------------
-st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 2 — sūras form a modular network <span style="font-weight:400;color:#6A7480">(A6 wiring · A7 twins)</span></div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 2 — sūras form a modular network <span style="font-weight:400;color:#10243A">(A6 wiring · A7 twins)</span></div>', unsafe_allow_html=True)
 st.markdown(
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:13px 16px;margin:2px 0 8px;max-width:1050px">'
     '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:6px">'
@@ -223,31 +223,31 @@ st.markdown(
     '(<b style="color:#993C1D">dashed arcs</b> — ṬSM 26·28, Tabāraka 25·67, wa-l-samāʾ 85·86). '
     'The whole book reads as a wired, modular system.</div>'
     + _net_svg() +
-    '<div style="font-size:12px;color:#6A7480;margin-top:4px">Horizontal axis = the 114 sūras in order · arch height = link strength · dashed = bilateral form-twins.</div>'
+    '<div style="font-size:12px;color:#10243A;margin-top:4px">Horizontal axis = the 114 sūras in order · arch height = link strength · dashed = bilateral form-twins.</div>'
     '</div>', unsafe_allow_html=True)
 
 # ---------------- Discovery 3: three confirming signatures ----------------
-st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 3 — three system signatures <span style="font-weight:400;color:#6A7480">(A3 self-replication · A5 rhythm · A4 interface)</span></div>', unsafe_allow_html=True)
+st.markdown('<div style="font-size:15px;font-weight:700;color:#1D3557;margin:12px 0 3px">Discovery 3 — three system signatures <span style="font-weight:400;color:#10243A">(A3 self-replication · A5 rhythm · A4 interface)</span></div>', unsafe_allow_html=True)
 _ff = [(f["al"] + "·" + f["bl"], f["n"]) for f in VZ.get("formulae", [])[:6]]
 st.markdown(
     '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:2px 0 8px;max-width:1050px">'
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
     '<div style="font-size:14px;font-weight:700;color:#16243B">Self-replication <span style="color:#0F6E56">z=+125</span></div>'
-    '<div style="font-size:12px;color:#46505F;line-height:1.45;margin:2px 0 6px">Fixed root-formulae recur far above chance, across every region — the text copies its own forms.</div>'
+    '<div style="font-size:12px;color:#10243A;line-height:1.45;margin:2px 0 6px">Fixed root-formulae recur far above chance, across every region — the text copies its own forms.</div>'
     + _dv_bars(_ff) +
     '</div>'
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
     '<div style="font-size:14px;font-weight:700;color:#16243B">Rhythm <span style="color:#0F6E56">DFA 0.95</span></div>'
-    '<div style="font-size:12px;color:#46505F;line-height:1.45;margin:2px 0 6px">Verse-lengths carry long-range 1/f memory across the whole book — a multi-scale pulse, not noise.</div>'
+    '<div style="font-size:12px;color:#10243A;line-height:1.45;margin:2px 0 6px">Verse-lengths carry long-range 1/f memory across the whole book — a multi-scale pulse, not noise.</div>'
     + _dv_line(VZ.get("wave", [1, 1])) +
     '<div style="font-size:10px;color:#9AA4B2;margin-top:2px;text-align:center">words per verse · sūra 1 → 114</div>'
     '</div>'
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
     '<div style="font-size:14px;font-weight:700;color:#16243B">Interface zones <span style="color:#0F6E56">z=+17.6</span></div>'
-    '<div style="font-size:12px;color:#46505F;line-height:1.45;margin:2px 0 7px">Outward-address verses (qul, yā-ayyuhā) cluster into zones rather than scattering — an outward-facing surface.</div>'
+    '<div style="font-size:12px;color:#10243A;line-height:1.45;margin:2px 0 7px">Outward-address verses (qul, yā-ayyuhā) cluster into zones rather than scattering — an outward-facing surface.</div>'
     '<div style="display:flex;height:22px;border-radius:5px;overflow:hidden;font-size:10px;color:#fff;font-weight:700">'
     '<div style="width:28%;background:#1D9E75;display:flex;align-items:center;justify-content:center">28% out</div>'
-    '<div style="width:72%;background:#C4CBD3;display:flex;align-items:center;justify-content:center;color:#46505F">72% inward</div></div>'
+    '<div style="width:72%;background:#C4CBD3;display:flex;align-items:center;justify-content:center;color:#10243A">72% inward</div></div>'
     '</div>'
     '</div>', unsafe_allow_html=True)
 
@@ -291,7 +291,7 @@ st.markdown(
     ".ct td{padding:4px 7px;border-bottom:1px solid #EDF1F6;color:#2B3440;vertical-align:top;word-wrap:break-word;overflow-wrap:anywhere}"
     ".ct .ct-id{width:40px;font-weight:800;color:#1D3557}"
     ".ct .ct-c{width:108px;font-weight:700;color:#16243B}"
-    ".ct .ct-why{color:#46505F}.ct .ct-got{color:#0B3F2A}"
+    ".ct .ct-why{color:#10243A}.ct .ct-got{color:#0B3F2A}"
     ".ct .ct-g{width:50px;text-align:center}"
     "</style>", unsafe_allow_html=True)
 st.markdown('<div class="cl-sec">All correspondences — what we did · why · what we got</div>', unsafe_allow_html=True)
@@ -421,20 +421,20 @@ st.markdown(
     ".cp-track{width:58px;height:6px;background:#ECEFF3;border-radius:4px;overflow:hidden;display:inline-block}"
     ".cp-track>i{display:block;height:100%}"
     ".cp-grade{font-weight:800;font-size:10.5px}"
-    ".cp-aspect{font-size:11.5px;color:#6A7480;margin:5px 0 8px;line-height:1.35}"
+    ".cp-aspect{font-size:11.5px;color:#10243A;margin:5px 0 8px;line-height:1.35}"
     ".cp-corr{display:grid;grid-template-columns:1fr 22px 1fr;align-items:stretch;gap:5px}"
     ".cp-side{border-radius:7px;padding:6px 9px;font-size:12px;line-height:1.32}"
     ".cp-body{background:#F4F6F8;color:#2B3440}.cp-quran{background:#E6F4EE;color:#0B3F2A}"
     ".cp-slab{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}"
-    ".cp-body .cp-slab{color:#7A8390}.cp-quran .cp-slab{color:#0F6E56}"
+    ".cp-body .cp-slab{color:#10243A}.cp-quran .cp-slab{color:#0F6E56}"
     ".cp-arrow{display:flex;align-items:center;justify-content:center;font-size:14px;color:#1D9E75;font-weight:800}"
     ".cp-ar{text-align:center;font-size:18px;color:#16243B;margin:9px 0 7px;line-height:1.7;direction:rtl}"
     ".cp-ar small{font-size:11px;color:#8A94A0;direction:ltr;unicode-bidi:embed}"
     ".cp-chart{margin:7px 0 1px}"
-    ".cp-nums{font-size:10px;color:#7A8390;text-align:center;margin:0 0 1px}"
+    ".cp-nums{font-size:10px;color:#10243A;text-align:center;margin:0 0 1px}"
     ".cp-rk{display:flex;flex-direction:column;gap:2px;margin:6px 0 1px}"
     ".cp-rkrow{display:flex;align-items:center;gap:6px;font-size:10px}"
-    ".cp-rklab{width:98px;flex:none;color:#46505F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
+    ".cp-rklab{width:98px;flex:none;color:#10243A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
     ".cp-rkbt{flex:1;height:8px;background:#ECEFF3;border-radius:3px;overflow:hidden}"
     ".cp-rkbt>i{display:block;height:100%}"
     ".cp-rkv{width:34px;flex:none;text-align:right;font-weight:700;color:#16243B}"
@@ -442,7 +442,7 @@ st.markdown(
     ".cp-out .cp-insight{background:#F4F1EC;color:#5E5340}"
     ".cp-bars{display:flex;flex-direction:column;gap:3px;margin-top:2px}"
     ".cp-bar{display:flex;align-items:center;gap:7px;font-size:11px}"
-    ".cp-bar>span:first-child{width:74px;color:#6A7480;flex:none}"
+    ".cp-bar>span:first-child{width:74px;color:#10243A;flex:none}"
     ".cp-bt{flex:1;height:8px;background:#ECEFF3;border-radius:4px;overflow:hidden}"
     ".cp-bt>i{display:block;height:100%}"
     ".cp-bv{min-width:82px;text-align:right;font-weight:700;color:#16243B;flex:none}"

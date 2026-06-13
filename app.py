@@ -400,7 +400,7 @@ def main():
         "<div style='display:flex;align-items:baseline;gap:13px;padding:10px 2px 5px;flex-wrap:wrap'>"
         "<span style='font-size:29px;font-weight:800;color:#1D3557;letter-spacing:-.3px'>📖 Quran Explorer</span>"
         "<span style='font-size:16px;font-weight:700;color:#1D9E75'>Root Exploration</span>"
-        "<span style='margin-left:auto;font-size:13.5px;font-weight:700;color:#46505F'>"
+        "<span style='margin-left:auto;font-size:13.5px;font-weight:700;color:#10243A'>"
         "114 sūras &middot; 6,236 āyāt &middot; %s roots</span>"
         "</div>"
         "<div style='height:3px;background:linear-gradient(90deg,#1D3557,#1D9E75 55%%,rgba(29,158,117,0));"
