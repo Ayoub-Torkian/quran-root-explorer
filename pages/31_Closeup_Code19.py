@@ -26,6 +26,13 @@ Y, P, N = "✔ holds", "~ partial", "✗ fails"
 C.hero("Code 19 (Rashad Khalifa), reviewed",
        "Does a mathematical code based on 19 govern the Qur'ān — or is it selected from countless possible counts?",
        "REFUTED-ARTIFACT", 22, "rasm counts (Basmalas included)", "DIVINE-DEFAULT · RANDOM null")
+st.markdown(
+    "<div style='display:flex;justify-content:flex-end;margin:7px 0 2px'>"
+    "<div style='background:linear-gradient(135deg,#138A74,#10243A);color:#fff;border-radius:10px;"
+    "padding:9px 15px;font-weight:800;font-size:13.5px;box-shadow:0 3px 10px rgba(16,36,58,.25);"
+    "border:1px solid rgba(255,255,255,.25)'>"
+    "📄 خلاصهٔ کامل به فارسی و العربية در پایان صفحه ↓ &nbsp;·&nbsp; "
+    "Full plain-language abstract — Persian &amp; Arabic — at the end ↓</div></div>", unsafe_allow_html=True)
 C.story(
     "Anchored on Q 74:30 (<i>“over it is nineteen”</i>), the claim is a pervasive 19-code in letters, words and "
     "sūras. Every major claim is tested here on the text itself, Basmalas included. The result is honest and split: "
@@ -236,5 +243,51 @@ C.callout("In one line — for every reader",
           "governing 19-code</b>. Under a proper null, 19 holds no special place in the Qur'ān's counts; it is the "
           "<i>least</i> common multiple, not the most. The Qur'ān's structure is real and measurable — see the Āyah "
           "and Sūra close-ups — but this particular numerical claim is not where it lives.", accent=C.CORAL)
+
+# ── PERSIAN ABSTRACT ──
+C.section("خلاصهٔ کامل — Persian abstract")
+st.markdown(
+    "<div dir='rtl' style='font-family:Vazirmatn,Tahoma,\"Segoe UI\",sans-serif;font-size:15.5px;line-height:2.0;"
+    "color:#243b53;text-align:right;background:#F6F9FC;border-right:5px solid #138A74;border-radius:11px;"
+    "padding:16px 20px'>"
+    "<b>ادعا.</b> رشاد خلیفه با تکیه بر آیهٔ «عَلَیْهَا تِسْعَةَ عَشَرَ» (مدّثر ۷۴:۳۰) مدّعی شد عددی به نام ۱۹ بر سراسر "
+    "قرآن — بر شمار حرف‌ها، واژه‌ها و سوره‌ها — حاکم است.<br><br>"
+    "<b>روش.</b> همهٔ ادعاهای اصلی را مستقیم روی متن (رسمِ بدونِ اعراب، با احتسابِ ۱۱۲ بسملهٔ آغازِ سوره‌ها) شمردیم؛ "
+    "و عددِ ۱۹ را در برابرِ «شانس» و در برابرِ اعدادِ رقیب (۷، ۱۱، ۱۳، ۱۷، ۲۳) سنجیدیم.<br><br>"
+    "<b>یافته‌ها.</b> بخشی واقعی و دقیقاً بخش‌پذیر بر ۱۹ است: بسمله ۱۹ حرف، ۱۱۴ سوره (۱۹×۶)، سورهٔ ۹۶ با ۱۹ آیه و "
+    "نوزدهمین از آخر، «الرحمن» ۵۷ بار (۱۹×۳)، حرفِ «ق» در سورهٔ ۵۰ برابر ۵۷ و «ص» برابر ۱۵۲. اما ادعاهای بزرگ‌تر با "
+    "یک شمارشِ بی‌طرف فرومی‌ریزند: «الله» ۲۶۹۵ بار (که دقیقاً بر ۷ و ۱۱ بخش‌پذیر است، نه ۱۹)، «یس» ۲۴۸ (نه ۲۸۵)، و "
+    "حروفِ الف‌دار کاملاً وابسته به املا (الم در سوره‌هایش = ۱۸٬۰۷۲). در میانِ ۱٬۰۸۴ شمارشِ طبیعیِ متن، نرخِ بخش‌پذیری "
+    "بر ۱۹ تنها ۲٫۹٪ است — کمترین در میانِ همهٔ اعداد و پایین‌تر از شانس (۵٫۳٪)؛ و باقیماندهٔ صفر (یعنی مضربِ ۱۹) "
+    "دومین کمیاب‌ترین حالت است.<br><br>"
+    "<b>نکتهٔ کلیدی.</b> رمز دقیقاً جایی «درست» درمی‌آید که املا قطعی است (ق و ص که گونهٔ نوشتاری ندارند) و دقیقاً جایی "
+    "«شکست» می‌خورد که املا اختلافی است (الف، یاء). این، نشانهٔ یک «مصنوعِ شمارش» است، نه یک قانونِ عددی.<br><br>"
+    "<b>نتیجه.</b> خوشه‌ای کوچک و واقعی از حقایقِ ۱۹ پیرامونِ بسمله هست و آن را به‌انصاف می‌پذیریم؛ اما «رمزی فراگیر» "
+    "در کار نیست. این داوری <b>آماری</b> است، نه کلامی.<br><br>"
+    "<b>درس.</b> هر ادعا دربارهٔ قرآن — از جمله ادعاهای خودِ ما — باید داده‌محور، دارای آزمونِ پوچِ درست، روش‌مند، "
+    "آماری‌معتبر و تکرارپذیر باشد؛ نه عوام‌گرایانه و عوام‌پسند.</div>", unsafe_allow_html=True)
+
+# ── ARABIC ABSTRACT ──
+C.section("الملخّص الكامل — Arabic abstract")
+st.markdown(
+    "<div dir='rtl' style='font-family:Amiri,\"Scheherazade New\",Tahoma,serif;font-size:16px;line-height:2.0;"
+    "color:#243b53;text-align:right;background:#F6F9FC;border-right:5px solid #4E6E92;border-radius:11px;"
+    "padding:16px 20px'>"
+    "<b>الدعوى.</b> استناداً إلى آية «عَلَيْهَا تِسْعَةَ عَشَرَ» (المدّثّر ۷۴:۳۰)، زعم رشاد خليفة أنّ عدداً هو ۱۹ "
+    "يحكم القرآن كلَّه — حروفَه وكلماتِه وسُوَرَه.<br><br>"
+    "<b>المنهج.</b> اختبرنا كلَّ دعوى رئيسية مباشرةً على النصّ (الرسم بلا حركات، مع إدراج ۱۱۲ بسملةً في فواتح "
+    "السُّوَر)، وقِسنا العددَ ۱۹ في مقابل الصُّدفة وفي مقابل أعدادٍ منافِسة (۷، ۱۱، ۱۳، ۱۷، ۲۳).<br><br>"
+    "<b>النتائج.</b> بعضُ الدعاوى حقيقيّ ويقبل القسمةَ على ۱۹ بالضبط: البسملة ۱۹ حرفاً، و۱۱۴ سورة (۱۹×۶)، والسورة ۹۶ "
+    "بتسعَ عشرةَ آية وهي التاسعةَ عشرةَ من الآخِر، و«الرحمن» ۵۷ مرّة (۱۹×۳)، وحرف «ق» في السورة ۵۰ يساوي ۵۷ و«ص» "
+    "يساوي ۱۵۲. لكنّ الدعاوى الأكبر تنهار عند عدٍّ محايد: «الله» ۲۶۹۵ مرّة (وهو قابلٌ للقسمة على ۷ و۱۱ بالضبط، لا ۱۹)، "
+    "و«يس» ۲۴۸ لا ۲۸۵، والحروف ذاتُ الألف تعتمد كلّياً على الرسم (الم في سورها = ۱۸٬۰۷۲). وبين ۱٬۰۸۴ عدّاً طبيعياً في "
+    "النصّ، نسبةُ القسمة على ۱۹ هي ۲٫۹٪ فقط — أدنى من كلّ الأعداد وأقلّ من الصُّدفة (۵٫۳٪)، والباقي صفرٌ (أي مضاعفات "
+    "۱۹) ثاني أندرِ الحالات.<br><br>"
+    "<b>الجوهر.</b> «الرمز» يصحّ تماماً حيث يكون الرسمُ قاطعاً (الحرفان ق وص بلا صورٍ إملائية)، ويفشل تماماً حيث يكون "
+    "الرسمُ خلافياً (الألف، الياء). وهذه علامةُ «مصنوعٍ إحصائيّ»، لا قانونٍ عدديّ.<br><br>"
+    "<b>الخلاصة.</b> يوجد عنقودٌ صغيرٌ حقيقيّ من حقائق ۱۹ حول البسملة، ونعترف به بإنصاف؛ لكن لا «رمزَ شاملاً». وهذا "
+    "حُكمٌ <b>إحصائيّ</b> لا لاهوتيّ.<br><br>"
+    "<b>الدرس.</b> كلُّ دعوى عن القرآن — بما فيها دعاوانا — يجب أن تكون قائمةً على البيانات، ذاتَ اختبارٍ عدميٍّ سليم، "
+    "منهجيّةً، وصحيحةً إحصائياً وقابلةً للتكرار؛ لا تملّقاً للعامّة (عوام‌گرایی / عوام‌پسند).</div>", unsafe_allow_html=True)
 
 st.page_link("pages/27_Closeup_Index.py", label="← Back to the Close-up map", icon="🔎")
