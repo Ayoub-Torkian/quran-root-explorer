@@ -36,12 +36,16 @@ NAV_SECTIONS = [
     ("📜 DISCOVERIES", [
         (None, [("pages/25_Latent_Features.py", "Determinacy", "🧬"),
                 ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
-        ("🔎 Close-up", [("pages/27_Closeup_Index.py", "Map · index", "🗺️"),
-                         ("pages/28_Closeup_Ayah.py", "The Āyah, defined", "📐"),
-                         ("pages/30_Closeup_Sura.py", "The Sūra, characterised", "📜"),
-                         ("pages/29_Closeup_InterSura.py", "Inter-Sūra coherence", "⚠️"),
-                         ("pages/31_Closeup_Code19.py", "Code 19, reviewed", "🔢"),
-                         ("pages/32_Closeup_Nuzul.py", "Revelation order, reviewed", "🕰️")]),
+    ]),
+    ("🔎 CLOSE-UP", [
+        (None, [("pages/27_Closeup_Index.py", "Map · start here", "🗺️")]),
+        ("Units & arrangement", [
+            ("pages/28_Closeup_Ayah.py", "The Āyah", "📐"),
+            ("pages/30_Closeup_Sura.py", "The Sūra", "📜"),
+            ("pages/29_Closeup_InterSura.py", "Inter-Sūra", "⚠️")]),
+        ("Claims reviewed", [
+            ("pages/31_Closeup_Code19.py", "Code 19", "🔢"),
+            ("pages/32_Closeup_Nuzul.py", "Revelation order", "🕰️")]),
     ]),
     ("📖 READER", [
         (None, [
@@ -178,9 +182,10 @@ def render_grouped_nav():
         "border-radius:6px!important;padding:5px 10px!important;margin:6px 0 0!important;"
         "line-height:1.2!important;display:block!important;white-space:nowrap!important;"
         "overflow:hidden!important;text-overflow:ellipsis!important;}"
-        ".dlnav-h2{font-size:11px!important;font-weight:800!important;letter-spacing:.7px!important;"
-        "color:#7A8597!important;text-transform:uppercase!important;margin:9px 0 1px 18px!important;"
-        "background:none!important;border:none!important;padding:0!important;line-height:1.3!important;display:block!important;}"
+        ".dlnav-h2{font-size:11px!important;font-weight:800!important;letter-spacing:.6px!important;"
+        "color:#3E5572!important;text-transform:uppercase!important;margin:10px 0 2px 12px!important;"
+        "background:none!important;border:none!important;padding:0 0 2px 6px!important;"
+        "border-left:3px solid #C7D3E2!important;line-height:1.3!important;display:block!important;}"
         # v2.0: global PROGRESS RIBBON — animated bar pinned to the very top whenever the app
         # is computing (driven by the presence of Streamlit's status widget via :has()).
         "@keyframes dlribbon{0%{background-position:0 0}100%{background-position:300% 0}}"
