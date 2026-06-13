@@ -829,6 +829,18 @@ with TABS[0]:
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown(
+        "<a href='https://drive.google.com/drive/folders/1Iz34p_uD7tAL7To8HaVGPFoCJYpp3fPc' "
+        "target='_blank' rel='noopener' style='text-decoration:none'>"
+        "<div style='margin:16px 0 4px;padding:13px 18px;border-radius:11px;"
+        "background:linear-gradient(120deg,#10243A,#1D3557 55%,#138A74);color:#FFFFFF;"
+        "box-shadow:0 2px 8px rgba(16,36,58,.25)'>"
+        "<div style='font-size:16px;font-weight:800'>📚 Papers, presentations &amp; courses ↗</div>"
+        "<div style='font-size:13px;font-weight:600;margin-top:3px;color:#EAF6F0'>"
+        "Further research, talks and learning material behind this app — opens in a new tab "
+        "(Google&nbsp;Drive).  Also pinned at the bottom of the sidebar on every page.</div></div></a>",
+        unsafe_allow_html=True)
+
     # ─── functional jumps back into the app ───
     st.markdown('<div class="ov-section-title">🚀  OR JUMP STRAIGHT INTO THE APP</div>',
                 unsafe_allow_html=True)

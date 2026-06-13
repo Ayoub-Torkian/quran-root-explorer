@@ -240,6 +240,16 @@ def render_grouped_nav():
             else:
                 with st.expander(l1, expanded=(l1 == "🧭 MAIN") or any(_nav_is_current(_pp) for _l2, _it in subs for _pp, _lb, _ic in _it)):
                     _render_items(subs)
+        # Persistent resources link — papers · presentations · courses (every page, below the nav)
+        st.markdown(
+            "<a href='https://drive.google.com/drive/folders/1Iz34p_uD7tAL7To8HaVGPFoCJYpp3fPc' "
+            "target='_blank' rel='noopener' style='text-decoration:none'>"
+            "<div style='margin:14px 6px 2px;padding:9px 12px;border-radius:9px;"
+            "background:linear-gradient(135deg,#1D3557,#138A74);color:#FFFFFF;font-size:13px;font-weight:800;"
+            "line-height:1.4;box-shadow:0 1px 3px rgba(16,36,58,.28)'>"
+            "📚 Papers · presentations · courses"
+            "<div style='font-size:12px;font-weight:600;margin-top:2px;color:#EAF6F0'>"
+            "More research &amp; learning resources ↗</div></div></a>", unsafe_allow_html=True)
         # v2.1: per-page feedback widgets removed (Feedback page stays in the nav)
 
 
