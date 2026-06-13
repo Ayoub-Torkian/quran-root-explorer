@@ -58,16 +58,10 @@ C.kpis([
     ("✓ Sadeghi", "program vindicated", "2011 morphological stylometry confirmed the chronology the tradition & Bazargan drew", C.TEAL),
     ("70", "grade", "CANDIDATE — sūra-level clock real & converged; only passage-level dating over-reaches", C.GOLD),
 ])
-st.markdown(
-    "<div style='font-size:12.5px;color:#10243A;background:#EEF3F8;border:1px solid #DCE6F0;border-radius:9px;"
-    "padding:8px 13px;margin:5px 0 2px;line-height:1.75'><b>On this page —</b> "
-    "① Problem &nbsp;·&nbsp; ② Hypothesis &nbsp;·&nbsp; ③ Method &nbsp;·&nbsp; "
-    "<b>④ Results Part 1</b> the measured clock (5 charts) &nbsp;·&nbsp; "
-    "<b>⑤ Results Part 2</b> the field, school by school (timeline + 6 profiles) &nbsp;·&nbsp; "
-    "⑥ Gating &nbsp;·&nbsp; ⑦ Interpretation &nbsp;·&nbsp; ⑧ Caveats &nbsp;·&nbsp; ⑨ Verdict &nbsp;→&nbsp; "
-    "Reflection · Summary · Lessons · Takeaway · "
-    "<a href='#nz-fa' style='color:#138A74;font-weight:700'>Persian</a> / "
-    "<a href='#nz-ar' style='color:#138A74;font-weight:700'>Arabic</a> abstracts</div>", unsafe_allow_html=True)
+C.onpage(["① Problem", "② Hypothesis", "③ Method",
+          "<b>④ Results Part 1</b> the measured clock (5 charts)",
+          "<b>⑤ Results Part 2</b> the field, school by school (timeline + 6 profiles)",
+          "⑥ Gating", "⑦ Interpretation", "⑧ Caveats", "⑨ Verdict"], fa="nz-fa", ar="nz-ar")
 
 # ── 2 · HYPOTHESIS ──
 C.section("Hypothesis")

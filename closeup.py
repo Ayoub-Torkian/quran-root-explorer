@@ -115,6 +115,24 @@ def section(label):
     st.markdown(f"<div class='cu-sec'><span class='b'></span><b>{_e(label)}</b></div>", unsafe_allow_html=True)
 
 
+def onpage(steps, fa=None, ar=None, closers="Reflection · Summary · Lessons · Takeaway"):
+    """Compact 'On this page' navigation strip. `steps` = list of HTML-allowed labels (e.g. '① Problem',
+    '<b>④ Results</b> ...'); `fa`/`ar` = abstract anchor ids → Persian/Arabic links. Same look on every close-up."""
+    body = " &nbsp;·&nbsp; ".join(steps)
+    tail = f" &nbsp;→&nbsp; {closers}" if closers else ""
+    links = []
+    if fa:
+        links.append(f"<a href='#{fa}' style='color:{TEAL};font-weight:700'>Persian</a>")
+    if ar:
+        links.append(f"<a href='#{ar}' style='color:{TEAL};font-weight:700'>Arabic</a>")
+    if links:
+        tail += " · " + " / ".join(links) + " abstracts"
+    st.markdown(
+        f"<div style='font-size:12.5px;color:{INK};background:#EEF3F8;border:1px solid #DCE6F0;border-radius:9px;"
+        f"padding:8px 13px;margin:5px 0 2px;line-height:1.75'><b>On this page —</b> {body}{tail}</div>",
+        unsafe_allow_html=True)
+
+
 def note(txt):
     st.markdown(f"<div class='cu-note'>{txt}</div>", unsafe_allow_html=True)
 
