@@ -196,6 +196,26 @@ C.table(["✔ Holds — exactly divisible by 19", "✗ Fails — under a neutral
     ["— the unambiguous, stable counts —", "19's rate 2.9% (lowest); remainder 0 the 2nd-rarest"],
 ])
 
+# ── LESSONS LEARNED ──
+C.section("Lessons learned — for every claim about the Book")
+C.para("This is a template, not a verdict on one person. Any claim about the Qur'ān — including our own — must clear "
+       "the same gates, applied without favour. Each principle below earned its place by catching something here.")
+C.table(["Principle", "What it caught in this review"], [
+    ["Data-driven — re-count on the text, never assert", C.ar("الله", 17) + " = 2695, not the asserted 2698"],
+    ["A proper null — test against chance AND rival numbers", "19's rate (2.9%) is below chance and the lowest of all numbers"],
+    ["Robust — survive spelling & counting conventions", C.ar("ن", 17) + ", " + C.ar("ي", 17) + ", alif shift off 19; " + C.ar("ق", 17) + ", " + C.ar("ص", 17) + " do not"],
+    ["No degrees of freedom — no discarding data to fit", "the code needed a fixed spelling and the rejection of 9:128–129"],
+    ["Effect size, not a single striking hit", "multiples of 19 must beat chance — they do not"],
+    ["Peer-reviewed & independently replicated", "no one has reproduced the full code under pre-registered rules"],
+])
+C.callout("The discipline, in plain terms",
+          "A claim earns belief by surviving <b>scrutiny</b> — data, a proper null, and independent replication — "
+          "not by being striking, emotionally satisfying, or popular. It must be <b>methodologically sound and "
+          "statistically valid</b>, never " + C.ar("عوام گرایی", 17) + " or " + C.ar("عوام پسند", 17) + " "
+          "(crowd-pleasing populism). The very same gates that refuted this claim also refuted one of <i>our own</i> "
+          "findings — the inter-sūra coherence — which we recorded honestly as a size artifact. Rigour without favour, "
+          "for claims we dislike and claims we would love to be true alike.", accent=C.SLATE)
+
 # ── TAKEAWAY ──
 C.section("Takeaway")
 C.callout("In one line — for every reader",
