@@ -217,34 +217,39 @@ def bars(rows, fmt="{:.2f}", color=TEAL):
 def hist(values, labels, highlight=None, ref=None, reflabel="expected", color=SLATE, hcolor=CORAL):
     """Compact distribution histogram (many thin vertical bars). highlight one bar; optional reference line."""
     n = len(values)
-    mx = (max(list(values) + ([ref] if ref else [])) or 1) * 1.16
-    W, H, L, Rr, T, B = 960, 216, 50, 16, 18, 42
+    mx = (max(list(values) + ([ref] if ref else [])) or 1) * 1.18
+    W, H, L, Rr, T, B = 960, 226, 50, 16, 28, 42
     pw, ph = W - L - Rr, H - T - B
     Y = (lambda v: T + ph * (1 - v / mx))
-    bw = pw / n * 0.72
+    bw = min(46, pw / n * 0.5)
+    show = n <= 12
     p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
+    p.append(f"<text x='{W-Rr}' y='13' text-anchor='end' font-size='11' fill='#9AAEC2'>ⓘ hover bars for exact counts</text>")
     for t in range(4):
         gv = mx * t / 3
         gy = Y(gv)
         p.append(f"<line x1='{L}' y1='{gy:.0f}' x2='{W-Rr}' y2='{gy:.0f}' stroke='#ECF1F6' stroke-width='1'/>"
-                 f"<text x='{L-8}' y='{gy+4:.0f}' text-anchor='end' font-size='11.5' fill='{MUTE}'>{gv:.0f}</text>")
+                 f"<text x='{L-8}' y='{gy+4:.0f}' text-anchor='end' font-size='12' fill='{MUTE}'>{gv:.0f}</text>")
     if ref is not None:
         ry = Y(ref)
+        lw = len(str(reflabel)) * 6.6 + 10
         p.append(f"<line x1='{L}' y1='{ry:.0f}' x2='{W-Rr}' y2='{ry:.0f}' stroke='{INK}' stroke-width='1.3' "
                  f"stroke-dasharray='5 4'/>"
-                 f"<text x='{W-Rr}' y='{ry-5:.0f}' text-anchor='end' font-size='11.5' font-weight='700' "
-                 f"fill='{INK}'>{_e(reflabel)}</text>")
+                 f"<rect x='{L+5}' y='{ry-15:.0f}' width='{lw:.0f}' height='15' rx='3' fill='#fff' opacity='.92'/>"
+                 f"<text x='{L+9}' y='{ry-4:.0f}' font-size='11.5' font-weight='700' fill='{INK}'>{_e(reflabel)}</text>")
     for i, (v, lab) in enumerate(zip(values, labels)):
         cx = L + pw * (i + 0.5) / n
         col = hcolor if i == highlight else color
         by = Y(v); bh = (T + ph) - by
-        p.append(f"<g><title>{_e(lab)}: {_e(v)}</title>"
+        p.append(f"<g style='cursor:pointer'><title>{_e(lab)}: {_e(v)}</title>"
                  f"<rect x='{cx-bw/2:.1f}' y='{by:.1f}' width='{bw:.1f}' height='{bh:.1f}' rx='2' fill='{col}'/></g>"
                  f"<text x='{cx:.1f}' y='{H-B+17:.0f}' text-anchor='middle' font-size='12' "
                  f"fill='{INK if i==highlight else MUTE}'>{_e(lab)}</text>")
-        if i == highlight:
-            p.append(f"<text x='{cx:.1f}' y='{by-6:.0f}' text-anchor='middle' font-size='13' font-weight='800' "
-                     f"fill='{hcolor}'>{_e(v)}</text>")
+        if show or i == highlight:
+            fs, fw = (13, 800) if i == highlight else (11, 700)
+            fc = hcolor if i == highlight else INK
+            p.append(f"<text x='{cx:.1f}' y='{by-5:.0f}' text-anchor='middle' font-size='{fs}' font-weight='{fw}' "
+                     f"fill='{fc}'>{_e(v)}</text>")
     p.append("</svg>")
     st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
 
