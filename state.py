@@ -247,8 +247,8 @@ def render_grouped_nav():
             "<div style='margin:14px 6px 2px;padding:9px 12px;border-radius:9px;"
             "background:linear-gradient(135deg,#1D3557,#138A74);font-size:13px;"
             "line-height:1.4;box-shadow:0 1px 3px rgba(16,36,58,.28)'>"
-            "<div style='color:#FFFFFF!important;font-size:13px;font-weight:800'>📚 Papers · presentations · courses</div>"
-            "<div style='font-size:12px;font-weight:600;margin-top:2px;color:#EAF6F0!important'>"
+            "<div style='color:#FFFFFF;font-size:13px;font-weight:800'>📚 Papers · presentations · courses</div>"
+            "<div style='font-size:12px;font-weight:600;margin-top:2px;color:#EAF6F0'>"
             "More research &amp; learning resources ↗</div></div></a>", unsafe_allow_html=True)
         # v2.1: per-page feedback widgets removed (Feedback page stays in the nav)
 

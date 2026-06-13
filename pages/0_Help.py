@@ -835,8 +835,8 @@ with TABS[0]:
         "<div style='margin:16px 0 4px;padding:13px 18px;border-radius:11px;"
         "background:linear-gradient(120deg,#10243A,#1D3557 55%,#138A74);color:#FFFFFF;"
         "box-shadow:0 2px 8px rgba(16,36,58,.25)'>"
-        "<div style='font-size:16px;font-weight:800;color:#FFFFFF!important'>📚 Papers, presentations &amp; courses ↗</div>"
-        "<div style='font-size:13px;font-weight:600;margin-top:3px;color:#EAF6F0!important'>"
+        "<div style='font-size:16px;font-weight:800;color:#FFFFFF'>📚 Papers, presentations &amp; courses ↗</div>"
+        "<div style='font-size:13px;font-weight:600;margin-top:3px;color:#EAF6F0'>"
         "Further research, talks and learning material behind this app — opens in a new tab "
         "(Google&nbsp;Drive).  Also pinned at the bottom of the sidebar on every page.</div></div></a>",
         unsafe_allow_html=True)
