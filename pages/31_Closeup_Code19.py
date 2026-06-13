@@ -54,7 +54,8 @@ C.kpis([
 C.onpage(["① Problem", "② Hypothesis", "③ Method",
           "<b>④ Results</b> every claim by category (tables A–D)",
           "<b>⑤ Statistical core</b> six views that 19 has no privilege",
-          "⑥ Gating", "⑦ Interpretation", "⑧ Caveats", "⑨ Verdict"], fa="cu-fa-abstract", ar="cu-ar-abstract")
+          "⑥ Gating", "⑦ Interpretation", "⑧ Caveats", "⑨ Verdict"], fa="cu-fa-abstract", ar="cu-ar-abstract",
+         closers="<b>Path forward</b> (what would settle it) · Reflection · Summary · Lessons · Takeaway")
 
 # ── 2 · HYPOTHESIS ──
 C.section("Hypothesis")
@@ -235,6 +236,48 @@ C.verdict("REFUTED-ARTIFACT",
           "~85% the pervasive code is a counting artifact; the stable anchors are real",
           "a pre-registered, spelling-fixed scheme (no choices) showing 19-multiples far above chance and rivals",
           "such a scheme would reopen it — none has survived independent replication to date")
+
+# ── PATH FORWARD ──
+C.section("The path forward — what would settle the 19-claim, ranked by decisiveness")
+C.note("Not generic advice. The Qur'ān is not the limit here — our test is; so this lists, ranked by probability of "
+       "<b>decisively settling</b> the claim, the moves that are <b>grounded in what we measured</b>. Each amplifies "
+       "a control that worked or retires a freedom that animated the code. The bases are MEASURED; the probabilities "
+       "are INFERRED estimates over them.")
+gA, gD = st.columns(2, gap="medium")
+with gA:
+    C.table(["▲ Amplify — what a decisive test keeps"], tight=False, rows=[
+        ["The stable-letter anchors reproduce exactly: ق = 57, ص = 152 (spelling-independent)"],
+        ["A proper null — 19 vs chance AND rivals 7, 11, 13, 17, 23"],
+        ["A single fixed orthography — the verdict hinges on it"],
+        ["The full count battery (1,084 counts), hits AND misses"],
+    ])
+with gD:
+    C.table(["▼ Demote — the freedoms that made the code"], tight=False, rows=[
+        ["Variable-spelling letters (ن, ي, alif) — counts move with the rasm"],
+        ["Free inclusion of the 112 Basmalas; discarding 9:128–129"],
+        ["Single striking hits reported without the null"],
+        ["Choosing the word-form / convention after seeing the count"],
+    ])
+C.note("The program, ranked by P(decisively settles the claim). Pursue top-down; #1 is the verdict's own ‘flip’ test.")
+C.table(["#", "Move — grounded & testable", "Built on (MEASURED)", "Retires", "P→settle"], tight=False, rows=[
+    ["1", "Pre-register ONE canonical text (Cairo 1924) + a fixed spelling rule + a closed claim-list, then count with no post-hoc choices", "the orthographic split — verdict flips with spelling", "spelling-flexible recounts", "0.80"],
+    ["2", "Enumerate ALL natural counts and report the full distribution, not the hits", "hit-rate 2.9% ≤ 5.3% chance across 1,084 counts", "cherry-picked hit-reporting", "0.78"],
+    ["3", "Multiplicity-correct: test 19 against rivals 7/11/13/17/23 under the same rule", "19 is the rarest; no number beats chance", "19-only focus", "0.70"],
+    ["4", "Adjudicate the Uthmānī orthography letter-by-letter (why ق/ص are stable, ن/ي/alif are not)", "stable letters exact, variable letters off", "appeals to ‘the original spelling’", "0.55"],
+    ["5", "Independent replication under the pre-registered protocol", "no one has reproduced the full code under fixed rules", "in-house counts", "0.50"],
+])
+C.vbars([("① fixed-spelling pre-reg recount", 0.80, C.TEAL, "removes the only freedom keeping the code alive"),
+         ("② count everything (hits+misses)", 0.78, C.TEAL, "the measured 2.9% rate decides it"),
+         ("③ multiplicity vs rivals", 0.70, C.TEAL, "19 must beat 7/11/13/17/23 — it does not"),
+         ("④ orthography adjudication", 0.55, C.GOLD, "settle ق/ص vs ن/ي/alif on Cairo 1924"),
+         ("⑤ independent replication", 0.50, C.GOLD, "none has survived to date")],
+        ymax=1.0, fmt="{:.0%}")
+C.callout("The recommendation — the one test that decides it",
+          "Run <b>#1</b>: a pre-registered, spelling-fixed recount on the Cairo 1924 text with a closed claim-list and "
+          "no post-hoc choices, scored against chance and rivals. The measured <b>orthographic split</b> shows spelling "
+          "is the only thing keeping the pervasive code alive — fix it, count everything, and the claim either clears "
+          "the null (it has not yet) or is settled. The genuine anchors (basmala 19 letters, 114 sūras, الرحمن = 57, "
+          "ق = 57) stand regardless.", accent=C.CORAL)
 
 # ── REFLECTION ──
 C.section("Reflection")

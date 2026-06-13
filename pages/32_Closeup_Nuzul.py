@@ -61,7 +61,8 @@ C.kpis([
 C.onpage(["① Problem", "② Hypothesis", "③ Method",
           "<b>④ Results Part 1</b> the measured clock (5 charts)",
           "<b>⑤ Results Part 2</b> the field, school by school (timeline + 6 profiles)",
-          "⑥ Gating", "⑦ Interpretation", "⑧ Caveats", "⑨ Verdict"], fa="nz-fa", ar="nz-ar")
+          "⑥ Gating", "⑦ Interpretation", "⑧ Caveats", "⑨ Verdict"], fa="nz-fa", ar="nz-ar",
+         closers="<b>Path forward</b> (ranked roadmap) · Reflection · Summary · Lessons · Takeaway")
 
 # ── 2 · HYPOTHESIS ──
 C.section("Hypothesis")
@@ -384,6 +385,57 @@ C.verdict("CANDIDATE",
           "sūra-level clock ~80% MEASURED · passage-level dating ~75% unjustified",
           "a stylometric feature that dates passages above chance and survives multiplicity correction",
           "richer function-word stylometry (à la Sadeghi) at the passage level could revise the boundary upward")
+
+# ── PATH FORWARD ──
+C.section("The path forward — recovering the true order, ranked by probability of payoff")
+C.note("Not generic advice. Every move below is <b>grounded in a result measured on this page</b>, either amplifies "
+       "a positive that demonstrably worked or retires a negative that demonstrably failed, and is ranked by its "
+       "probability of advancing the actual objective — recovering the revelation order. Untested, unvalidated, or "
+       "merely-plausible ideas are excluded. The bases are MEASURED; the probabilities are INFERRED calibrated "
+       "estimates over those bases.")
+aA, aD = st.columns(2, gap="medium")
+with aA:
+    C.table(["▲ Amplify — measured positives to build on"], tight=False, rows=[
+        ["Convergence: tradition + Nöldeke + Bazargan + Sadeghi agree — the reliability engine"],
+        ["Verse length is a real backbone (r = 0.66, R² 0.44)"],
+        ["More features add signal (multivariate R² 0.44 → 0.49)"],
+        ["The Meccan/Medinan binary is a strong anchor (14 vs 30 words/āyah)"],
+        ["Morphological / function-word stylometry — externally validated (Sadeghi 2011)"],
+    ])
+with aD:
+    C.table(["▼ Demote — measured negatives to retire"], tight=False, rows=[
+        ["Passage/verse dating: composite-rate 2–74%; within 8.4 ≈ between 11.1"],
+        ["Single-feature reliance: letters-per-word alone correlates only ≈ 0.09"],
+        ["Sharp discrete periods: the quintile clock is non-monotonic (Q4 dips)"],
+        ["Subjective tone-reading (Weil/Muir): not reproducible"],
+        ["One-method confidence without an independent cross-check"],
+    ])
+C.note("The program, ranked by P(advances the objective). Each row names what it is built on (MEASURED here) and "
+       "what it retires. Pursue top-down; nothing below the sūra unit is attempted until row 2's gate is passed.")
+C.table(["#", "Move — grounded & testable", "Built on (MEASURED)", "Retires", "P→goal"], tight=False, rows=[
+    ["1", "Multivariate function-word + morphology stylometry, at the sūra level", "our gain R² 0.44 → 0.49; Sadeghi (2011) validated", "verse-length-only (genre-confounded)", "0.72"],
+    ["2", "Lock the sūra as the atomic unit; retire passage dating until a break passes multiplicity correction", "change-point 2–74%; within ≈ between", "Bell / Blachère passage re-dating", "0.70"],
+    ["3", "Supervised rank-model seeded by the Meccan/Medinan anchor, then resolve within-class by stylometry", "measured 14 vs 30 words/āyah (2× split)", "subjective tone-reading", "0.58"],
+    ["4", "Triangulate the divine-ALT arrangements as the validation gate; focus effort where tradition & stylometry disagree", "measured convergence of 4 schools", "single-method confidence", "0.50"],
+    ["5", "Model the order as a continuum (regression-to-rank), not discrete periods", "quintiles rise but non-monotonic (Q4 dip)", "Nöldeke's sharp 3-period boxes", "0.45"],
+    ["6", "Sub-sūra resolution ONLY where a multiplicity-corrected style-break exists", "most sūras lack a stable internal break", "blanket passage dating", "0.20"],
+])
+C.note("The same ranking, as a bar — descending probability of moving the objective forward. [INFERRED estimates "
+       "over the MEASURED bases above.]")
+C.vbars([("① multivariate stylometry", 0.72, C.TEAL, "validated lever + measured local gain — the single best bet"),
+         ("② lock sūra unit / gate", 0.70, C.TEAL, "removes a measured dead-end; compounds every gain below"),
+         ("③ Mecca/Medina-seeded rank", 0.58, C.TEAL, "strong measured anchor (2× separation)"),
+         ("④ triangulation gate", 0.50, C.GOLD, "convergence as the validation engine"),
+         ("⑤ continuum rank-model", 0.45, C.GOLD, "fits the gradiental drift, not boxes"),
+         ("⑥ sub-sūra where breaks pass", 0.20, C.CORAL, "low yield — most sūras lack a stable break")],
+        ymax=1.0, fmt="{:.0%}")
+C.callout("The recommendation — where to start",
+          "Begin with <b>#1 (multivariate function-word stylometry at the sūra level)</b> under the <b>#2 gate</b> "
+          "(the sūra is the atomic dating unit). It is the only lever with <i>both</i> a measured local gain "
+          "(0.44 → 0.49) <i>and</i> external validation (Sadeghi) — the highest-probability path to a sharper order. "
+          "Everything below it compounds the gain; nothing above the sūra-unit gate (passage/verse dating) should be "
+          "attempted until a break passes multiplicity correction. This is how the field moves from r = 0.66 toward "
+          "the true order without repeating Bell's over-reach.", accent=C.TEAL)
 
 # ── REFLECTION ──
 C.section("Reflection")

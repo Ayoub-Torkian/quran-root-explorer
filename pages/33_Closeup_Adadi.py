@@ -43,7 +43,8 @@ st.markdown(
 C.onpage(["① Problem", "② Hypothesis", "③ Method",
           "<b>④ Results Part 1</b> the claims, counted (scorecards)",
           "<b>⑤ Results Part 2</b> the mechanism (null + orthography, 4 charts)",
-          "⑥ Gating", "⑦ Interpretation", "⑧ Caveats", "⑨ Verdict"], fa="ad-fa", ar="ad-ar")
+          "⑥ Gating", "⑦ Interpretation", "⑧ Caveats", "⑨ Verdict"], fa="ad-fa", ar="ad-ar",
+         closers="<b>Path forward</b> (what would settle it) · Reflection · Summary · Lessons · Takeaway")
 C.story(
     "The claim — popularised by ʿAbd al-Razzāq Nawfal — is a <b>pervasive system of equal word-frequencies</b> as a "
     "numerical miracle: dunyā = ākhira, life = death, angels = devils, day = 365. Counted on the text under one fixed "
@@ -230,6 +231,49 @@ C.verdict("REFUTED-ARTIFACT",
           "~80% the pervasive miracle is selection + counting freedom; the dunyā/ākhira & Ādam/ʿĪsā anchors are real",
           "a pre-registered, spelling-fixed scheme on a clean Uthmānī text showing the pairs equal far above chance",
           "such a recount, if it held across the full pair-list, would reopen it — none has survived to date")
+
+# ── PATH FORWARD ──
+C.section("The path forward — what would settle the word-count claim, ranked by decisiveness")
+C.note("Not generic advice. The text is not the limit here — our substrate is; so this lists, ranked by probability "
+       "of <b>decisively settling</b> the claim, the moves <b>grounded in what we measured</b>. Each amplifies a "
+       "control that worked or retires a freedom that manufactured the matches. One move (row 4) could even <b>raise "
+       "the standing of the real anchors</b>. Bases MEASURED; probabilities INFERRED over them.")
+gA, gD = st.columns(2, gap="medium")
+with gA:
+    C.table(["▲ Amplify — what a decisive test keeps"], tight=False, rows=[
+        ["The high-count anchors (dunyā/ākhira, Ādam/ʿĪsā) — rare-by-chance, worth a clean test"],
+        ["A clean Uthmānī whole-word corpus + pre-registered per-concept counting rules"],
+        ["The FULL published pair-list + a proper null — hits AND misses"],
+        ["A single fixed orthography — counts collapse to 0 without it"],
+    ])
+with gD:
+    C.table(["▼ Demote — the freedoms that made the matches"], tight=False, rows=[
+        ["Spelling / word-form flexibility (ākhira 114 → 0; angels 73 → 0)"],
+        ["Free choice of which ‘opposite’ counts as the pair"],
+        ["Reporting the matches, dropping the misses"],
+        ["Counting on a segmented, mixed-orthography substrate (our own caveat)"],
+    ])
+C.note("The program, ranked by P(decisively settles the claim). #1 is the verdict's own ‘flip’ test; #4 is the fair "
+       "move that could credit the genuine cluster.")
+C.table(["#", "Move — grounded & testable", "Built on (MEASURED)", "Retires", "P→settle"], tight=False, rows=[
+    ["1", "Clean Uthmānī whole-word corpus + pre-register ONE counting rule per concept (forms/article/plural), fixed before counting", "orthographic fragility (counts → 0) + the substrate caveat", "segmented/mixed-orthography ambiguity & post-hoc form choice", "0.80"],
+    ["2", "Test the FULL published pair-list (Nawfal's roster), report every match AND miss", "the 2-of-5 hit pattern + the multiple-comparisons null", "cherry-picking", "0.78"],
+    ["3", "Null per frequency: P(a random opposite matches within tolerance) at each claimed count", "partner-abundance (66 at 11; 0 at 88/115); equal-rate 2.9–24%", "‘equal = miraculous’ without a baseline", "0.72"],
+    ["4", "Isolate & pre-register the anchors (dunyā/ākhira, Ādam/ʿĪsā) on the clean corpus; if exact, credit a small genuine feature", "measured 114/114, 25/25 + their rarity-by-chance", "lumping the anchors with the failed pervasive claim", "0.60"],
+    ["5", "Independent replication under the protocol", "none has survived to date", "in-house counts", "0.50"],
+])
+C.vbars([("① clean-corpus fixed-rule recount", 0.80, C.TEAL, "removes the convention-freedom that drives it"),
+         ("② full pair-list (hits+misses)", 0.78, C.TEAL, "the measured 2-of-5 pattern + null decide it"),
+         ("③ null per frequency", 0.72, C.TEAL, "is 'equal' above chance at THAT frequency?"),
+         ("④ isolate the real anchors", 0.60, C.GOLD, "fair move — could RAISE the anchors' standing"),
+         ("⑤ independent replication", 0.50, C.GOLD, "none to date")],
+        ymax=1.0, fmt="{:.0%}")
+C.callout("The recommendation — the one test that decides it",
+          "Run <b>#1</b>: a pre-registered fixed-rule count on a clean Uthmānī whole-word corpus, with one declared "
+          "rule per concept and the full pair-list. The measured <b>orthographic fragility</b> (counts → 0 with a "
+          "spelling change) shows the entire dispute lives in counting convention — fix it, count everything, and the "
+          "pervasive claim either clears the null (it has not) or is settled. Pair it with <b>#4</b> to give the real "
+          "anchors (dunyā = ākhira, Ādam = ʿĪsā) the clean, fair test they deserve.", accent=C.CORAL)
 
 # ── REFLECTION ──
 C.section("Reflection")
