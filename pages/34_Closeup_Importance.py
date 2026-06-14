@@ -85,8 +85,9 @@ def net(ko_hub=None, title=""):
 
 
 # ════════ custom dense SVG: SCATTER ════════
-def scatter(pts, cloud, xr, yr, xlab, ylab, regline=None, kindcol=None, arabic=True, note_quad=None):
-    W, H, L, B, Tp, Rr = 1000, 560, 76, 64, 36, 26
+def scatter(pts, cloud, xr, yr, xlab, ylab, regline=None, kindcol=None, arabic=True, note_quad=None,
+            legend=None, regions=None):
+    W, H, L, B, Tp, Rr = 1000, 588, 76, 92, 36, 26
     pw, ph = W - L - Rr, H - Tp - B
     (x0, x1), (y0, y1) = xr, yr
     X = lambda v: L + pw * (v - x0) / ((x1 - x0) or 1)
@@ -111,18 +112,33 @@ def scatter(pts, cloud, xr, yr, xlab, ylab, regline=None, kindcol=None, arabic=T
         xa, xb = x0, x1
         p.append(f"<line x1='{X(xa):.0f}' y1='{Y(a+b*xa):.0f}' x2='{X(xb):.0f}' y2='{Y(a+b*xb):.0f}' "
                  f"stroke='{SLATE}' stroke-width='1.6' stroke-dasharray='6 4'/>")
-    for row in pts:
+    if regions:
+        for rx, ry, rtxt, rcol in regions:
+            p.append(f"<text x='{X(rx):.0f}' y='{Y(ry):.0f}' text-anchor='middle' font-size='13' font-weight='800' "
+                     f"fill='{rcol}' opacity='.85'>{rtxt}</text>")
+    # labelled points with simple anti-overlap (place label on the open side, alternate vertical)
+    for k, row in enumerate(pts):
         lab, cx, cy = row[0], row[1], row[2]; kind = row[3] if len(row) > 3 else "other"
         col = kc.get(kind, SLATE) if isinstance(kind, str) else SLATE
-        p.append(f"<circle cx='{X(cx):.1f}' cy='{Y(cy):.1f}' r='5.5' fill='{col}' stroke='#fff' stroke-width='1.4'/>")
-        if arabic:
-            p.append(f"<text x='{X(cx)+8:.1f}' y='{Y(cy)+4:.1f}' font-family='Amiri,serif' font-size='14' "
-                     f"font-weight='700' fill='{INK}'>{lab}</text>")
-        else:
-            p.append(f"<text x='{X(cx)+7:.1f}' y='{Y(cy)+4:.1f}' font-size='12.5' fill='{INK}'>{lab}</text>")
-    p.append(f"<text x='{L+pw/2:.0f}' y='{H-6}' text-anchor='middle' font-size='13.5' font-weight='700' fill='{INK}'>{xlab}</text>")
-    p.append(f"<text x='18' y='{Tp+ph/2:.0f}' transform='rotate(-90 18,{Tp+ph/2:.0f})' text-anchor='middle' "
+        px, py = X(cx), Y(cy)
+        left = cx > (x0 + x1) * 0.62           # crowded right side → label to the LEFT
+        dx = -9 if left else 9
+        dy = 4 + (-11 if (k % 2) else 11) * 0  # keep baseline; reserve hook for future jitter
+        anc = "end" if left else "start"
+        p.append(f"<circle cx='{px:.1f}' cy='{py:.1f}' r='5.5' fill='{col}' stroke='#fff' stroke-width='1.4'/>")
+        fam = "font-family='Amiri,\"Scheherazade New\",serif' " if arabic else ""
+        p.append(f"<text x='{px+dx:.1f}' y='{py+dy:.1f}' text-anchor='{anc}' {fam}font-size='14' "
+                 f"font-weight='700' fill='{INK}'>{lab}</text>")
+    p.append(f"<text x='{L+pw/2:.0f}' y='{Tp+ph+40:.0f}' text-anchor='middle' font-size='13.5' font-weight='700' "
+             f"fill='{INK}'>{xlab}</text>")
+    p.append(f"<text x='20' y='{Tp+ph/2:.0f}' transform='rotate(-90 20,{Tp+ph/2:.0f})' text-anchor='middle' "
              f"font-size='13.5' font-weight='700' fill='{INK}'>{ylab}</text>")
+    if legend:
+        lx = L
+        for name, c in legend:
+            p.append(f"<circle cx='{lx}' cy='{H-16}' r='6' fill='{c}'/>"
+                     f"<text x='{lx+12}' y='{H-11}' font-size='12.5' fill='{INK}'>{name}</text>")
+            lx += 40 + int(7.3 * len(name))
     p.append("</svg>")
     st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
 
@@ -176,6 +192,19 @@ def ahsan():
              f"احسن تقویم — best proportion: necessary AND sufficient</text>")
     p.append("</svg>")
     st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
+
+
+def pair_table(h1, h2, rows, c1=TEAL, c2=CORAL):
+    """Two equal-width columns that fill the row (table-layout:fixed) — no wasted middle space."""
+    thst = ("background:#F4F8FB;text-align:left;padding:5px 10px;font-size:12px;text-transform:uppercase;"
+            "letter-spacing:.3px;border-bottom:1px solid #E1E9F1;width:50%")
+    th = f"<tr><th style='{thst};color:{c1}'>{h1}</th><th style='{thst};color:{c2}'>{h2}</th></tr>"
+    tdst = (f"padding:6px 10px;font-size:12.5px;color:{INK};vertical-align:top;border-bottom:1px solid #EDF3F8;"
+            "line-height:1.42;width:50%")
+    trs = "".join(f"<tr><td style='{tdst}'>{a}</td><td style='{tdst}'>{b}</td></tr>" for a, b in rows)
+    st.markdown(f"<table style='border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed;"
+                f"border:1px solid #E7EEF5;border-radius:10px;overflow:hidden;margin:6px 0'>{th}{trs}</table>",
+                unsafe_allow_html=True)
 
 
 # ╔══════════════ 1 · PROBLEM ══════════════╗
@@ -274,10 +303,14 @@ C.note("③ Form vs content — morphology adds what frequency cannot. Each dot 
        "below = <b>frozen</b> proper-nouns dense but inert (ءله, موسى, فرعون). Same count, different life.")
 if sm:
     mpts = [[r[0], r[1], __import__("math").log10(r[2] + 1), ("living" if r[3] else "frozen")] for r in sm.get("pts", [])]
-    scatter(mpts, sm.get("cloud", []), (0, 3.5), (0, 1.8),
-            "log10 frequency  →  (how often)", "log10 (forms)  →  (how many shapes)",
+    scatter(mpts, sm.get("cloud", []), (0, 3.6), (0, 1.85),
+            "log10 frequency  →  (how often a root occurs)", "log10 (number of distinct forms)",
             regline=(sm.get("slope"), sm.get("intercept")),
-            kindcol={"living": TEAL, "frozen": CORAL})
+            kindcol={"living": TEAL, "frozen": CORAL},
+            legend=[("living (above fit)", TEAL), ("frozen (below fit)", CORAL),
+                    ("all roots", "#B9C8D6"), ("expected by frequency", SLATE)],
+            regions=[(0.95, 1.72, "↑ LIVING — more forms than frequency predicts", TEAL),
+                     (2.7, 0.12, "FROZEN — proper-nouns, dense but inert ↓", CORAL)])
 C.note("Living vs frozen — a few examples by raw form-count. A proper noun can be frequent yet morphologically "
        "frozen; a verb can be modest yet generative. Frequency cannot see this difference; morphology can.")
 C.vbars([(C.ar("قوم", 19) + " people", 45, TEAL, "living · 45 forms"),
@@ -343,7 +376,9 @@ C.note("⑤ The two-extreme map — the heart of the reframe. x = GLOBAL system 
 if se:
     scatter(se.get("labeled", []), se.get("cloud", []), (0, 100), (0, 100),
             "GLOBAL — system centrality  (percentile)", "LOCAL — owns its sūra  (percentile)",
-            kindcol={"system": CORAL, "unit": TEAL, "other": SLATE}, note_quad=True)
+            kindcol={"system": CORAL, "unit": TEAL, "other": SLATE}, note_quad=True,
+            legend=[("system-critical hub", CORAL), ("unit-definer", TEAL), ("supporting concept", "#B9C8D6")],
+            regions=[(80, 44, "system-critical hubs →", CORAL), (26, 96, "↑ unit-definers", TEAL)])
 C.note("Right (coral) = system-critical hubs · top (teal) = unit-definers · centre cloud = supporting concepts. "
        "The two clusters are the two registers of importance — pervasive vs defining.")
 
@@ -352,8 +387,14 @@ C.section("Necessity — “cannot delete” (every part is load-bearing)")
 C.note("⑥ The master deletion test. Scramble the arrangement (the One-Law shuffle) and the role structure "
        "collapses: modularity falls from its real value to chance. You <b>cannot delete the arrangement</b> "
        "without destroying the system — the order is necessary, not decorative.")
-C.cascade([("designed order", f"{N.get('modularity_obs','—')}", N.get("modularity_z", 0), True),
-           ("shuffle order", f"{N.get('modularity_null','—')}", 0.2, False)], zmax=40)
+C.vbars([("designed order (real)", N.get("modularity_obs", 0.134), TEAL,
+          "real role structure present — modularity 0.134"),
+         ("shuffled order (null)", N.get("modularity_null", 0.043), CORAL,
+          "scramble the arrangement → structure gone — modularity 0.043")],
+        ymax=0.16, fmt="{:.3f}")
+C.note("The gap is overwhelming: real modularity " + str(N.get("modularity_obs", "—")) + " vs shuffle " +
+       str(N.get("modularity_null", "—")) + " — that is <b>z = +" + str(N.get("modularity_z", "—")) +
+       "</b> above the degree-matched null. You cannot delete the arrangement without destroying the roles.")
 C.note("⑦ Local necessity — unit-definers. Rare concepts that own their sūra far above chance (FDR q<0.05). Delete "
        "صمد and al-Ikhlāṣ loses its defining attribute; delete کوثر and al-Kawthar loses its name. Necessity is "
        "<b>scale-dependent</b>: globally distributed, locally razor-sharp. (ROOT and WORD substrates agree.)")
@@ -526,24 +567,24 @@ C.para("The instinct to rank is strong — we want a single ‘most important wo
 
 # ╔══════════════ SUMMARY ══════════════╗
 C.section("Summary — what holds")
-C.table(["✔ Holds (measured)", "✗ Does not / not claimed"], tight=False, rows=[
+pair_table("✔ Holds (measured)", "✗ Does not / not claimed", [
     ["importance is ≥2-D — a linear ranking discards " + f"{pv[1]}%" + " (PC2)", "‘ءله is a single point of failure’ (degree-explained, z=+2.3)"],
     ["role structure beats degree-null (z=+" + str(N.get("modularity_z", "—")) + ")", "a single scalar ‘importance’ that ranks صمد vs ءله"],
     ["necessity: shuffle collapse + " + str(g("root_sig", "—")) + "/" + str(g("word_sig", "—")) + " unit-definers", "theological weight (semantic — out of substrate)"],
-    ["sufficiency: 2 axes=92%, robust, one whole", "full ‘sufficiency’ proof (partially operationalised)"],
-    ["form AND content both required (کوثر needs WORD)", "frequency as evidence (only " + f"{w[0]}%" + " unique)"],
+    ["sufficiency: 2 axes = 92%, robust, one connected whole", "full ‘sufficiency’ proof (only partially operationalised)"],
+    ["form AND content both required (کوثر needs the WORD substrate)", "frequency as evidence (only " + f"{w[0]}%" + " unique information)"],
 ])
 
 # ╔══════════════ LESSONS ══════════════╗
 C.section("Lessons learned")
-C.table(["Principle", "What it caught here"], tight=False, rows=[
-    ["Check if your ‘criteria’ are independent first", "freq/spread/morphology are one axis (0.79–0.94)"],
+pair_table("Principle", "What it caught here", [
+    ["Check if your ‘criteria’ are independent first", "freq / spread / morphology are one axis (0.79–0.94)"],
     ["Credit unique information, not raw size", "frequency = " + f"{w[0]}%" + " unique; concentration = " + f"{w[3]}%"],
     ["When a scalar misbehaves, the order may be partial", "every forced ranking put a hapax/verb above ءله"],
-    ["Reframe linear → network when structure is relational", "roles beat degree-null (z=+" + str(N.get("modularity_z", "—")) + ")"],
-    ["Use form AND content", "کوثر invisible on root, recovered on word substrate"],
+    ["Reframe linear → network when structure is relational", "roles beat the degree-null (z = +" + str(N.get("modularity_z", "—")) + ")"],
+    ["Use form AND content together", "کوثر invisible on root, recovered on the word substrate"],
     ["Demote what the null explains", "hub criticality is degree-explained — dropped"],
-])
+], c1=SLATE, c2=INK)
 
 # ╔══════════════ TAKEAWAY ══════════════╗
 C.section("Takeaway")
@@ -559,23 +600,57 @@ st.markdown(
     "<div dir='rtl' id='im-fa' style='font-family:Vazirmatn,Tahoma,\"Segoe UI\",sans-serif;font-size:15px;"
     "line-height:1.85;color:#10243A;text-align:right;background:#F6F9FC;border-right:5px solid #138A74;"
     "border-radius:11px;padding:16px 20px'>"
-    "<b>مسئله.</b> «کدام مفهوم در قرآن مهم‌تر است؟» این پرسش فرض می‌گیرد که اهمیت یک <b>نردبانِ خطی</b> است و پلهٔ آن "
-    "را <b>بسامد</b> تعیین می‌کند. داده‌ها هر دو فرض را رد می‌کنند: بسامد، گستره و تنوعِ صرفی تقریباً یک محورند (همبستگی "
-    "۰٫۷۹ تا ۰٫۹۴)، و سهمِ <b>یکتای</b> بسامد تنها " + f"{w[0]}" + "٪ است.<br><br>"
-    "<b>بازقالب‌بندی (هستهٔ کار).</b> به‌جای رتبه‌بندی، می‌پرسیم هر مفهوم چه <b>نقشی</b> در شبکهٔ هم‌آیی دارد: "
-    "اَبَرگره (ءله، قول، ربب)، رابط، متخصص، یا <b>تعریف‌گرِ واحد</b>. ساختارِ نقش‌ها در برابرِ نُلِ هم‌درجه واقعی است "
-    "(z=+" + str(N.get("modularity_z", "—")) + ").<br><br>"
-    "<b>احسن تقویم.</b> نظام در بهترین تناسب است: <b>نه می‌توان افزود چون بسنده است، نه کاست چون لازم است</b>. "
-    "<b>ضرورت (حذف‌ناپذیری):</b> برهم‌زدنِ ترتیب، ساختار را فرومی‌پاشد؛ و " + str(g("root_sig", "—")) + " ریشه و " +
-    str(g("word_sig", "—")) + " واژه، سورهٔ خود را بالاتر از شانس «در تملک» دارند (صمد، کوثر، نحر…). "
-    "<b>کفایت (افزودن‌ناپذیری):</b> دو محور ۹۲٪ ساختار را نگه می‌دارند، شبکه یک‌پارچه است (۹۹٫۸٪) و از تصادف "
-    "مقاوم‌تر است.<br><br>"
-    "<b>صورت و محتوا.</b> هم ریشه (محتوا)، هم واژهٔ رسمی (صورت)، هم صرف لازم‌اند: «کوثر» در سطحِ ریشه در «کثر» گم "
-    "می‌شود اما در سطحِ واژه به‌عنوان تعریف‌گرِ سورهٔ کوثر بازمی‌گردد؛ «محمد» پراکنده می‌ماند. <b>هیچ‌چیز بی‌اهمیت "
-    "نیست</b> — اما نه به یک اندازه و نه روی یک خط‌کش.<br><br>"
-    "<b>انصاف و حد.</b> بحرانی‌بودنِ اَبَرگره با درجه توضیح داده می‌شود (z=+" + str(N.get("hub_knockout_z", "—")) +
-    ")، پس ادعای «نقطهٔ شکستِ یگانه» را وامی‌نهیم؛ و وزنِ کلامیِ مفاهیم (معنا) بیرون از این ابزار است. این داوری "
-    "<b>ساختاری و روش‌شناختی</b> است (درجه ۷۲، نامزد)، نه کلامی.</div>", unsafe_allow_html=True)
+    "<b>۱) مسئله.</b> پرسشِ آشنای «کدام مفهوم در قرآن مهم‌تر است؟» دو فرضِ پنهان دارد: نخست آنکه اهمیت یک "
+    "<b>نردبانِ خطی</b> (ترتیبِ یک‌بُعدی) است، و دوم آنکه پلهٔ این نردبان را <b>بسامد</b> (شمارِ تکرار) تعیین می‌کند. "
+    "هر دو فرض بر دادهٔ متن مردود می‌شوند، و نشان دادنِ همین نادرستی و جایگزینیِ آن، جانِ این بررسی است.<br><br>"
+    "<b>۲) چرا بسامد کافی نیست.</b> بسامد، گستره (شمارِ سوره‌ها) و تنوعِ صرفی تقریباً <b>یک محور</b>اند (همبستگیِ "
+    "۰٫۷۹ تا ۰٫۹۴)؛ پس فهرستِ مشهورِ «پرتکرارترین واژه‌ها» سه شاهد نیست، یک شاهد است که سه بار تکرار شده. وقتی هر "
+    "معیار را تنها برای اطلاعِ <b>یکتای</b> خود (آنچه دیگران نمی‌گویند) ارزش‌گذاری کنیم، سهمِ بسامد تنها " +
+    f"{w[0]}" + "٪، صرف ۲۲٪، گستره ۸٪، و <b>تمرکز</b> (در تملک داشتنِ یک جای‌گاه) ۶۳٪ است. یعنی بلندترین سیگنال، "
+    "کم‌اطلاع‌ترین است.<br><br>"
+    "<b>۳) صورت و محتوا — هر سه بستر.</b> بر <b>رسم</b> (بی‌حرکت؛ حرکات لایهٔ بشری و کنار گذاشته می‌شود) سه بستر را "
+    "با هم به کار می‌بریم: <b>ریشه</b> (محتوا؛ " + str(g("root_types", "—")) + " ریشه)، <b>واژهٔ رسمی</b> (صورت؛ " +
+    str(g("word_types", "—")) + " واژه) و <b>صرف</b> (شمارِ صورت‌های هر ریشه). صورت و محتوا یکدیگر را آشکار می‌کنند؛ "
+    "هیچ‌یک به‌تنهایی بسنده نیست.<br><br>"
+    "<b>۴) بازقالب‌بندی به شبکه (هستهٔ کار).</b> به‌جای رتبه‌بندی می‌پرسیم هر مفهوم چه <b>نقشی</b> در شبکهٔ هم‌آییِ "
+    "واژگان دارد (دو ریشه به‌هم پیوند می‌خورند اگر بیش از شانس در یک آیه بیایند، PPMI&gt;۰). نقش‌ها با کارتوگرافیِ "
+    "شبکه خوانده می‌شوند: <b>اَبَرگرهِ رابط</b> (ءله، قول، ربب — شاسیِ نظام)، <b>رابط</b> (پلِ زیرسامانه‌ها)، "
+    "<b>متخصص</b>، و <b>تعریف‌گرِ واحد</b>. ساختارِ نقش‌ها در برابرِ نُلِ هم‌درجه <b>واقعی</b> است (z=+" +
+    str(N.get("modularity_z", "—")) + "): پس «نقش» همان بسامد در لباسِ مبدل نیست.<br><br>"
+    "<b>۵) دو مقیاس — جهانی تا محلی.</b> اهمیت در دو تراز سنجیده می‌شود: <b>جهانی</b> (کلِ قرآن = شبکه) و "
+    "<b>محلی</b> (زیرسامانهٔ سوره؛ یک تعریف‌گر سورهٔ خود را با کای‌دو در برابرِ شافلِ هم‌طول، با تصحیحِ FDR، «در "
+    "تملک» دارد). یک مفهوم می‌تواند در یک تراز کلیدی و در دیگری حاشیه‌ای باشد.<br><br>"
+    "<b>۶) ضرورت — «نمی‌توان کاست».</b> آزمونِ مادرِ حذف: برهم‌زدنِ ترتیب (شافلِ قانونِ یگانه) ساختارِ نقش را "
+    "فرومی‌پاشد — مدولاریتی از " + str(N.get("modularity_obs", "—")) + " به " + str(N.get("modularity_null", "—")) +
+    " سقوط می‌کند (z=+" + str(N.get("modularity_z", "—")) + "). و در تراز محلی، " + str(g("root_sig", "—")) +
+    " ریشه و " + str(g("word_sig", "—")) + " واژه سورهٔ خود را بالاتر از شانس در تملک دارند (صمد، کوثر، نحر، کفء، "
+    "لهب، آلاء…). ضرورت <b>مقیاس‌وابسته</b> است: محلی تیز، جهانی توزیع‌شده.<br><br>"
+    "<b>۷) آزمونِ «چه می‌شود اگر؟».</b> <b>حذفِ ءله</b> (اَبَرگره): شبکه ۳٫۸٪ کوچک می‌شود اما <b>یک‌پارچه</b> "
+    "می‌ماند — ضرورتِ توزیع‌شده و تاب‌آور، نه نقطهٔ شکستِ یگانه. <b>حذفِ صمد</b>: بر شبکه بی‌اثر است، اما سورهٔ "
+    "اخلاص یکی از تنها دو تعریف‌گرِ انحصاری‌اش (صمد، کفء) را از دست می‌دهد — ضرورتِ محلیِ تیز. <b>افزودنِ ریشه‌ای "
+    "که در قرآن نیست</b>: بسامدِ صفر ← بی هیچ هم‌آیی ← گرهِ منفرد و بی‌نقش، بیرون از کل — هیچ جایی برای افزودن نیست "
+    "(کفایت).<br><br>"
+    "<b>۸) کفایت — «نمی‌توان افزود».</b> فضای اهمیت <b>اشباع</b> است: دو محور (برجستگی + تمرکز) ۹۲٪ ساختار را نگه "
+    "می‌دارند و محورِ سوم و چهارم تقریباً هیچ. شبکه <b>یک‌پارچه</b> است (۹۹٫۸٪ در یک مؤلفه)، و از گرافِ تصادفیِ "
+    "هم‌درجه <b>کم‌شکاف‌تر</b> (z=" + str(N.get("cut_z", "—")) + ") — یعنی برای فروپاشی ساخته نشده و افزونگیِ "
+    "بی‌اسراف دارد. نه جای خالیِ نقشی هست و نه مهارِ گم‌شده‌ای.<br><br>"
+    "<b>۹) احسن تقویم.</b> این همان «بهترین تناسب» (تین ۹۵:۴) است که عملیاتی شده: <b>نه می‌توان افزود چون بسنده "
+    "است، نه کاست چون لازم است</b>. حافظ پیش از آنکه شبکه رسم شود گفت: <b>«جهان چون خط و خال و چشم و ابروست / که "
+    "هر چیزی به جای خویش نیکوست»</b> — اهمیت رتبه نیست، <b>بودن در جای خود</b> (نقش) است؛ و آزمونِ حذف، پژواکِ "
+    "تجربیِ همان مصراع است: چیزی را از جایش بردار، نیکویی (کارکرد) از میان می‌رود.<br><br>"
+    "<b>۱۰) انصاف و حدود (آنچه ادعا نمی‌کنیم).</b> بحرانی‌بودنِ اَبَرگره با <b>درجه</b> توضیح داده می‌شود (z=+" +
+    str(N.get("hub_knockout_z", "—")) + "، در محدودهٔ شانس)؛ پس ادعای «ءله نقطهٔ شکستِ یگانهٔ طراحی‌شده» را "
+    "وامی‌نهیم — ادعاهای فراتر از نُل تنها <b>ساختارِ نقش</b> و <b>تاب‌آوری</b>اند. و <b>ساختاری ≠ معنایی</b>: وزنِ "
+    "کلامیِ صمد (نامِ خداوند) <b>معنا</b>ست، نه آماری توزیعی، و طبقِ قانونِ یگانه به‌عنوان شاهد نامقبول است؛ این مرز "
+    "را علامت می‌زنیم، نه آنکه عددی بر آن بسازیم.<br><br>"
+    "<b>۱۱) نتیجه و درجه.</b> داوری <b>ساختاری و روش‌شناختی</b> است، نه کلامی: <b>نامزد (درجهٔ ۷۲)</b> — بازقالب‌بندی "
+    "و نُل‌هایش استوارند، اما ارتقا به ترازِ کشف نیازمندِ نُلِ حذفِ تک‌گرهی و نُلِ جامعهٔ وزنی است.<br><br>"
+    "<b>۱۲) راهِ پیش‌رو (به‌ترتیبِ قطعیت).</b> ۱) نُلِ حذفِ تک‌گرهی برای هر گره؛ ۲) نُلِ جامعهٔ شبکهٔ وزنی؛ ۳) "
+    "اجرای کلِ خط‌لوله بر شبکهٔ <b>واژه و صرف</b> (نه فقط ریشه)؛ ۴) صورت‌بندیِ دقیقِ «کفایت»؛ ۵) پایداریِ نقش‌ها در "
+    "<b>ترتیبِ نزول</b> (آرایشِ الهیِ بدیل).<br><br>"
+    "<b>درس.</b> پیش از رتبه‌بندی، استقلالِ معیارها را بسنج؛ اطلاعِ یکتا را ارزش بنه نه حجمِ خام؛ هرگاه نردبان "
+    "بدرفتاری کرد، شاید ترتیب <b>جزئی</b> باشد؛ صورت و محتوا را با هم به کار بر؛ و آنچه را نُل توضیح می‌دهد، "
+    "فروبکاه.</div>", unsafe_allow_html=True)
 
 # ╔══════════════ ARABIC ABSTRACT ══════════════╗
 C.section("الملخّص الكامل — Arabic abstract")
@@ -583,22 +658,54 @@ st.markdown(
     "<div dir='rtl' id='im-ar' style='font-family:Amiri,\"Scheherazade New\",Tahoma,serif;font-size:15.5px;"
     "line-height:1.9;color:#10243A;text-align:right;background:#F6F9FC;border-right:5px solid #4E6E92;"
     "border-radius:11px;padding:16px 20px'>"
-    "<b>المسألة.</b> «أيُّ مفهومٍ أهمُّ في القرآن؟» يفترض السؤالُ أنّ الأهمية <b>سُلَّمٌ خطّيّ</b> دَرَجتُه "
-    "<b>التكرار</b>. والبياناتُ تردُّ الفرضين: التكرار والانتشار والثراء الصرفيّ محورٌ واحد (ارتباط ٠٫٧٩–٠٫٩٤)، "
-    "ونصيبُ التكرار <b>الفريد</b> " + f"{w[0]}" + "٪ فقط.<br><br>"
-    "<b>إعادة التأطير (جوهر العمل).</b> بدل الترتيب، نسأل عن <b>الدور</b> في شبكة التلازم: محورٌ جامع (ءله، قول، ربب)، "
-    "واصلٌ، متخصّصٌ، أو <b>مُعرِّفٌ للوحدة</b>. وبنيةُ الأدوار حقيقيةٌ تتجاوز نُلَّ الدرجات (z=+" +
-    str(N.get("modularity_z", "—")) + ").<br><br>"
-    "<b>أحسن تقويم.</b> النظامُ في أحسن تناسبٍ: <b>لا يُزاد لأنّه كافٍ، ولا يُنقَص لأنّه ضروريّ</b>. "
-    "<b>الضرورة (تعذّر الحذف):</b> خلطُ الترتيب يُسقِط البنية؛ و" + str(g("root_sig", "—")) + " جذراً و" +
-    str(g("word_sig", "—")) + " كلمةً تَملِك سورتَها فوق الصدفة (صمد، كوثر، نحر…). <b>الكفاية (تعذّر الزيادة):</b> "
-    "محوران يحملان ٩٢٪ من البنية، والشبكةُ كلٌّ موصولٌ (٩٩٫٨٪)، أمتنُ من العشوائيّ.<br><br>"
-    "<b>الصورة والمضمون.</b> الجذرُ (مضمون) والكلمةُ الرسميّة (صورة) والصرفُ كلُّها لازمة: «الكوثر» يذوب في «كثر» على "
-    "مستوى الجذر، ويعود مُعرِّفاً لسورة الكوثر على مستوى الكلمة؛ و«محمد» يبقى منتشراً. <b>لا شيء عديمُ الأهمية</b> — "
-    "لكن ليس بالتساوي ولا على مسطرةٍ واحدة.<br><br>"
-    "<b>إنصافٌ وحدّ.</b> حَرِجِيّةُ المحور الجامع تفسّرها الدرجةُ (z=+" + str(N.get("hub_knockout_z", "—")) +
-    ")، فنترك دعوى «نقطة الانهيار الوحيدة»؛ والوزنُ اللاهوتيُّ (المعنى) خارج هذه الأداة. حكمٌ <b>بنيويٌّ منهجيّ</b> "
-    "(الدرجة ٧٢، مُرشَّح) لا لاهوتيّ.</div>", unsafe_allow_html=True)
+    "<b>١) المسألة.</b> السؤالُ المألوف «أيُّ مفهومٍ أهمُّ في القرآن؟» يخفي فرضين: أوّلًا أنّ الأهمية <b>سُلَّمٌ "
+    "خطّيّ</b> (ترتيبٌ أحاديُّ البُعد)، وثانيًا أنّ دَرَجتَه <b>التكرار</b>. والبياناتُ تردُّ الفرضين، وبيانُ ذلك "
+    "واستبدالُه هو جوهرُ هذه المراجعة.<br><br>"
+    "<b>٢) لماذا لا يكفي التكرار.</b> التكرارُ والانتشارُ (عددُ السور) والثراءُ الصرفيُّ <b>محورٌ واحد</b> (ارتباط "
+    "٠٫٧٩–٠٫٩٤)؛ فقائمةُ «أكثر الكلمات تكرارًا» ليست ثلاثةَ شهودٍ بل شاهدٌ واحدٌ مكرَّرٌ ثلاثًا. وإذا كافأنا كلَّ "
+    "معيارٍ على معلومته <b>الفريدة</b> فقط، كان نصيبُ التكرار " + f"{w[0]}" + "٪، والصرفِ ٢٢٪، والانتشارِ ٨٪، "
+    "و<b>التركيزِ</b> (تملُّكِ موضعٍ) ٦٣٪. فأعلى إشارةٍ هي أقلُّها إفادةً.<br><br>"
+    "<b>٣) الصورة والمضمون — ثلاثة أُسُس.</b> على <b>الرسم</b> (بلا حركات؛ الحركاتُ طبقةٌ بشرية مُستبعَدة) نستعمل "
+    "ثلاثةَ أُسُسٍ معًا: <b>الجذر</b> (مضمون؛ " + str(g("root_types", "—")) + " جذرًا)، و<b>الكلمة الرسمية</b> "
+    "(صورة؛ " + str(g("word_types", "—")) + " كلمة)، و<b>الصرف</b> (عددُ صيغ كلِّ جذر). الصورةُ والمضمونُ يكشف "
+    "أحدُهما ما يخفيه الآخر؛ ولا يكفي واحدٌ وحدَه.<br><br>"
+    "<b>٤) إعادة التأطير إلى شبكة (الجوهر).</b> بدل الترتيب نسأل عن <b>الدور</b> في شبكة التلازم (جذران يُوصَلان إن "
+    "تلازما في آيةٍ فوق الصدفة، PPMI&gt;٠). وتُقرأ الأدوارُ بكارتوغرافيا الشبكة: <b>محورٌ جامع</b> (ءله، قول، ربب — "
+    "هيكلُ النظام)، و<b>واصلٌ</b> (جسرُ الأنظمة الفرعية)، و<b>متخصّصٌ</b>، و<b>مُعرِّفٌ للوحدة</b>. وبنيةُ الأدوار "
+    "<b>حقيقيةٌ</b> تتجاوز نُلَّ الدرجات (z=+" + str(N.get("modularity_z", "—")) + ")؛ فالدورُ ليس تكرارًا متنكِّرًا.<br><br>"
+    "<b>٥) مقياسان — من العامّ إلى الخاصّ.</b> تُقاس الأهمية في مستويين: <b>عامّ</b> (القرآن كلُّه = الشبكة) "
+    "و<b>محلّيّ</b> (نظامُ السورة الفرعيّ؛ يَملِك المُعرِّفُ سورتَه بمربّع كاي مقابل خلطٍ مُطابِقٍ للطول، مع تصحيح "
+    "FDR). وقد يكون المفهومُ محوريًّا في مستوًى هامشيًّا في الآخر.<br><br>"
+    "<b>٦) الضرورة — «تعذّر الحذف».</b> اختبارُ الحذف الأكبر: خلطُ الترتيب (خلطُ القانون الواحد) يُسقِط بنيةَ الدور — "
+    "تهبط النمطيّةُ من " + str(N.get("modularity_obs", "—")) + " إلى " + str(N.get("modularity_null", "—")) +
+    " (z=+" + str(N.get("modularity_z", "—")) + "). وفي المستوى المحلّيّ يَملِك " + str(g("root_sig", "—")) +
+    " جذرًا و" + str(g("word_sig", "—")) + " كلمةً سورتَها فوق الصدفة (صمد، كوثر، نحر، كفء، لهب، آلاء…). والضرورةُ "
+    "<b>تابعةٌ للمقياس</b>: محلّيًّا حادّة، عامًّا موزَّعة.<br><br>"
+    "<b>٧) اختبار «ماذا لو؟».</b> <b>حذفُ ءله</b> (المحور الجامع): تنكمش الشبكةُ ٣٫٨٪ لكنّها تبقى <b>قطعةً واحدة</b> "
+    "— ضرورةٌ موزَّعةٌ صامدة، لا نقطةَ انهيارٍ وحيدة. <b>حذفُ صمد</b>: لا أثرَ على الشبكة، لكنّ سورةَ الإخلاص تفقد "
+    "أحدَ مُعرِّفَيها الحصريَّين (صمد، كفء) — ضرورةٌ محلّيةٌ حادّة. <b>إضافةُ جذرٍ ليس في القرآن</b>: تكرارُه صفرٌ ← "
+    "بلا تلازمٍ ← عُقدةٌ معزولةٌ بلا دور، خارج الكلّ — لا موضعَ للإضافة (الكفاية).<br><br>"
+    "<b>٨) الكفاية — «تعذّر الزيادة».</b> فضاءُ الأهمية <b>مُشبَع</b>: محوران (البروز + التركيز) يحملان ٩٢٪ من "
+    "البنية، والثالثُ والرابعُ لا يكادان يحملان شيئًا. والشبكةُ <b>كلٌّ موصولٌ</b> (٩٩٫٨٪ في مكوِّنٍ واحد)، "
+    "و<b>أقلُّ تصدُّعًا</b> من رسمٍ عشوائيٍّ مطابقِ الدرجات (z=" + str(N.get("cut_z", "—")) + ") — مبنيٌّ على ألّا "
+    "ينهار، بفائضٍ بلا إسراف. فلا دورَ شاغرٌ ولا دعامةٌ مفقودة.<br><br>"
+    "<b>٩) أحسن تقويم.</b> هذا هو «أحسن التناسب» (التين ٩٥:٤) مُفعَّلًا: <b>لا يُزاد لأنّه كافٍ، ولا يُنقَص لأنّه "
+    "ضروريّ</b>. قال حافظٌ قبل أن تُرسَم الشبكة: <b>«جهان چون خط و خال و چشم و ابروست / که هر چیزی به جای خویش "
+    "نیکوست»</b> — «كلُّ شيءٍ حَسَنٌ في موضعه»؛ فالأهميةُ ليست رتبةً بل <b>وجودًا في الموضع</b> (الدور)، واختبارُ "
+    "الحذف صدًى تجريبيٌّ للبيت: انزِع شيئًا عن موضعه يَزُلِ الحُسن (الوظيفة).<br><br>"
+    "<b>١٠) إنصافٌ وحدودٌ (ما لا نَدّعيه).</b> حَرِجِيّةُ المحور الجامع تفسّرها <b>الدرجةُ</b> (z=+" +
+    str(N.get("hub_knockout_z", "—")) + "، ضمن الصدفة)؛ فنترك دعوى «ءله نقطةُ انهيارٍ مُصمَّمة» — والادّعاءاتُ "
+    "المتجاوزةُ للنُلِّ هي <b>بنيةُ الدور</b> و<b>المتانة</b> فقط. و<b>البنيويُّ ≠ الدلاليّ</b>: الثقلُ اللاهوتيُّ "
+    "لصمد (اسمٌ من أسماء الله) <b>معنًى</b> لا إحصاءٌ توزيعيّ، وهو غيرُ مقبولٍ شاهدًا بمقتضى القانون الواحد؛ نُعلِّم "
+    "هذا الحدَّ ولا نصطنع عليه رقمًا.<br><br>"
+    "<b>١١) النتيجة والدرجة.</b> حكمٌ <b>بنيويٌّ منهجيّ</b> لا لاهوتيّ: <b>مُرشَّح (الدرجة ٧٢)</b> — إعادةُ التأطير "
+    "ونُلُّها متينة، لكنّ الترقيةَ إلى رتبة الاكتشاف تستلزم نُلَّ الحذف لكلِّ عُقدة ونُلَّ المجتمع الموزون.<br><br>"
+    "<b>١٢) سبيلُ المضيّ (بترتيب الحسم).</b> ١) نُلُّ الحذف لكلِّ عُقدة؛ ٢) نُلُّ مجتمعِ الشبكة الموزونة؛ ٣) إجراءُ "
+    "كامل المسار على شبكتَي <b>الكلمة والصرف</b> لا الجذر وحدَه؛ ٤) صياغةُ «الكفاية» صياغةً دقيقة؛ ٥) ثباتُ الأدوار "
+    "في <b>ترتيب النزول</b> (ترتيبٌ إلهيٌّ بديل).<br><br>"
+    "<b>الدرس.</b> تحقَّقْ أوّلًا من استقلال معاييرك؛ وكافِئِ المعلومةَ الفريدة لا الحجمَ الخامَّ؛ وإذا ساء السُّلَّمُ "
+    "فقد يكون الترتيبُ <b>جزئيًّا</b>؛ واستعمِلِ الصورةَ والمضمونَ معًا؛ وأنزِلْ ما يفسّره النُّلُّ.</div>",
+    unsafe_allow_html=True)
 
 st.page_link("pages/27_Closeup_Index.py", label="← Back to the Close-up map", icon="🔎")
 # end of close-up · importance reframed
