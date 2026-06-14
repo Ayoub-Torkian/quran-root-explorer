@@ -42,7 +42,8 @@ NAV_SECTIONS = [
         ("Units & arrangement", [
             ("pages/28_Closeup_Ayah.py", "The Āyah", "📐"),
             ("pages/30_Closeup_Sura.py", "The Sūra", "📜"),
-            ("pages/29_Closeup_InterSura.py", "Inter-Sūra", "⚠️")]),
+            ("pages/29_Closeup_InterSura.py", "Inter-Sūra", "⚠️"),
+            ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️")]),
         ("Claims reviewed", [
             ("pages/31_Closeup_Code19.py", "Code 19", "🔢"),
             ("pages/33_Closeup_Adadi.py", "Word-count miracle", "🧮"),
