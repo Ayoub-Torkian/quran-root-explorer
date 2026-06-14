@@ -71,7 +71,7 @@ def _interpret_html(sections: dict) -> str:
         "li { margin: 4px 0; }",
         "code { background: #EEF3FB; padding: 1px 6px; border-radius: 4px; "
         "color: #243447; font-family: 'Amiri', sans-serif; }",
-        ".meta { color: #3D4757; font-size: 13px; }",
+        ".meta { color: #10243A; font-size: 13px; }",
         "</style></head><body>",
         "<h1>Reading Guide</h1>",
         "<p class='meta'>Plain-English findings — every line is a number computed "

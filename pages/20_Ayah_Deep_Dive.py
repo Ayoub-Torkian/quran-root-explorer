@@ -67,7 +67,7 @@ try:
             st.markdown("<div dir='rtl'>%s</div>" % _out, unsafe_allow_html=True)
         if _vz17.get("fasila"):
             st.markdown("**The actual verse-endings** (fāṣila) with counts — the vowels (-ūna/-īna) are the rhyme:")
-            _fc = "".join("<span style='display:inline-block;font-size:21px;background:#EEF3FB;border:1px solid #DEE7F2;border-radius:8px;padding:1px 12px;margin:3px;font-family:\"Traditional Arabic\",Amiri,serif'>%s<sub style='font-size:10px;color:#10243A'>%d</sub></span>" % (w, c) for w, c in _vz17["fasila"][:12])
+            _fc = "".join("<span style='display:inline-block;font-size:21px;background:#EEF3FB;border:1px solid #DEE7F2;border-radius:8px;padding:1px 12px;margin:3px;font-family:\"Traditional Arabic\",Amiri,serif'>%s<sub style='font-size:12px;color:#10243A'>%d</sub></span>" % (w, c) for w, c in _vz17["fasila"][:12])
             st.markdown("<div dir='rtl'>%s</div>" % _fc, unsafe_allow_html=True)
         try:
             st.page_link("pages/25_Latent_Features.py", label="See L06 · L17 in the Latent Feature Ledger", icon="🧬")

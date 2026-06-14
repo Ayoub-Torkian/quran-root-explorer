@@ -183,8 +183,8 @@ def render_grouped_nav():
         "border-radius:6px!important;padding:5px 10px!important;margin:6px 0 0!important;"
         "line-height:1.2!important;display:block!important;white-space:nowrap!important;"
         "overflow:hidden!important;text-overflow:ellipsis!important;}"
-        ".dlnav-h2{font-size:11px!important;font-weight:800!important;letter-spacing:.6px!important;"
-        "color:#3E5572!important;text-transform:uppercase!important;margin:10px 0 2px 12px!important;"
+        ".dlnav-h2{font-size:12px!important;font-weight:800!important;letter-spacing:.6px!important;"
+        "color:#10243A!important;text-transform:uppercase!important;margin:10px 0 2px 12px!important;"
         "background:none!important;border:none!important;padding:0 0 2px 6px!important;"
         "border-left:3px solid #C7D3E2!important;line-height:1.3!important;display:block!important;}"
         # v2.0: global PROGRESS RIBBON — animated bar pinned to the very top whenever the app

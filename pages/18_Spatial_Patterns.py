@@ -232,7 +232,7 @@ if scope.startswith("🧬"):
             "stays high then collapses at the right k — pick the largest k still "
             "above ~0.9. Roots below pin to a robust archetype; the **ambiguous** "
             "ones below sit *between* archetypes (transitional spatial behaviour):")
-        st.markdown(f"<div style='color:#3D4757;font-size:13.5px;'>"
+        st.markdown(f"<div style='color:#10243A;font-size:13.5px;'>"
                     f"{'  ·  '.join(amb)}</div>", unsafe_allow_html=True)
     if afeat == "root":
         sa = SP.semantic_alignment(corpus, res, n_perm=99)

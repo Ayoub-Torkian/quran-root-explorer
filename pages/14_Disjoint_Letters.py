@@ -853,7 +853,7 @@ with t_not:
                 "padding:8px 14px;margin:4px 0;'>"
                 "<span style='font-size:15px;color:#1D3557;font-weight:600;'>" + label + "</span>"
                 "<span style='font-size:14px;'><b style='color:" + col + ";'>" + verdict + "</b>"
-                "<span style='color:#3D4757;'> &nbsp;&middot;&nbsp; " + note + "</span></span></div>")
+                "<span style='color:#10243A;'> &nbsp;&middot;&nbsp; " + note + "</span></span></div>")
         st.markdown("".join(html_rows), unsafe_allow_html=True)
 
     st.markdown(

@@ -131,13 +131,13 @@ st.markdown(
 .lf-kpi{flex:1 1 150px;background:#fff;border:1px solid #E7ECF3;border-left:4px solid #1D9E75;
   border-radius:10px;padding:10px 14px;box-shadow:0 1px 2px rgba(20,40,80,.04);}
 .lf-kpi .n{font-size:26px;font-weight:800;color:#16243B;line-height:1;}
-.lf-kpi .l{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:#34465B;margin-top:5px;font-weight:700;}
+.lf-kpi .l{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#10243A;margin-top:5px;font-weight:700;}
 .lf-kpi.amber{border-left-color:#E9A23B;} .lf-kpi.grey{border-left-color:#9AA4B2;} .lf-kpi.navy{border-left-color:#1D3557;}
 .lf-sec{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#1D3557;
   margin:18px 0 8px;padding-bottom:5px;border-bottom:2px solid #E7ECF3;}
 .lf-cat{font-size:15px;font-weight:800;color:#16243B;margin:14px 0 6px;display:flex;align-items:center;gap:8px;}
 .lf-catdot{width:11px;height:11px;border-radius:3px;display:inline-block;}
-.lf-chip{display:inline-block;font-size:10.5px;font-weight:700;color:#27384B;background:#EEF2F7;
+.lf-chip{display:inline-block;font-size:12px;font-weight:700;color:#10243A;background:#EEF2F7;
   border-radius:20px;padding:2px 9px;margin:0 4px 4px 0;text-transform:uppercase;letter-spacing:.4px;}
 .lf-badge{display:inline-block;font-size:12px;font-weight:800;color:#fff;border-radius:7px;padding:2px 9px;}
 .lf-lead{font-size:15.5px;line-height:1.55;color:#16243B;margin:6px 0;font-weight:500;}
@@ -145,15 +145,15 @@ st.markdown(
   font-size:14.5px;line-height:1.5;color:#0B3F2A;margin:7px 0;}
 .lf-meta{font-size:14.5px;line-height:1.5;color:#10243A;margin:4px 0;}
 .lf-q{font-size:14.5px;line-height:1.5;color:#1F2D3D;margin:4px 0;}
-[data-testid="stCaptionContainer"],[data-testid="stCaptionContainer"] p{color:#243039!important;}
-.ectitle,.ectitle span{color:#243039!important;}
+[data-testid="stCaptionContainer"],[data-testid="stCaptionContainer"] p{color:#10243A!important;}
+.ectitle,.ectitle span{color:#10243A!important;}
 .lf-q b{color:#1D3557;}
 [data-testid="stVerticalBlock"]{gap:.3rem!important;}
 [data-testid="stExpander"] [data-testid="stVerticalBlock"]{gap:.15rem!important;}
 .ar-wrap{margin:3px 0 10px;line-height:2;}
 .ar-chip{display:inline-block;font-size:22px;color:#16365C;background:#EEF3FB;border:1px solid #DEE7F2;
   border-radius:9px;padding:2px 13px;margin:3px;font-family:"Traditional Arabic","Amiri","Scheherazade New",serif;}
-.ar-chip sub{font-size:10px;color:#5A6573;font-weight:700;font-family:-apple-system,Segoe UI,sans-serif;}
+.ar-chip sub{font-size:12px;color:#10243A;font-weight:700;font-family:-apple-system,Segoe UI,sans-serif;}
 .twinbox{background:#F5F8FC;border-left:4px solid #457B9D;border-radius:7px;padding:4px 11px;margin:3px 0;
   display:flex;align-items:center;gap:10px;}
 .twinref{flex:0 0 auto;font-size:12px;font-weight:800;color:#1D3557;}
@@ -164,21 +164,21 @@ st.markdown(
 .seam-wrap{margin:4px 0 8px;line-height:1;}
 .sbwrap{margin:8px 0 2px;}
 .sbrow{display:flex;align-items:center;gap:8px;margin:2px 0;}
-.sblabel{flex:0 0 150px;font-size:11px;color:#5B6675;text-align:right;}
+.sblabel{flex:0 0 150px;font-size:12px;color:#10243A;text-align:right;}
 .sbtrack{flex:1 1 auto;height:9px;border-radius:6px;overflow:hidden;background:
   linear-gradient(90deg,transparent calc(25% - 1px),#D5DDE8 25%,transparent calc(25% + 1px)),
   linear-gradient(90deg,transparent calc(50% - 1px),#D5DDE8 50%,transparent calc(50% + 1px)),
   linear-gradient(90deg,transparent calc(75% - 1px),#D5DDE8 75%,transparent calc(75% + 1px)),#EDF1F6;}
 .sbfill{display:block;height:100%;background:linear-gradient(90deg,#2A9D8F,#1D9E75);}
-.sbval{flex:0 0 42px;font-size:11px;color:#3D4757;font-weight:700;}
+.sbval{flex:0 0 42px;font-size:12px;color:#10243A;font-weight:700;}
 .lf-concept{font-size:16.5px;line-height:1.5;color:#13202E;background:#F5F8FC;
   border-left:4px solid #1D3557;border-radius:8px;padding:9px 13px;margin:4px 0 7px;}
-.lf-concept .lab{display:block;font-size:10.5px;font-weight:800;letter-spacing:.6px;
+.lf-concept .lab{display:block;font-size:12px;font-weight:800;letter-spacing:.6px;
   text-transform:uppercase;color:#1D3557;margin-bottom:2px;}
 .ecwrap{margin:7px 0;}
-.ectitle{font-size:12.5px;font-weight:700;color:#46505F;margin-bottom:4px;}
+.ectitle{font-size:12.5px;font-weight:700;color:#10243A;margin-bottom:4px;}
 .ecrow{display:flex;align-items:center;gap:8px;margin:2px 0;}
-.eclabel{flex:0 0 112px;font-size:12.5px;color:#46505F;text-align:right;}
+.eclabel{flex:0 0 112px;font-size:12.5px;color:#10243A;text-align:right;}
 .ectrack{flex:1 1 auto;height:9px;border-radius:5px;overflow:hidden;background:
   linear-gradient(90deg,transparent calc(25% - 1px),#D5DDE8 25%,transparent calc(25% + 1px)),
   linear-gradient(90deg,transparent calc(50% - 1px),#D5DDE8 50%,transparent calc(50% + 1px)),
@@ -194,7 +194,7 @@ st.markdown(
 _hero("🧬 Determinacy",
       "Intrinsic, self-referential discoveries — graded, novelty-gated, and surfaced live in the modules.")
 st.markdown(
-    "<div style='font-size:14.5px;color:#46505F;margin:2px 0 14px'>"
+    "<div style='font-size:14.5px;color:#10243A;margin:2px 0 14px'>"
     "<b style='color:#16243B'>%d graded determinacy features (≥ 90)</b> — each found by measuring the "
     "text only against itself. Tap a card to explore.</div>" % len(included), unsafe_allow_html=True)
 
@@ -232,8 +232,8 @@ if VZ:
     def _d_heat(pt):
         inv = pt["invariants"]
         rmap = {r[0]: r[1:] for r in pt["rows"]}
-        h = '<table style="border-collapse:collapse;font-size:11.5px;width:100%;max-width:560px">'
-        h += '<tr><td></td>' + "".join('<td style="padding:3px 6px;color:#46505F;text-align:center;font-weight:700">%s</td>' % i for i in inv) + '</tr>'
+        h = '<table style="border-collapse:collapse;font-size:12px;width:100%;max-width:560px">'
+        h += '<tr><td></td>' + "".join('<td style="padding:3px 6px;color:#10243A;text-align:center;font-weight:700">%s</td>' % i for i in inv) + '</tr>'
         for r in ["intact", "MOVE", "REPLACE", "ADD"]:
             h += '<tr><td style="padding:3px 8px;color:#16243B;font-weight:700">%s</td>' % r
             for v in rmap.get(r, []):
@@ -280,9 +280,9 @@ if VZ:
         return ('<svg viewBox="0 0 680 172" width="100%" preserveAspectRatio="xMidYMid meet" role="img">'
                 '<line x1="34" y1="150" x2="650" y2="150" stroke="#E7ECF3" stroke-width="1"/>'
                 '<line x1="34" y1="16" x2="34" y2="150" stroke="#E7ECF3" stroke-width="1"/>'
-                '<circle cx="400" cy="22" r="4" fill="#1D9E75"/><text x="408" y="25" font-size="10.5" fill="#46505F">long sūras</text>'
-                '<circle cx="520" cy="22" r="4" fill="#457B9D"/><text x="528" y="25" font-size="10.5" fill="#46505F">short sūras</text>'
-                '<text x="342" y="167" font-size="11" fill="#7A8390" text-anchor="middle">each dot = one sūra · horizontal axis tracks size / richness (≈ canonical order)</text>'
+                '<circle cx="400" cy="22" r="4" fill="#1D9E75"/><text x="408" y="25" font-size="12" fill="#10243A">long sūras</text>'
+                '<circle cx="520" cy="22" r="4" fill="#457B9D"/><text x="528" y="25" font-size="12" fill="#10243A">short sūras</text>'
+                '<text x="342" y="167" font-size="12" fill="#10243A" text-anchor="middle">each dot = one sūra · horizontal axis tracks size / richness (≈ canonical order)</text>'
                 + dots + '</svg>')
 
     ob = VZ.get("order_bits", {})
@@ -292,45 +292,45 @@ if VZ:
         '<div class="lf-kpis">'
         '<div class="lf-kpi"><div class="n">' + str(len(included)) + '</div><div class="l">graded features ≥ 90</div></div>'
         '<div class="lf-kpi navy"><div class="n">' + format(_bits, ",") + '</div><div class="l">bits of order information</div></div>'
-        '<div class="lf-kpi"><div class="n">' + str(sum(seams)) + '<span style="font-size:15px;color:#6A7480">/' + str(len(seams)) + '</span></div><div class="l">sūra boundaries detected</div></div>'
+        '<div class="lf-kpi"><div class="n">' + str(sum(seams)) + '<span style="font-size:15px;color:#10243A">/' + str(len(seams)) + '</span></div><div class="l">sūra boundaries detected</div></div>'
         '<div class="lf-kpi amber"><div class="n">r = ' + ("%.2f" % VZ.get("pc1_order_r", 0)) + '</div><div class="l">order ↔ sequence</div></div>'
         '</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="lf-sec">What we discovered — three results, each visualized</div>', unsafe_allow_html=True)
-    st.markdown('<div style="font-size:14px;color:#46505F;margin:-2px 0 8px;max-width:1050px">Three results, each measured only against the text&#700;s own shuffle (the One Law) — the substance behind the feature cards further down.</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:14px;color:#10243A;margin:-2px 0 8px;max-width:1050px">Three results, each measured only against the text&#700;s own shuffle (the One Law) — the substance behind the feature cards further down.</div>', unsafe_allow_html=True)
 
-    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:8px 0 3px">Discovery 1 — the arrangement is determined <span style="font-weight:500;color:#6A7480">(order carries real information)</span></div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:8px 0 3px">Discovery 1 — the arrangement is determined <span style="font-weight:500;color:#10243A">(order carries real information)</span></div>', unsafe_allow_html=True)
     st.markdown(
         '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:13px 16px;margin:2px 0 8px;max-width:1050px">'
         '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:7px">Compress the order of the text. A <b>random</b> order needs ' + format(ob.get("random", 0), ",") + ' bits; the <b>canonical</b> order (the muṣḥaf) needs only <b style="color:#0F6E56">' + format(ob.get("canonical", 0), ",") + '</b> — about <b>9,900 bits less</b>. The arrangement is <b>not random</b>: it carries real, measurable structure.</div>'
         + _d_bars([("random order", ob.get("random", 0)), ("canonical (the muṣḥaf)", ob.get("canonical", 0)), ("length-sorted", ob.get("length-sorted", 0))], hi="canonical (the muṣḥaf)") +
         '<div style="font-size:13px;color:#16243B;font-weight:700;margin:11px 0 4px">And the order is load-bearing — perturb the text and the four invariants collapse:</div>'
         + _d_heat(VZ["perturb"]) +
-        '<div style="font-size:11.5px;color:#6A7480;margin-top:5px">Rows = what we did to the text · columns = the four invariants · value = how much survives (1.0 = fully intact). The <b>MOVE</b> row (reorder the verses) wipes the 1/f signal to 0.</div>'
+        '<div style="font-size:12px;color:#10243A;margin-top:5px">Rows = what we did to the text · columns = the four invariants · value = how much survives (1.0 = fully intact). The <b>MOVE</b> row (reorder the verses) wipes the 1/f signal to 0.</div>'
         '</div>', unsafe_allow_html=True)
 
-    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:12px 0 3px">Discovery 2 — the units are real and detectable <span style="font-weight:500;color:#6A7480">(a sūra is a definable unit)</span></div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:12px 0 3px">Discovery 2 — the units are real and detectable <span style="font-weight:500;color:#10243A">(a sūra is a definable unit)</span></div>', unsafe_allow_html=True)
     st.markdown(
         '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:12px;padding:13px 16px;margin:2px 0 8px;max-width:1050px">'
         '<div style="font-size:14px;line-height:1.55;color:#16243B;margin-bottom:7px">Place every sūra by its own profile and they spread into a structured landscape — the main axis tracks the canonical order (r = <b>' + ("%.2f" % VZ.get("pc1_order_r", 0)) + '</b>). And the seams between sūras are objectively findable: <b style="color:#0F6E56">' + str(sum(seams)) + ' of ' + str(len(seams)) + '</b> boundaries light up from the text alone.</div>'
         + _d_scatter(VZ["landscape"]) +
         '<div style="font-size:13px;color:#16243B;font-weight:700;margin:9px 0 4px">Detected sūra boundaries (each tick = one of the 113 seams):</div>'
         + _d_seams(seams) +
-        '<div style="font-size:11.5px;color:#6A7480;margin-top:5px">Teal = a boundary the text marks on its own, with no external cue.</div>'
+        '<div style="font-size:12px;color:#10243A;margin-top:5px">Teal = a boundary the text marks on its own, with no external cue.</div>'
         '</div>', unsafe_allow_html=True)
 
-    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:12px 0 3px">Discovery 3 — system signatures <span style="font-weight:500;color:#6A7480">(rhythm · 1/f · rhyme)</span></div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:15px;font-weight:800;color:#1D3557;margin:12px 0 3px">Discovery 3 — system signatures <span style="font-weight:500;color:#10243A">(rhythm · 1/f · rhyme)</span></div>', unsafe_allow_html=True)
     st.markdown(
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:2px 0 10px;max-width:1050px">'
         '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 14px">'
         '<div style="font-size:14px;font-weight:700;color:#16243B">Rhythm <span style="color:#0F6E56">DFA 0.95</span> · 1/f slope ' + ("%.2f" % VZ.get("spectrum_slope", 0)) + '</div>'
-        '<div style="font-size:12px;color:#46505F;margin:3px 0 6px">Verse-lengths carry long-range memory across the whole book — a multi-scale pulse, not noise.</div>'
+        '<div style="font-size:12px;color:#10243A;margin:3px 0 6px">Verse-lengths carry long-range memory across the whole book — a multi-scale pulse, not noise.</div>'
         + _d_line(VZ.get("wave", [1, 1])) +
-        '<div style="font-size:10px;color:#9AA4B2;text-align:center;margin-top:2px">words per verse · sūra 1 → 114</div>'
+        '<div style="font-size:12px;color:#10243A;text-align:center;margin-top:2px">words per verse · sūra 1 → 114</div>'
         '</div>'
         '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 14px">'
         '<div style="font-size:14px;font-weight:700;color:#16243B">Rhyme <span style="color:#0F6E56">fāṣila cohesion</span></div>'
-        '<div style="font-size:12px;color:#46505F;margin:3px 0 6px">A few verse-ending sounds dominate the whole text — strong, structured rhyme.</div>'
+        '<div style="font-size:12px;color:#10243A;margin:3px 0 6px">A few verse-ending sounds dominate the whole text — strong, structured rhyme.</div>'
         + _d_bars([(w, c) for w, c in VZ.get("fasila", [])[:6]], lw=44, lsz=16) +
         '</div>'
         '</div>', unsafe_allow_html=True)
@@ -578,9 +578,9 @@ def feature_content(fid):
             _rows = ""
             for v in fc["verses"]:
                 _a = [r for r in v["roots"] if r in anch]
-                _tag = ("<span style='color:#C77B1A;font-size:11px;font-weight:700;white-space:nowrap'>⚓ %s</span>" % " ".join(_a)) if _a else ""
+                _tag = ("<span style='color:#C77B1A;font-size:12px;font-weight:700;white-space:nowrap'>⚓ %s</span>" % " ".join(_a)) if _a else ""
                 _rows += ("<div style='display:flex;align-items:center;gap:8px;padding:2px 0;border-bottom:1px solid #F0F3F8'>"
-                          "<span style='color:#5A6573;font-size:11px;min-width:34px'>%s</span>"
+                          "<span style='color:#10243A;font-size:12px;min-width:34px'>%s</span>"
                           "<span dir='rtl' style='flex:1;font-family:\"Traditional Arabic\",Amiri,serif;font-size:17px;color:#10171F'>%s</span>"
                           "%s</div>") % (v["ref"], v["text"], _tag)
             st.markdown("<div style='margin:2px 0 4px'>%s</div>" % _rows, unsafe_allow_html=True)
@@ -751,8 +751,8 @@ for _ti, (title, desc, cats, col) in enumerate(BANDS):
         _multi = len(_cats_present) > 1
         for cat in _cats_present:
             if _multi:
-                st.markdown("<div style='font-size:11.5px;font-weight:700;letter-spacing:.4px;"
-                            "text-transform:uppercase;color:#5A6B82;margin:13px 0 3px'>%s</div>"
+                st.markdown("<div style='font-size:12px;font-weight:700;letter-spacing:.4px;"
+                            "text-transform:uppercase;color:#10243A;margin:13px 0 3px'>%s</div>"
                             % _html.escape(cat), unsafe_allow_html=True)
             for f in sorted([f for f in _fl if f.get("category") == cat], key=grade_of, reverse=True):
                 render_card(f)
@@ -791,7 +791,7 @@ with _tabs[-1]:
         pass
 
 st.divider()
-st.markdown("<div style='font-size:12.5px;line-height:1.5;color:#34465B'>"
+st.markdown("<div style='font-size:12.5px;line-height:1.5;color:#10243A'>"
             "Every finding clears the critical-review rubric (pass ≥ %d) and a novelty gate. "
             "Open research frontiers and the full rubric live in the <b>Method</b> tab and the synthesis document.</div>" % PASS,
             unsafe_allow_html=True)

@@ -41,7 +41,7 @@ def _render_module_bar():
         + "".join(
             f"<span style='padding:6px 12px; border-radius:18px; font-size:13px; "
             f"background:{'#1D3557' if m['status']=='active' else '#E2E8F1'}; "
-            f"color:{'white' if m['status']=='active' else '#3D4757'}; "
+            f"color:{'white' if m['status']=='active' else '#10243A'}; "
             f"font-weight:{'700' if m['status']=='active' else '500'};'>"
             f"{m['icon']} {m['name']}"
             f"{'  ✓' if m['status']=='active' else '  · ' + m['status']}</span>"

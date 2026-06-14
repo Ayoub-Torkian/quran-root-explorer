@@ -69,7 +69,7 @@ def _badge(ok, label, detail):
     return (f'<span style="background:{bg};color:#fff;padding:4px 10px;'
             f'border-radius:6px;font-size:13px;font-weight:600;'
             f'margin-right:8px;display:inline-block;">{icon} {label}</span>'
-            f'<span style="font-size:12px;color:#3D4757;margin-right:18px;">{detail}</span>')
+            f'<span style="font-size:12px;color:#10243A;margin-right:18px;">{detail}</span>')
 
 db_ok    = total_events > 0
 ipapi_ok = pct_cc > 0

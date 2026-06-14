@@ -101,7 +101,7 @@ st.markdown(
 st.page_link("pages/32_Closeup_Nuzul.py", label="Open Qur'ān chronology, reviewed")
 
 st.markdown("<div class='cu-sec'><span class='b'></span><b>The journey</b></div>"
-            "<div style='font-size:12.5px;color:#475569;line-height:1.6'>"
+            "<div style='font-size:12.5px;color:#10243A;line-height:1.6'>"
             "ledger cards (scoreboard) → graded ledger (provisional) → <b>close-ups (method &amp; story)</b>. "
             "The Āyah is <b>defined to necessity</b>; the inter-Sūra arrangement was pushed hard and <b>honestly "
             "refuted</b> as a size artifact; the Sūra is next. Close-ups are living — a refuted finding can revive "

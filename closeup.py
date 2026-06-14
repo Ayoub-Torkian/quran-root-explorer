@@ -86,7 +86,7 @@ def story(what, why, accent=TEAL):
         f"<div style='margin-top:10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap'>"
         f"<span style='flex:0 0 auto;font-size:12px;font-weight:800;letter-spacing:.6px;color:#fff;"
         f"background:{accent};padding:4px 10px;border-radius:6px'>WHY IT MATTERS</span>"
-        f"<span style='font-size:14.5px;color:#283A4D;line-height:1.5;flex:1;min-width:240px'>{why}</span>"
+        f"<span style='font-size:14.5px;color:#10243A;line-height:1.5;flex:1;min-width:240px'>{why}</span>"
         f"</div></div>", unsafe_allow_html=True)
 
 
@@ -306,7 +306,7 @@ def verdict(status, text, confidence, flip, revise):
         f"<div class='cu-card' style='border:none;border-left:6px solid {col};"
         f"background:linear-gradient(90deg,{col}10,#fff 44%)'>"
         f"<div style='font-size:13px;font-weight:800;letter-spacing:.6px;color:{col}'>VERDICT — {_e(status)}</div>"
-        f"<div style='font-size:14.5px;line-height:1.58;color:#283A4D;margin:6px 0'>{text}</div>"
+        f"<div style='font-size:14.5px;line-height:1.58;color:#10243A;margin:6px 0'>{text}</div>"
         f"<div style='font-size:13.5px;color:{MUTE};line-height:1.7'>"
         f"<b style='color:{INK}'>Confidence</b> {_e(confidence)} &nbsp;·&nbsp; "
         f"<b style='color:{INK}'>Flips if</b> {_e(flip)} &nbsp;·&nbsp; "
@@ -315,7 +315,7 @@ def verdict(status, text, confidence, flip, revise):
 
 def para(text):
     """Discussion prose paragraph."""
-    st.markdown(f"<div style='font-size:14.5px;line-height:1.62;color:#283A4D;margin:3px 2px 9px'>{text}</div>",
+    st.markdown(f"<div style='font-size:14.5px;line-height:1.62;color:#10243A;margin:3px 2px 9px'>{text}</div>",
                 unsafe_allow_html=True)
 
 
@@ -324,7 +324,7 @@ def callout(label, text, accent=SLATE):
     st.markdown(
         f"<div class='cu-card' style='border-left:5px solid {accent};background:{accent}0c'>"
         f"<div class='cu-eye' style='color:{accent}'>{_e(label)}</div>"
-        f"<div style='font-size:14.5px;line-height:1.6;color:#283A4D'>{text}</div></div>", unsafe_allow_html=True)
+        f"<div style='font-size:14.5px;line-height:1.6;color:#10243A'>{text}</div></div>", unsafe_allow_html=True)
 
 
 def kpis(items):

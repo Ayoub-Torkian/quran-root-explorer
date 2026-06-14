@@ -100,7 +100,7 @@ def _dv_bars(items, color="#1D9E75"):
     rows = ""
     for lab, v in items:
         w = max(4, int(v / float(mx) * 100))
-        rows += ('<div style="display:flex;align-items:center;gap:6px;font-size:11px;margin:2px 0">'
+        rows += ('<div style="display:flex;align-items:center;gap:6px;font-size:12px;margin:2px 0">'
                  '<span style="width:104px;flex:none;color:#10243A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">%s</span>'
                  '<span style="flex:1;height:9px;background:#ECEFF3;border-radius:3px;overflow:hidden">'
                  '<i style="display:block;height:100%%;width:%d%%;background:%s"></i></span>'
@@ -144,11 +144,11 @@ def _net_svg():
         mid = (xa + xb) / 2.0
         apex = Y0 - (16.0 + min(62.0, abs(xb - xa) * 0.42))
         P.append('<path d="M%.1f %g Q%.1f %.1f %.1f %g" fill="none" stroke="#D85A30" stroke-width="1.7" stroke-dasharray="4,3"/>' % (xa, Y0, mid, apex, xb, Y0))
-        P.append('<text x="%.1f" y="%.1f" font-size="10" fill="#A8542F" text-anchor="middle">%s</text>' % (mid, apex - 4, lab))
+        P.append('<text x="%.1f" y="%.1f" font-size="12" fill="#A8542F" text-anchor="middle">%s</text>' % (mid, apex - 4, lab))
     for s in nodes:
         P.append('<circle cx="%.1f" cy="%g" r="3" fill="#16243B"/>' % (X(s), Y0))
-    P.append('<line x1="500" y1="12" x2="524" y2="12" stroke="#1D9E75" stroke-width="2.6"/><text x="529" y="16" font-size="11" fill="#10243A">shared-root link</text>')
-    P.append('<line x1="500" y1="28" x2="524" y2="28" stroke="#D85A30" stroke-width="1.7" stroke-dasharray="4,3"/><text x="529" y="32" font-size="11" fill="#10243A">form-twin (same opening)</text>')
+    P.append('<line x1="500" y1="12" x2="524" y2="12" stroke="#1D9E75" stroke-width="2.6"/><text x="529" y="16" font-size="12" fill="#10243A">shared-root link</text>')
+    P.append('<line x1="500" y1="28" x2="524" y2="28" stroke="#D85A30" stroke-width="1.7" stroke-dasharray="4,3"/><text x="529" y="32" font-size="12" fill="#10243A">form-twin (same opening)</text>')
     return '<svg viewBox="0 0 680 128" width="100%" preserveAspectRatio="xMidYMid meet" role="img">' + "".join(P) + '</svg>'
 
 # ---------------- WHAT WE DISCOVERED — three results, each visualized ----------------
@@ -166,44 +166,44 @@ st.markdown(
     '<defs><pattern id="wv" width="7" height="7" patternUnits="userSpaceOnUse">'
     '<path d="M0 3.5 H7 M3.5 0 V7" stroke="#BFE3D3" stroke-width="0.8"/></pattern></defs>'
     '<path d="M158 66 Q200 24 242 68" fill="none" stroke="#1D9E75" stroke-width="1.6"/>'
-    '<text x="200" y="34" font-size="11" font-weight="600" fill="#0F6E56" text-anchor="middle">342 shared roots</text>'
+    '<text x="200" y="34" font-size="12" font-weight="600" fill="#0F6E56" text-anchor="middle">342 shared roots</text>'
     '<path d="M515 86 Q545 62 575 86" fill="none" stroke="#1D9E75" stroke-width="1.6"/>'
-    '<text x="545" y="70" font-size="11" font-weight="600" fill="#0F6E56" text-anchor="middle">4 shared</text>'
+    '<text x="545" y="70" font-size="12" font-weight="600" fill="#0F6E56" text-anchor="middle">4 shared</text>'
     '<circle cx="110" cy="104" r="56" fill="#EAF6F0"/><circle cx="110" cy="104" r="56" fill="url(#wv)"/>'
     '<circle cx="110" cy="104" r="56" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
     '<circle cx="158" cy="66" r="3.2" fill="#1D9E75"/>'
     '<text x="110" y="186" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Baqara</text>'
-    '<text x="110" y="202" font-size="11" fill="#10243A" text-anchor="middle">286 verses</text>'
+    '<text x="110" y="202" font-size="12" fill="#10243A" text-anchor="middle">286 verses</text>'
     '<circle cx="285" cy="104" r="48" fill="#EAF6F0"/><circle cx="285" cy="104" r="48" fill="url(#wv)"/>'
     '<circle cx="285" cy="104" r="48" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
     '<circle cx="242" cy="68" r="3.2" fill="#1D9E75"/>'
     '<text x="285" y="186" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">Āl-ʿImrān</text>'
-    '<text x="285" y="202" font-size="11" fill="#10243A" text-anchor="middle">200 verses</text>'
+    '<text x="285" y="202" font-size="12" fill="#10243A" text-anchor="middle">200 verses</text>'
     '<circle cx="500" cy="104" r="20" fill="#EAF6F0"/><circle cx="500" cy="104" r="20" fill="url(#wv)"/>'
     '<circle cx="500" cy="104" r="20" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
     '<circle cx="515" cy="86" r="3" fill="#1D9E75"/>'
     '<text x="500" y="150" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Falaq</text>'
-    '<text x="500" y="166" font-size="11" fill="#10243A" text-anchor="middle">5 verses</text>'
+    '<text x="500" y="166" font-size="12" fill="#10243A" text-anchor="middle">5 verses</text>'
     '<circle cx="590" cy="104" r="20" fill="#EAF6F0"/><circle cx="590" cy="104" r="20" fill="url(#wv)"/>'
     '<circle cx="590" cy="104" r="20" fill="none" stroke="#1D9E75" stroke-width="2.5"/>'
     '<circle cx="575" cy="86" r="3" fill="#1D9E75"/>'
     '<text x="590" y="150" font-size="12.5" font-weight="600" fill="#16243B" text-anchor="middle">al-Nās</text>'
-    '<text x="590" y="166" font-size="11" fill="#10243A" text-anchor="middle">6 verses</text>'
-    '<text x="197" y="223" font-size="11" fill="#9AA4B2" text-anchor="middle">a giant pair</text>'
-    '<text x="545" y="190" font-size="11" fill="#9AA4B2" text-anchor="middle">a tiny pair</text>'
+    '<text x="590" y="166" font-size="12" fill="#10243A" text-anchor="middle">6 verses</text>'
+    '<text x="197" y="223" font-size="12" fill="#10243A" text-anchor="middle">a giant pair</text>'
+    '<text x="545" y="190" font-size="12" fill="#10243A" text-anchor="middle">a tiny pair</text>'
     '</svg>'
     '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">'
     '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
     '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Edge &middot; the membrane</div>'
-    '<div style="font-size:11.5px;color:#10243A;line-height:1.4">Like an organ&#700;s membrane — the boundary is '
+    '<div style="font-size:12px;color:#10243A;line-height:1.4">Like an organ&#700;s membrane — the boundary is '
     'detectable: root-overlap <b style="color:#0F6E56">0.87 inside &rarr; 0.28</b> at the seam.</div></div>'
     '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
     '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Interior &middot; the weave</div>'
-    '<div style="font-size:11.5px;color:#10243A;line-height:1.4">Like ordered tissue, not a cell-heap — shuffle the '
+    '<div style="font-size:12px;color:#10243A;line-height:1.4">Like ordered tissue, not a cell-heap — shuffle the '
     'verses and cohesion drops <b style="color:#0F6E56">0.73 &rarr; 0.52</b>. The order is load-bearing.</div></div>'
     '<div style="border:1px solid #E7ECF3;border-radius:9px;padding:9px 11px">'
     '<div style="font-size:12.5px;font-weight:700;color:#16243B;margin-bottom:2px">Wiring &middot; the network</div>'
-    '<div style="font-size:11.5px;color:#10243A;line-height:1.4">Like vessels between organs — '
+    '<div style="font-size:12px;color:#10243A;line-height:1.4">Like vessels between organs — '
     '<b style="color:#0F6E56">44% of sūra-pairs</b> link specifically (vs 1% by chance).</div></div>'
     '</div>'
     '<div style="background:#EAF6F0;border-radius:8px;padding:9px 13px;margin-top:10px;font-size:12.5px;'
@@ -240,12 +240,12 @@ st.markdown(
     '<div style="font-size:14px;font-weight:700;color:#16243B">Rhythm <span style="color:#0F6E56">DFA 0.95</span></div>'
     '<div style="font-size:12px;color:#10243A;line-height:1.45;margin:2px 0 6px">Verse-lengths carry long-range 1/f memory across the whole book — a multi-scale pulse, not noise.</div>'
     + _dv_line(VZ.get("wave", [1, 1])) +
-    '<div style="font-size:10px;color:#9AA4B2;margin-top:2px;text-align:center">words per verse · sūra 1 → 114</div>'
+    '<div style="font-size:12px;color:#10243A;margin-top:2px;text-align:center">words per verse · sūra 1 → 114</div>'
     '</div>'
     '<div style="background:#fff;border:1px solid #E7ECF3;border-radius:11px;padding:11px 13px">'
     '<div style="font-size:14px;font-weight:700;color:#16243B">Interface zones <span style="color:#0F6E56">z=+17.6</span></div>'
     '<div style="font-size:12px;color:#10243A;line-height:1.45;margin:2px 0 7px">Outward-address verses (qul, yā-ayyuhā) cluster into zones rather than scattering — an outward-facing surface.</div>'
-    '<div style="display:flex;height:22px;border-radius:5px;overflow:hidden;font-size:10px;color:#fff;font-weight:700">'
+    '<div style="display:flex;height:22px;border-radius:5px;overflow:hidden;font-size:12px;color:#fff;font-weight:700">'
     '<div style="width:28%;background:#1D9E75;display:flex;align-items:center;justify-content:center">28% out</div>'
     '<div style="width:72%;background:#C4CBD3;display:flex;align-items:center;justify-content:center;color:#10243A">72% inward</div></div>'
     '</div>'
@@ -286,9 +286,9 @@ st.markdown(
 # ---------------- master table (full-width HTML: every column visible, text wraps) ----------------
 st.markdown(
     "<style>"
-    ".ct{width:100%;max-width:1060px;border-collapse:collapse;font-size:11.5px;line-height:1.3;table-layout:fixed;margin:2px 0 6px}"
-    ".ct th{background:#1D3557;color:#fff;text-align:left;padding:4px 7px;font-size:11px;font-weight:700}"
-    ".ct td{padding:4px 7px;border-bottom:1px solid #EDF1F6;color:#2B3440;vertical-align:top;word-wrap:break-word;overflow-wrap:anywhere}"
+    ".ct{width:100%;max-width:1060px;border-collapse:collapse;font-size:12px;line-height:1.3;table-layout:fixed;margin:2px 0 6px}"
+    ".ct th{background:#1D3557;color:#fff;text-align:left;padding:4px 7px;font-size:12px;font-weight:700}"
+    ".ct td{padding:4px 7px;border-bottom:1px solid #EDF1F6;color:#10243A;vertical-align:top;word-wrap:break-word;overflow-wrap:anywhere}"
     ".ct .ct-id{width:40px;font-weight:800;color:#1D3557}"
     ".ct .ct-c{width:108px;font-weight:700;color:#16243B}"
     ".ct .ct-why{color:#10243A}.ct .ct-got{color:#0B3F2A}"
@@ -319,7 +319,7 @@ try:
     def _g(grade):
         c = {"A": "#1D9E75", "B": "#C9962B"}.get(grade, "#9AA4B2")
         return ('<span style="display:inline-block;min-width:28px;text-align:center;padding:1px 5px;'
-                'border-radius:6px;background:%s;color:#fff;font-weight:800;font-size:11px">%s</span>' % (c, grade))
+                'border-radius:6px;background:%s;color:#fff;font-weight:800;font-size:12px">%s</span>' % (c, grade))
     rows_html = ""
     for _id, corr, did, why, found, key, eff, grade in ROWS:
         tone = "background:#f7f8f9;" if grade == "OUT" else ""
@@ -327,7 +327,7 @@ try:
         if key and key != "-":
             got += " — <b>%s</b>" % key
         if eff and eff not in ("-", "OUT"):
-            got += " <span style='color:#6b7480'>(%s)</span>" % eff
+            got += " <span style='color:#10243A'>(%s)</span>" % eff
         rows_html += ('<tr style="%s"><td class="ct-id">%s</td><td class="ct-c">%s</td>'
                       '<td>%s</td><td class="ct-why">%s</td><td class="ct-got">%s</td>'
                       '<td class="ct-g">%s</td></tr>' % (tone, _id, corr, did, why, got, _g(grade)))
@@ -417,36 +417,36 @@ st.markdown(
     ".cp-out{border-left-color:#C4CBD3;background:#FAFBFC}"
     ".cp-hd{display:flex;justify-content:space-between;align-items:center;gap:8px}"
     ".cp-ttl{font-size:14.5px;font-weight:800;color:#16243B}"
-    ".cp-meter{display:flex;align-items:center;gap:5px;font-size:10.5px;color:#8A94A0;flex:none}"
+    ".cp-meter{display:flex;align-items:center;gap:5px;font-size:12px;color:#10243A;flex:none}"
     ".cp-track{width:58px;height:6px;background:#ECEFF3;border-radius:4px;overflow:hidden;display:inline-block}"
     ".cp-track>i{display:block;height:100%}"
-    ".cp-grade{font-weight:800;font-size:10.5px}"
-    ".cp-aspect{font-size:11.5px;color:#10243A;margin:5px 0 8px;line-height:1.35}"
+    ".cp-grade{font-weight:800;font-size:12px}"
+    ".cp-aspect{font-size:12px;color:#10243A;margin:5px 0 8px;line-height:1.35}"
     ".cp-corr{display:grid;grid-template-columns:1fr 22px 1fr;align-items:stretch;gap:5px}"
     ".cp-side{border-radius:7px;padding:6px 9px;font-size:12px;line-height:1.32}"
-    ".cp-body{background:#F4F6F8;color:#2B3440}.cp-quran{background:#E6F4EE;color:#0B3F2A}"
-    ".cp-slab{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}"
+    ".cp-body{background:#F4F6F8;color:#10243A}.cp-quran{background:#E6F4EE;color:#0B3F2A}"
+    ".cp-slab{font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}"
     ".cp-body .cp-slab{color:#10243A}.cp-quran .cp-slab{color:#0F6E56}"
     ".cp-arrow{display:flex;align-items:center;justify-content:center;font-size:14px;color:#1D9E75;font-weight:800}"
     ".cp-ar{text-align:center;font-size:18px;color:#16243B;margin:9px 0 7px;line-height:1.7;direction:rtl}"
-    ".cp-ar small{font-size:11px;color:#8A94A0;direction:ltr;unicode-bidi:embed}"
+    ".cp-ar small{font-size:12px;color:#10243A;direction:ltr;unicode-bidi:embed}"
     ".cp-chart{margin:7px 0 1px}"
-    ".cp-nums{font-size:10px;color:#10243A;text-align:center;margin:0 0 1px}"
+    ".cp-nums{font-size:12px;color:#10243A;text-align:center;margin:0 0 1px}"
     ".cp-rk{display:flex;flex-direction:column;gap:2px;margin:6px 0 1px}"
-    ".cp-rkrow{display:flex;align-items:center;gap:6px;font-size:10px}"
+    ".cp-rkrow{display:flex;align-items:center;gap:6px;font-size:12px}"
     ".cp-rklab{width:98px;flex:none;color:#10243A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
     ".cp-rkbt{flex:1;height:8px;background:#ECEFF3;border-radius:3px;overflow:hidden}"
     ".cp-rkbt>i{display:block;height:100%}"
     ".cp-rkv{width:34px;flex:none;text-align:right;font-weight:700;color:#16243B}"
-    ".cp-insight{font-size:11.5px;color:#0B3F2A;background:#EAF6F0;border-radius:6px;padding:6px 9px;margin:7px 0 2px;line-height:1.4}"
+    ".cp-insight{font-size:12px;color:#0B3F2A;background:#EAF6F0;border-radius:6px;padding:6px 9px;margin:7px 0 2px;line-height:1.4}"
     ".cp-out .cp-insight{background:#F4F1EC;color:#5E5340}"
     ".cp-bars{display:flex;flex-direction:column;gap:3px;margin-top:2px}"
-    ".cp-bar{display:flex;align-items:center;gap:7px;font-size:11px}"
+    ".cp-bar{display:flex;align-items:center;gap:7px;font-size:12px}"
     ".cp-bar>span:first-child{width:74px;color:#10243A;flex:none}"
     ".cp-bt{flex:1;height:8px;background:#ECEFF3;border-radius:4px;overflow:hidden}"
     ".cp-bt>i{display:block;height:100%}"
     ".cp-bv{min-width:82px;text-align:right;font-weight:700;color:#16243B;flex:none}"
-    ".cp-eff{font-size:10.5px;text-align:right;margin-top:3px;color:#0F6E56}"
+    ".cp-eff{font-size:12px;text-align:right;margin-top:3px;color:#0F6E56}"
     ".cp-out .cp-eff{color:#9A7B4F}"
     "</style>", unsafe_allow_html=True)
 
@@ -498,12 +498,12 @@ def _arcs_svg(pairs, color):
         apex = 44.0 - (6.0 + min(32.0, abs(xb - xa) * 0.45))
         arcs += ('<path d="M%.1f 44 Q%.1f %.1f %.1f 44" fill="none" stroke="%s" stroke-width="1.4"/>'
                  '<circle cx="%.1f" cy="44" r="2.2" fill="%s"/><circle cx="%.1f" cy="44" r="2.2" fill="%s"/>'
-                 '<text x="%.1f" y="%.1f" font-size="7.5" fill="#0F6E56" text-anchor="middle">%s</text>'
+                 '<text x="%.1f" y="%.1f" font-size="12" fill="#0F6E56" text-anchor="middle">%s</text>'
                  % (xa, mid, apex - 3, xb, color, xa, color, xb, color, mid, apex - 5, lab))
     return ('<svg viewBox="0 0 252 50" width="100%%" height="46" role="img">'
             '<line x1="8" y1="44" x2="244" y2="44" stroke="#C4CBD3" stroke-width="1"/>'
-            '<text x="8" y="50" font-size="7" fill="#9AA4B2">sūra 1</text>'
-            '<text x="244" y="50" font-size="7" fill="#9AA4B2" text-anchor="end">114</text>'
+            '<text x="8" y="50" font-size="12" fill="#10243A">sūra 1</text>'
+            '<text x="244" y="50" font-size="12" fill="#10243A" text-anchor="end">114</text>'
             '%s</svg>' % arcs)
 
 def _card_chart(d):

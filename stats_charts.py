@@ -373,24 +373,24 @@ def chart_metric_cross_reference(pmi_df, jaccard_df, input_roots):
 
     # Quadrant labels
     fig.add_annotation(x=x_max, y=y_max, xanchor="right", yanchor="top",
-                       text="<b>Strong &amp; frequent</b><br><span style=\"font-size:10px;color:#6B7280;\">"
+                       text="<b>Strong &amp; frequent</b><br><span style=\"font-size:12px;color:#10243A;\">"
                             "associated above chance AND share many ayahs</span>",
                        showarrow=False, font=dict(size=11, color=PAL["good"]),
                        bgcolor="rgba(6,167,125,0.10)", borderpad=4)
     fig.add_annotation(x=x_min, y=y_max, xanchor="left", yanchor="top",
-                       text="<b>Frequent but no surprise</b><br><span style=\"font-size:10px;color:#6B7280;\">"
+                       text="<b>Frequent but no surprise</b><br><span style=\"font-size:12px;color:#10243A;\">"
                             "common roots — high overlap, low PMI</span>",
                        showarrow=False, font=dict(size=11, color=PAL["accent"]),
                        bgcolor="rgba(247,127,0,0.10)", borderpad=4)
     fig.add_annotation(x=x_max, y=y_min, xanchor="right", yanchor="bottom",
-                       text="<b>💎 Hidden gems</b><br><span style=\"font-size:10px;color:#6B7280;\">"
+                       text="<b>💎 Hidden gems</b><br><span style=\"font-size:12px;color:#10243A;\">"
                             "rare pair but VERY associated — worth a closer look</span>",
                        showarrow=False, font=dict(size=11, color=PAL["violet"]),
                        bgcolor="rgba(114,9,183,0.10)", borderpad=4)
     fig.add_annotation(x=x_min, y=y_min, xanchor="left", yanchor="bottom",
-                       text="<b>Weak &amp; rare</b><br><span style=\"font-size:10px;color:#6B7280;\">"
+                       text="<b>Weak &amp; rare</b><br><span style=\"font-size:12px;color:#10243A;\">"
                             "no real signal</span>",
-                       showarrow=False, font=dict(size=11, color="#6B7280"),
+                       showarrow=False, font=dict(size=11, color="#10243A"),
                        bgcolor="rgba(107,114,128,0.08)", borderpad=4)
 
     fig.update_xaxes(title="PMI (bits) — positive = above chance",

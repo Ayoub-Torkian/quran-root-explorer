@@ -230,7 +230,7 @@ def _scatter_quadrants(df: pd.DataFrame, root: str) -> go.Figure:
                        showarrow=False, font=dict(size=11, color="#378ADD"))
     fig.add_annotation(x=0.05, y=0.05, xref="paper", yref="paper",
                        text="<b>UNRELATED</b><br>(low S1 + S2)", showarrow=False,
-                       font=dict(size=11, color="#3D4757"))
+                       font=dict(size=11, color="#10243A"))
     fig.update_layout(
         title=f"Semantic-neighbourhood map of `{root}`",
         xaxis=dict(title="S1 — co-occurrence stability", range=[-0.05, 1.05]),
@@ -331,7 +331,7 @@ for root in input_roots:
         qcols = st.columns(4)
         for col, q, color in zip(
             qcols, ["Core", "Contrastive", "Synonym", "Unrelated"],
-            ["#1D9E75", "#E63946", "#378ADD", "#3D4757"]
+            ["#1D9E75", "#E63946", "#378ADD", "#10243A"]
         ):
             sub = df[df["Quadrant"] == q].head(5)
             col.markdown(

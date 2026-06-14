@@ -27,7 +27,7 @@ log_page("concept_deep_dive")
 corpus = get_corpus()
 st.markdown("<style>section[data-testid='stMain'] [data-testid='stCaptionContainer'],"
             "section[data-testid='stMain'] [data-testid='stCaptionContainer'] *"
-            "{color:#3D4757 !important;font-size:14px !important;}</style>",
+            "{color:#10243A !important;font-size:14px !important;}</style>",
             unsafe_allow_html=True)
 raw, normalize, top_p, min_w, run = query_controls(corpus)
 input_roots = _A.parse_input_roots(raw, normalize)
@@ -131,7 +131,7 @@ def _chips(items, n=6):
         "padding:3px 14px;margin:4px 3px;display:inline-block;font-weight:600'>" + r + "</span>"
         for r in items[:n])
     if len(items) > n:
-        out += (f" <span style='font-size:14px;color:#3D4757'>+{len(items) - n} more "
+        out += (f" <span style='font-size:14px;color:#10243A'>+{len(items) - n} more "
                 f"(full list in the table)</span>")
     return out
 
@@ -191,9 +191,9 @@ def _network_fig(center, rbt, top=25):
         fig.add_shape(type="circle", x0=-rr, y0=-rr, x1=rr, y1=rr,
                       line=dict(color="#C9D6E8", width=1, dash="dot"))
     fig.add_annotation(x=0, y=0.6, text="stronger", showarrow=False, yshift=9,
-                       font=dict(size=10, color="#3D4757"))
+                       font=dict(size=10, color="#10243A"))
     fig.add_annotation(x=0, y=1.55, text="weaker", showarrow=False, yshift=9,
-                       font=dict(size=10, color="#3D4757"))
+                       font=dict(size=10, color="#10243A"))
     for r, ty, s_, _f in rows:
         x1, y1 = pos[r]
         fig.add_trace(_go.Scatter(x=[0, x1], y=[0, y1], mode="lines",
@@ -213,7 +213,7 @@ def _network_fig(center, rbt, top=25):
     for ty, am in sector_mid.items():
         fig.add_annotation(x=2.0 * math.cos(am), y=2.0 * math.sin(am),
                            text=f"<b>{ty}</b>", showarrow=False,
-                           font=dict(size=12, color=_RELC.get(ty, "#3D4757")))
+                           font=dict(size=12, color=_RELC.get(ty, "#10243A")))
     fig.add_trace(_go.Scatter(x=[0], y=[0], mode="markers+text", text=[center],
                               textposition="middle center",
                               textfont=dict(size=17, color="white"),

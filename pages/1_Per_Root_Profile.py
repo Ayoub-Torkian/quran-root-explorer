@@ -105,7 +105,7 @@ combined_mode = (root == ALL_KEY)
 
 if combined_mode:
     st.markdown(
-        "<div style='font-size:14px; color:#3D4757; margin-bottom:8px;'>"
+        "<div style='font-size:14px; color:#10243A; margin-bottom:8px;'>"
         "Currently viewing: "
         f"<b style='color:#1D3557; font-size:18px;'>🔗 ALL TOGETHER  ·  {' + '.join(R['input_roots'])}</b>"
         "</div>",
@@ -113,7 +113,7 @@ if combined_mode:
     )
 else:
     st.markdown(
-        f"<div style='font-size:14px; color:#3D4757; margin-bottom:8px;'>"
+        f"<div style='font-size:14px; color:#10243A; margin-bottom:8px;'>"
         f"Currently viewing: <b style='color:#1D3557; font-size:18px;'>{root}</b> "
         f"&nbsp;·&nbsp; click any other button above to switch."
         f"</div>",
@@ -282,7 +282,7 @@ if not combined_mode:
 .ayah-row{border:1px solid #E2E8F1;border-radius:8px;padding:6px 10px;background:#FFFFFF;}
 .ayah-row:hover{background:#EEF3FB;}
 .ayah-row .ar{direction:rtl;text-align:right;font-family:'Amiri','Amiri Quran','Noto Naskh Arabic',serif;font-size:18px;line-height:1.5;color:#243447;margin:0;}
-.ayah-row .meta{font-size:12px;color:#3D4757;margin:0;line-height:1.2;}
+.ayah-row .meta{font-size:12px;color:#10243A;margin:0;line-height:1.2;}
 </style>
 """, unsafe_allow_html=True)
     has_dia = R.get("has_diacritized")
@@ -476,7 +476,7 @@ def _render_k_of_n():
 .kayah-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;}
 .kayah-row{border:1px solid #E2E8F1;border-radius:8px;padding:6px 10px;background:#FFFFFF;}
 .kayah-row .ar{direction:rtl;text-align:right;font-family:'Amiri','Amiri Quran','Noto Naskh Arabic',serif;font-size:18px;line-height:1.5;color:#243447;margin:0;}
-.kayah-row .meta{font-size:12px;color:#3D4757;margin:0;line-height:1.2;}
+.kayah-row .meta{font-size:12px;color:#10243A;margin:0;line-height:1.2;}
 </style>
 """, unsafe_allow_html=True)
     has_dia = R.get("has_diacritized")
