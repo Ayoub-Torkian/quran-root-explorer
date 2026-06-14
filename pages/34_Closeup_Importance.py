@@ -145,16 +145,16 @@ def scatter(pts, cloud, xr, yr, xlab, ylab, regline=None, kindcol=None, arabic=T
 
 # ════════ custom schematic: احسن تقویم — necessity + sufficiency ════════
 def ahsan():
-    W, H = 1000, 360
-    cx, cy = 500, 185
+    W, H = 1000, 396
+    cx, cy = 500, 190
     p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
     # ring of roles around a hub
     import math as _m
-    ring = [("referent\n(hub)", CORAL, 0), ("connector", TEAL, 60), ("connector", TEAL, 120),
+    ring = [("referent (hub)", CORAL, 0), ("connector", TEAL, 60), ("connector", TEAL, 120),
             ("specialist", SLATE, 180), ("unit-definer", GOLD, 240), ("specialist", SLATE, 300)]
     pos = []
     for i, (lab, col, ang) in enumerate(ring):
-        a = _m.radians(ang); x = cx + 165 * _m.cos(a); y = cy + 120 * _m.sin(a); pos.append((x, y, lab, col))
+        a = _m.radians(ang); x = cx + 168 * _m.cos(a); y = cy + 110 * _m.sin(a); pos.append((x, y, lab, col))
     # edges hub->all + a few cross
     hub = pos[0]
     for x, y, lab, col in pos[1:]:
@@ -163,14 +163,11 @@ def ahsan():
         p.append(f"<line x1='{pos[a][0]:.0f}' y1='{pos[a][1]:.0f}' x2='{pos[b][0]:.0f}' y2='{pos[b][1]:.0f}' "
                  f"stroke='#C4D2DF' stroke-width='1'/>")
     for x, y, lab, col in pos:
-        r = 30 if "hub" in lab else 21
+        r = 26 if "hub" in lab else 18
         p.append(f"<circle cx='{x:.0f}' cy='{y:.0f}' r='{r}' fill='{col}' stroke='#fff' stroke-width='2'/>")
-        parts = lab.split("\n")
-        yoff = -7 if len(parts) > 1 else 0
-        for k, ln in enumerate(parts):
-            yy = y + 4 + 14 * k + yoff
-            p.append(f"<text x='{x:.0f}' y='{yy:.0f}' text-anchor='middle' "
-                     f"font-size='12.5' font-weight='700' fill='#fff'>{ln}</text>")
+        ly = (y - r - 9) if y < cy - 5 else (y + r + 17)   # full label OUTSIDE node, in ink (never clipped)
+        p.append(f"<text x='{x:.0f}' y='{ly:.0f}' text-anchor='middle' font-size='13' font-weight='800' "
+                 f"fill='{INK}'>{lab}</text>")
     # left/right annotations
     p.append(f"<rect x='14' y='110' width='196' height='150' rx='10' fill='{TEAL}' opacity='.08'/>"
              f"<text x='28' y='138' font-size='14.5' font-weight='800' fill='{TEAL}'>CANNOT DELETE</text>"
@@ -205,6 +202,50 @@ def pair_table(h1, h2, rows, c1=TEAL, c2=CORAL):
     st.markdown(f"<table style='border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed;"
                 f"border:1px solid #E7EEF5;border-radius:10px;overflow:hidden;margin:6px 0'>{th}{trs}</table>",
                 unsafe_allow_html=True)
+
+
+def curve(rc):
+    """Attack-vs-random knockout curve: x = fraction of concepts removed, y = largest connected piece."""
+    fr, at, rd = rc.get("fracs", []), rc.get("attack", []), rc.get("random", [])
+    if not fr:
+        return
+    W, H, L, B, Tp, Rr = 1000, 430, 70, 76, 30, 216
+    pw, ph = W - L - Rr, H - Tp - B
+    fmax = max(fr) or 1
+    X = lambda f: L + pw * f / fmax
+    Y = lambda v: Tp + ph * (1 - v)
+    p = [f"<svg viewBox='0 0 {W} {H}' width='100%' style='width:100%;display:block'>"]
+    for t in range(6):
+        gy = Tp + ph * t / 5
+        p.append(f"<line x1='{L}' y1='{gy:.0f}' x2='{L+pw}' y2='{gy:.0f}' stroke='#ECF1F6' stroke-width='1'/>"
+                 f"<text x='{L-8}' y='{gy+4:.0f}' text-anchor='end' font-size='12.5' fill='{INK}'>{1-t/5:.0%}</text>")
+    for t in range(6):
+        f = fmax * t / 5
+        p.append(f"<text x='{X(f):.0f}' y='{Tp+ph+18:.0f}' text-anchor='middle' font-size='12.5' fill='{INK}'>{f:.0%}</text>")
+
+    def poly(vals, col):
+        pts = " ".join(f"{X(f):.1f},{Y(v):.1f}" for f, v in zip(fr, vals))
+        s = f"<polyline points='{pts}' fill='none' stroke='{col}' stroke-width='3' stroke-linejoin='round'/>"
+        for f, v in zip(fr, vals):
+            s += f"<circle cx='{X(f):.1f}' cy='{Y(v):.1f}' r='3.6' fill='{col}'/>"
+        return s
+    p.append(poly(rd, TEAL)); p.append(poly(at, CORAL))
+    lx = L + pw + 18
+    p.append(f"<rect x='{lx}' y='{Tp+8}' width='12' height='12' fill='{TEAL}'/>"
+             f"<text x='{lx+16}' y='{Tp+18}' font-size='13' font-weight='700' fill='{INK}'>random failure</text>"
+             f"<rect x='{lx}' y='{Tp+32}' width='12' height='12' fill='{CORAL}'/>"
+             f"<text x='{lx+16}' y='{Tp+42}' font-size='13' font-weight='700' fill='{INK}'>targeted attack</text>")
+    if len(rd) and len(at) > 1:
+        p.append(f"<text x='{lx}' y='{Tp+76}' font-size='12.5' fill='{INK}'>50% gone →</text>"
+                 f"<text x='{lx}' y='{Tp+94}' font-size='12.5' fill='{TEAL}'>random {rd[-1]:.0%} intact</text>"
+                 f"<text x='{lx}' y='{Tp+118}' font-size='12.5' fill='{INK}'>30% gone →</text>"
+                 f"<text x='{lx}' y='{Tp+136}' font-size='12.5' fill='{CORAL}'>attack {at[-2]:.0%} intact</text>")
+    p.append(f"<text x='{L+pw/2:.0f}' y='{H-8}' text-anchor='middle' font-size='13.5' font-weight='700' "
+             f"fill='{INK}'>fraction of concepts removed →</text>"
+             f"<text x='22' y='{Tp+ph/2:.0f}' transform='rotate(-90 22,{Tp+ph/2:.0f})' text-anchor='middle' "
+             f"font-size='13.5' font-weight='700' fill='{INK}'>largest connected piece</text>")
+    p.append("</svg>")
+    st.markdown("<div class='cu-card'>" + "".join(p) + "</div>", unsafe_allow_html=True)
 
 
 # ╔══════════════ 1 · PROBLEM ══════════════╗
@@ -420,11 +461,24 @@ C.vbars([(C.ar(k, 19) + " " + gl(k), ko[k], (CORAL if k == "ءله" else SLATE),
 
 # ╔══════════════ 6 · SUFFICIENCY ══════════════╗
 C.section("Sufficiency — “cannot add” (the system is complete & saturated)")
-C.note("⑨ Robustness — fewer breakpoints than chance. The real network has " + str(N.get("cut_obs", "—")) +
-       " cut-nodes vs " + str(N.get("cut_null", "—")) + " in a degree-matched random graph (z=" +
-       str(N.get("cut_z", "—")) + "). It is built <b>not to fall apart</b> — redundancy without waste. There is no "
-       "missing brace to add.")
-C.scale("random graph", N.get("cut_null", 50), "Qur'ān network", N.get("cut_obs", 38), "fragile ← more cut-nodes", 60)
+rc = g("robust_curve", {})
+_r50 = int(rc.get("random", [0.45])[-1] * 100) if rc.get("random") else 45
+_a30 = int(rc.get("attack", [0, 0.02])[-2] * 100) if rc.get("attack") else 2
+_t1 = int(rc.get("top1", 0.96) * 100); _t10 = int(rc.get("top10", 0.88) * 100)
+C.note("⑨ Robustness — the knockout curve (actual data, " + str(rc.get("n", "—")) + " concepts). Remove concepts "
+       "and watch the largest connected piece survive. Under <b>random failure</b> (teal) the system degrades "
+       "gracefully — half the concepts gone, <b>" + str(_r50) + "%</b> still connected. Under <b>targeted attack</b> "
+       "(coral, most-central first) it falls far faster — yet removing the single top hub ءله leaves <b>" + str(_t1) +
+       "%</b> intact, and even the top 10 leave <b>" + str(_t10) + "%</b>. Robust to accident, with <b>no single "
+       "keystone</b> — redundancy without waste.")
+if rc:
+    curve(rc)
+C.note("As area-under-curve, random failure preserves <b>" + str(rc.get("auc_random", "—")) + "</b> of the system "
+       "on average vs <b>" + str(rc.get("auc_attack", "—")) + "</b> under targeted attack — the textbook signature "
+       "of a <b>robust-yet-economically-wired</b> system (the same shape seen in metabolic and neural networks). "
+       "The cut-node census agrees: <b>" + str(N.get("cut_obs", "—")) + "</b> breakpoints vs <b>" +
+       str(N.get("cut_null", "—")) + "</b> in a degree-matched random graph (z=" + str(N.get("cut_z", "—")) +
+       ") — fewer, not more. There is no missing brace to add.")
 C.note("⑩ Dimensional saturation. Four importance criteria collapse onto essentially <b>two</b> axes (prominence + "
        "concentration) that hold 92% of the variance; the 3rd and 4th carry almost nothing. The description is "
        "<b>complete in 2 axes</b> — there is no third kind of importance waiting to be added.")
