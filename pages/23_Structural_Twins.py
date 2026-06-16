@@ -47,7 +47,7 @@ SURA = ["", "Al-Fatihah","Al-Baqarah","Aal-Imran","An-Nisa","Al-Ma'idah","Al-An'
 def sname(s): return SURA[s] if 0 < s < len(SURA) else str(s)
 
 @st.cache_data(show_spinner=False)
-def load():
+def load_twins():
     return json.loads(DATA.read_text(encoding="utf-8"))
 
 @st.cache_data(show_spinner=False)
@@ -144,7 +144,7 @@ def rtl(txt, size="1.2em", color=NAVY):
     st.markdown(f"<div dir='rtl' style='font-size:{size};line-height:1.7;color:{color};margin:2px 0;"
                 f"font-family:\"Scheherazade New\",\"Amiri\",serif'>{txt}</div>", unsafe_allow_html=True)
 
-D=load(); m=D["meta"]; verses=D["verse_text"]
+D=load_twins(); m=D["meta"]; verses=D["verse_text"]
 same, cross, strong, top_hubs = agg(D["twins"])
 gaps, top_roots_shared = agg2(D["twins"])
 surah_partners, twinverses, sp_list, shared_n = agg3(D["twins"])

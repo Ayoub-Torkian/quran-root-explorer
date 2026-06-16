@@ -24,10 +24,10 @@ NAVY, TEAL, GRAY, ORANGE, RED, PURPLE = "#1d3557", "#1d9e75", "#c7c5bc", "#ef9f2
 DATA = Path(__file__).resolve().parent.parent / "two_books_lens.json"
 
 @st.cache_data(show_spinner=False)
-def load():
+def load_twobooks():
     return json.loads(DATA.read_text(encoding="utf-8"))
 
-D = load(); m = D["meta"]; rows = D["structural"]; scen = D["scenarios"]
+D = load_twobooks(); m = D["meta"]; rows = D["structural"]; scen = D["scenarios"]
 
 st.markdown("""<style>
 .block-container{padding-top:2.2rem;padding-bottom:1rem}
