@@ -60,7 +60,7 @@ NAV_SECTIONS = [
     ("🧪 LENS LAB", [
         (None, [
             ("pages/22_Lens_Lab.py", "18 Lenses · Verdicts", "🧪"),
-            ("pages/23_Structural_Twins.py", "Structural Twins · Mathāni", "♊"),
+            ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
             ("pages/24_Two_Books_Genome.py", "Two Books · Genome", "🧬"),
         ]),
     ]),
