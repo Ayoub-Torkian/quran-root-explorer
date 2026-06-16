@@ -35,8 +35,7 @@ NAV_SECTIONS = [
     (None, [(None, [("app.py", "Home", "🏠")])]),
     ("📜 DISCOVERIES", [
         (None, [("pages/25_Latent_Features.py", "Determinacy", "🧬"),
-                ("pages/26_Correspondence.py", "Correspondence", "🫀"),
-                ("pages/35_Mathani_Lab.py", "Mathānī Lab", "🔁")]),
+                ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
     ]),
     ("🔎 CLOSE-UP", [
         (None, [("pages/27_Closeup_Index.py", "Map · start here", "🗺️")]),
@@ -44,7 +43,8 @@ NAV_SECTIONS = [
             ("pages/28_Closeup_Ayah.py", "The Āyah", "📐"),
             ("pages/30_Closeup_Sura.py", "The Sūra", "📜"),
             ("pages/29_Closeup_InterSura.py", "Inter-Sūra", "⚠️"),
-            ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️")]),
+            ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️"),
+            ("pages/35_Mathani_Lab.py", "Mathānī · refrains", "🔁")]),
         ("Claims reviewed", [
             ("pages/31_Closeup_Code19.py", "Code 19", "🔢"),
             ("pages/33_Closeup_Adadi.py", "Word-count miracle", "🧮"),
