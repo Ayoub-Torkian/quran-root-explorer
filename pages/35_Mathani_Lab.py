@@ -92,6 +92,19 @@ st.markdown(
     "claim &mdash; is what lets a &ldquo;the Qur&rsquo;\u0101n is special&rdquo; statement survive "
     "scrutiny rather than become overclaim.</div>",
     unsafe_allow_html=True)
+
+st.markdown(
+    "<div style='background:#EEEDFE; border-left:4px solid #534AB7; border-radius:6px; "
+    "padding:12px 16px; margin:6px 0 10px; font-size:14px; color:#10243A;'>"
+    "<b>Two senses of <i>al-math\u0101n\u012b</i> (\u0645\u062b\u0627\u0646\u064a).</b> This page is the "
+    "<b>oft-repeated</b> sense (15:87 <i>sab\u02bfan mina l-math\u0101n\u012b</i>) \u2014 verbatim refrains and "
+    "repetition. The <b>paired / doubled</b> sense (39:23 <i>math\u0101niya</i>) \u2014 verses that resemble each "
+    "other by root and rhyme \u2014 is a separate lens:</div>",
+    unsafe_allow_html=True)
+try:
+    st.page_link("pages/23_Structural_Twins.py", label="\u2192 Structural Twins \u2014 the paired sense (L21)", icon="♊")
+except Exception:
+    pass
 with st.expander("Conceptual foundation — how repetition is measured"):
     st.markdown(
         "- **Recurring-trigram density** — within a sūra, the share of three-word sequences that "
