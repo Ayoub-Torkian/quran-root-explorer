@@ -35,7 +35,8 @@ NAV_SECTIONS = [
     (None, [(None, [("app.py", "Home", "🏠")])]),
     ("📜 DISCOVERIES", [
         (None, [("pages/25_Latent_Features.py", "Determinacy", "🧬"),
-                ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
+                ("pages/26_Correspondence.py", "Correspondence", "🫀"),
+                ("pages/35_Mathani_Lab.py", "Mathānī Lab", "🔁")]),
     ]),
     ("🔎 CLOSE-UP", [
         (None, [("pages/27_Closeup_Index.py", "Map · start here", "🗺️")]),

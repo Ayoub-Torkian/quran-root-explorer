@@ -657,6 +657,23 @@ def feature_content(fid):
         st.markdown('<div class="lf-meta"><b>The 113 sūra seams</b> — each square one boundary: <span style="color:#C1121F">■</span> sound-marked (hard), <span style="color:#B7C0CC">■</span> meaning-marked (soft):</div>', unsafe_allow_html=True)
         strip = "".join('<span class="seam" style="background:%s"></span>' % ("#C1121F" if s else "#B7C0CC") for s in VZ["seams"])
         st.markdown('<div class="seam-wrap">%s</div>' % strip, unsafe_allow_html=True)
+    elif fid in ("L24", "L25", "L26") and go and VZ.get({"L24": "l24_controls", "L25": "l25_controls", "L26": "l26_controls"}[fid]):
+        _key = {"L24": "l24_controls", "L25": "l25_controls", "L26": "l26_controls"}[fid]
+        cb = VZ[_key]
+        _blurb = {
+            "L24": "<b>Inter-chapter continuity, control by control</b> — neighbouring sūras share vocabulary above each successive null. The signal survives a length-matched shuffle and survives removing the muqaṭṭaʿāt groups; only the revelation-order re-indexing weakens it.",
+            "L25": "<b>Uniform information density</b> — adjacent verses carry similar information-per-word. The smoothing beats the verse-shuffle and a length-matched control, and is confirmed by positive surprisal autocorrelation.",
+            "L26": "<b>Closing cadence</b> — the final verse resolves to lighter, more familiar vocabulary than the interior. It holds specifically for the last verse and strengthens once the rhyme word is removed (so it is not just the fāṣila).",
+        }[fid]
+        st.markdown('<div class="lf-meta">%s Each bar is a per-sūra paired test (%s); the dashed line is significance.</div>' % (_blurb, cb["stat"]), unsafe_allow_html=True)
+        _fc = go.Figure(go.Bar(x=cb["labels"], y=cb["vals"], marker=dict(color="#457B9D", line=dict(color="rgba(0,0,0,.12)", width=1)),
+            text=["%s=%.1f" % (cb["stat"], v) for v in cb["vals"]], textposition="outside"))
+        _fc.add_hline(y=2.0, line_dash="dash", line_color="#C1121F", annotation_text="significance", annotation_font_size=10)
+        _fc.update_layout(height=150, margin=dict(l=4, r=4, t=18, b=4), plot_bgcolor="white", paper_bgcolor="white",
+            xaxis=dict(showgrid=False, tickfont=dict(size=11)),
+            yaxis=dict(title="%s (per-sūra paired)" % cb["stat"], showgrid=True, gridcolor="#EEF1F6", range=[0, max(cb["vals"]) * 1.25]),
+            font=dict(size=11, color="#1D3557"))
+        st.plotly_chart(_fc, use_container_width=True, config={"displayModeBar": False}, key="fc_ctrl_%s" % fid)
 
 
 def render_card(f):

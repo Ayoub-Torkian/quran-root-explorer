@@ -211,3 +211,35 @@ Last 3 **discovery** moves: **~85 · null · null** (āyah, per-sūra necessity,
 - Step3: FINAL_ANALYSIS_OUTCOME.md. Spatial program resolves to 3 named structures (verse-position / territory /
   passage-cohesion); 2-D fingerprint = product of two 1-D laws (no emergent coupling). NO new >90.
   Atlas + Taylor-law = descriptive assets. L27 demoted to 84; G4b locked. Session search consolidated honestly.
+
+## 2026-06-15 — WEEKLY LEDGER MAINTENANCE + surfacing sweep (dual loop) · BEARING ✓ consolidation
+- Part A (ledger review): NO new ≥90 discovery this cycle. The 06-12 search arc consolidated to honest bounds
+  (units marked AUC~0.85 but surface-insufficient; root field attraction-only); L27 added then demoted 91→84
+  (order-invariant = fāṣila, G7-redundant) — recorded in GRADED_FINDINGS_LEDGER, OUT of the discovery table.
+  Did NOT invent features to pad. No duplicate ids; no broken cross-refs (27 features L01–L27 checked).
+- Demoted prior "new"→"established" for the held-up prior-cycle features (L14,L15,L18–L26): all survived a full
+  cycle with no re-validation failure. "new_this_cycle" now 0.
+- Part B (surfacing sweep): cleared the backlog. L24/L25/L26 were ledger-only (pending-surface) → routed to the
+  Signal module (the order ladder) with real per-sūra paired control-bar charts + a BIDIRECTIONAL cross-link
+  (module ⇄ ledger). Pipeline: precompute_viz4.py → viz_data.json (l24/l25/l26_controls) → render branch in
+  pages/25_Latent_Features.py AND callout in pages/15_Signal.py. Set status=surfaced, crosslinked=true.
+  L27 (grade 84) marked graded-ledger-only (not a discovery-tier surface target). Surfacing backlog now EMPTY
+  except the by-design ledger-only cards (L07/L13/L15/L20).
+- INFRA REPAIRS during the run: (a) pages/25_Latent_Features.py was truncated on disk (footer lost) — restored
+  from HEAD, now compiles. (b) gen_latent_md.py was truncated (missing its write+print) and never ran since L22+
+  were added — rewrote it defensively (.get() on optional review fields q4_validity/verdict so future additions
+  never crash the weekly run) and regenerated LATENT_FEATURES.md (22 in-table, 5 excluded).
+- Dates: last_updated 2026-06-15; next_update_due 2026-06-22. NOT pushed (user deploys via deploy_auto.bat).
+
+## 2026-06-16 20:32 · ↻ consolidation + ✓ new module (stylometry / Two-Books closure)
+- ✓ **Two-Books char→protein program CLOSED as artifact.** Built corrected pipeline (distinct أ/إ, ayah units,
+  freq-weighted complete-code Monte-Carlo, E-value, train/held-out). Depth panel: optimized code-search yields
+  "significant" alignments for English/Qur'ān/Markov/synthetic/**random** alike; fixed-code whole-Qur'ān proteome =
+  random-text proteome (~12% coverage, 0 significant). Verdict: no word→action mapping; methodological caution only.
+  Full record: research/two_books_genome/Two_Books_Correspondence_2026-06/ (CRITICAL_REVIEW_LOG, STEP_AB_FINDINGS,
+  METHOD_ROADMAP v2, scripts, AUDIT_2026-06-16).
+- ✓ **Audit correction:** genome MI-γ "long-range memory" is codon period-3 (excl. ×3 → γ=1.69, language band).
+- → **NEW genuine feature: Mathānī (oral-formulaic repetition).** Repetition localized to refrain-sūras; Qur'ān in
+  oral-epic band below Kalevala. Built pages/35_Mathani_Lab.py (+ apply_mathani_nav.py, mathani_dataset.json).
+  Recorded in graded ledger at 55 (descriptive, distinctive-not-unique). NOT pushed (user deploys).
+- Bearing: ↻ closed a long external probe honestly; ✓ one real, app-ready, comparative feature recorded.

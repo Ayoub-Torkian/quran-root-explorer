@@ -159,6 +159,28 @@ try:
             st.plotly_chart(_mini(_f, 170), width="stretch", key="sig_gran_L23")
         with _cg2:
             st.markdown("<div style='font-size:13px;color:#10181F;padding-top:18px'>Globally the order is non-random from single verses up to <b>100-verse sections</b> (z 73→8). The text is sequenced as <b>nested units</b>: words in verses, verses in passages, passages in sūras.</div>", unsafe_allow_html=True)
+    # ── The order ladder continues: L24 (sūra-sequence), L25 (information flow), L26 (closing cadence) ──
+    _ladder = [
+        ("l24_controls", "Sūra-sequence order (L24)", "The arrangement reaches the **chapter** scale: adjacent sūras share vocabulary above a length-matched shuffle and the signal survives removing the muqaṭṭaʿāt groups — bearing on the muṣḥaf order itself.", "#6A4C93"),
+        ("l25_controls", "Information flow is smoothed (L25)", "Adjacent verses carry similar information-per-word (root surprisal) — the text regulates information **flow**, a layer beyond lexical weaving. Beats the shuffle and a length-matched control; confirmed by surprisal autocorrelation.", "#2A9D8F"),
+        ("l26_controls", "Closing cadence (L26)", "Sūras **resolve**: the final verse drops to lighter, more familiar vocabulary than the interior — and it is not the rhyme word (the effect strengthens once that is removed). Chapters are framed at both ends (onset L18 + close L26).", "#E76F51"),
+    ]
+    if any(_vz.get(k) for k, *_ in _ladder):
+        st.markdown("**The order ladder — chapter scale, flow, and closing.** Three more findings on how the Qur'ān is arranged. Each bar is a per-sūra paired test vs a successive null (dashed = significance).")
+        _lc = st.columns(3)
+        for _i, (_k, _ttl, _desc, _col) in enumerate(_ladder):
+            if not _vz.get(_k):
+                continue
+            with _lc[_i]:
+                _cb = _vz[_k]
+                st.markdown("**%s**" % _ttl)
+                _f = go.Figure(go.Bar(x=_cb["labels"], y=_cb["vals"], marker=dict(color=_col, line=dict(color="rgba(0,0,0,.12)", width=1)),
+                    text=["%.1f" % v for v in _cb["vals"]], textposition="outside"))
+                _f.add_hline(y=2.0, line_dash="dash", line_color="#C1121F")
+                _f.update_xaxes(showgrid=False, tickfont=dict(size=10))
+                _f.update_yaxes(title=_cb["stat"], showgrid=True, gridcolor="#EEF1F6", range=[0, max(_cb["vals"]) * 1.25])
+                st.plotly_chart(_mini(_f, 165), width="stretch", key="sig_%s" % _k)
+                st.caption(_desc)
     # ── Per-sūra weave picker (L22, interactive) ──
     try:
         _wv = _json.load(open(_os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))),
@@ -196,7 +218,7 @@ try:
         st.markdown("**The 113 sūra seams (L16)** — <span style='color:#C1121F'>■</span> sound-marked · <span style='color:#B7C0CC'>■</span> meaning-marked")
         st.markdown("<div style='line-height:1'>%s</div>" % "".join("<span style='display:inline-block;width:8px;height:15px;margin:1px;border-radius:2px;background:%s'></span>" % ("#C1121F" if s else "#B7C0CC") for s in _vz["seams"]), unsafe_allow_html=True)
     try:
-        st.page_link("pages/25_Latent_Features.py", label="See L11–L19 · L22 in the Latent Feature Ledger", icon="🧬")
+        st.page_link("pages/25_Latent_Features.py", label="See L11–L19 · L22–L26 in the Latent Feature Ledger", icon="🧬")
     except Exception:
         pass
 except Exception:

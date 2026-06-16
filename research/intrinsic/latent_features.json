@@ -2,8 +2,8 @@
   "title": "Latent Feature Ledger — Intrinsic Qur'ān Study",
   "law": "Nothing external is admissible as evidence. Every feature is measured from the text against its own shuffle. A feature is admitted only with ≥3 converging modalities + the text's own shuffle floor + a named universe analog.",
   "cadence": "weekly",
-  "last_updated": "2026-06-10",
-  "next_update_due": "2026-06-16",
+  "last_updated": "2026-06-15",
+  "next_update_due": "2026-06-22",
   "columns": [
     "id",
     "name",
@@ -967,7 +967,7 @@
         "L18"
       ],
       "phase": "B",
-      "status": "new",
+      "status": "established",
       "added": "2026-06-09",
       "approval": "approved",
       "review": {
@@ -1127,7 +1127,7 @@
         "L20"
       ],
       "phase": "B",
-      "status": "new",
+      "status": "established",
       "added": "2026-06-09",
       "approval": "approved",
       "review": {
@@ -1360,7 +1360,7 @@
       "category": "Sūra definition",
       "substrate": "rasm",
       "value": "4 modalities AUC 0.64–0.77; precision 0.40→0.52; K=114 F 0.28→0.35",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -1451,7 +1451,7 @@
       "category": "Order / sequence",
       "substrate": "rasm",
       "value": "random>canonical>sorted in 3 modalities (positions 0.54/0.82/0.93)",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -1531,7 +1531,7 @@
       "category": "Order / sequence",
       "substrate": "rasm",
       "value": "84% of verses more predictable in place vs 47% shuffle; 3 modalities (rhyme 75/40, length 64/39, root 74/50)",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -1614,7 +1614,7 @@
       "category": "Self-reference / network",
       "substrate": "rasm",
       "value": "cross-sūra distinct twins: rhyme 59.5% vs 31%; |Δlen| 2.4 vs 9.4; root z=+6.5",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -1699,7 +1699,7 @@
       "category": "Order / sequence",
       "substrate": "rasm",
       "value": "adjacent-verse root-sharing 0.492 vs within-sūra order-shuffle 0.390 (perm p<2e-4); per-sūra paired t=11.5 (83/95 sūras); sign-test p=3.2e-14; Cohen d=1.18; decays 0.492→0.414 over gaps 1-5",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -1793,7 +1793,7 @@
       "category": "Order / sequence",
       "substrate": "rasm",
       "value": "within-sūra block-shuffle (vocabulary fixed): adjacent passages more root-similar than reshuffled passages at b=2 (lift +0.019,z=12.6),b=5(+0.013,z=8.0),b=10(+0.010,z=5.5),b=20(+0.014,z=8.4); per-sūra paired, each sūra independent. Global scan: significant b=1..100 (z 73→8).",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -1868,7 +1868,7 @@
       "category": "Order / sequence",
       "substrate": "rasm",
       "value": "adjacent sūras share roots above a length-matched sūra-order shuffle: canonical 0.206 vs 0.175±0.004 (z=8.6, 0/2000); survives excluding muqaṭṭaʿāt + length-match (0.153 vs 0.120, z=5.0); edge handoff tail→head z=6.4; raw vs plain shuffle z=13.9. · muṣḥaf vs nuzūl: 0.206 (z=8.9) vs 0.185 (z=2.8) against the same length-matched null",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -1928,8 +1928,9 @@
       "app_surface": {
         "module_key": "Signal",
         "module_note": "Signal — sūra-sequence order (top of the order ladder)",
-        "status": "pending-surface",
-        "crosslinked": false
+        "status": "surfaced",
+        "crosslinked": true,
+        "ledger_card": "control-by-control z chart (chapter-scale order) + Signal order-ladder callout"
       }
     },
     {
@@ -1945,7 +1946,7 @@
       "category": "Rhythm / wave",
       "substrate": "rasm",
       "value": "neighbour |Δ root-surprisal| 0.108 bits BELOW within-sūra shuffle (paired t=-5.3, 75/101); survives length-matched null (t=-5.2, 67/96); surprisal lag-1 autocorrelation positive (t=+6.2, 73/95).",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -1996,8 +1997,9 @@
       "app_surface": {
         "module_key": "Signal",
         "module_note": "Signal — information-flow smoothing (UID)",
-        "status": "pending-surface",
-        "crosslinked": false
+        "status": "surfaced",
+        "crosslinked": true,
+        "ledger_card": "per-sūra paired-t control chart (information-flow smoothing) + Signal callout"
       }
     },
     {
@@ -2013,7 +2015,7 @@
       "category": "Sūra definition",
       "substrate": "rasm",
       "value": "final verse root-surprisal Δ=-0.54 bits below interior (t=-4.5); a random interior verse shows nothing (t=+0.3; paired last-random t=-3.3); effect STRENGTHENS when the final rhyme word is removed (t=-5.3); last verses also run longer (t=+2.4).",
-      "status": "new",
+      "status": "established",
       "approval": "approved",
       "added": "2026-06-10",
       "in_table": true,
@@ -2064,8 +2066,9 @@
       "app_surface": {
         "module_key": "Signal",
         "module_note": "Signal — sūra closing cadence (complements L18 onset)",
-        "status": "pending-surface",
-        "crosslinked": false
+        "status": "surfaced",
+        "crosslinked": true,
+        "ledger_card": "per-sūra paired-t control chart (closing cadence) + Signal callout"
       }
     },
     {
@@ -2137,8 +2140,9 @@
       "app_surface": {
         "module_key": "Morphology",
         "module_note": "Morphology — āyah-boundary recoverability (verse ends predicted from word morphology)",
-        "status": "pending-surface",
-        "crosslinked": false
+        "status": "graded-ledger-only",
+        "crosslinked": false,
+        "note": "grade 84 (<90) — recorded in GRADED_FINDINGS_LEDGER.md, not a discovery-tier surface target"
       }
     }
   ],
@@ -2169,8 +2173,9 @@
   "gaps": "The sūra sufficiency ceiling (exact recovery ~0.36, fused L11⊕L18) is now PRINCIPLED, not instrumental: an intrinsic root-co-occurrence semantic channel (p6_semantic.py) is a real but weak signal (AUC 0.68) that does NOT improve recovery. The ~65% soft boundaries are comprehension-level discourse shifts beyond any intrinsic statistic on the rasm. Remaining frontier: a rasm-admissible morphology/syntax word-model (word-scale necessity). | MORPHOLOGY INSTRUMENT SCOPED (morph_feasibility.py): intrinsic rasm-residue yields a real wazn inventory (verbs P:ي/ت+S:ون, participles I:ا, attributes I:ي, article ال), BUT per-token root↔word alignment caps ~19-29% — research-grade morphology needs external segmentation (inadmissible). Frontier closed at rasm substrate.",
   "counts": {
     "in_table_discoveries": 22,
-    "excluded": 4,
-    "new_this_cycle": 7
+    "excluded_novelty_gate": 4,
+    "demoted_sub90": 1,
+    "new_this_cycle": 0
   },
   "approval_rule": "A newly discovered feature is logged as PENDING and is only finalized in the table after the user explicitly OKs it. Pending features are shown separately and excluded from the finalized discovery count.",
   "review_rubric": {

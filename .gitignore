@@ -96,3 +96,22 @@ HANDOFF.md
 ROADMAP.md
 _Signs_handout.docx
 research/two_books_genome/
+
+# 2026-06-16: keep stylometry source/temp out of deploy (HF rejects binaries)
+*.epub
+sequence_tests/corpus/*.raw.txt
+sequence_tests/corpus/_try.txt
+sequence_tests/corpus/ar_large_classical.txt
+
+# 2026-06-16: keep non-app binaries/scratch out of deploy (HF rejects binaries not in LFS)
+Hingham_media/
+presentations/
+_check_*.jpg
+*.HEIC
+*.heic
+*.MOV
+*.mov
+*.mp4
+*.heif
+apply_mathani_nav.py
+apply_*.py
