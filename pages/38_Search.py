@@ -40,9 +40,10 @@ def build(_cid):
             nform2roots[norm(sf)].add(r); root2forms[r].add(sf)
     roots_norm = {norm(r): r for r in corpus.index_exact}
     root_idf = {r: math.log(N / max(1, len(corpus.index_exact.get(r, [])))) for r in corpus.index_exact}
-    return refs, sname, disp, words, ntext, nwords, rootset, dict(nform2roots), dict(root2forms), roots_norm, root_idf
+    anorm = [math.sqrt(sum(root_idf.get(r, 0) ** 2 for r in rootset[i])) for i in range(N)]
+    return refs, sname, disp, words, ntext, nwords, rootset, dict(nform2roots), dict(root2forms), roots_norm, root_idf, anorm
 
-refs, sname, disp, words, ntext, nwords, rootset, nform2roots, root2forms, roots_norm, root_idf = build(id(corpus))
+refs, sname, disp, words, ntext, nwords, rootset, nform2roots, root2forms, roots_norm, root_idf, anorm = build(id(corpus))
 N = len(refs)
 
 def query_roots(toks):
@@ -52,16 +53,16 @@ def query_roots(toks):
     return R
 
 def similar_verses(Rq, exclude):
-    """Rank verses by IDF-weighted shared-root coverage with the query roots."""
+    """Rank verses by IDF-weighted COSINE of root vectors (query vs verse)."""
     if not Rq: return []
-    wq = sum(root_idf.get(r, 0) for r in Rq) or 1.0
+    qn = math.sqrt(sum(root_idf.get(r, 0) ** 2 for r in Rq)) or 1.0
     out = []
     for i in range(N):
         if i in exclude: continue
         sh = Rq & rootset[i]
         if not sh: continue
-        cov = sum(root_idf.get(r, 0) for r in sh) / wq
-        out.append((cov, i))
+        cos = sum(root_idf.get(r, 0) ** 2 for r in sh) / (qn * (anorm[i] or 1.0))
+        out.append((cos, i))
     out.sort(reverse=True)
     return out
 
@@ -78,10 +79,16 @@ def search(q):
     if len(toks) >= 2:
         exact = [i for i, t in enumerate(ntext) if nq in t]
         eset = set(exact)
-        Rq = query_roots(toks)
+        if exact:                                  # use the found verse's CURATED roots
+            Rq = set().union(*[rootset[i] for i in exact])
+        else:
+            Rq = query_roots(toks)
         sims = similar_verses(Rq, eset)
-        similar = [i for cov, i in sims if cov >= 0.45]
-        partial = [i for cov, i in sims if 0.2 <= cov < 0.45]
+        maxc = sims[0][0] if sims else 0.0
+        sim_thr = max(0.15, 0.55 * maxc)           # adaptive to each query's scale
+        par_thr = max(0.10, 0.30 * maxc)
+        similar = [i for cos, i in sims if cos >= sim_thr]
+        partial = [i for cos, i in sims if par_thr <= cos < sim_thr]
         groups = [("The verse(s)", exact), ("Similar verses", similar), ("Partially similar", partial)]
         return "phrase", Rq, set(toks), groups
     # single token
@@ -109,9 +116,10 @@ def card(i, qwords, roots):
         hit = (nw and nw in qwords) or (roots and (nform2roots.get(nw, set()) & roots))
         out.append(f"<mark style='background:#FCEFB4;border-radius:3px;padding:0 2px'>{w}</mark>" if hit else w)
     st.markdown(
-        f"<div style='border:1px solid #cfe0d9;border-radius:7px;padding:8px 14px;margin:5px 0'>"
-        f"<span style='font-size:12px;color:#10243A'><b>{refs[i][0]}:{refs[i][1]}</b> · {sname[i]}</span>"
-        f"<div dir='rtl' style='font-size:20px;color:#10243A;line-height:1.9;margin-top:3px'>{' '.join(out)}</div></div>",
+        f"<div dir='rtl' style='padding:2px 10px;border-bottom:1px solid #eef2f4;font-size:18px;"
+        f"color:#10243A;line-height:1.6'>"
+        f"<span style='font-size:12px;font-weight:700;color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</span>"
+        f"<span style='font-size:12px;color:#10243A'> · {sname[i]}</span>&nbsp; {' '.join(out)}</div>",
         unsafe_allow_html=True)
 
 hero("🔎 Search — anything, any form",
@@ -122,7 +130,7 @@ if "search_q" not in st.session_state:
 q = st.text_input("Search the Qur'ān", key="search_q",
                   placeholder="مثال: كتب · الرحمن الرحيم · 2:255 · صلاة · أو الصق آية كاملة")
 c = st.columns([1, 1, 2])
-maxn = c[0].slider("Max results per group", 5, 60, 15)
+maxn = c[0].slider("Max results per group", 10, 100, 30)
 expand = c[1].checkbox("Concept expansion", value=True, help="For a single root, surface related roots.")
 
 if not q.strip():
