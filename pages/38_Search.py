@@ -192,10 +192,10 @@ if expand and kind in ("root", "word") and roots:
     if rel:
         layer(ln, "Related concepts / co-roots (click to explore)")
         st.caption("Roots that most co-occur with your query.")
-        PC = 12
+        PC = 8
         for rs in range(0, len(rel), PC):
-            cols = st.columns(PC)
+            cols = st.columns(PC, gap="small")
             for k, (r, n) in enumerate(rel[rs:rs + PC]):
-                if cols[k].button(f"{r}·{n}", key=f"rel_{r}"):
+                if cols[k].button(f"{r}·{n}", key=f"rel_{r}", use_container_width=True):
                     st.session_state._pending_q = r
                     st.rerun()
