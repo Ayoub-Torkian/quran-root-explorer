@@ -277,10 +277,14 @@ if not q.strip():
     st.stop()
 
 kind, roots, qwords, groups = search(q, mode)
-if kind == "noref":
-    st.warning("Not a valid reference. Try: 2:255 · 2:35-82 · 1:1،112:1 · 114 (whole sura)."); st.stop()
-if kind == "noroot":
-    st.warning("No root matched that input. Try a bare triliteral root, or switch to Auto / Word."); st.stop()
+note = ""
+if kind in ("noref", "noroot"):                  # input doesn't fit the chosen mode → auto-detect instead
+    note = ("That's not a valid reference" if kind == "noref" else "No root matched that input") \
+        + " — interpreted automatically instead."
+    kind, roots, qwords, groups = search(q, "auto")
+if note:
+    st.markdown(f"<div style='font-size:12px;color:#10243A;margin:2px 0'>ℹ️ {note}</div>",
+                unsafe_allow_html=True)
 labels = {"reference": "a verse reference", "root": "a root", "word": "a word", "text": "text", "phrase": "a phrase / āyah"}
 forms_list = sorted({f for r in roots for f in root2forms[r]}) if kind in ("root", "word") else []
 total = sum(len(idx) for _, idx in groups)
