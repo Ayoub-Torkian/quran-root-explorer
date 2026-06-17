@@ -421,8 +421,6 @@ def main():
                 _oc[_i].page_link(_p, label=_lab, help=_h)
             except Exception:
                 pass
-        st.caption("Four areas — 🔭 EXPLORE (use the text · you're here) · 💡 DISCOVER (findings) · "
-                   "🧪 METHODS·LAB (rigor) · 🛠️ TOOLS")
 
     # ====== ROOT-EXPLORE section — distinct heading separating it from the orientation panel ======
     st.markdown("<div style='font-size:15px;color:#1D3557;margin:14px 0 2px'>"
