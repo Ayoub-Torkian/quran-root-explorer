@@ -112,11 +112,17 @@ def search(q):
     # single token — word / root
     t = toks[0]
     roots = resolve(t)
-    direct = [i for i, tx in enumerate(ntext) if nq in tx]
-    dset = set(direct)
-    forms = sorted({i for r in roots for i in corpus.index_exact.get(r, [])} - dset)
-    kind = "root" if t in roots_norm else ("word" if roots else "text")
-    return kind, roots, {nq}, [("Direct matches", direct), ("Other forms of the root", forms)]
+    if roots:                                    # CURATED root index — no substring pollution
+        rootay = sorted({i for r in roots for i in corpus.index_exact.get(r, [])})
+        kind = "root" if t in roots_norm else "word"
+        direct = [i for i in rootay if nq in nwords[i]]      # exact word form, WITHIN root verses
+        if direct:
+            dset = set(direct)
+            other = [i for i in rootay if i not in dset]
+            return kind, roots, {nq}, [("Verses with the exact word", direct), ("Other forms of the root", other)]
+        return kind, roots, {nq}, [("Verses with this root", rootay)]
+    direct = [i for i, tx in enumerate(ntext) if nq in tx]   # no root -> literal text match
+    return "text", set(), {nq}, [("Text matches", direct)]
 
 def related_roots(roots, topn=8):
     ay = set()
