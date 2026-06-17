@@ -8,10 +8,18 @@ import json, os
 from collections import defaultdict
 import streamlit as st
 import plotly.graph_objects as go
-from state import hero, layer, log_page
+from state import hero, layer, log_page, inject_css, render_grouped_nav
 
 st.set_page_config(page_title="Discovery Map", page_icon="🗺️", layout="wide")
 log_page("discovery_map")
+try:
+    inject_css()
+except Exception:
+    pass
+try:
+    render_grouped_nav()
+except Exception:
+    pass
 INK = "#10243A"
 DATA = os.path.join(os.path.dirname(os.path.dirname(__file__)), "research", "intrinsic", "latent_features.json")
 
