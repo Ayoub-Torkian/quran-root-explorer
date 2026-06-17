@@ -406,6 +406,22 @@ def main():
         "<div style='height:3px;background:linear-gradient(90deg,#1D3557,#1D9E75 55%%,rgba(29,158,117,0));"
         "border-radius:3px;margin:0 0 16px'></div>" % _nr,
         unsafe_allow_html=True)
+    # ====== ORIENTATION — guided entry (newcomers) ======
+    st.markdown("<div style='font-size:14px;color:#10243A;margin:2px 0 6px'><b>Start here — I want to…</b></div>", unsafe_allow_html=True)
+    _oc = st.columns(4)
+    _paths = [
+        ("pages/38_Search.py", "🔎 Search anything", "A word, phrase, root, or verse (2:255) — any spelling, with or without diacritics."),
+        ("pages/4_Ayah_Browser.py", "📖 Read & explore", "Browse and deep-dive the āyāt."),
+        ("pages/37_Discovery_Map.py", "💡 What was discovered", "The map of graded findings and how they connect."),
+        ("pages/22_Lens_Lab.py", "🧪 The rigor / claims", "18 lenses, verdicts, and reviewed claims."),
+    ]
+    for _i, (_p, _lab, _h) in enumerate(_paths):
+        try:
+            _oc[_i].page_link(_p, label=_lab, help=_h)
+        except Exception:
+            pass
+    st.caption("Four areas: 🔭 EXPLORE (use the text) · 💡 DISCOVER (findings) · 🧪 METHODS·LAB (the rigor) · 🛠️ TOOLS.")
+
     # ====== SEARCH BAR LEADS — the primary action, right under the header ======
     run_top = render_top_input_bar(corpus)
 

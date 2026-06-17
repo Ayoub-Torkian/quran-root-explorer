@@ -34,6 +34,7 @@ NORMALIZE_VERSION = "v4-full-unicode-fold-2026-05"
 NAV_SECTIONS = [
     (None, [(None, [("app.py", "Home", "🏠")])]),
     ("🔭 EXPLORE", [
+        (None, [("pages/38_Search.py", "Search", "🔎")]),
         ("Read", [
             ("pages/4_Ayah_Browser.py", "Ayah Browser", "📖"),
             ("pages/20_Ayah_Deep_Dive.py", "Āyah Deep-Dive", "🔭"),
