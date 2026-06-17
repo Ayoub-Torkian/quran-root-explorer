@@ -137,7 +137,8 @@ def verse_html(i, qwords, formset):
     out = []
     for w in words[i][:50]:                      # cap at first 50 words
         nw = norm(w)
-        hit = (nw and nw in qwords) or (formset and any(f in nw and len(nw) - len(f) <= 4 for f in formset))
+        hit = (nw and nw in qwords) or (formset and any(
+            (nw.startswith(f) or nw.endswith(f)) and len(nw) - len(f) <= 4 for f in formset))
         out.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
     return (f"<div style='direction:rtl;text-align:right;padding:1px 8px;border-bottom:1px solid #eef2f4;"
             f"font-size:13px;color:#10243A;line-height:1.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
