@@ -177,6 +177,23 @@ st.markdown(
     + f". &nbsp; " + " · ".join(f"{lab}: <b>{len(idx)}</b>" for lab, idx in groups if idx) + ".</div>",
     unsafe_allow_html=True)
 
+if kind in ("root", "word") and roots:
+    fcount = Counter()
+    for r in roots:
+        for i in corpus.index_exact.get(r, []):
+            for rt, sf in zip(corpus.root_tokens[i], corpus.surface_tokens[i]):
+                if rt == r:
+                    fcount[sf] += 1
+    if fcount:
+        chips = " &nbsp; ".join(
+            f"<span style='background:#eef4f1;border-radius:5px;padding:1px 7px;white-space:nowrap'>"
+            f"<b>{f.replace(chr(1740),chr(1610)).replace(chr(1705),chr(1603))}</b> "
+            f"<span style='color:#0F6E56'>{n}</span></span>" for f, n in fcount.most_common())
+        st.markdown(
+            f"<div style='font-size:13px;color:#10243A;margin:2px 0 8px;line-height:2'>"
+            f"<b>Forms breakdown</b> ({len(fcount)} forms · {sum(fcount.values())} occurrences): &nbsp; {chips}</div>",
+            unsafe_allow_html=True)
+
 formset = ({norm(f) for r in roots for f in root2forms[r] if len(norm(f)) >= 3}
            if kind in ("root", "word") else set())
 ln = 1
