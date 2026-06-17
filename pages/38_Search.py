@@ -205,11 +205,13 @@ def hl_idx(i, target):
             di = j + 1
     return res
 
-def verse_html(i, target, qwords):
+def verse_html(i, target, qwords, substr=False):
     hl = hl_idx(i, target)
     out = []
     for k, w in enumerate(words[i][:50]):        # cap at first 50 words
-        hit = (k in hl) or (qwords and norm(w) in qwords)   # root-aligned OR exact-word match
+        nw = norm(w)
+        qhit = any(qw in nw for qw in qwords) if substr else (nw in qwords)  # substr for text search
+        hit = (k in hl) or (qwords and qhit)     # root-aligned OR word/substring match
         out.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
     return (f"<div style='direction:rtl;text-align:right;padding:1px 8px;border-bottom:1px solid #eef2f4;"
             f"font-size:13px;color:#10243A;line-height:1.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
@@ -317,7 +319,7 @@ for lab, idx in groups:
     if not idx: continue
     layer(ln, f"{lab} ({len(idx)})"); ln += 1
     shown = idx[:300]
-    cells = "".join(verse_html(i, roots, qwords) for i in shown)
+    cells = "".join(verse_html(i, roots, qwords, kind == "text") for i in shown)
     grid = f"<div style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px;direction:rtl'>{cells}</div>"
     if len(shown) > 30:                          # scrollable box for large groups
         grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
