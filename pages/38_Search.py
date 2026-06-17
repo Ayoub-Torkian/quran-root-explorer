@@ -111,15 +111,15 @@ def related_roots(roots, topn=8):
 
 def card(i, qwords, roots):
     out = []
-    for w in words[i]:
+    for w in words[i][:50]:                      # cap at first 50 words
         nw = norm(w)
         hit = (nw and nw in qwords) or (roots and (nform2roots.get(nw, set()) & roots))
-        out.append(f"<mark style='background:#FCEFB4;border-radius:3px;padding:0 2px'>{w}</mark>" if hit else w)
+        out.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
     st.markdown(
-        f"<div dir='rtl' style='padding:2px 10px;border-bottom:1px solid #eef2f4;font-size:18px;"
-        f"color:#10243A;line-height:1.6'>"
-        f"<span style='font-size:12px;font-weight:700;color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</span>"
-        f"<span style='font-size:12px;color:#10243A'> · {sname[i]}</span>&nbsp; {' '.join(out)}</div>",
+        f"<div dir='rtl' style='padding:1px 8px;border-bottom:1px solid #eef2f4;font-size:13px;"
+        f"color:#10243A;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
+        f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</b> "
+        f"<span style='color:#10243A'>{sname[i]}</span> &nbsp;{' '.join(out)}</div>",
         unsafe_allow_html=True)
 
 hero("🔎 Search — anything, any form",
