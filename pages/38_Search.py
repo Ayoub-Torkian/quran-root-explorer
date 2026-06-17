@@ -133,18 +133,16 @@ def related_roots(roots, topn=8):
             if r not in roots: cnt[r] += 1
     return cnt.most_common(topn)
 
-def card(i, qwords, formset):
+def verse_html(i, qwords, formset):
     out = []
     for w in words[i][:50]:                      # cap at first 50 words
         nw = norm(w)
         hit = (nw and nw in qwords) or (formset and any(f in nw and len(nw) - len(f) <= 4 for f in formset))
         out.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
-    st.markdown(
-        f"<div dir='rtl' style='padding:1px 8px;border-bottom:1px solid #eef2f4;font-size:13px;"
-        f"color:#10243A;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
-        f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</b> "
-        f"<span style='color:#10243A'>{sname[i]}</span> &nbsp;{' '.join(out)}</div>",
-        unsafe_allow_html=True)
+    return (f"<div dir='rtl' style='padding:1px 8px;border-bottom:1px solid #eef2f4;font-size:13px;"
+            f"color:#10243A;line-height:1.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
+            f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</b> "
+            f"<span style='color:#10243A'>{sname[i]}</span> &nbsp;{' '.join(out)}</div>")
 
 hero("🔎 Search — anything, any form",
      "A root · a word · a phrase · an āyah · a reference (2:255). Paste a verse to find it AND similar ones.")
@@ -155,9 +153,7 @@ if st.session_state.get("_pending_q"):
     st.session_state.search_q = st.session_state.pop("_pending_q")
 q = st.text_input("Search the Qur'ān", key="search_q",
                   placeholder="مثال: كتب · الرحمن الرحيم · 2:255 · صلاة · أو الصق آية كاملة")
-c = st.columns([1, 1, 2])
-maxn = c[0].slider("Max results per group", 10, 100, 30)
-expand = c[1].checkbox("Concept expansion", value=True, help="For a single root, surface related roots.")
+expand = st.checkbox("Concept expansion", value=True, help="For a single root/word, surface related roots (co-roots).")
 
 if not q.strip():
     st.info("Type or paste anything. A single root expands to all its forms; a word resolves to its root; "
@@ -182,8 +178,13 @@ ln = 1
 for lab, idx in groups:
     if not idx: continue
     layer(ln, f"{lab} ({len(idx)})"); ln += 1
-    for i in idx[:maxn]:
-        card(i, qwords, formset)
+    shown = idx[:300]
+    cells = "".join(verse_html(i, qwords, formset) for i in shown)
+    grid = f"<div style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px'>{cells}</div>"
+    if len(shown) > 30:                          # scrollable box for large groups
+        grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
+                f"border-radius:6px;padding:2px 4px'>{grid}</div>")
+    st.markdown(grid, unsafe_allow_html=True)
 if total == 0:
     st.warning("No matches. Try the bare root, fewer words, or a reference like 2:255.")
 
