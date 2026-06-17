@@ -139,8 +139,8 @@ def verse_html(i, qwords, formset):
         nw = norm(w)
         hit = (nw and nw in qwords) or (formset and any(f in nw and len(nw) - len(f) <= 4 for f in formset))
         out.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
-    return (f"<div dir='rtl' style='padding:1px 8px;border-bottom:1px solid #eef2f4;font-size:13px;"
-            f"color:#10243A;line-height:1.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
+    return (f"<div style='direction:rtl;text-align:right;padding:1px 8px;border-bottom:1px solid #eef2f4;"
+            f"font-size:13px;color:#10243A;line-height:1.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
             f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</b> "
             f"<span style='color:#10243A'>{sname[i]}</span> &nbsp;{' '.join(out)}</div>")
 
@@ -154,6 +154,10 @@ if st.session_state.get("_pending_q"):
 q = st.text_input("Search the Qur'ān", key="search_q",
                   placeholder="مثال: كتب · الرحمن الرحيم · 2:255 · صلاة · أو الصق آية كاملة")
 expand = st.checkbox("Concept expansion", value=True, help="For a single root/word, surface related roots (co-roots).")
+st.markdown(
+    "<style>.stButton button{padding:0 6px !important;min-height:0 !important;height:1.8em !important;"
+    "font-size:12px !important;line-height:1.6 !important;border-radius:5px !important;}</style>",
+    unsafe_allow_html=True)
 
 if not q.strip():
     st.info("Type or paste anything. A single root expands to all its forms; a word resolves to its root; "
@@ -180,7 +184,7 @@ for lab, idx in groups:
     layer(ln, f"{lab} ({len(idx)})"); ln += 1
     shown = idx[:300]
     cells = "".join(verse_html(i, qwords, formset) for i in shown)
-    grid = f"<div style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px'>{cells}</div>"
+    grid = f"<div style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px;direction:rtl'>{cells}</div>"
     if len(shown) > 30:                          # scrollable box for large groups
         grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
                 f"border-radius:6px;padding:2px 4px'>{grid}</div>")
@@ -189,11 +193,11 @@ if total == 0:
     st.warning("No matches. Try the bare root, fewer words, or a reference like 2:255.")
 
 if expand and kind in ("root", "word") and roots:
-    rel = related_roots(roots, 24)
+    rel = related_roots(roots, 30)
     if rel:
         layer(ln, "Related concepts / co-roots (click to explore)")
         st.caption("Roots that most co-occur with your query.")
-        PC = 8
+        PC = 12
         for rs in range(0, len(rel), PC):
             cols = st.columns(PC, gap="small")
             for k, (r, n) in enumerate(rel[rs:rs + PC]):
