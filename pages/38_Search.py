@@ -83,17 +83,63 @@ def similar_verses(Rq, exclude):
     out.sort(reverse=True)
     return out
 
-def search(q):
+_DIG = str.maketrans("٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹",
+                     "01234567890123456789")
+REFPOS = {(ss, aa): i for i, (ss, aa) in enumerate(refs)}
+
+def parse_refs(q):
+    """Parse a verse reference / list / range into ordered verse indices, or None.
+    Accepts ASCII + Arabic/Persian digits and these forms (comma/؛-separated, mixable):
+      2:255 · 2:35-82 (range) · 2:285-2:286 (cross-sura) · 2 (whole sura)."""
+    t = q.translate(_DIG).strip()
+    if not re.search(r"\d", t) or not re.fullmatch(r"[\d\s:،,؛;\-–—]+", t):
+        return None
+    out, ok = [], False
+    for part in re.split(r"[،,؛;]+", t):
+        part = part.strip()
+        if not part: continue
+        m = re.fullmatch(r"(\d{1,3})\s*:\s*(\d{1,3})\s*[-–—]\s*(\d{1,3})\s*:\s*(\d{1,3})", part)
+        if m:                                              # S1:A1 - S2:A2  (cross-sura span)
+            i1, i2 = REFPOS.get((int(m[1]), int(m[2]))), REFPOS.get((int(m[3]), int(m[4])))
+            if i1 is not None and i2 is not None:
+                lo, hi = sorted((i1, i2)); out += list(range(lo, hi + 1)); ok = True
+            continue
+        m = re.fullmatch(r"(\d{1,3})\s*:\s*(\d{1,3})\s*[-–—]\s*(\d{1,3})", part)
+        if m:                                              # S:A1 - A2  (range within sura)
+            ssv, a1, a2 = int(m[1]), int(m[2]), int(m[3])
+            if a2 < a1: a1, a2 = a2, a1
+            out += [REFPOS[(ssv, a)] for a in range(a1, a2 + 1) if (ssv, a) in REFPOS]; ok = True
+            continue
+        m = re.fullmatch(r"(\d{1,3})\s*:\s*(\d{1,3})", part)
+        if m:                                              # S:A
+            key = (int(m[1]), int(m[2]))
+            if key in REFPOS: out.append(REFPOS[key]); ok = True
+            continue
+        m = re.fullmatch(r"(\d{1,3})", part)
+        if m:                                              # bare sura -> whole sura
+            ssv = int(m[1]); whole = [i for i, (x, _a) in enumerate(refs) if x == ssv]
+            if whole: out += whole; ok = True
+            continue
+        return None                                        # any unrecognised piece -> not a reference
+    if not ok: return None
+    seen = set(); res = []
+    for i in out:
+        if i not in seen: seen.add(i); res.append(i)
+    return res
+
+def search(q, mode="auto"):
     q = q.strip()
-    m = re.match(r'^\s*(\d{1,3})\s*[:\-،]\s*(\d{1,3})\s*$', q)
-    if m:
-        s, a = int(m.group(1)), int(m.group(2))
-        idx = [i for i, (ss, aa) in enumerate(refs) if ss == s and aa == a]
-        return "reference", set(), set(), [("The verse", idx)]
+    if mode in ("auto", "reference"):
+        ref = parse_refs(q)
+        if ref is not None:
+            label = "The verse" if len(ref) == 1 else f"The verses ({len(ref)})"
+            return "reference", set(), set(), [(label, ref)]
+        if mode == "reference":
+            return "noref", set(), set(), []
     nq = norm(q); toks = [t for t in nq.split() if t]
     if not toks:
         return "empty", set(), set(), []
-    if len(toks) >= 2:
+    if mode == "phrase" or (mode == "auto" and len(toks) >= 2):
         exact = [i for i, t in enumerate(ntext) if nq in t]
         eset = set(exact)
         hroots = query_roots(toks)                 # the PHRASE's own roots — for highlighting only (small)
@@ -114,13 +160,15 @@ def search(q):
     roots = resolve(t)
     if roots:                                    # CURATED root index — no substring pollution
         rootay = sorted({i for r in roots for i in corpus.index_exact.get(r, [])})
-        kind = "root" if t in roots_norm else "word"
+        kind = mode if mode in ("root", "word") else ("root" if t in roots_norm else "word")
         direct = [i for i in rootay if nq in nwords[i]]      # exact word form, WITHIN root verses
         if direct:
             dset = set(direct)
             other = [i for i in rootay if i not in dset]
             return kind, roots, {nq}, [("Verses with the exact word", direct), ("Other forms of the root", other)]
         return kind, roots, {nq}, [("Verses with this root", rootay)]
+    if mode == "root":
+        return "noroot", set(), set(), []
     direct = [i for i, tx in enumerate(ntext) if nq in tx]   # no root -> literal text match
     return "text", set(), {nq}, [("Text matches", direct)]
 
@@ -169,27 +217,62 @@ def verse_html(i, target, qwords):
             f"<span style='color:#10243A'>{sname[i]}</span> &nbsp;{' '.join(out)}</div>")
 
 hero("🔎 Search — anything, any form",
-     "A root · a word · a phrase · an āyah · a reference (2:255). Paste a verse to find it AND similar ones.")
+     "A root · a word · a phrase · an āyah · a reference or range (2:255 · 2:35-82 · 1:1،112:1). Paste a verse to find it AND similar ones.")
 
-if "search_q" not in st.session_state:
-    st.session_state.search_q = ""
-if st.session_state.get("_pending_q"):
-    st.session_state.search_q = st.session_state.pop("_pending_q")
-q = st.text_input("Search the Qur'ān", key="search_q",
-                  placeholder="مثال: كتب · الرحمن الرحيم · 2:255 · صلاة · أو الصق آية كاملة")
-expand = st.checkbox("Concept expansion", value=True, help="For a single root/word, surface related roots (co-roots).")
+MODES = [("✨ Auto", "auto"), ("🌱 Root", "root"), ("🔤 Word", "word"),
+         ("📜 Phrase / āyah", "phrase"), ("🔢 Reference / range", "reference")]
+_M = {l: v for l, v in MODES}
+EX = {"auto": ["كتب", "الرحمن الرحيم", "2:255", "صلاة"],
+      "root": ["حمد", "علم", "كتب", "صور"],
+      "word": ["محمد", "الصواعق", "نساء"],
+      "phrase": ["الرحمن الرحيم", "إياك نعبد وإياك نستعين"],
+      "reference": ["2:255", "2:35-82", "1:1،112:1", "114"]}
+HELP = {"auto": "Type anything — the type is detected automatically.",
+        "root": "A triliteral root → all its surface forms across the Qur'ān.",
+        "word": "A word → its root, split into exact-word and other-form verses.",
+        "phrase": "Paste a phrase or whole āyah → the verse plus similar & partial.",
+        "reference": "A verse, range (2:35-82), list (1:1،112:1) or whole sura (114)."}
+PH = {"auto": "كتب · الرحمن الرحيم · 2:255 · صلاة",
+      "root": "مثال: حمد", "word": "مثال: محمد",
+      "phrase": "الصق آية أو عبارة", "reference": "2:255 · 2:35-82 · 114"}
+
 st.markdown(
-    "<style>.stButton button{padding:0 6px !important;min-height:0 !important;height:1.8em !important;"
-    "font-size:12px !important;line-height:1.6 !important;border-radius:5px !important;}</style>",
+    "<style>div[role=radiogroup]{gap:2px 16px !important} "
+    "div[role=radiogroup] label{margin:0 !important} "
+    ".stButton button{padding:0 8px !important;min-height:0 !important;height:1.75em !important;"
+    "font-size:12px !important;line-height:1.55 !important;border-radius:5px !important;}</style>",
     unsafe_allow_html=True)
 
+if "search_q" not in st.session_state: st.session_state.search_q = ""
+if "search_mode" not in st.session_state: st.session_state.search_mode = MODES[0][0]
+if st.session_state.get("_pending_mode"):
+    st.session_state.search_mode = st.session_state.pop("_pending_mode")
+if st.session_state.get("_pending_q") is not None:
+    st.session_state.search_q = st.session_state.pop("_pending_q")
+
+sel = st.radio("type", [l for l, _ in MODES], horizontal=True,
+               key="search_mode", label_visibility="collapsed")
+mode = _M[sel]
+q = st.text_input(HELP[mode], key="search_q", placeholder=PH[mode])
+
+ex = EX[mode]
+ratios = [max(1.0, len(e) * 0.17) for e in ex]      # width ∝ chip text length (no wrap, no slack)
+cols = st.columns(ratios + [max(0.3, 9.0 - sum(ratios))], gap="small")
+for k, e in enumerate(ex):
+    if cols[k].button(e, key=f"ex_{mode}_{k}", use_container_width=True):
+        st.session_state._pending_q = e
+        st.rerun()
+expand = st.checkbox("Concept expansion", value=True,
+                     help="For a single root/word, surface related roots (co-roots).") if mode in ("auto", "root", "word") else False
+
 if not q.strip():
-    st.info("Type or paste anything. A single root expands to all its forms; a word resolves to its root; "
-            "a pasted āyah finds the verse PLUS similar and partially-similar verses; diacritics and "
-            "Qur'anic marks are ignored.")
     st.stop()
 
-kind, roots, qwords, groups = search(q)
+kind, roots, qwords, groups = search(q, mode)
+if kind == "noref":
+    st.warning("Not a valid reference. Try: 2:255 · 2:35-82 · 1:1،112:1 · 114 (whole sura)."); st.stop()
+if kind == "noroot":
+    st.warning("No root matched that input. Try a bare triliteral root, or switch to Auto / Word."); st.stop()
 labels = {"reference": "a verse reference", "root": "a root", "word": "a word", "text": "text", "phrase": "a phrase / āyah"}
 forms_list = sorted({f for r in roots for f in root2forms[r]}) if kind in ("root", "word") else []
 total = sum(len(idx) for _, idx in groups)
