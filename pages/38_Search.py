@@ -46,10 +46,27 @@ def build(_cid):
 refs, sname, disp, words, ntext, nwords, rootset, nform2roots, root2forms, roots_norm, root_idf, anorm = build(id(corpus))
 N = len(refs)
 
+_PREF = sorted(["وبال", "فبال", "وكال", "فكال", "وال", "فال", "بال", "كال", "فلل", "ولل", "لل", "ال",
+                "و", "ف", "ب", "ك", "ل", "س"], key=len, reverse=True)
+
+def resolve(w):
+    """Word -> root(s): try the form directly, else strip Arabic proclitics (ال، و، ف، ب، ك، ل ...)."""
+    R = set()
+    if w in roots_norm: R.add(roots_norm[w])
+    if w in nform2roots: R |= nform2roots[w]
+    if R: return R
+    for pre in _PREF:
+        if w.startswith(pre) and len(w) - len(pre) >= 2:
+            stem = w[len(pre):]
+            if stem in nform2roots: R |= nform2roots[stem]
+            if stem in roots_norm: R.add(roots_norm[stem])
+            if R: return R
+    return R
+
 def query_roots(toks):
     R = set()
     for t in toks:
-        R |= nform2roots.get(t, set())
+        R |= resolve(t)
     return R
 
 def similar_verses(Rq, exclude):
@@ -79,26 +96,27 @@ def search(q):
     if len(toks) >= 2:
         exact = [i for i, t in enumerate(ntext) if nq in t]
         eset = set(exact)
-        if exact:                                  # use the found verse's CURATED roots
+        hroots = query_roots(toks)                 # the PHRASE's own roots — for highlighting only (small)
+        if 1 <= len(exact) <= 3:                    # one specific verse -> its curated roots drive similarity
             Rq = set().union(*[rootset[i] for i in exact])
-        else:
-            Rq = query_roots(toks)
+        else:                                       # common phrase / no exact -> phrase's own roots
+            Rq = hroots
         sims = similar_verses(Rq, eset)
         maxc = sims[0][0] if sims else 0.0
-        sim_thr = max(0.15, 0.55 * maxc)           # adaptive to each query's scale
+        sim_thr = max(0.15, 0.55 * maxc)
         par_thr = max(0.10, 0.30 * maxc)
         similar = [i for cos, i in sims if cos >= sim_thr]
         partial = [i for cos, i in sims if par_thr <= cos < sim_thr]
         groups = [("The verse(s)", exact), ("Similar verses", similar), ("Partially similar", partial)]
-        return "phrase", Rq, set(toks), groups
-    # single token
-    t = toks[0]; roots = set()
-    if t in roots_norm: roots.add(roots_norm[t])
-    elif t in nform2roots: roots |= nform2roots[t]
+        return "phrase", hroots, set(toks), groups   # highlight by phrase words + phrase roots only
+    # single token — word / root
+    t = toks[0]
+    roots = resolve(t)
     direct = [i for i, tx in enumerate(ntext) if nq in tx]
     dset = set(direct)
     forms = sorted({i for r in roots for i in corpus.index_exact.get(r, [])} - dset)
-    return ("root" if roots else "text"), roots, {nq}, [("Direct matches", direct), ("Other forms of the root", forms)]
+    kind = "root" if t in roots_norm else ("word" if roots else "text")
+    return kind, roots, {nq}, [("Direct matches", direct), ("Other forms of the root", forms)]
 
 def related_roots(roots, topn=8):
     ay = set()
@@ -140,14 +158,13 @@ if not q.strip():
     st.stop()
 
 kind, roots, qwords, groups = search(q)
-labels = {"reference": "a verse reference", "root": "a root", "text": "a word", "phrase": "a phrase / āyah"}
-forms_list = sorted({f for r in roots for f in root2forms[r]}) if kind in ("root", "text") else []
+labels = {"reference": "a verse reference", "root": "a root", "word": "a word", "text": "text", "phrase": "a phrase / āyah"}
+forms_list = sorted({f for r in roots for f in root2forms[r]}) if kind in ("root", "word") else []
 total = sum(len(idx) for _, idx in groups)
 st.markdown(
     f"<div style='background:#F1F6F4;border-left:4px solid #0F6E56;border-radius:6px;padding:10px 14px;"
     f"font-size:14px;color:#10243A;margin:8px 0'>Interpreted as <b>{labels.get(kind, kind)}</b>"
     + (f" → root <b>{' · '.join(sorted(roots))}</b>; appears as: <b>{'، '.join(forms_list[:12])}</b>" if forms_list else "")
-    + (f" → {len(roots)} content roots" if kind == "phrase" else "")
     + f". &nbsp; " + " · ".join(f"{lab}: <b>{len(idx)}</b>" for lab, idx in groups if idx) + ".</div>",
     unsafe_allow_html=True)
 
@@ -160,7 +177,7 @@ for lab, idx in groups:
 if total == 0:
     st.warning("No matches. Try the bare root, fewer words, or a reference like 2:255.")
 
-if expand and kind == "root" and roots:
+if expand and kind in ("root", "word") and roots:
     rel = related_roots(roots)
     if rel:
         layer(ln, "Related concepts (smart expansion)")
