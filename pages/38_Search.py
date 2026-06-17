@@ -133,12 +133,35 @@ def related_roots(roots, topn=8):
             if r not in roots: cnt[r] += 1
     return cnt.most_common(topn)
 
-def verse_html(i, qwords, formset):
+def _dedup(t):
+    o = []
+    for ch in t:
+        if not o or o[-1] != ch: o.append(ch)
+    return "".join(o)
+
+def hl_idx(i, target):
+    """Indices of display words whose CORPUS root is in `target`. Forward-only two-pointer
+    aligning each content lemma (root_tokens↔surface_tokens) to a display word; tolerant of
+    proclitics, pronoun enclitics and gemination. Precise: disambiguates homographs that merely
+    share letters (e.g. نَنسَخْ root نسخ is NOT highlighted for a نسى search)."""
+    if not target: return set()
+    content = [(_dedup(norm(sf)), r) for r, sf in zip(corpus.root_tokens[i], corpus.surface_tokens[i])
+               if len(norm(sf)) >= 2]
+    dn = [_dedup(norm(w)) for w in words[i]]
+    res = set(); di = 0
+    for cm, r in content:
+        j = di
+        while j < len(dn) and cm not in dn[j]: j += 1
+        if j < len(dn):
+            if r in target: res.add(j)
+            di = j + 1
+    return res
+
+def verse_html(i, target, qwords):
+    hl = hl_idx(i, target)
     out = []
-    for w in words[i][:50]:                      # cap at first 50 words
-        nw = norm(w)
-        hit = (nw and nw in qwords) or (formset and any(
-            (nw.startswith(f) or nw.endswith(f)) and len(nw) - len(f) <= 4 for f in formset))
+    for k, w in enumerate(words[i][:50]):        # cap at first 50 words
+        hit = (k in hl) or (qwords and norm(w) in qwords)   # root-aligned OR exact-word match
         out.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
     return (f"<div style='direction:rtl;text-align:right;padding:1px 8px;border-bottom:1px solid #eef2f4;"
             f"font-size:13px;color:#10243A;line-height:1.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
@@ -194,14 +217,12 @@ if kind in ("root", "word") and roots:
             f"<b>Forms breakdown</b> ({len(fcount)} forms · {sum(fcount.values())} occurrences): &nbsp; {chips}</div>",
             unsafe_allow_html=True)
 
-formset = ({norm(f) for r in roots for f in root2forms[r] if len(norm(f)) >= 3}
-           if kind in ("root", "word") else set())
 ln = 1
 for lab, idx in groups:
     if not idx: continue
     layer(ln, f"{lab} ({len(idx)})"); ln += 1
     shown = idx[:300]
-    cells = "".join(verse_html(i, qwords, formset) for i in shown)
+    cells = "".join(verse_html(i, roots, qwords) for i in shown)
     grid = f"<div style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px;direction:rtl'>{cells}</div>"
     if len(shown) > 30:                          # scrollable box for large groups
         grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
