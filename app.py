@@ -406,23 +406,27 @@ def main():
         "<div style='height:3px;background:linear-gradient(90deg,#1D3557,#1D9E75 55%%,rgba(29,158,117,0));"
         "border-radius:3px;margin:0 0 16px'></div>" % _nr,
         unsafe_allow_html=True)
-    # ====== ORIENTATION — guided entry (newcomers) ======
-    st.markdown("<div style='font-size:14px;color:#10243A;margin:2px 0 6px'><b>Start here — I want to…</b></div>", unsafe_allow_html=True)
-    _oc = st.columns(4)
-    _paths = [
-        ("pages/38_Search.py", "🔎 Search anything", "A word, phrase, root, or verse (2:255) — any spelling, with or without diacritics."),
-        ("pages/4_Ayah_Browser.py", "📖 Read & explore", "Browse and deep-dive the āyāt."),
-        ("pages/37_Discovery_Map.py", "💡 What was discovered", "The map of graded findings and how they connect."),
-        ("pages/22_Lens_Lab.py", "🧪 The rigor / claims", "18 lenses, verdicts, and reviewed claims."),
-    ]
-    for _i, (_p, _lab, _h) in enumerate(_paths):
-        try:
-            _oc[_i].page_link(_p, label=_lab, help=_h)
-        except Exception:
-            pass
-    st.caption("Four areas: 🔭 EXPLORE (use the text) · 💡 DISCOVER (findings) · 🧪 METHODS·LAB (the rigor) · 🛠️ TOOLS.")
+    # ====== ORIENTATION — distinct bordered panel (redundant "Read & explore" removed) ======
+    with st.container(border=True):
+        st.markdown("<div style='font-size:14px;color:#10243A;margin:0 0 4px'>"
+                    "<b>🧭 New here? Start with what you want to do</b></div>", unsafe_allow_html=True)
+        _oc = st.columns(3)
+        _paths = [
+            ("pages/38_Search.py", "🔎 Search anything", "A word, phrase, root, or verse (2:255) — any spelling, diacritics optional."),
+            ("pages/37_Discovery_Map.py", "💡 See what was discovered", "The map of graded findings and how they connect."),
+            ("pages/22_Lens_Lab.py", "🧪 Check the rigor / claims", "18 lenses, verdicts, and reviewed claims."),
+        ]
+        for _i, (_p, _lab, _h) in enumerate(_paths):
+            try:
+                _oc[_i].page_link(_p, label=_lab, help=_h)
+            except Exception:
+                pass
+        st.caption("Four areas — 🔭 EXPLORE (use the text · you're here) · 💡 DISCOVER (findings) · "
+                   "🧪 METHODS·LAB (rigor) · 🛠️ TOOLS")
 
-    # ====== SEARCH BAR LEADS — the primary action, right under the header ======
+    # ====== ROOT-EXPLORE section — distinct heading separating it from the orientation panel ======
+    st.markdown("<div style='font-size:15px;color:#1D3557;margin:14px 0 2px'>"
+                "<b>🌱 Explore the text — type or tap a root</b></div>", unsafe_allow_html=True)
     run_top = render_top_input_bar(corpus)
 
     # About / help tucked BELOW the action so it never pushes empty space up top.
