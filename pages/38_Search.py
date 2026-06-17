@@ -145,6 +145,8 @@ hero("🔎 Search — anything, any form",
 
 if "search_q" not in st.session_state:
     st.session_state.search_q = ""
+if st.session_state.get("_pending_q"):
+    st.session_state.search_q = st.session_state.pop("_pending_q")
 q = st.text_input("Search the Qur'ān", key="search_q",
                   placeholder="مثال: كتب · الرحمن الرحيم · 2:255 · صلاة · أو الصق آية كاملة")
 c = st.columns([1, 1, 2])
@@ -189,5 +191,5 @@ if expand and kind in ("root", "word") and roots:
             cols = st.columns(PC)
             for k, (r, n) in enumerate(rel[rs:rs + PC]):
                 if cols[k].button(f"{r}·{n}", key=f"rel_{r}"):
-                    st.session_state.search_q = r
+                    st.session_state._pending_q = r
                     st.rerun()
