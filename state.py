@@ -33,65 +33,56 @@ NORMALIZE_VERSION = "v4-full-unicode-fold-2026-05"
 # now sits under the question it answers (UI_REORG_NOTES: consolidate by QUESTION).
 NAV_SECTIONS = [
     (None, [(None, [("app.py", "Home", "🏠")])]),
-    ("📜 DISCOVERIES", [
-        (None, [("pages/25_Latent_Features.py", "Determinacy", "🧬"),
-                ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
-    ]),
-    ("🔎 CLOSE-UP", [
-        (None, [("pages/27_Closeup_Index.py", "Map · start here", "🗺️")]),
-        ("Units & arrangement", [
-            ("pages/28_Closeup_Ayah.py", "The Āyah", "📐"),
-            ("pages/30_Closeup_Sura.py", "The Sūra", "📜"),
-            ("pages/29_Closeup_InterSura.py", "Inter-Sūra", "⚠️"),
-            ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️"),
-            ("pages/35_Mathani_Lab.py", "Mathānī · refrains", "🔁")]),
-        ("Claims reviewed", [
-            ("pages/31_Closeup_Code19.py", "Code 19", "🔢"),
-            ("pages/33_Closeup_Adadi.py", "Word-count miracle", "🧮"),
-            ("pages/32_Closeup_Nuzul.py", "Revelation order", "🕰️")]),
-    ]),
-    ("📖 READER", [
-        (None, [
+    ("🔭 EXPLORE", [
+        ("Read", [
             ("pages/4_Ayah_Browser.py", "Ayah Browser", "📖"),
-            ("pages/20_Ayah_Deep_Dive.py", "Āyah Deep-Dive (hero)", "🔭"),
+            ("pages/20_Ayah_Deep_Dive.py", "Āyah Deep-Dive", "🔭"),
             ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive", "🔬"),
         ]),
-    ]),
-    ("🧪 LENS LAB", [
-        (None, [
-            ("pages/22_Lens_Lab.py", "18 Lenses · Verdicts", "🧪"),
-            ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
-            ("pages/24_Two_Books_Genome.py", "Two Books · Genome", "🧬"),
-        ]),
-    ]),
-    ("🧭 POSITION · scale", [
-        (None, [
-            ("pages/14_Disjoint_Letters.py", "Disjoint Letters", "🔠"),
-            ("pages/18_Spatial_Patterns.py", "Spatial Patterns", "🗺️"),
-            ("pages/17_Two_Books_Summary.py", "FDR Summary", "📋"),
-        ]),
-    ]),
-    ("🔤 SEQUENCE · scale", [
-        (None, [
-            ("pages/15_Signal.py", "Signal", "📡"),
-            ("pages/6_Morphology.py", "Morphology", "🧬"),
-        ]),
-    ]),
-    ("🧩 SEMANTIC · scale", [
         ("Roots & relations", [
             ("pages/1_Per_Root_Profile.py", "Per-Root Profile", "🔍"),
             ("pages/2_Network.py", "Network", "🌐"),
             ("pages/3_Motifs.py", "Motifs", "🔺"),
             ("pages/5_Compare_Heatmaps.py", "Compare & Heatmaps", "📊"),
-        ]),
-        ("Topics & themes", [
             ("pages/9_Topic_Modeling.py", "Topic Modeling", "🧩"),
-            ("pages/16_Biology.py", "Biology", "🧬"),
+            (["pages/8_Calibration.py", "pages/8e_Calibration.py"], "Calibration", "🎚️"),
         ]),
-        ("Interpret", [
+        ("Morphology & interpret", [
+            ("pages/6_Morphology.py", "Morphology", "🧬"),
             (["pages/11_Interpret.py", "pages/8a_Interpret.py"], "Interpret", "🧠"),
             (["pages/10_Practical_Lens.py", "pages/8f_Practical_Lens.py"], "Practical Lens", "🔭"),
-            (["pages/8_Calibration.py", "pages/8e_Calibration.py"], "Calibration", "🎚️"),
+        ]),
+    ]),
+    ("💡 DISCOVER", [
+        (None, [("pages/37_Discovery_Map.py", "Discovery Map · start here", "🗺️"),
+                ("pages/25_Latent_Features.py", "Latent Features", "🧬"),
+                ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
+        ("Close-up essays", [
+            ("pages/27_Closeup_Index.py", "Map · close-ups", "🗺️"),
+            ("pages/28_Closeup_Ayah.py", "The Āyah", "📐"),
+            ("pages/30_Closeup_Sura.py", "The Sūra", "📜"),
+            ("pages/29_Closeup_InterSura.py", "Inter-Sūra", "⚠️"),
+            ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️"),
+            ("pages/35_Mathani_Lab.py", "Mathānī · refrains", "🔁"),
+            ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
+        ]),
+        ("Claims reviewed", [
+            ("pages/31_Closeup_Code19.py", "Code 19", "🔢"),
+            ("pages/33_Closeup_Adadi.py", "Word-count miracle", "🧮"),
+            ("pages/32_Closeup_Nuzul.py", "Revelation order", "🕰️"),
+        ]),
+    ]),
+    ("🧪 METHODS · LAB", [
+        (None, [
+            ("pages/22_Lens_Lab.py", "18 Lenses · Verdicts", "🧪"),
+            ("pages/24_Two_Books_Genome.py", "Two Books · Genome", "🧬"),
+            ("pages/17_Two_Books_Summary.py", "Two Books · FDR Summary", "📋"),
+        ]),
+        ("Scale lenses", [
+            ("pages/14_Disjoint_Letters.py", "Disjoint Letters", "🔠"),
+            ("pages/18_Spatial_Patterns.py", "Spatial Patterns", "🗺️"),
+            ("pages/15_Signal.py", "Signal", "📡"),
+            ("pages/16_Biology.py", "Biology", "🧬"),
         ]),
     ]),
     ("🛠️ TOOLS", [
@@ -99,6 +90,7 @@ NAV_SECTIONS = [
             ("pages/7_Statistics.py", "Statistics", "📈"),
             (["pages/12_Export.py", "pages/8_Export.py"], "Export", "⬇️"),
             (["pages/13_Usage.py", "pages/9_Usage.py"], "Usage", "📊"),
+            ("pages/21_Feedback_and_Bugs.py", "Feedback & Bugs", "🐞"),
             ("pages/0_Help.py", "Help", "❓"),
         ]),
     ]),
