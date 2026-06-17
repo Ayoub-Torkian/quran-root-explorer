@@ -127,11 +127,11 @@ def related_roots(roots, topn=8):
             if r not in roots: cnt[r] += 1
     return cnt.most_common(topn)
 
-def card(i, qwords, roots):
+def card(i, qwords, formset):
     out = []
     for w in words[i][:50]:                      # cap at first 50 words
         nw = norm(w)
-        hit = (nw and nw in qwords) or (roots and (nform2roots.get(nw, set()) & roots))
+        hit = (nw and nw in qwords) or (formset and any(f in nw and len(nw) - len(f) <= 4 for f in formset))
         out.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
     st.markdown(
         f"<div dir='rtl' style='padding:1px 8px;border-bottom:1px solid #eef2f4;font-size:13px;"
@@ -168,22 +168,26 @@ st.markdown(
     + f". &nbsp; " + " · ".join(f"{lab}: <b>{len(idx)}</b>" for lab, idx in groups if idx) + ".</div>",
     unsafe_allow_html=True)
 
+formset = ({norm(f) for r in roots for f in root2forms[r] if len(norm(f)) >= 3}
+           if kind in ("root", "word") else set())
 ln = 1
 for lab, idx in groups:
     if not idx: continue
     layer(ln, f"{lab} ({len(idx)})"); ln += 1
     for i in idx[:maxn]:
-        card(i, qwords, roots)
+        card(i, qwords, formset)
 if total == 0:
     st.warning("No matches. Try the bare root, fewer words, or a reference like 2:255.")
 
 if expand and kind in ("root", "word") and roots:
-    rel = related_roots(roots)
+    rel = related_roots(roots, 24)
     if rel:
-        layer(ln, "Related concepts (smart expansion)")
-        st.caption("Roots that most co-occur with your query — click to explore.")
-        cols = st.columns(min(8, len(rel)))
-        for k, (r, n) in enumerate(rel):
-            if cols[k % len(cols)].button(f"{r} · {n}", key=f"rel_{r}"):
-                st.session_state.search_q = r
-                st.rerun()
+        layer(ln, "Related concepts / co-roots (click to explore)")
+        st.caption("Roots that most co-occur with your query.")
+        PC = 12
+        for rs in range(0, len(rel), PC):
+            cols = st.columns(PC)
+            for k, (r, n) in enumerate(rel[rs:rs + PC]):
+                if cols[k].button(f"{r}·{n}", key=f"rel_{r}"):
+                    st.session_state.search_q = r
+                    st.rerun()
