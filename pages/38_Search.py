@@ -222,23 +222,36 @@ hero("🔎 Search — anything, any form",
 MODES = [("✨ Auto", "auto"), ("🌱 Root", "root"), ("🔤 Word", "word"),
          ("📜 Phrase / āyah", "phrase"), ("🔢 Reference / range", "reference")]
 _M = {l: v for l, v in MODES}
-EX = {"auto": ["كتب", "الرحمن الرحيم", "2:255", "صلاة"],
-      "root": ["حمد", "علم", "كتب", "صور"],
-      "word": ["محمد", "الصواعق", "نساء"],
-      "phrase": ["الرحمن الرحيم", "إياك نعبد وإياك نستعين"],
+# Per-mode examples: plain AND diacritized samples (shows that pasting diacritized web text works)
+EX = {"auto": ["كتب", "الرَّحْمَٰنِ الرَّحِيمِ", "2:255"],
+      "root": ["حمد", "علم", "صور"],
+      "word": ["محمد", "الصواعق", "نِسَاء"],
+      "phrase": ["الرحمن الرحيم", "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"],
       "reference": ["2:255", "2:35-82", "1:1،112:1", "114"]}
-HELP = {"auto": "Type anything — the type is detected automatically.",
+HELP = {"auto": "Anything — type auto-detected (root · word · phrase · reference).",
         "root": "A triliteral root → all its surface forms across the Qur'ān.",
         "word": "A word → its root, split into exact-word and other-form verses.",
         "phrase": "Paste a phrase or whole āyah → the verse plus similar & partial.",
         "reference": "A verse, range (2:35-82), list (1:1،112:1) or whole sura (114)."}
-PH = {"auto": "كتب · الرحمن الرحيم · 2:255 · صلاة",
-      "root": "مثال: حمد", "word": "مثال: محمد",
-      "phrase": "الصق آية أو عبارة", "reference": "2:255 · 2:35-82 · 114"}
+# Bilingual placeholder inside the box; auto/phrase/word show a DIACRITIZED sample
+PH = {"auto": "e.g.  كتب · الرَّحْمَٰنِ الرَّحِيمِ · 2:255   —  root, word, phrase, or reference",
+      "root": "e.g.  حمد   —  a triliteral root (bare consonants)",
+      "word": "e.g.  محمد  /  نِسَاء   —  a single word, with or without diacritics",
+      "phrase": "e.g.  بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ   —  paste a phrase or full āyah",
+      "reference": "e.g.  2:255 · 2:35-82 · 114   —  verse, range, list, or whole sura"}
 
+# Hover tooltips over each mode option = its description + examples (replaces the separate chip row)
+TIP = {v: (HELP[v] + r"\A" + "e.g.   " + "   ·   ".join(EX[v])) for _, v in MODES}
+tip_css = "".join(
+    f'div[role=radiogroup] label:nth-of-type({k + 1}):hover::after{{content:"{TIP[v]}"}} '
+    for k, (l, v) in enumerate(MODES))
 st.markdown(
-    "<style>div[role=radiogroup]{gap:2px 16px !important} "
-    "div[role=radiogroup] label{margin:0 !important} "
+    "<style>div[role=radiogroup]{gap:2px 18px !important} "
+    "div[role=radiogroup] label{margin:0 !important;position:relative} "
+    "div[role=radiogroup] label:hover::after{position:absolute;top:135%;left:0;z-index:60;"
+    "white-space:pre-line;width:max-content;max-width:380px;background:#10243A;color:#fff;"
+    "padding:6px 10px;border-radius:6px;font-size:12px;line-height:1.6;"
+    "box-shadow:0 3px 10px rgba(16,36,58,.25)} " + tip_css +
     ".stButton button{padding:0 8px !important;min-height:0 !important;height:1.75em !important;"
     "font-size:12px !important;line-height:1.55 !important;border-radius:5px !important;}</style>",
     unsafe_allow_html=True)
@@ -253,15 +266,10 @@ if st.session_state.get("_pending_q") is not None:
 sel = st.radio("type", [l for l, _ in MODES], horizontal=True,
                key="search_mode", label_visibility="collapsed")
 mode = _M[sel]
-q = st.text_input(HELP[mode], key="search_q", placeholder=PH[mode])
-
-ex = EX[mode]
-ratios = [max(1.0, len(e) * 0.17) for e in ex]      # width ∝ chip text length (no wrap, no slack)
-cols = st.columns(ratios + [max(0.3, 9.0 - sum(ratios))], gap="small")
-for k, e in enumerate(ex):
-    if cols[k].button(e, key=f"ex_{mode}_{k}", use_container_width=True):
-        st.session_state._pending_q = e
-        st.rerun()
+st.markdown("<div style='font-size:12px;color:#10243A;margin:1px 0 2px'>"
+            "Hover a type above for examples. Paste straight from any web page — diacritics, "
+            "tatwīl and Qur'anic marks are stripped automatically.</div>", unsafe_allow_html=True)
+q = st.text_input(HELP[mode], key="search_q", placeholder=PH[mode], label_visibility="collapsed")
 expand = st.checkbox("Concept expansion", value=True,
                      help="For a single root/word, surface related roots (co-roots).") if mode in ("auto", "root", "word") else False
 
