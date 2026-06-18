@@ -283,12 +283,13 @@ def verse_html(i, target, qwords, substr=False):
         qhit = any(qw in nw for qw in qwords) if substr else (nw in qwords)
         hit = (k in hl) or (qwords and qhit)
         marked.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
-    ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</b> "
-               f"<span style='color:#10243A'>{sname[i]}</span>")
+    ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]} "
+               f"{sname[i]}</b>")
     head = " ".join(marked[:50]) + (" …" if len(marked) > 50 else "")
     full = " ".join(marked)
+    _cls = "vrow long" if len(marked) > 50 else "vrow"
     return (
-        "<details style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
+        f"<details class='{_cls}' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
         "<summary style='direction:rtl;text-align:right;font-size:13px;color:#10243A;line-height:1.65;"
         "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer'>"
         f"{ref_lbl} &nbsp;{head}</summary>"
@@ -448,7 +449,10 @@ for lab, idx in groups:
     layer(ln, f"{lab} ({len(idx)})"); ln += 1
     shown = idx[:300]
     cells = "".join(verse_html(i, roots, qwords, kind == "text") for i in shown)
-    grid = f"<div style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px;direction:rtl'>{cells}</div>"
+    grid = ("<style>.vgrid details.long[open]{grid-column:1 / -1;background:#fbfdfc;border-radius:6px;"
+            "box-shadow:inset 0 0 0 1px #e3efe9}</style>"
+            "<div class='vgrid' style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px;direction:rtl'>"
+            f"{cells}</div>")
     if len(shown) > 30:                          # scrollable box for large groups
         grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
                 f"border-radius:6px;padding:2px 4px'>{grid}</div>")
