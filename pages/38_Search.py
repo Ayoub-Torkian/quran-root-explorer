@@ -205,6 +205,30 @@ def nuzul_timeline(roots):
            f"weighted-mean rank {wmean:.0f}/114 → <b>{skew}</b>.</div>")
     return f"<div style='margin:2px 0 8px'>{txt}{svg}</div>"
 
+def collocations(roots, topn=12, cap=1500):
+    """Recurring multi-word phrases (mathani) the query root appears in, ranked by frequency.
+    Positions found via root alignment (handles clitics like الْحَمْدُ). Order-independent dedup
+    drops a phrase contained in a longer phrase of comparable count."""
+    rs = set(roots)
+    ay = sorted({i for r in roots for i in corpus.index_exact.get(r, [])})[:cap]
+    cnt = Counter(); rep = {}
+    for i in ay:
+        pos = hl_idx(i, rs)
+        if not pos: continue
+        dw = words[i]; nw = [norm(w) for w in dw]
+        for n in (2, 3, 4):
+            for k in range(len(nw) - n + 1):
+                if not any(k <= q < k + n for q in pos): continue
+                key = " ".join(nw[k:k + n]); cnt[key] += 1; rep.setdefault(key, " ".join(dw[k:k + n]))
+    cand = {g: cc for g, cc in cnt.items() if cc >= 3}
+    keep = []
+    for g, cc in cand.items():
+        if any((g in h) and (h != g) and (len(h) > len(g)) and (cand[h] >= 0.8 * cc) for h in cand):
+            continue
+        keep.append((g, cc))
+    keep.sort(key=lambda x: -x[1])
+    return [(rep[g], cc) for g, cc in keep[:topn]]
+
 def related_roots(roots, topn=8):
     ay = set()
     for r in roots: ay.update(corpus.index_exact.get(r, []))
@@ -350,6 +374,15 @@ if kind in ("root", "word") and roots:
 if kind in ("root", "word") and roots:
     _tl = nuzul_timeline(roots)
     if _tl: st.markdown(_tl, unsafe_allow_html=True)
+    _ph = collocations(roots)
+    if _ph:
+        _chips = " &nbsp; ".join(
+            f"<span style='background:#eef4f1;border-radius:5px;padding:1px 8px;white-space:nowrap'>"
+            f"{ph} <span style='color:#0F6E56'>×{cc}</span></span>" for ph, cc in _ph)
+        st.markdown(
+            "<div style='font-size:13px;color:#10243A;margin:4px 0 1px'><b>Recurring phrases (mathānī)</b></div>"
+            "<div style='font-size:13px;color:#10243A;line-height:2.1;direction:rtl;text-align:right;"
+            f"margin-bottom:8px'>{_chips}</div>", unsafe_allow_html=True)
 
 ln = 1
 for lab, idx in groups:
