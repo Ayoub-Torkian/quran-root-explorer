@@ -444,6 +444,25 @@ if kind == "phrase":                              # one-glance parallel snapshot
                 "padding:8px 14px;margin:6px 0 10px;font-size:13.5px;color:#10243A;line-height:1.75'>"
                 "🧩 " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
 
+if kind == "reference" and groups and groups[0][1]:   # one-glance summary of the selected verse set
+    _idxs = groups[0][1]
+    _suras = sorted({refs[i][0] for i in _idxs})
+    _drop = {r for r, _v in sorted(corpus.index_exact.items(), key=lambda kv: -len(kv[1]))[:10]}
+    _cnt = Counter()
+    for i in _idxs:
+        for r in corpus.root_tokens[i]:
+            if r and r != "-" and r not in _drop: _cnt[r] += 1
+    _dom = [r for r, _v in _cnt.most_common(8)]
+    _lw = max((len(words[i]), i) for i in _idxs)[1]
+    _bits = [f"<b>{len(_idxs)}</b> āyāt · <b>{len(_suras)}</b> sūra(s)"]
+    if len(_suras) == 1:
+        _bits.append(f"<b>Sūra {_suras[0]} {sname[_idxs[0]]}</b> · nuzūl {sura_nuzul.get(_suras[0], '?')}/114")
+    _bits.append(f"longest <b>{refs[_lw][0]}:{refs[_lw][1]}</b>")
+    if _dom: _bits.append("themes <b>" + " · ".join(_dom) + "</b>")
+    st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
+                "padding:8px 14px;margin:4px 0 10px;font-size:13.5px;color:#10243A;line-height:1.75'>"
+                "📖 " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
+
 ln = 1
 for lab, idx in groups:
     if not idx: continue
