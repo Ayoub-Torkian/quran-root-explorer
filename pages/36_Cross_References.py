@@ -57,6 +57,32 @@ def related(qi, k, exclude_same, visited=frozenset()):
     out.sort(reverse=True)
     return out[:k]
 
+import re as _re
+from analysis import normalize_letters as _NLF
+_NLP = _re.compile(r"[^ء-ي ]")
+def _hnorm(t):
+    t = _NLF(str(t)); t = _NLP.sub(" ", t); return _re.sub(r"\\s+", " ", t).strip()
+def _hdd(t):
+    o = []
+    for ch in t:
+        if not o or o[-1] != ch: o.append(ch)
+    return "".join(o)
+def hl_text(j, target):
+    """Highlight words of ayah j whose CORPUS root is in target (shared content roots)."""
+    ws = disp[j].split()
+    content = [(_hdd(_hnorm(sf)), r) for r, sf in zip(corpus.root_tokens[j], corpus.surface_tokens[j])
+               if len(_hnorm(sf)) >= 2]
+    dn = [_hdd(_hnorm(w)) for w in ws]
+    idxs = set(); di = 0
+    for cm, r in content:
+        k = di
+        while k < len(dn) and cm not in dn[k]: k += 1
+        if k < len(dn):
+            if r in target: idxs.add(k)
+            di = k + 1
+    return " ".join((f"<mark style='background:#FCEFB4'>{w}</mark>" if kk in idxs else w)
+                    for kk, w in enumerate(ws))
+
 hero("🪢 Qur'ān-explains-Qur'ān — the cross-reference walk",
      "Pick an āyah, then FOLLOW a parallel to make it the new focus and see its parallels — walking the "
      "text's own commentary. Rare shared roots weighted highest; visited āyāt drop out so you keep moving.")
@@ -102,7 +128,7 @@ if len(path) > 1:
 st.markdown(
     f"<div dir='rtl' style='background:#F1F6F4;border-right:4px solid #0F6E56;border-radius:6px;"
     f"padding:14px 16px;margin:10px 0;font-size:22px;color:#10243A;line-height:1.9'>"
-    f"<span style='font-size:13px;color:#10243A'>{refs[qi]} · {sname.get(sura[qi],'')}</span><br>{disp[qi]}</div>",
+    f"<span style='font-size:13px;color:#10243A'>{refs[qi]} · {sname.get(sura[qi],'')}</span><br>{hl_text(qi, crootsets[qi])}</div>",
     unsafe_allow_html=True)
 st.caption("Roots: " + " · ".join(sorted(rootsets[qi])))
 
@@ -118,7 +144,7 @@ for score, j in rel:
         f"<div style='font-size:13px;color:#10243A'><b>{refs[j]}</b> · {sname.get(sura[j],'')} "
         f"&nbsp;|&nbsp; similarity {score*100:.0f}% &nbsp;|&nbsp; shared roots: "
         f"<b>{' · '.join(shared)}</b></div>"
-        f"<div dir='rtl' style='font-size:19px;color:#10243A;line-height:1.8;margin-top:4px'>{disp[j]}</div></div>",
+        f"<div dir='rtl' style='font-size:19px;color:#10243A;line-height:1.8;margin-top:4px'>{hl_text(j, crootsets[qi] & crootsets[j])}</div></div>",
         unsafe_allow_html=True)
     if col[1].button("follow →", key=f"fl_{j}", use_container_width=True):
         st.session_state.xref_act = ("follow", j); st.rerun()
