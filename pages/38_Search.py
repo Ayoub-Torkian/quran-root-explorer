@@ -292,14 +292,17 @@ def verse_html(i, target, qwords, substr=False):
         marked.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
     ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]} "
                f"{sname[i]}</b>")
-    head = " ".join(marked[:50]) + (" …" if len(marked) > 50 else "")
+    _more = len(marked) > 50
+    head = " ".join(marked[:50]) + (" …" if _more else "")
     full = " ".join(marked)
-    _cls = "vrow long" if len(marked) > 50 else "vrow"
+    _cls = "vrow long" if _more else "vrow"
+    _chev = "<span class='ex' title='click to read the full āyah'>⌄</span> " if _more else ""
     return (
         f"<details class='{_cls}' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
-        "<summary style='direction:rtl;text-align:right;font-size:13px;color:#10243A;line-height:1.65;"
+        + (f"<summary title='click to read the full āyah — partial shown' " if _more else "<summary ")
+        + "style='direction:rtl;text-align:right;font-size:13px;color:#10243A;line-height:1.65;"
         "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer'>"
-        f"{ref_lbl} &nbsp;{head}</summary>"
+        f"{_chev}{ref_lbl} &nbsp;{head}</summary>"
         f"<div style='direction:rtl;text-align:right;font-size:14.5px;color:#10243A;line-height:1.95;"
         f"white-space:normal;padding:4px 2px 8px'>{full}</div>"
         "</details>")
@@ -480,6 +483,8 @@ for lab, idx in groups:
             ".vgrid summary::-webkit-details-marker{display:none}"
             ".vgrid summary::marker{content:\"\"}"
             ".vgrid details[open]{background:#fbfdfc;border-radius:6px;box-shadow:inset 0 0 0 1px #e3efe9}"
+            ".vgrid .ex{color:#0F6E56;font-weight:800;display:inline-block;font-size:14px}"
+            ".vgrid details[open] .ex{transform:rotate(180deg)}"
             "</style>"
             "<div class='vgrid' style='display:grid;grid-template-columns:1fr;gap:0;direction:rtl'>"
             f"{cells}</div>")
