@@ -251,6 +251,31 @@ else:
     except Exception:
         pass
 
+    # § 2c+ — ATTRACTION-edge phase diff: which PAIRINGS are stable vs phase-specific
+    if _attraction and gm is not None and gd is not None and (gm.number_of_edges() or gd.number_of_edges()):
+        _em = {frozenset((a, b)): d["weight"] for a, b, d in gm.edges(data=True)}
+        _ed = {frozenset((a, b)): d["weight"] for a, b, d in gd.edges(data=True)}
+        _stable = _em.keys() & _ed.keys(); _mo = _em.keys() - _ed.keys(); _do = _ed.keys() - _em.keys()
+        st.markdown("#### Pairing diff — attraction edges")
+        _a1, _a2, _a3 = st.columns(3)
+        _a1.metric("⚫ Stable pairings", len(_stable))
+        _a2.metric("🟠 Meccan-only", len(_mo))
+        _a3.metric("🔵 Medinan-only", len(_do))
+        def _pchips(_S, _d, _bg):
+            _it = sorted(_S, key=lambda e: -_d[e])[:10]
+            return " ".join(f"<span style='background:{_bg};border-radius:5px;padding:1px 7px;"
+                            f"white-space:nowrap;font-size:12px'>{'—'.join(sorted(e))}</span>" for e in _it)
+        st.markdown(
+            "<div style='direction:rtl;text-align:right;line-height:2.1'>"
+            "<div style='font-size:12px;color:#10243A;margin-top:2px'><b>⚫ Stable (both phases)</b></div>"
+            + _pchips(_stable, {**_em, **_ed}, "#e7eef0")
+            + "<div style='font-size:12px;color:#10243A;margin-top:4px'><b>🟠 Meccan-only</b></div>"
+            + _pchips(_mo, _em, "#fdebd3")
+            + "<div style='font-size:12px;color:#10243A;margin-top:4px'><b>🔵 Medinan-only</b></div>"
+            + _pchips(_do, _ed, "#dbe7f5") + "</div>", unsafe_allow_html=True)
+        st.caption("Above-chance concept PAIRINGS that persist vs are unique to a phase — what the "
+                   "mission phase kept, added, or retired. Attraction edges only; switch to raw to compare.")
+
     # § 2d — Sankey
     st.markdown("### Phase-flow Sankey")
     st.caption(
