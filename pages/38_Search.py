@@ -472,6 +472,19 @@ if kind == "reference" and groups and groups[0][1]:   # one-glance summary of th
                 "padding:8px 14px;margin:4px 0 10px;font-size:13.5px;color:#10243A;line-height:1.75'>"
                 "📖 " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
 
+# ── isolated, reliable "copy results" button (own component iframe — does NOT touch the verse grid) ──
+_copy_idxs = [i for _lab, _idx in groups for i in _idx][:120]
+if _copy_idxs:
+    import json as _json
+    _payload = _json.dumps("\n".join(f"{refs[i][0]}:{refs[i][1]}  {disp[i]}" for i in _copy_idxs))
+    _btn = ("<button id='cpb' style='font-size:13px;border:1px solid #cfe4dc;background:#eef4f1;"
+            "color:#0F6E56;border-radius:7px;padding:4px 12px;cursor:pointer;font-weight:700;"
+            "font-family:sans-serif'>📋 Copy these verses</button>"
+            "<script>const T=" + _payload + ";document.getElementById('cpb').onclick=function(){"
+            "navigator.clipboard.writeText(T);this.textContent='✓ copied';"
+            "setTimeout(function(){document.getElementById('cpb').textContent='📋 Copy these verses'},1200)};</script>")
+    st.components.v1.html(_btn, height=40)
+
 ln = 1
 for lab, idx in groups:
     if not idx: continue
