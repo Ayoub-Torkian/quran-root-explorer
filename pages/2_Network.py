@@ -162,6 +162,38 @@ except Exception:
 st.divider()
 
 
+# ── Edge weighting (ONE control governing ALL graph views below) ──────────────
+import math as _m
+from collections import Counter as _C
+st.markdown("### Edge weighting")
+_wmode = st.radio("Weight every graph's edges by",
+                  ["Attraction · PPMI (recommended)", "Shared verses (raw)"],
+                  horizontal=True, index=0, key="net_wmode",
+                  help="Raw count is dominated by ubiquitous roots (الله, قوم). PPMI = co-occurrence "
+                       "BEYOND chance, so true concept pairs dominate and ubiquitous edges shrink/drop.")
+_attraction = _wmode.startswith("Attraction")
+@st.cache_data(show_spinner=False)
+def _docf_cached(_cid):
+    d = _C()
+    for _i in range(len(corpus.df)):
+        for _r in {t for t in corpus.root_tokens[_i] if t and t != "-"}: d[_r] += 1
+    return dict(d)
+_DOCF = _docf_cached(id(corpus)); _NV = len(corpus.df)
+def _apply_w(graph):
+    """Return a PPMI-reweighted copy (above-chance edges only) when attraction mode is on."""
+    if not _attraction or graph is None or graph.number_of_edges() == 0: return graph
+    g2 = graph.copy(); _drop = []
+    for _a, _b, _d in g2.edges(data=True):
+        _w = _d.get("weight", 1); _pa = _DOCF.get(_a, 1) / _NV; _pb = _DOCF.get(_b, 1) / _NV; _pab = _w / _NV
+        _pm = max(0.0, _m.log(_pab / (_pa * _pb))) if _pa > 0 and _pb > 0 and _pab > 0 else 0.0
+        if _pm <= 0: _drop.append((_a, _b))
+        else: _d["weight"] = round(_pm, 3)
+    g2.remove_edges_from(_drop)
+    return g2
+if _attraction:
+    st.caption("All graphs below are weighted by **attraction (PPMI)** — above-chance pairings only; "
+               "ubiquitous-root edges drop out. Switch to raw to compare.")
+
 # ─────────────────────────────────────────────────────────────────
 # § 2 — TEMPORAL / PHASE ANALYSIS (pinned high — most novel content)
 # ─────────────────────────────────────────────────────────────────
@@ -176,7 +208,7 @@ else:
 
     # § 2a — Side-by-side Meccan vs Medinan networks
     st.markdown("### Meccan vs Medinan")
-    gm, gd = R["g_meccan"], R["g_medinan"]
+    gm, gd = _apply_w(R["g_meccan"]), _apply_w(R["g_medinan"])
     cM1, cM2, cM3 = st.columns(3)
     cM1.metric("Meccan edges", gm.number_of_edges() if gm else 0)
     cM2.metric("Medinan edges", gd.number_of_edges() if gd else 0)
@@ -243,29 +275,10 @@ st.caption(
     "Same graph, three layouts."
 )
 
-# ── Edge-weighting toggle: raw shared-verses vs ATTRACTION (PPMI) ──────────────
-st.markdown("### Edge weighting")
-_wmode = st.radio("Weight the graph edges by", ["Attraction · PPMI (recommended)", "Shared verses (raw)"],
-                  horizontal=True, index=0, key="net_wmode",
-                  help="Raw count is dominated by ubiquitous roots (الله, قوم). PPMI = co-occurrence "
-                       "BEYOND chance, so true concept pairs dominate and ubiquitous edges shrink/drop.")
-gv = g
-if _wmode.startswith("Attraction"):
-    import math as _m
-    from collections import Counter as _C
-    _Nv = len(corpus.df)
-    _docf = _C()
-    for _i in range(_Nv):
-        for _r in {t for t in corpus.root_tokens[_i] if t and t != "-"}: _docf[_r] += 1
-    gv = g.copy(); _drop = []
-    for _a, _b, _d in gv.edges(data=True):
-        _w = _d.get("weight", 1); _pa = _docf.get(_a, 1) / _Nv; _pb = _docf.get(_b, 1) / _Nv; _pab = _w / _Nv
-        _pm = max(0.0, _m.log(_pab / (_pa * _pb))) if _pa > 0 and _pb > 0 and _pab > 0 else 0.0
-        if _pm <= 0: _drop.append((_a, _b))
-        else: _d["weight"] = round(_pm, 3)
-    gv.remove_edges_from(_drop)
-    st.caption(f"Edges weighted by **attraction (PPMI)** — {gv.number_of_edges()} of {g.number_of_edges()} "
-               "edges are above-chance pairings (ubiquitous-root edges drop out). Thickness = attraction strength.")
+gv = _apply_w(g)
+if _attraction and g.number_of_edges():
+    st.caption(f"Force / chord / adjacency weighted by **attraction (PPMI)** — {gv.number_of_edges()} of "
+               f"{g.number_of_edges()} edges are above-chance pairings.")
 
 st.markdown("### Force-directed")
 st.markdown(
