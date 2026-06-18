@@ -469,7 +469,12 @@ for lab, idx in groups:
     layer(ln, f"{lab} ({len(idx)})"); ln += 1
     shown = idx[:300]
     cells = "".join(verse_html(i, roots, qwords, kind == "text") for i in shown)
-    grid = ("<style>.vgrid details.long[open]{grid-column:1 / -1;background:#fbfdfc;border-radius:6px;"
+    grid = ("<style>"
+            ".vgrid summary{display:block;list-style:none;cursor:pointer}"
+            ".vgrid summary::-webkit-details-marker{display:none}"
+            ".vgrid summary::marker{content:\"\"}"
+            ".vgrid details{min-width:0}"
+            ".vgrid details.long[open]{grid-column:1 / -1;background:#fbfdfc;border-radius:6px;"
             "box-shadow:inset 0 0 0 1px #e3efe9}</style>"
             "<div class='vgrid' style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px;direction:rtl'>"
             f"{cells}</div>")
