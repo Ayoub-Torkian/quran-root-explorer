@@ -444,7 +444,7 @@ if kind == "phrase":                              # one-glance parallel snapshot
     if _tp:
         _j = _tp[0]; _bits.append(f"closest parallel <b>{refs[_j][0]}:{refs[_j][1]}</b> ({sname[_j]})")
     if roots:
-        _key = sorted(roots, key=lambda r: -root_idf.get(r, 0))[:3]
+        _key = [r for r in sorted(roots, key=lambda r: -root_idf.get(r, 0)) if r not in DROP_SIM][:3]
         _bits.append("shared roots <b>" + " · ".join(_key) + "</b>")
     st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
                 "padding:8px 14px;margin:6px 0 10px;font-size:13.5px;color:#10243A;line-height:1.75'>"
@@ -479,10 +479,9 @@ for lab, idx in groups:
             ".vgrid summary{display:block;list-style:none;cursor:pointer}"
             ".vgrid summary::-webkit-details-marker{display:none}"
             ".vgrid summary::marker{content:\"\"}"
-            ".vgrid details{min-width:0}"
-            ".vgrid details.long[open]{grid-column:1 / -1;background:#fbfdfc;border-radius:6px;"
-            "box-shadow:inset 0 0 0 1px #e3efe9}</style>"
-            "<div class='vgrid' style='display:grid;grid-template-columns:1fr 1fr;gap:0 10px;direction:rtl'>"
+            ".vgrid details[open]{background:#fbfdfc;border-radius:6px;box-shadow:inset 0 0 0 1px #e3efe9}"
+            "</style>"
+            "<div class='vgrid' style='display:grid;grid-template-columns:1fr;gap:0;direction:rtl'>"
             f"{cells}</div>")
     if len(shown) > 30:                          # scrollable box for large groups
         grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"

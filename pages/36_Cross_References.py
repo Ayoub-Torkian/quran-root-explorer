@@ -27,27 +27,29 @@ def build(_cid):
     N = len(refs)
     dfreq = Counter(x for rs in rootsets for x in rs)
     idf = {x: math.log(N / dfreq[x]) for x in dfreq}
-    norm = [math.sqrt(sum(idf[x] ** 2 for x in rs)) for rs in rootsets]
+    DROP = {x for x, _v in dfreq.most_common(12)}      # ubiquitous/function roots -> excluded from similarity
+    crootsets = [rs - DROP for rs in rootsets]
+    norm = [math.sqrt(sum(idf[x] ** 2 for x in rs)) for rs in crootsets]
     inv = defaultdict(list)
-    for i, rs in enumerate(rootsets):
+    for i, rs in enumerate(crootsets):
         for x in rs:
             inv[x].append(i)
-    return refs, rootsets, disp, sura, name, idf, norm, inv, N
+    return refs, rootsets, crootsets, disp, sura, name, idf, norm, inv, N
 
-refs, rootsets, disp, sura, name, idf, norm, inv, N = build(id(corpus))
+refs, rootsets, crootsets, disp, sura, name, idf, norm, inv, N = build(id(corpus))
 ref2i = {r: i for i, r in enumerate(refs)}
 sname = {s: nm for s, nm in zip(sura, name)}
 
 def related(qi, k, exclude_same, visited=frozenset()):
     sc = defaultdict(float)
-    for x in rootsets[qi]:
+    for x in crootsets[qi]:
         w = idf[x] ** 2
         for j in inv[x]:
             sc[j] += w
     qn = norm[qi] or 1e-9
     out = []
     for j, s in sc.items():
-        if j == qi or j in visited or not rootsets[j]:
+        if j == qi or j in visited or not crootsets[j]:
             continue
         if exclude_same and sura[j] == sura[qi]:
             continue
@@ -109,7 +111,7 @@ rel = related(qi, k, excl, frozenset(path))
 if not rel:
     st.info("No further parallels (content roots exhausted on this walk). Step back in the breadcrumb.")
 for score, j in rel:
-    shared = sorted(rootsets[qi] & rootsets[j], key=lambda x: -idf[x])
+    shared = sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])
     col = st.columns([6, 1])
     col[0].markdown(
         f"<div style='border:1px solid #cfe0d9;border-radius:7px;padding:10px 14px;margin:4px 0'>"
