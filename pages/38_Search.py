@@ -229,14 +229,24 @@ def collocations(roots, topn=12, cap=1500):
     keep.sort(key=lambda x: -x[1])
     return [(rep[g], cc) for g, cc in keep[:topn]]
 
-def related_roots(roots, topn=8):
-    ay = set()
-    for r in roots: ay.update(corpus.index_exact.get(r, []))
-    cnt = Counter()
+def related_roots(roots, topn=30, minco=3):
+    """Co-roots ranked by ATTRACTION (co-occurrence beyond chance, z) — not raw count, which is
+    dominated by ubiquitous roots. z = (observed - expected) / sd under an independence model."""
+    rs = set(roots)
+    ay = sorted({i for r in roots for i in corpus.index_exact.get(r, [])})
+    nA = len(ay)
+    co = Counter()
     for i in ay:
-        for r in corpus.root_tokens[i]:
-            if r not in roots: cnt[r] += 1
-    return cnt.most_common(topn)
+        for r in rootset[i]:
+            if r not in rs and r and r != "-": co[r] += 1
+    out = []
+    for r, cc in co.items():
+        if cc < minco: continue
+        pr = len(corpus.index_exact.get(r, [])) / N
+        mean = nA * pr; sd = math.sqrt(nA * pr * (1 - pr)) or 1.0
+        out.append((r, cc, round((cc - mean) / sd, 1)))
+    out.sort(key=lambda x: -x[2])
+    return out[:topn]
 
 def _dedup(t):
     o = []
@@ -402,11 +412,11 @@ if expand and kind in ("root", "word") and roots:
     rel = related_roots(roots, 30)
     if rel:
         layer(ln, "Related concepts / co-roots (click to explore)")
-        st.caption("Roots that most co-occur with your query.")
+        st.caption("Roots that most distinctively PAIR with your query — attraction beyond chance (z).")
         PC = 12
-        for rs in range(0, len(rel), PC):
+        for rsx in range(0, len(rel), PC):
             cols = st.columns(PC, gap="small")
-            for k, (r, n) in enumerate(rel[rs:rs + PC]):
-                if cols[k].button(f"{r}·{n}", key=f"rel_{r}", use_container_width=True):
+            for k, (r, cc, z) in enumerate(rel[rsx:rsx + PC]):
+                if cols[k].button(f"{r}·{z:g}", key=f"rel_{r}", use_container_width=True):
                     st.session_state._pending_q = r
                     st.rerun()
