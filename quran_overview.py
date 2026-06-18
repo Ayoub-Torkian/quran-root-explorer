@@ -39,15 +39,28 @@ def _facts(_corpus, _cid):
     top = [(rt, _GLOSS.get(rt, "—"), c, 100.0 * c / T) for rt, c in fc.most_common(6)]
     cov = lambda n: round(100 * sum(c for _, c in fc.most_common(n)) / T)
     hapax = sum(1 for v in fc.values() if v == 1)
+    su = df[S].astype(int)
+    cnt = su.value_counts()
+    longest_s = int(cnt.idxmax()); longest_n = int(cnt.max()); shortest_n = int(cnt.min())
+    nmap = {}
+    if A.COL_SURAH_NAME in df.columns:
+        for sv, nm in zip(su, df[A.COL_SURAH_NAME]):
+            nmap.setdefault(int(sv), str(nm))
+    wc = [len(str(v).split()) for v in df[A.COL_DIACRITIZED]] if A.COL_DIACRITIZED in df.columns \
+        else [len(t) for t in surftok]
+    li = max(range(len(wc)), key=lambda i: wc[i])
+    long_ay = "%d:%d" % (int(df[S].iloc[li]), int(df[AY].iloc[li]))
     return dict(cols=cols, top=top, surahs=114, ayahs=NA, letters=letters,
-                cov100=cov(100), cov500=cov(500), hapax=hapax)
+                cov100=cov(100), cov500=cov(500), hapax=hapax, n_roots=len(fc),
+                longest_s=longest_s, longest_name=nmap.get(longest_s, ""), longest_n=longest_n,
+                shortest_n=shortest_n, avg_ayah=NA / 114.0, long_ay=long_ay, long_ay_w=wc[li])
 
 
 def render_overview(corpus, source="Book6"):
     d = _facts(corpus, id(corpus))
     f = lambda n: format(int(n), ",")
-    strip_line = "%s sūras &middot; %s āyāt &middot; %s letters &middot; %s" % (
-        f(d["surahs"]), f(d["ayahs"]), f(d["letters"]), source)
+    strip_line = "%s letters &middot; %s root-tokens &middot; %s" % (
+        f(d["letters"]), f(d["cols"][0][1]), source)
 
     cgrp = ("<colgroup><col style='width:38%'><col style='width:28%'>"
             "<col style='width:18%'><col style='width:16%'></colgroup>")
@@ -99,8 +112,18 @@ def render_overview(corpus, source="Book6"):
         ".ov-t td.bw{padding:6px 9px}"
         ".bar{height:12px;border-radius:3px;background:linear-gradient(90deg,#1D9E75,#1D3557)}"
         ".ov-c{font-size:12.5px;color:#10243A;margin-top:6px}"
+        ".ov-ins{display:flex;flex-wrap:wrap;gap:4px 18px;padding:8px 18px;border-bottom:1px solid #EEF2F7;"
+        "font-size:12.5px;color:#10243A;background:#F4F9F7}.ov-ins b{color:#1D3557}"
         "</style>")
+    insights = ("<div class='ov-ins'>"
+                "<span>📏 <b>Longest sūra</b> %s · %s āyāt</span>"
+                "<span><b>Shortest</b> %s āyāt</span>"
+                "<span><b>Avg</b> %.0f āyāt / sūra</span>"
+                "<span><b>Longest āyah</b> %s (%s words)</span>"
+                "<span><b>%.0f%%</b> of roots appear once</span></div>") % (
+        d["longest_name"] or d["longest_s"], f(d["longest_n"]), f(d["shortest_n"]),
+        d["avg_ayah"], d["long_ay"], f(d["long_ay_w"]), 100 * d["hapax"] / max(1, d["n_roots"]))
     html = (css + "<div class='ov-card'><div class='ov-head'>"
             "<b>📖 The Qur'an at a Glance</b><span>" + strip_line + "</span></div>"
-            "<div class='ov-row'>" + box_a + box_b + "</div></div>")
+            + insights + "<div class='ov-row'>" + box_a + box_b + "</div></div>")
     st.markdown(html, unsafe_allow_html=True)
