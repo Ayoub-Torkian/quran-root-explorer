@@ -47,7 +47,6 @@ NAV_SECTIONS = [
             ("pages/3_Motifs.py", "Motifs", "🔺"),
             ("pages/5_Compare_Heatmaps.py", "Compare & Heatmaps", "📊"),
             ("pages/9_Topic_Modeling.py", "Topic Modeling", "🧩"),
-            ("pages/8b_Topic_Map.py", "Topic Map", "🗺️"),
             ("pages/8c_My_Topics.py", "My Topics", "📌"),
             (["pages/8_Calibration.py", "pages/8e_Calibration.py"], "Calibration", "🎚️"),
         ]),
@@ -59,7 +58,8 @@ NAV_SECTIONS = [
         ]),
     ]),
     ("💡 DISCOVER", [
-        (None, [("pages/37_Discovery_Map.py", "Discovery Map · start here", "🗺️"),
+        (None, [("pages/39_Concept_Atlas.py", "Concept Atlas · the territory", "🗺️"),
+                ("pages/37_Discovery_Map.py", "Discovery Map · start here", "🗺️"),
                 ("pages/25_Latent_Features.py", "Latent Features", "🧬"),
                 ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
         ("Close-up essays", [
