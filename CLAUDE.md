@@ -113,3 +113,12 @@
    surface. A feature is not "done" until the IA still reads cleanly.
 3. **Audit on cadence.** Periodically audit org for patchiness (orphans, duplicates, mis-grouped pages,
    broken links) and report + fix. Structured functionality is required for sustainability.
+
+## Product performance criteria (LOCKED — added 2026-06-18, honor every session)
+1. **Insight-per-effort.** The north-star metric: the user gets MORE insight with LESS effort, in a
+   SHORTER time. Every feature/edit is judged by this — prefer one-glance synthesis over scattered panels,
+   precompute/reuse over recompute, and remove steps. Adding compute that slows the page must buy
+   proportionate insight.
+2. **Beautiful, readable UI.** The UI must be attractive and clean: clear hierarchy, generous whitespace,
+   ink-on-light (no grey text, ≥12px per the locked UI rules), aligned, uncluttered. Dense ≠ messy —
+   density must stay readable and elegant.

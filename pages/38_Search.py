@@ -380,6 +380,22 @@ if kind in ("root", "word") and roots:
             for rt, sf in zip(corpus.root_tokens[i], corpus.surface_tokens[i]):
                 if rt == r:
                     fcount[sf] += 1
+    _rel = related_roots(roots, 30)            # computed ONCE — reused by the co-roots panel below
+    _ph = collocations(roots)                  # computed ONCE — reused by the phrases panel below
+    _rs = set(roots)
+    _vset = sorted({i for r in roots for i in corpus.index_exact.get(r, [])})
+    _per = Counter()
+    for i in _vset: _per[refs[i][0]] += sum(1 for r in corpus.root_tokens[i] if r in _rs)
+    _pit = [(sura_nuzul[s], c) for s, c in _per.items() if s in sura_nuzul]
+    _tot = sum(c for _, c in _pit); _wm = (sum(nz * c for nz, c in _pit) / _tot) if _tot else 0
+    _skew = "earlier-revealed" if _wm < 50 else ("later-revealed" if _wm > 66 else "spread across revelation")
+    _bits = [f"<b>{sum(fcount.values())}</b>× · <b>{len(_vset)}</b> verses · <b>{len(fcount)}</b> forms",
+             f"revelation <b>{_skew}</b> ({_wm:.0f}/114)"]
+    if _rel: _bits.append(f"pairs with <b>{_rel[0][0]}</b> (z{_rel[0][2]:g})")
+    if _ph: _bits.append(f"signature <b>{_ph[0][0]}</b>")
+    st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
+                "padding:8px 14px;margin:6px 0 10px;font-size:13.5px;color:#10243A;line-height:1.75'>"
+                "🌱 " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
     if fcount:
         st.markdown(f"<div style='font-size:13px;color:#10243A;margin:2px 0 2px'>"
                     f"<b>Forms breakdown</b> ({len(fcount)} forms · {sum(fcount.values())} occurrences) "
@@ -397,7 +413,6 @@ if kind in ("root", "word") and roots:
 if kind in ("root", "word") and roots:
     _tl = nuzul_timeline(roots)
     if _tl: st.markdown(_tl, unsafe_allow_html=True)
-    _ph = collocations(roots)
     if _ph:
         st.markdown("<div style='font-size:13px;color:#10243A;margin:4px 0 2px'>"
                     "<b>Recurring phrases (mathānī)</b> — click to search the formula</div>",
@@ -425,7 +440,7 @@ if total == 0:
     st.warning("No matches. Try the bare root, fewer words, or a reference like 2:255.")
 
 if expand and kind in ("root", "word") and roots:
-    rel = related_roots(roots, 30)
+    rel = _rel
     if rel:
         layer(ln, "Related concepts / co-roots (click to explore)")
         st.caption("Roots that most distinctively PAIR with your query — attraction beyond chance (z).")
