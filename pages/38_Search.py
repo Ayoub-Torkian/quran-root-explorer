@@ -52,6 +52,12 @@ def build(_cid):
 refs, sname, disp, words, ntext, nwords, rootset, nform2roots, root2forms, roots_norm, root_idf, anorm, sura_nuzul = build(id(corpus))
 N = len(refs)
 
+# Layer-2/3 similarity is CONTENT-root based: drop the most ubiquitous (function/grammatical) roots
+# (ءله، کون، قول …) so verses aren't matched on "kāna…" type formulas, only on meaningful shared roots.
+DROP_SIM = {r for r, _v in sorted(corpus.index_exact.items(), key=lambda kv: -len(kv[1]))[:12]}
+crootset = [rootset[i] - DROP_SIM for i in range(N)]
+canorm = [math.sqrt(sum(root_idf.get(r, 0) ** 2 for r in crootset[i])) for i in range(N)]
+
 _PREF = sorted(["وبال", "فبال", "وكال", "فكال", "وال", "فال", "بال", "كال", "فلل", "ولل", "لل", "ال",
                 "و", "ف", "ب", "ك", "ل", "س"], key=len, reverse=True)
 
@@ -82,9 +88,9 @@ def similar_verses(Rq, exclude):
     out = []
     for i in range(N):
         if i in exclude: continue
-        sh = Rq & rootset[i]
+        sh = Rq & crootset[i]
         if not sh: continue
-        cos = sum(root_idf.get(r, 0) ** 2 for r in sh) / (qn * (anorm[i] or 1.0))
+        cos = sum(root_idf.get(r, 0) ** 2 for r in sh) / (qn * (canorm[i] or 1.0))
         out.append((cos, i))
     out.sort(reverse=True)
     return out
@@ -151,9 +157,9 @@ def search(q, mode="auto"):
         eset = set(exact)
         hroots = query_roots(toks)                 # the PHRASE's own roots — for highlighting only (small)
         if 1 <= len(exact) <= 3:                    # one specific verse -> its curated roots drive similarity
-            Rq = set().union(*[rootset[i] for i in exact])
+            Rq = set().union(*[crootset[i] for i in exact])
         else:                                       # common phrase / no exact -> phrase's own roots
-            Rq = hroots
+            Rq = hroots - DROP_SIM
         sims = similar_verses(Rq, eset)
         maxc = sims[0][0] if sims else 0.0
         sim_thr = max(0.15, 0.55 * maxc)
