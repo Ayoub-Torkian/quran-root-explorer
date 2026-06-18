@@ -41,9 +41,15 @@ def build(_cid):
     roots_norm = {norm(r): r for r in corpus.index_exact}
     root_idf = {r: math.log(N / max(1, len(corpus.index_exact.get(r, [])))) for r in corpus.index_exact}
     anorm = [math.sqrt(sum(root_idf.get(r, 0) ** 2 for r in rootset[i])) for i in range(N)]
-    return refs, sname, disp, words, ntext, nwords, rootset, dict(nform2roots), dict(root2forms), roots_norm, root_idf, anorm
+    sura_nuzul = {}
+    for i in range(N):
+        ssn = int(df[COL_SURAH][i])
+        if ssn not in sura_nuzul:
+            try: sura_nuzul[ssn] = int(df["ترتیب نزول"][i])
+            except Exception: pass
+    return refs, sname, disp, words, ntext, nwords, rootset, dict(nform2roots), dict(root2forms), roots_norm, root_idf, anorm, sura_nuzul
 
-refs, sname, disp, words, ntext, nwords, rootset, nform2roots, root2forms, roots_norm, root_idf, anorm = build(id(corpus))
+refs, sname, disp, words, ntext, nwords, rootset, nform2roots, root2forms, roots_norm, root_idf, anorm, sura_nuzul = build(id(corpus))
 N = len(refs)
 
 _PREF = sorted(["وبال", "فبال", "وكال", "فكال", "وال", "فال", "بال", "كال", "فلل", "ولل", "لل", "ال",
@@ -171,6 +177,33 @@ def search(q, mode="auto"):
         return "noroot", set(), set(), []
     direct = [i for i, tx in enumerate(ntext) if nq in tx]   # no root -> literal text match
     return "text", set(), {nq}, [("Text matches", direct)]
+
+def nuzul_timeline(roots):
+    """Small SVG: where the query's occurrences fall along revelation (nuzul) order, early->late.
+    nuzul order is a scholarly RECONSTRUCTION (labelled as such); divine-ALT arrangement."""
+    rs = set(roots)
+    from collections import Counter
+    cnt = Counter()
+    for i in range(N):
+        cnt[refs[i][0]] += sum(1 for r in corpus.root_tokens[i] if r in rs)
+    items = sorted((sura_nuzul.get(ssn, 0), ssn, cnt.get(ssn, 0)) for ssn in sura_nuzul)
+    counts = [c for _, _, c in items]
+    total = sum(counts); mx = max(counts) if counts else 0
+    if not total: return ""
+    wmean = sum(nz * c for nz, _, c in items) / total
+    skew = ("earlier-revealed (Meccan-period)" if wmean < 50
+            else "later-revealed (Medinan-leaning)" if wmean > 66 else "spread across the revelation")
+    W, H = 700, 42; bw = W / 114.0; bars = ""
+    for k, (nz, ssn, c) in enumerate(items):
+        h = (c / mx) * (H - 8) if mx else 0
+        bars += f"<rect x='{k*bw:.1f}' y='{H-h-2:.1f}' width='{max(1.0,bw-0.6):.1f}' height='{h:.1f}' fill='#0F6E56'/>"
+    n_suras = sum(1 for _, _, c in items if c)
+    svg = (f"<svg viewBox='0 0 {W} {H}' width='100%' style='max-width:720px;display:block'>"
+           f"<line x1='0' y1='{H-2}' x2='{W}' y2='{H-2}' stroke='#dbe6e0' stroke-width='1'/>{bars}</svg>")
+    txt = (f"<div style='font-size:12px;color:#10243A;margin:1px 0 3px'><b>Revelation timeline</b> "
+           f"(sūra nuzūl order, early→late · reconstructed): in {n_suras} sūras · "
+           f"weighted-mean rank {wmean:.0f}/114 → <b>{skew}</b>.</div>")
+    return f"<div style='margin:2px 0 8px'>{txt}{svg}</div>"
 
 def related_roots(roots, topn=8):
     ay = set()
@@ -313,6 +346,10 @@ if kind in ("root", "word") and roots:
             f"<div style='font-size:13px;color:#10243A;margin:2px 0 8px;line-height:2'>"
             f"<b>Forms breakdown</b> ({len(fcount)} forms · {sum(fcount.values())} occurrences): &nbsp; {chips}</div>",
             unsafe_allow_html=True)
+
+if kind in ("root", "word") and roots:
+    _tl = nuzul_timeline(roots)
+    if _tl: st.markdown(_tl, unsafe_allow_html=True)
 
 ln = 1
 for lab, idx in groups:
