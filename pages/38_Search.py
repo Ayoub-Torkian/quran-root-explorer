@@ -57,6 +57,9 @@ N = len(refs)
 DROP_SIM = {r for r, _v in sorted(corpus.index_exact.items(), key=lambda kv: -len(kv[1]))[:12]}
 crootset = [rootset[i] - DROP_SIM for i in range(N)]
 canorm = [math.sqrt(sum(root_idf.get(r, 0) ** 2 for r in crootset[i])) for i in range(N)]
+_STOP = {"اذ", "اذا", "التي", "الذي", "الذين", "الي", "اليه", "اليوم", "ان", "انا", "او", "بل", "به",
+         "بين", "ثم", "حتي", "ذلك", "علي", "عليه", "عن", "عند", "في", "فيه", "قد", "كل", "لا", "لكن",
+         "لم", "لن", "له", "ما", "من", "منه", "هذا", "هذه", "هم", "هن", "هو", "هي", "و"}  # never highlight function words
 
 _PREF = sorted(["وبال", "فبال", "وكال", "فكال", "وال", "فال", "بال", "كال", "فلل", "ولل", "لل", "ال",
                 "و", "ف", "ب", "ك", "ل", "س"], key=len, reverse=True)
@@ -490,7 +493,9 @@ for lab, idx in groups:
     if not idx: continue
     layer(ln, f"{lab} ({len(idx)})"); ln += 1
     shown = idx[:300]
-    cells = "".join(verse_html(i, roots, qwords, kind == "text") for i in shown)
+    _htarget = (roots - DROP_SIM) if kind == "phrase" else roots   # zoom highlight on CONTENT roots
+    _hq = qwords - _STOP                                            # never highlight function words
+    cells = "".join(verse_html(i, _htarget, _hq, kind == "text") for i in shown)
     grid = ("<style>"
             ".vgrid summary{display:block;list-style:none;cursor:pointer}"
             ".vgrid summary::-webkit-details-marker{display:none}"
@@ -501,9 +506,8 @@ for lab, idx in groups:
             "</style>"
             "<div class='vgrid' style='display:grid;grid-template-columns:1fr;gap:0;direction:rtl'>"
             f"{cells}</div>")
-    if len(shown) > 30:                          # scrollable box for large groups
-        grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
-                f"border-radius:6px;padding:2px 4px'>{grid}</div>")
+    grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
+            f"border-radius:6px;padding:2px 4px'>{grid}</div>")   # consistent box; scrolls only when tall
     st.markdown(grid, unsafe_allow_html=True)
 if total == 0:
     st.warning("No matches. Try the bare root, fewer words, or a reference like 2:255.")
