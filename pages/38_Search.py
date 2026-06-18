@@ -273,26 +273,28 @@ def hl_idx(i, target):
     return res
 
 def verse_html(i, target, qwords, substr=False):
+    """Collapsed: ref + first 50 words FROM THE START of the āyah (one line). Click to expand the
+    full āyah content (native <details>, no reload). Matches are highlighted throughout."""
     hl = hl_idx(i, target)
     W = words[i]
-    hits = set()
-    for k, w in enumerate(W):                    # find ALL matches across the full verse
+    marked = []
+    for k, w in enumerate(W):
         nw = norm(w)
         qhit = any(qw in nw for qw in qwords) if substr else (nw in qwords)
-        if (k in hl) or (qwords and qhit): hits.add(k)
-    if hits:                                      # window on the DENSEST match cluster (full ayah kept in memory)
-        best = max(hits, key=lambda h: sum(1 for x in hits if h <= x < h + 12))
-        start = max(0, best - 3) if best >= 8 else 0
-    else:
-        start = 0
-    seg = W[start:start + 50]
-    out = [f"<mark style='background:#FCEFB4'>{w}</mark>" if (start + j) in hits else w
-           for j, w in enumerate(seg)]
-    body = ("… " if start > 0 else "") + " ".join(out) + (" …" if start + 50 < len(W) else "")
-    return (f"<div style='direction:rtl;text-align:right;padding:1px 8px;border-bottom:1px solid #eef2f4;"
-            f"font-size:13px;color:#10243A;line-height:1.65;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
-            f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</b> "
-            f"<span style='color:#10243A'>{sname[i]}</span> &nbsp;{body}</div>")
+        hit = (k in hl) or (qwords and qhit)
+        marked.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
+    ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]}</b> "
+               f"<span style='color:#10243A'>{sname[i]}</span>")
+    head = " ".join(marked[:50]) + (" …" if len(marked) > 50 else "")
+    full = " ".join(marked)
+    return (
+        "<details style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
+        "<summary style='direction:rtl;text-align:right;font-size:13px;color:#10243A;line-height:1.65;"
+        "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer'>"
+        f"{ref_lbl} &nbsp;{head}</summary>"
+        f"<div style='direction:rtl;text-align:right;font-size:14.5px;color:#10243A;line-height:1.95;"
+        f"white-space:normal;padding:4px 2px 8px'>{full}</div>"
+        "</details>")
 
 hero("🔎 Search — anything, any form",
      "A root · a word · a phrase · an āyah · a reference or range (2:255 · 2:35-82 · 1:1،112:1). Paste a verse to find it AND similar ones.")
