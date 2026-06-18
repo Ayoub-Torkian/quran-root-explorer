@@ -70,13 +70,13 @@ def build_atlas(_cid, n_nodes=150, drop_ubiq=10, topk=3):
         it = [(snz[s], cc) for s, cc in occ[r].items() if s in snz]
         tot = sum(cc for _, cc in it); nuz[r] = (sum(nz * cc for nz, cc in it) / tot) if tot else 57.0
     pos = nx.spring_layout(G, weight="weight", seed=7, k=0.5, iterations=60)
-    return dict(nodes=nodes, docf={r: docf[r] for r in nodes}, edges=[(a, b) for a, b in G.edges()],
+    return dict(nodes=nodes, docf={r: docf[r] for r in nodes}, edges=[(a, b, G[a][b]["weight"]) for a, b in G.edges()],
                 theme_of=theme_of, themes=themes, nuz=nuz, pos={n: [float(p[0]), float(p[1])] for n, p in pos.items()})
 
-def figure(d, color_by):
+def figure(d, color_by, focus=None):
     pos, nodes, docf = d["pos"], d["nodes"], d["docf"]
     ex, ey = [], []
-    for a, b in d["edges"]:
+    for a, b, _w in d["edges"]:
         ex += [pos[a][0], pos[b][0], None]; ey += [pos[a][1], pos[b][1], None]
     edge_tr = go.Scatter(x=ex, y=ey, mode="lines", line=dict(width=0.6, color="#cfd8dc"), hoverinfo="none")
     xs = [pos[n][0] for n in nodes]; ys = [pos[n][1] for n in nodes]
@@ -85,6 +85,9 @@ def figure(d, color_by):
     texts = [n if n in top40 else "" for n in nodes]
     if color_by == "Theme":
         colors = [THEME_COLORS[d["theme_of"][n] % len(THEME_COLORS)] for n in nodes]
+        if focus is not None:                       # dim everything except the focused theme
+            colors = [colors[i] if d["theme_of"][n] == focus else "#dce4e7" for i, n in enumerate(nodes)]
+            texts = [n if (d["theme_of"][n] == focus and n in top40) else "" for n in nodes]
         marker = dict(size=sizes, color=colors, line=dict(width=0.5, color="#ffffff"))
     else:
         colors = [d["nuz"][n] for n in nodes]
@@ -109,10 +112,30 @@ c1, c2, c3 = st.columns(3)
 c1.metric("Concepts mapped", len(d["nodes"]))
 c2.metric("Attraction links", len(d["edges"]))
 c3.metric("Themes", len(d["themes"]))
-color_by = st.radio("Colour by", ["Theme", "Revelation phase"], horizontal=True, key="atlas_color")
-st.plotly_chart(figure(d, color_by), use_container_width=True)
+cc1, cc2 = st.columns([1, 1.4])
+color_by = cc1.radio("Colour by", ["Theme", "Revelation phase"], horizontal=True, key="atlas_color")
+_theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(top)}" for ti, _o, top in d["themes"]]
+_focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus")
+_focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
+st.plotly_chart(figure(d, color_by, _focus), use_container_width=True)
 st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
            "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
+
+# inline concept peek — quick profile without leaving the map
+_pick = st.selectbox("🔍 Inspect a concept", [""] + d["nodes"],
+                     format_func=lambda r: "— pick a root —" if r == "" else r, key="atlas_pick")
+if _pick:
+    _nb = sorted(((w, (b if a == _pick else a)) for a, b, w in d["edges"] if _pick in (a, b)), reverse=True)[:6]
+    _th = d["theme_of"][_pick]; _top = d["themes"][_th][2]
+    _bits = [f"freq <b>{d['docf'][_pick]}</b>", f"theme <b>{_th + 1}</b> ({' · '.join(_top)})",
+             f"revelation <b>{d['nuz'][_pick]:.0f}/114</b>"]
+    if _nb: _bits.append("pairs with <b>" + " · ".join(m for _w, m in _nb) + "</b>")
+    st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
+                "padding:8px 14px;margin:4px 0 8px;font-size:13.5px;color:#10243A;line-height:1.75'>"
+                f"🌱 <b>{_pick}</b> &nbsp;·&nbsp; " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
+    if st.button(f"Open {_pick} in Search →", key="atlas_open"):
+        st.session_state._pending_q = _pick
+        st.switch_page("pages/38_Search.py")
 
 layer(1, "Themes — click a concept to open it in Search")
 for ti, ordered, top in d["themes"]:
