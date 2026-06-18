@@ -89,3 +89,17 @@
 - **[QUEUED · low priority] Connectome / tree diagram of the passed L-features (L1–L17+)** — a plain-terms
   synthesis sketch showing how the discoveries link and integrate (relation edges already in
   `LATENT_FEATURES.md` "Related:" + the SYNTHESIS ladder). Deliver when there's a gap; user said not urgent.
+
+## App / usability working rules (LOCKED — added 2026-06-18, honor every session)
+1. **Auto-next.** When a step finishes, AUTOMATICALLY think about and propose the next high-value
+   usability feature — ranked, with a one-line value rationale — without being asked.
+2. **Enhance, don't proliferate.** Prefer enhancing an EXISTING tab/subtab. A NEW tab requires rigorous
+   justification (clear distinct intent that cannot live inside an existing surface).
+3. **Always assess/validate.** Before wiring any feature, validate the core logic against the corpus
+   (does it produce correct, meaningful output on known cases?); after wiring, re-check syntax + a sample.
+   No feature ships on assumption.
+4. **Honesty bar (carried over).** A usability feature adds usability, not discovery — never present it
+   as a new latent feature. Keep the MEASURED vs INFERRED distinction.
+5. **Dense graphics.** Actively look for opportunities to add REAL, information-dense graphics
+   (not decorative) where they beat text/lists. Before claiming a graphic is new, CHECK existing
+   graphic surfaces (Network, Compare_Heatmaps, Spatial_Patterns, Topic_Map, etc.) to avoid duplication.

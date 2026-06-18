@@ -243,6 +243,30 @@ st.caption(
     "Same graph, three layouts."
 )
 
+# ── Edge-weighting toggle: raw shared-verses vs ATTRACTION (PPMI) ──────────────
+st.markdown("### Edge weighting")
+_wmode = st.radio("Weight the graph edges by", ["Attraction · PPMI (recommended)", "Shared verses (raw)"],
+                  horizontal=True, index=0, key="net_wmode",
+                  help="Raw count is dominated by ubiquitous roots (الله, قوم). PPMI = co-occurrence "
+                       "BEYOND chance, so true concept pairs dominate and ubiquitous edges shrink/drop.")
+gv = g
+if _wmode.startswith("Attraction"):
+    import math as _m
+    from collections import Counter as _C
+    _Nv = len(corpus.df)
+    _docf = _C()
+    for _i in range(_Nv):
+        for _r in {t for t in corpus.root_tokens[_i] if t and t != "-"}: _docf[_r] += 1
+    gv = g.copy(); _drop = []
+    for _a, _b, _d in gv.edges(data=True):
+        _w = _d.get("weight", 1); _pa = _docf.get(_a, 1) / _Nv; _pb = _docf.get(_b, 1) / _Nv; _pab = _w / _Nv
+        _pm = max(0.0, _m.log(_pab / (_pa * _pb))) if _pa > 0 and _pb > 0 and _pab > 0 else 0.0
+        if _pm <= 0: _drop.append((_a, _b))
+        else: _d["weight"] = round(_pm, 3)
+    gv.remove_edges_from(_drop)
+    st.caption(f"Edges weighted by **attraction (PPMI)** — {gv.number_of_edges()} of {g.number_of_edges()} "
+               "edges are above-chance pairings (ubiquitous-root edges drop out). Thickness = attraction strength.")
+
 st.markdown("### Force-directed")
 st.markdown(
     '<div style="background:#EEF3FB;'
@@ -260,15 +284,15 @@ st.markdown(
     '</div>',
     unsafe_allow_html=True,
 )
-safe_chart(PC.chart_network, g, R["communities"])
+safe_chart(PC.chart_network, gv, R["communities"])
 
 st.markdown("### Chord")
 st.caption("Nodes on a ring, edges as chords.")
-safe_chart(PC.chart_chord_diagram, g, R["communities"])
+safe_chart(PC.chart_chord_diagram, gv, R["communities"])
 
 st.markdown("### Adjacency matrix")
 st.caption("Roots × roots, cell = ayahs shared.")
-safe_chart(PC.chart_adjacency_matrix, g)
+safe_chart(PC.chart_adjacency_matrix, gv)
 
 st.divider()
 
