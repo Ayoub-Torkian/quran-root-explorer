@@ -103,3 +103,13 @@
 5. **Dense graphics.** Actively look for opportunities to add REAL, information-dense graphics
    (not decorative) where they beat text/lists. Before claiming a graphic is new, CHECK existing
    graphic surfaces (Network, Compare_Heatmaps, Spatial_Patterns, Topic_Map, etc.) to avoid duplication.
+
+## App architecture / sustainability (LOCKED — added 2026-06-18, honor every session)
+1. **Coherent IA.** The app must stay organized into clear intent-based areas (the 4-area nav). Every
+   page belongs to exactly one area with a distinct purpose. No orphan pages (in `pages/` but unreachable
+   from nav), no duplicate-purpose pages.
+2. **Sustainable edits.** Any change (add/revise/delete/move) MUST keep the structure coherent: update the
+   nav (`NAV_SECTIONS` in state.py), remove dead links/pages, and check nothing else references the changed
+   surface. A feature is not "done" until the IA still reads cleanly.
+3. **Audit on cadence.** Periodically audit org for patchiness (orphans, duplicates, mis-grouped pages,
+   broken links) and report + fix. Structured functionality is required for sustainability.

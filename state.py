@@ -39,6 +39,7 @@ NAV_SECTIONS = [
             ("pages/4_Ayah_Browser.py", "Ayah Browser", "📖"),
             ("pages/20_Ayah_Deep_Dive.py", "Āyah Deep-Dive", "🔭"),
             ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive", "🔬"),
+            ("pages/36_Cross_References.py", "Cross-References", "🔗"),
         ]),
         ("Roots & relations", [
             ("pages/1_Per_Root_Profile.py", "Per-Root Profile", "🔍"),
@@ -46,10 +47,13 @@ NAV_SECTIONS = [
             ("pages/3_Motifs.py", "Motifs", "🔺"),
             ("pages/5_Compare_Heatmaps.py", "Compare & Heatmaps", "📊"),
             ("pages/9_Topic_Modeling.py", "Topic Modeling", "🧩"),
+            ("pages/8b_Topic_Map.py", "Topic Map", "🗺️"),
+            ("pages/8c_My_Topics.py", "My Topics", "📌"),
             (["pages/8_Calibration.py", "pages/8e_Calibration.py"], "Calibration", "🎚️"),
         ]),
         ("Morphology & interpret", [
             ("pages/6_Morphology.py", "Morphology", "🧬"),
+            ("pages/8d_Surface_Divergence.py", "Surface Divergence", "🔀"),
             (["pages/11_Interpret.py", "pages/8a_Interpret.py"], "Interpret", "🧠"),
             (["pages/10_Practical_Lens.py", "pages/8f_Practical_Lens.py"], "Practical Lens", "🔭"),
         ]),

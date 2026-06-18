@@ -381,14 +381,18 @@ if kind in ("root", "word") and roots:
                 if rt == r:
                     fcount[sf] += 1
     if fcount:
-        chips = " &nbsp; ".join(
-            f"<span style='background:#eef4f1;border-radius:5px;padding:1px 7px;white-space:nowrap'>"
-            f"<b>{f.replace(chr(1740),chr(1610)).replace(chr(1705),chr(1603))}</b> "
-            f"<span style='color:#0F6E56'>{n}</span></span>" for f, n in fcount.most_common())
-        st.markdown(
-            f"<div style='font-size:13px;color:#10243A;margin:2px 0 8px;line-height:2'>"
-            f"<b>Forms breakdown</b> ({len(fcount)} forms · {sum(fcount.values())} occurrences): &nbsp; {chips}</div>",
-            unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size:13px;color:#10243A;margin:2px 0 2px'>"
+                    f"<b>Forms breakdown</b> ({len(fcount)} forms · {sum(fcount.values())} occurrences) "
+                    f"— click a form to search it</div>", unsafe_allow_html=True)
+        _forms = [(f.replace(chr(1740), chr(1610)).replace(chr(1705), chr(1603)), n)
+                  for f, n in fcount.most_common()]
+        _PCF = 8
+        for _rf in range(0, len(_forms), _PCF):
+            _cf = st.columns(_PCF, gap="small")
+            for _k, (f, n) in enumerate(_forms[_rf:_rf + _PCF]):
+                if _cf[_k].button(f"{f}·{n}", key=f"fm_{_rf}_{_k}", use_container_width=True):
+                    st.session_state._pending_q = f
+                    st.rerun()
 
 if kind in ("root", "word") and roots:
     _tl = nuzul_timeline(roots)
