@@ -158,11 +158,10 @@ def search(q, mode="auto"):
         nqs = nq.replace(" ", "")                  # space-INSENSITIVE: robust to word-split/paste typos
         exact = [i for i, t in enumerate(ntext) if nqs in t.replace(" ", "")]
         eset = set(exact)
-        hroots = query_roots(toks)                 # the PHRASE's own roots — for highlighting only (small)
-        if 1 <= len(exact) <= 3:                    # one specific verse -> its curated roots drive similarity
+        hroots = query_roots(toks)                 # the PHRASE's own content roots drive similarity
+        Rq = hroots - DROP_SIM                      # similar = verses sharing the TYPED phrase's roots …
+        if not Rq and exact:                        # … fall back to the matched verse only if nothing resolved
             Rq = set().union(*[crootset[i] for i in exact])
-        else:                                       # common phrase / no exact -> phrase's own roots
-            Rq = hroots - DROP_SIM
         sims = similar_verses(Rq, eset)
         maxc = sims[0][0] if sims else 0.0
         sim_thr = max(0.15, 0.55 * maxc)
