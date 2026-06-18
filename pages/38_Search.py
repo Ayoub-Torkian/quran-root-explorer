@@ -330,7 +330,7 @@ st.markdown(
     "white-space:pre-line;width:max-content;max-width:380px;background:#10243A;color:#fff;"
     "padding:6px 10px;border-radius:6px;font-size:12px;line-height:1.6;"
     "box-shadow:0 3px 10px rgba(16,36,58,.25)} " + tip_css +
-    ".stButton button{padding:0 8px !important;min-height:0 !important;height:1.75em !important;"
+    ".stButton button{padding:2px 8px !important;min-height:1.8em !important;height:auto !important;"
     "font-size:12px !important;line-height:1.55 !important;border-radius:5px !important;}</style>",
     unsafe_allow_html=True)
 
@@ -395,13 +395,16 @@ if kind in ("root", "word") and roots:
     if _tl: st.markdown(_tl, unsafe_allow_html=True)
     _ph = collocations(roots)
     if _ph:
-        _chips = " &nbsp; ".join(
-            f"<span style='background:#eef4f1;border-radius:5px;padding:1px 8px;white-space:nowrap'>"
-            f"{ph} <span style='color:#0F6E56'>×{cc}</span></span>" for ph, cc in _ph)
-        st.markdown(
-            "<div style='font-size:13px;color:#10243A;margin:4px 0 1px'><b>Recurring phrases (mathānī)</b></div>"
-            "<div style='font-size:13px;color:#10243A;line-height:2.1;direction:rtl;text-align:right;"
-            f"margin-bottom:8px'>{_chips}</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:13px;color:#10243A;margin:4px 0 2px'>"
+                    "<b>Recurring phrases (mathānī)</b> — click to search the formula</div>",
+                    unsafe_allow_html=True)
+        _PCP = 2
+        for _rp in range(0, len(_ph), _PCP):
+            _cols = st.columns(_PCP, gap="small")
+            for _k, (ph, cc) in enumerate(_ph[_rp:_rp + _PCP]):
+                if _cols[_k].button(f"{ph}  ×{cc}", key=f"ph_{_rp}_{_k}", use_container_width=True):
+                    st.session_state._pending_q = ph
+                    st.rerun()
 
 ln = 1
 for lab, idx in groups:
