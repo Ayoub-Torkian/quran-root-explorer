@@ -146,7 +146,8 @@ def search(q, mode="auto"):
     if not toks:
         return "empty", set(), set(), []
     if mode == "phrase" or (mode == "auto" and len(toks) >= 2):
-        exact = [i for i, t in enumerate(ntext) if nq in t]
+        nqs = nq.replace(" ", "")                  # space-INSENSITIVE: robust to word-split/paste typos
+        exact = [i for i, t in enumerate(ntext) if nqs in t.replace(" ", "")]
         eset = set(exact)
         hroots = query_roots(toks)                 # the PHRASE's own roots — for highlighting only (small)
         if 1 <= len(exact) <= 3:                    # one specific verse -> its curated roots drive similarity
