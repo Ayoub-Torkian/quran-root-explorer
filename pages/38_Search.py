@@ -425,6 +425,21 @@ if kind in ("root", "word") and roots:
                     st.session_state._pending_q = ph
                     st.rerun()
 
+if kind == "phrase":                              # one-glance parallel snapshot (reuses groups+roots, no recompute)
+    _ex = groups[0][1] if len(groups) > 0 else []
+    _sim = groups[1][1] if len(groups) > 1 else []
+    _par = groups[2][1] if len(groups) > 2 else []
+    _bits = [f"<b>{len(_ex)}</b> exact · <b>{len(_sim)}</b> similar · <b>{len(_par)}</b> partial"]
+    _tp = _sim or _par
+    if _tp:
+        _j = _tp[0]; _bits.append(f"closest parallel <b>{refs[_j][0]}:{refs[_j][1]}</b> ({sname[_j]})")
+    if roots:
+        _key = sorted(roots, key=lambda r: -root_idf.get(r, 0))[:3]
+        _bits.append("shared roots <b>" + " · ".join(_key) + "</b>")
+    st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
+                "padding:8px 14px;margin:6px 0 10px;font-size:13.5px;color:#10243A;line-height:1.75'>"
+                "🧩 " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
+
 ln = 1
 for lab, idx in groups:
     if not idx: continue
