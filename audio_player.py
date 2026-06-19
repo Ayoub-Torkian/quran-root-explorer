@@ -62,7 +62,7 @@ def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int, jumped: 
     cfg = _json.dumps({
         "cdn": _CDN, "surah": int(surah), "gstart": int(gstart),
         "n": int(n_ayat), "start": int(start_ayah) if start_ayah else 1,
-        "jumped": bool(jumped),
+        "jumped": bool(jumped), "compact": bool(compact),
         "br": {e: br for e, _l, br in RECITERS},
     })
     opts = "".join(f"<option value='{e}'>{lbl}</option>" for e, lbl, _br in RECITERS)
@@ -123,6 +123,7 @@ window.addEventListener('storage',function(e){if(e.key=='qre_owner'&&e.newValue&
 var _r=LS('qre_reciter');if(_r){for(var i=0;i<rec.options.length;i++){if(rec.options[i].value==_r){rec.value=_r;break;}}}
 var _si=LS('qre_spd');if(_si!=null){si=Math.max(0,Math.min(SPD.length-1,+_si));}
 spdB.textContent=SPD[si]+'×';
+setLS('qre_compact',C.compact?'1':'0');   // mirror collapse preference into localStorage
 // resume position/state across page reruns (same sūra) unless this is an explicit āyah-jump
 var savedSur=+LS('qre_surah'), savedPos=+LS('qre_pos'), savedPlay=(LS('qre_play')=='1');
 var sameSurah=(savedSur===C.surah);

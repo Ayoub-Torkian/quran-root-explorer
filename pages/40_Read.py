@@ -47,6 +47,8 @@ if "read_s" not in st.session_state:
         st.session_state["read_a"] = max(0, int(_qp.get("a", 0)))
     except Exception:
         st.session_state["read_a"] = 0
+    # remembered collapse preference (?c=1) — survives reloads / bookmarks / resume links
+    st.session_state["read_compact"] = (str(_qp.get("c", "0")) == "1")
     st.session_state["read_s_prev"] = st.session_state["read_s"]
 
 # ── STICKY TOP BAR: sūra navigation + recitation player pinned together at the top of the
@@ -99,13 +101,21 @@ with _topbar:
     # recitation player — sticks WITH the nav at the top, always reachable while reading
     _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a), compact=_compact)
 
-# ── reflect the current position in the URL (only when it changed → no rerun loop) ──
-if st.query_params.get("s") != str(sel) or st.query_params.get("a", "") != (str(cur_a) if cur_a else ""):
+# ── reflect position + collapse state in the URL (only on change → no rerun loop) ──
+_want_a = str(cur_a) if cur_a else ""
+_want_c = "1" if st.session_state.get("read_compact", False) else ""
+if (st.query_params.get("s") != str(sel)
+        or st.query_params.get("a", "") != _want_a
+        or st.query_params.get("c", "") != _want_c):
     st.query_params["s"] = str(sel)
     if cur_a:
         st.query_params["a"] = str(cur_a)
     elif "a" in st.query_params:
         del st.query_params["a"]
+    if _want_c:
+        st.query_params["c"] = "1"
+    elif "c" in st.query_params:
+        del st.query_params["c"]
 
 # ── compact controls: translation + reading settings side by side ──
 _cc = st.columns(2)
