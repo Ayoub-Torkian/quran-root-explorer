@@ -2301,3 +2301,60 @@ def chart_fusion_scatter(points, xlab, ylab, title, zlab="spatial"):
         yaxis=dict(range=[-span, span], zeroline=False, gridcolor="#EDF1F6",
                    tickfont=dict(size=12, color="#1B263B"), title_font=dict(size=14)))
     return fig
+
+
+def chart_triad_significance(df: pd.DataFrame, glob_len: float) -> go.Figure:
+    """Honest triad diagnostic. One dense scatter that EXPOSES why raw co-occurrence
+    misleads and shows which triads are genuinely associated:
+      • x = raw co-occurrence (Sum Weight, log) — what the old ranking used
+      • y = Lift = Obs / Expected-under-frequency (log) — association beyond chance;
+        the dashed line at Lift=1 is "no more than frequency predicts"
+      • colour = verse length (mean roots/verse of the shared verses); points far above
+        the global mean (✦) are long-verse saturation artifacts
+      • a gold ring = the rare triad with genuine 3-way structure (3-way p < 0.05)
+    Reading: points bottom-right = high raw weight but low lift = frequency artifacts;
+    hot-coloured points = long-verse artifacts; top points = real association."""
+    if df is None or len(df) == 0:
+        return _layout(go.Figure(), "Triad significance")
+    d = df.copy()
+    sw = d["Sum Weight"].clip(lower=1).astype(float)
+    lift = d["Lift"].clip(lower=0.1).astype(float)
+    genuine = d["3-way p"] < 0.05
+    hover = [
+        f"<b>{a} · {b} · {c}</b><br>Obs together: {o}<br>Expected (freq): {e}<br>"
+        f"Lift: {l}×<br>Z (assoc): {z}<br>3-way p: {p}<br>Verse len: {vl} (global {glob_len:.1f})"
+        for a, b, c, o, e, l, z, p, vl in zip(
+            d["Root A"], d["Root B"], d["Root C"], d["Obs"], d["Expected"],
+            d["Lift"], d["Z (assoc)"], d["3-way p"], d["Verse len"])]
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=sw, y=lift, mode="markers",
+        marker=dict(size=(8 + 3 * np.sqrt(d["Obs"].astype(float))),
+                    color=d["Verse len"].astype(float), colorscale=CONTINUOUS,
+                    cmin=glob_len * 0.6, cmax=glob_len * 2.2, showscale=True,
+                    colorbar=dict(title="verse<br>length", thickness=12),
+                    line=dict(width=1, color="#10243A")),
+        text=hover, hoverinfo="text", showlegend=False))
+    # gold rings on genuine 3-way triads + labels
+    if genuine.any():
+        g = d[genuine]
+        fig.add_trace(go.Scatter(
+            x=g["Sum Weight"].clip(lower=1), y=g["Lift"].clip(lower=0.1),
+            mode="markers+text",
+            text=[f"{a}·{b}·{c}" for a, b, c in zip(g["Root A"], g["Root B"], g["Root C"])],
+            textposition="top center", textfont=dict(size=12, color="#10243A"),
+            marker=dict(size=20, color="rgba(0,0,0,0)",
+                        line=dict(width=3, color=PAL["gold"])),
+            hoverinfo="skip", showlegend=False))
+    fig.add_hline(y=1.0, line=dict(color="#10243A", width=1, dash="dash"),
+                  annotation_text="Lift = 1 (frequency-only)", annotation_position="bottom right",
+                  annotation_font=dict(size=12, color="#10243A"))
+    _layout(fig, "Triad honesty map — association vs raw co-occurrence vs verse length", h=520)
+    fig.update_layout(
+        xaxis=dict(title="raw co-occurrence (Sum Weight) — log", type="log",
+                   gridcolor="#EDF1F6", tickfont=dict(size=12, color="#10243A"),
+                   title_font=dict(size=14, color="#10243A")),
+        yaxis=dict(title="Lift = Obs / Expected (log) — association beyond frequency",
+                   type="log", gridcolor="#EDF1F6", tickfont=dict(size=12, color="#10243A"),
+                   title_font=dict(size=14, color="#10243A")))
+    return fig

@@ -327,6 +327,100 @@ def triangles_table(g, limit=100):
     return pd.DataFrame(rows).sort_values("Sum Weight", ascending=False).head(limit).reset_index(drop=True)
 
 
+def _poisson_sf(obs, lam):
+    """P(X >= obs) for X~Poisson(lam) — exact small-count tail (asymptotic chi-square
+    lies when expected counts are tiny, which is the norm for triple co-occurrence)."""
+    import math
+    if obs <= 0:
+        return 1.0
+    if lam <= 0:
+        return 0.0
+    term = math.exp(-lam); cdf = term
+    for k in range(1, int(obs)):
+        term *= lam / k; cdf += term
+    return max(0.0, min(1.0, 1.0 - cdf))
+
+
+def _ipf_e111(N, a, b, cc, nab, nac, nbc, nabc, iters=40):
+    """Expected triple co-occurrence under the log-linear NO-3-WAY model (all pairwise
+    associations preserved, no third-order term), fit by iterative proportional fitting
+    on the 2x2x2 table. Comparing observed nabc to this isolates genuine 3-way structure
+    from what the three pairwise rates already imply."""
+    n110 = nab - nabc; n101 = nac - nabc; n011 = nbc - nabc
+    n100 = a - nab - nac + nabc; n010 = b - nab - nbc + nabc; n001 = cc - nac - nbc + nabc
+    n000 = N - (nabc + n110 + n101 + n011 + n100 + n010 + n001)
+    if min(n110, n101, n011, n100, n010, n001, n000) < 0:
+        return None
+    eps = 0.5
+    O = [[[n000 + eps, n001 + eps], [n010 + eps, n011 + eps]],
+         [[n100 + eps, n101 + eps], [n110 + eps, nabc + eps]]]
+    tot = sum(O[i][j][k] for i in (0, 1) for j in (0, 1) for k in (0, 1))
+    E = [[[tot / 8.0] * 2 for _ in (0, 1)] for _ in (0, 1)]
+    for _ in range(iters):
+        for i in (0, 1):
+            for j in (0, 1):
+                em = E[i][j][0] + E[i][j][1]
+                f = (O[i][j][0] + O[i][j][1]) / em if em else 0
+                E[i][j][0] *= f; E[i][j][1] *= f
+        for i in (0, 1):
+            for k in (0, 1):
+                em = E[i][0][k] + E[i][1][k]
+                f = (O[i][0][k] + O[i][1][k]) / em if em else 0
+                E[i][0][k] *= f; E[i][1][k] *= f
+        for j in (0, 1):
+            for k in (0, 1):
+                em = E[0][j][k] + E[1][j][k]
+                f = (O[0][j][k] + O[1][j][k]) / em if em else 0
+                E[0][j][k] *= f; E[1][j][k] *= f
+    return E[1][1][1] - eps
+
+
+def triad_significance(corpus, triangles_df, normalize, top=40):
+    """Re-score triads HONESTLY. Raw 'Sum Weight' is dominated by how often each root
+    occurs and by verse length — so it surfaces ubiquitous-root and long-verse artifacts,
+    not structure. Adds, per triad: Expected (under each root's frequency), Lift = Obs/Expected
+    and Z (assoc) = frequency-controlled association (the right ranking key); 3-way p =
+    P(triple exceeds what its three PAIRWISE rates predict), small = genuine higher-order
+    structure (measured RARE, ~0.5% of triads, GRADED_FINDINGS 2026-06-19); Verse len = mean
+    roots/verse of the co-occurring verses, >> global flags a verse-length artifact.
+    Returns (df sorted by Z assoc, global_mean_verse_len)."""
+    glob_len = (sum(len(t) for t in corpus.root_tokens) / max(corpus.n_ayahs, 1))
+    if triangles_df is None or len(triangles_df) == 0:
+        return triangles_df, glob_len
+    idx = corpus.index_norm if normalize else corpus.index_exact
+    K = (normalize_letters if normalize else (lambda t: t))
+    N = corpus.n_ayahs
+    rlen = [len(t) for t in corpus.root_tokens]
+
+    def vset(r):
+        return set(idx.get(K(r), idx.get(r, [])))
+
+    rows = []
+    for _, row in triangles_df.iterrows():
+        a, b, cc = row["Root A"], row["Root B"], row["Root C"]
+        Sa, Sb, Sc = vset(a), vset(b), vset(cc)
+        na, nb, ncc = len(Sa), len(Sb), len(Sc)
+        if not (na and nb and ncc):
+            continue
+        nab = len(Sa & Sb); nac = len(Sa & Sc); nbc = len(Sb & Sc)
+        verses = Sa & Sb & Sc; nabc = len(verses)
+        Eind = N * (na / N) * (nb / N) * (ncc / N)
+        lift = nabc / Eind if Eind > 0 else 0.0
+        z = (nabc - Eind) / (Eind ** 0.5) if Eind > 0 else 0.0
+        e3 = _ipf_e111(N, na, nb, ncc, nab, nac, nbc, nabc)
+        p3 = _poisson_sf(nabc, e3) if (e3 is not None and e3 > 0) else (0.0 if nabc > 0 else 1.0)
+        mlen = (sum(rlen[i] for i in verses) / len(verses)) if verses else 0.0
+        rows.append({"Root A": a, "Root B": b, "Root C": cc, "Obs": nabc,
+                     "Sum Weight": row.get("Sum Weight", nab + nac + nbc),
+                     "Expected": round(Eind, 2), "Lift": round(lift, 1),
+                     "Z (assoc)": round(z, 1), "3-way p": round(p3, 4),
+                     "Verse len": round(mlen, 1)})
+    if not rows:
+        return triangles_df, glob_len
+    df = pd.DataFrame(rows).sort_values("Z (assoc)", ascending=False).head(top).reset_index(drop=True)
+    return df, glob_len
+
+
 def partner_motifs(corpus, input_roots, normalize, top=20):
     K = (normalize_letters if normalize else (lambda t: t))
     rows = []

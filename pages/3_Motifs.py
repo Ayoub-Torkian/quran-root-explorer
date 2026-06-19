@@ -134,20 +134,40 @@ for size, icon, label, desc in MOTIF_SPECS:
         width='stretch',
     )
 
-# ── LAYER 3 — triangle table ─────────────────────────────────────
+# ── LAYER 3 — triangles ranked HONESTLY (frequency- & length-controlled) ──────────
 st.divider()
-layer(3, "Top triangles by combined edge weight")
-st.plotly_chart(PC.chart_triangle_table_bar(R["triangles"], top=20), width='stretch')
-if not R["triangles"].empty:
-    _t0 = R["triangles"].iloc[0]
+layer(3, "Top triangles by association — frequency- & length-honest")
+_sig, _glob = A.triad_significance(corpus, R["triangles"], R["normalize"], top=40)
+with st.expander("📌 Why this no longer ranks by raw co-occurrence (1-min)", expanded=False):
     st.markdown(
-        f"**📍 What to take from this chart:** the strongest constellation here is "
-        f"**{_t0['Root A']} · {_t0['Root B']} · {_t0['Root C']}** (combined weight "
-        f"{_t0['Sum Weight']}) — three roots the text repeatedly packs into single verses. "
-        f"Weight counts verse co-presence, not similarity: read the actual verses in the "
-        f"drill-down below before treating it as a theme. Frequency-honest association "
-        f"(PPMI) is on the Network page (#66 rule).")
-st.dataframe(R["triangles"], width='content', hide_index=True, height=380)
+        "Raw **Sum Weight** (verses the three roots share) is dominated by two things that "
+        "are **not** structure:\n\n"
+        "- **Frequency** — ubiquitous roots (ءله، ربب، قول) top every triangle just because "
+        "they are everywhere. We divide by what each root's own frequency predicts → **Lift** "
+        "(Obs ÷ Expected) and **Z (assoc)**. Lift ≈ 1 means *no more than frequency predicts*.\n"
+        "- **Verse length** — long verses pack many roots, so any triple appears more often in "
+        "them. **Verse len** = mean roots/verse of the shared verses; far above the global "
+        f"**{_glob:.1f}** flags a long-verse artifact.\n\n"
+        "**3-way p** asks the deeper question — does the triple occur more than its three "
+        "*pairwise* rates already imply? Measured across the whole corpus, genuine higher-order "
+        "(3-way) structure is **rare (~0.5% of triads)**: most association is pairwise + "
+        "frequency + length. A **gold ring** marks the few triads that pass (3-way p < 0.05).")
+if _sig is None or len(_sig) == 0:
+    st.caption("(no triangles in this query's network)")
+else:
+    st.plotly_chart(PC.chart_triad_significance(_sig, _glob), width='stretch')
+    _g = _sig[_sig["3-way p"] < 0.05]
+    _top = _sig.iloc[0]
+    st.markdown(
+        f"**📍 What to take from this map:** ranked by **association beyond frequency**, the "
+        f"strongest triad is **{_top['Root A']} · {_top['Root B']} · {_top['Root C']}** "
+        f"(Lift {_top['Lift']}×, Z {_top['Z (assoc)']}). Points low on the Lift axis but far "
+        f"right are **frequency artifacts**; hot-coloured points are **long-verse artifacts**. "
+        + (f"**{len(_g)}** triad(s) here carry genuine 3-way structure (gold ring) — read their "
+           f"verses below before calling them a theme."
+           if len(_g) else "No triad here shows genuine 3-way structure beyond its pairs — "
+           "treat these as pairwise associations, verified by reading the verses below."))
+    st.dataframe(_sig, width='content', hide_index=True, height=360)
 
 # ── LAYER 4 — drill into a specific triangle ─────────────────────
 st.divider()
