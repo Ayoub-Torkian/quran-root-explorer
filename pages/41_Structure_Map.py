@@ -57,15 +57,21 @@ st.caption("Original Arabic is the anchor (always shown). Pick a translation to 
 # ── one-glance scorecard: structure found at each scale, vs the text's own shuffle ──
 _sc_bonds, _sc_n = D["bonds"]
 st.dataframe(pd.DataFrame([
-    {"scale": "Āyah", "structure": "concept bonds (NPMI)",
-     "strength vs shuffle": f"{_sc_n} strong bonds (NPMI > 0.3)"},
+    {"scale": "Āyah", "structure": "concept bonds", "method": "NPMI (frequency-controlled)",
+     "strength vs shuffle": f"{_sc_n} strong bonds (NPMI > 0.3)",
+     "what it means": "which ideas a verse pairs together"},
     {"scale": "Passage", "structure": "sequential weave",
-     "strength vs shuffle": f"z = {D['weave']['z']:.0f}"},
+     "method": "adjacent-verse reuse vs order-shuffle",
+     "strength vs shuffle": f"z = {D['weave']['z']:.0f}",
+     "what it means": "verse order carries meaning"},
     {"scale": "Sūra", "structure": "internal coherence",
-     "strength vs shuffle": f"z = {D['coher']['z']:.0f}"},
-    {"scale": "Qur'ān", "structure": "thematic blocks (NMF)",
+     "method": "TF-IDF signature vs verse→sūra shuffle",
+     "strength vs shuffle": f"z = {D['coher']['z']:.0f}",
+     "what it means": "each chapter is a real theme-unit"},
+    {"scale": "Qur'ān", "structure": "thematic blocks", "method": "NMF on root × sūra",
      "strength vs shuffle": f"{len(D['themes']['themes'])} themes · localized "
-     f"{D['themes']['real_spread']:.0f} vs {D['themes']['rand_spread']:.0f}"},
+     f"{D['themes']['real_spread']:.0f} vs {D['themes']['rand_spread']:.0f}",
+     "what it means": "themes are placed, not scattered"},
 ]), use_container_width=True, hide_index=True)
 
 _EXPL = {
@@ -296,6 +302,11 @@ st.dataframe(pd.DataFrame([{"theme (top roots)": " · ".join(t["roots"]),
                             "span": f"S{t['lo']}–{t['hi']}", "center": f"S{round(t['meanpos'])}",
                             "Meccan %": f"{t['meccan_frac']:.0%}"} for t in themes]),
              use_container_width=True, hide_index=True, height=340)
+try:                       # cross-link: this is corpus-wide NMF; Topic Modeling is per-root (Louvain)
+    st.page_link("pages/9_Topic_Modeling.py",
+                 label="→ Topic Modeling — query-driven, per-root themes (the complementary lens)", icon="🧩")
+except Exception:
+    pass
 with st.expander("read a theme in the text"):
     _to = [" · ".join(t["roots"][:4]) for t in themes]
     _ti = st.selectbox("theme", range(len(_to)), format_func=lambda i: _to[i], key="theme_read")
