@@ -17,6 +17,7 @@ import streamlit as st
 import analysis as _A
 import deep_dive as DD
 import plotly_charts as PC
+import meaning as _MEAN
 from state import get_corpus, hero, log_page
 
 st.set_page_config(page_title="Ayah Deep-Dive", page_icon="🔭", layout="wide")
@@ -432,6 +433,9 @@ for sd in res["seed"]:
                 f"color:#10243A'>{sd['text']}</div>", unsafe_allow_html=True)
     st.markdown("**concepts:**")
     _show_chips(sd["roots"])
+    _mhtml = _MEAN.meaning_block_html(sd["ref"], title="💬 Meaning")
+    if _mhtml:
+        st.markdown(_mhtml, unsafe_allow_html=True)
     _hero_strip(sd["ref"], res)
     _seal_panel(sd["ref"])
 

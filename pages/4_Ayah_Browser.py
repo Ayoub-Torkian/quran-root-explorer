@@ -3,6 +3,7 @@ import streamlit as st
 
 from state import (get_corpus, query_controls, compute_all, need_results,
                    hero, layer, highlight_text, render_quranic_verse, per_root_hint, log_page)
+import meaning as _MEAN
 
 st.set_page_config(page_title="Ayah Browser", page_icon="📖", layout="wide")
 log_page("ayahs")
@@ -120,6 +121,7 @@ st.markdown("""
 .ayah-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;}
 .ayah-card{border:1px solid #E2E8F1;border-radius:10px;padding:8px 12px;background:#FFFFFF;}
 .ayah-card .ar{direction:rtl;text-align:right;font-family:'Amiri','Amiri Quran','Noto Naskh Arabic',serif;font-size:18px;line-height:1.55;color:#243447;margin:0 0 4px 0;}
+.ayah-card .en{font-size:13px;color:#10243A;line-height:1.6;margin:0 0 4px 0;}
 .ayah-card .meta{font-size:12px;color:#10243A;margin:0;}
 </style>
 """, unsafe_allow_html=True)
@@ -132,5 +134,7 @@ for _, row in page_rows.iterrows():
         ar = row["Segmented Ayah"]
     meta = (f"S{row['Surah #']}·A{row['Ayah #']} · {row['Surah Name']} · "
             f"input: <b>{row['Input Root']}</b> · surface: {row['Surface Form(s)']}")
-    cards.append(f"<div class='ayah-card'><div class='ar'>{ar}</div><div class='meta'>{meta}</div></div>")
+    _en = _MEAN.gloss(f"{int(row['Surah #'])}:{int(row['Ayah #'])}", "en")
+    _en_html = f"<div class='en'>{_en}</div>" if _en else ""
+    cards.append(f"<div class='ayah-card'><div class='ar'>{ar}</div>{_en_html}<div class='meta'>{meta}</div></div>")
 st.markdown(f"<div class='ayah-grid'>{''.join(cards)}</div>", unsafe_allow_html=True)

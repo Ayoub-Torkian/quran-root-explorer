@@ -12,6 +12,7 @@ from collections import defaultdict, Counter
 import streamlit as st
 from analysis import COL_SURAH, COL_AYAH, COL_SURAH_NAME, COL_DIACRITIZED, normalize_letters
 from state import get_corpus, hero, layer, log_page
+import meaning as _MEAN
 
 st.set_page_config(page_title="Search", page_icon="🔎", layout="wide")
 log_page("search")
@@ -299,6 +300,7 @@ def verse_html(i, target, qwords, substr=False):
     full = " ".join(marked)
     _cls = "vrow long" if _more else "vrow"
     _chev = "<span class='ex' title='click to read the full āyah'>⌄</span> " if _more else ""
+    _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}")   # 4-lang meaning, shown only when expanded
     return (
         f"<details class='{_cls}' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
         + (f"<summary title='click to read the full āyah — partial shown' " if _more else "<summary ")
@@ -307,6 +309,7 @@ def verse_html(i, target, qwords, substr=False):
         f"{_chev}{ref_lbl} &nbsp;{head}</summary>"
         f"<div style='direction:rtl;text-align:right;font-size:14.5px;color:#10243A;line-height:1.95;"
         f"white-space:normal;padding:4px 2px 8px'>{full}</div>"
+        f"{_mean}"
         "</details>")
 
 hero("🔎 Search — anything, any form",
