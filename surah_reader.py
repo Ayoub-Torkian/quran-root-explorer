@@ -52,13 +52,15 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
     open_attr = " open" if langs else ""          # translation shown by default if a mode is on
     rlangs = langs if langs else ("en",)          # tap reveals this (English) even when mode is Off
     rows = []
+    if int(surah) not in (1, 9):     # Fātiḥa has it as āyah 1; Tawba (9) has none
+        rows.append("<div class='bism' dir='rtl'>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>")
     for _, r in sub.iterrows():
         a = int(r["__a"]); ar = str(r[COL_DIACRITIZED])   # Book6 = the one authoritative, clean source
         cur = (a == int(cur_ayah))
         tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=rlangs)
         rows.append(
             f"<details {'id=cur' if cur else ''} class='ay{' cur' if cur else ''}'{open_attr}>"
-            f"<summary><div class='ar' dir='rtl'><span class='num'>{int(surah)}:{a} · <bdi>{name}</bdi></span> {ar}"
+            f"<summary><span class='rex'>⌄</span><div class='ar' dir='rtl'><span class='num'>{int(surah)}:{a} · <bdi>{name}</bdi></span> {ar}"
             f"{' <span class=here>◂ here</span>' if cur else ''}</div></summary>"
             f"{tr}</details>")
     css = f"""
@@ -71,6 +73,9 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
     .ay.cur{{background:#FFF6DA;border-radius:10px;box-shadow:inset 0 0 0 2px #EAD9A0;margin:4px 6px}}
     summary{{list-style:none;cursor:pointer}}
     summary::-webkit-details-marker{{display:none}}
+    .rex{{float:left;color:#0F6E56;font-weight:800;font-size:0.9em;margin:2px 0 0 6px;transition:transform .15s;display:inline-block}}
+    details[open] .rex{{transform:rotate(180deg)}}
+    .bism{{text-align:center;font-family:'Tahoma','Noto Sans Arabic',serif;color:#1D3557;font-size:1.5em;padding:8px 4px 14px;direction:rtl;border-bottom:1px solid #eef2f4}}
     details[open]:not(.cur){{background:#fbfdfc;border-radius:8px}}
     .ar .num{{font-size:0.6em;font-weight:800;color:#0F6E56;vertical-align:0.15em}}
     .ar .here{{font-size:0.5em;font-weight:700;color:#B07A1A;vertical-align:0.2em}}
@@ -152,20 +157,31 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
     open_attr = " open" if langs else ""
     rlangs = langs if langs else ("en",)
     css = ("<style>"
-           ".rdr details{border-bottom:1px solid #eef2f4;padding:9px 10px}"
+           ".rdr details{border-bottom:1px solid #eef2f4;padding:9px 10px;scroll-margin-top:120px}"
            ".rdr details[open]{background:#fbfdfc;border-radius:8px}"
            ".rdr summary{list-style:none;cursor:pointer}"
            ".rdr summary::-webkit-details-marker{display:none}.rdr summary::marker{content:''}"
            ".rdr .vnum{color:#0F6E56;font-weight:800;font-size:0.6em;vertical-align:0.15em}"
+           ".rdr .rex{float:left;color:#0F6E56;font-weight:800;font-size:0.9em;margin:2px 0 0 6px;"
+           "transition:transform .15s;display:inline-block}"
+           ".rdr details[open] .rex{transform:rotate(180deg)}"
+           ".rdr .bism{text-align:center;font-family:'Tahoma','Noto Sans Arabic',serif;color:#1D3557;"
+           "font-size:1.35em;padding:6px 4px 12px;direction:rtl;border-bottom:1px solid #eef2f4;margin-bottom:4px}"
            "</style>")
     rows = [head]
+    if int(surah) not in (1, 9):     # Fātiḥa has it as āyah 1; Tawba (9) has none
+        rows.append("<div class='bism' dir='rtl'>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>")
     for _, r in sub.iterrows():
         a = int(r["__a"]); ar = str(r[COL_DIACRITIZED])   # Book6 = the one authoritative, clean source
         tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=rlangs)
-        hl = "background:#FFF6DA;border-radius:10px;" if (cur and a == int(cur)) else ""
+        _iscur = bool(cur and a == int(cur))
+        hl = "background:#FFF6DA;border-radius:10px;" if _iscur else ""
+        aid = f" id='a{a}'" if _iscur else ""
+        op = " open" if (langs or _iscur) else ""   # jumped-to āyah opens so its translation shows
         rows.append(
-            f"<details{open_attr} style='{hl}'>"
-            f"<summary><div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.05'>"
+            f"<details{aid}{op} style='{hl}'>"
+            f"<summary><span class='rex'>⌄</span>"
+            f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.05'>"
             f"<span class='vnum'>{int(surah)}:{a} · <bdi>{name}</bdi></span> {ar}</div></summary>"
             f"{tr}</details>")
     return (css + "<div class='rdr' style='max-width:820px;margin:0 auto'>"
