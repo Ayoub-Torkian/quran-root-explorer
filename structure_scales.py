@@ -115,6 +115,24 @@ def theme_word_hits(corpus, roots, limit=30, min_hits=2):
     return [(s, a, w) for _h, s, a, w in scored[:limit]]
 
 
+def sura_sig_hits(corpus, sura, roots, limit=15):
+    """Āyāt of one sūra that carry its signature roots, with the actual words (compact)."""
+    norm = A.normalize_letters
+    rs = set(roots)
+    refs = _refs(corpus)
+    out = []
+    for i, (rts, sfs) in enumerate(zip(corpus.root_tokens, corpus.surface_tokens)):
+        if refs[i][0] != int(sura):
+            continue
+        nr = [norm(r) for r in rts]
+        words = [sf for r, sf in zip(nr, sfs) if r in rs]
+        if words:
+            out.append((refs[i][0], refs[i][1], " · ".join(dict.fromkeys(words))))
+            if len(out) >= limit:
+                break
+    return out
+
+
 def ayah_bonds(corpus, min_co=5, top=150):
     """Within-āyah concept bonds ranked by NPMI (frequency-controlled), not raw count."""
     vroots, fr, suras, N = _prep(corpus)
@@ -198,20 +216,26 @@ def sura_coherence(corpus, n_null=40, seed=11):
     vroots, fr, suras, N = _prep(corpus)
     idf = {r: math.log(N / v) for r, v in fr.items()}
 
-    def coher(assign):
+    def coher(assign, want_per=False):
         cent = collections.defaultdict(collections.Counter)
         for s, S in assign:
             for r in S:
                 cent[s][r] += 1
         tot = 0.0; cnt = 0
+        per = collections.defaultdict(lambda: [0.0, 0])
         for s, S in assign:
             c = cent[s]
-            sc = sum((c[r] - 1) * idf[r] for r in S)
-            tot += sc / (len(S) or 1); cnt += 1
-        return tot / max(cnt, 1)
+            v = sum((c[r] - 1) * idf[r] for r in S) / (len(S) or 1)
+            tot += v; cnt += 1
+            if want_per:
+                per[s][0] += v; per[s][1] += 1
+        m = tot / max(cnt, 1)
+        if want_per:
+            return m, {s: per[s][0] / per[s][1] for s in per if per[s][1]}
+        return m
 
     base = [(suras[i], vroots[i]) for i in range(N)]
-    obs = coher(base)
+    obs, per = coher(base, want_per=True)
     sizes = [suras[i] for i in range(N)]
     nulls = []
     for _ in range(n_null):
@@ -219,7 +243,7 @@ def sura_coherence(corpus, n_null=40, seed=11):
         nulls.append(coher([(perm[i], vroots[i]) for i in range(N)]))
     mu = sum(nulls) / len(nulls)
     sd = (sum((x - mu) ** 2 for x in nulls) / len(nulls)) ** 0.5 or 1.0
-    return {"obs": obs, "mu": mu, "sd": sd, "z": (obs - mu) / sd}
+    return {"obs": obs, "mu": mu, "sd": sd, "z": (obs - mu) / sd, "per": sorted(per.items())}
 
 
 def quran_themes(corpus, K=12):

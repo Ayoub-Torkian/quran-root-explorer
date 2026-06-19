@@ -63,35 +63,41 @@ def _themeh(roots):
     return SS.theme_word_hits(corpus, list(roots), 30)
 
 
+@st.cache_data(show_spinner=False)
+def _sighits(sura, roots):
+    return SS.sura_sig_hits(corpus, sura, list(roots), 15)
+
+
 def _hits(rows, empty="(none)"):
-    """Compact read-out: one line per āyah — ref + the actual words (original). No bulk."""
+    """Dense read-out: ref + the actual words, in a multi-column grid that FILLS the width."""
     if not rows:
         st.caption(empty); return
-    h = ["<div style='display:flex;flex-direction:column;gap:1px'>"]
+    cells = []
     for s, a, words in rows:
-        h.append("<div style='display:flex;gap:10px;align-items:baseline;border-bottom:1px solid #eef2f4;padding:3px 0'>"
-                 f"<span style='font-weight:800;color:#0F6E56;font-size:13px;min-width:46px'>{s}:{a}</span>"
-                 f"<span class='qv-ar' dir='rtl' style='font-size:18px;color:#10243A'>{words}</span></div>")
-    h.append("</div>")
-    st.markdown("".join(h), unsafe_allow_html=True)
+        cells.append(
+            "<div style='display:flex;gap:8px;align-items:baseline;padding:4px 8px;border-bottom:1px solid #eef2f4'>"
+            f"<span style='font-weight:800;color:#0F6E56;font-size:13px;white-space:nowrap'>{s}:{a}</span>"
+            f"<span class='qv-ar' dir='rtl' style='font-size:20px;line-height:1.6;color:#10243A'>{words}</span></div>")
+    st.markdown("<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));"
+                "gap:0 16px'>" + "".join(cells) + "</div>", unsafe_allow_html=True)
 
 
 def _verse_cards(refs, langs, empty="(no verses)"):
     """Render āyāt: ORIGINAL Arabic (anchor) + the chosen translation."""
     if not refs:
         st.caption(empty); return
-    rl = langs if langs else ("en",)
     parts = ["<div style='display:grid;grid-template-columns:1fr;gap:6px;margin-top:4px'>"]
     for s, a in refs:
         try:
             ar = _SR._aryah(f"{s}:{a}") or ""
         except Exception:
             ar = ""
-        mean = _MEAN.meaning_block_html(f"{s}:{a}", langs=rl)
+        # respect the user's choice: Off (langs empty) → ORIGINAL ONLY, no translation forced
+        mean = _MEAN.meaning_block_html(f"{s}:{a}", langs=langs) if langs else ""
         parts.append(
             "<div style='border:1px solid #E2E8F1;border-radius:10px;padding:8px 12px;background:#fff'>"
             f"<div style='font-size:12.5px;font-weight:800;color:#0F6E56'>{s}:{a}</div>"
-            f"<div class='qv-ar' dir='rtl' style='text-align:right;font-size:19px;line-height:2;color:#10243A'>{ar}</div>"
+            f"<div class='qv-ar' dir='rtl' style='text-align:right;font-size:23px;line-height:2;color:#10243A'>{ar}</div>"
             f"{mean}</div>")
     parts.append("</div>")
     st.markdown("".join(parts), unsafe_allow_html=True)
@@ -104,133 +110,84 @@ def _lay(fig, title, h=420):
     return fig
 
 
-# ── ĀYAH ─────────────────────────────────────────────────────────────
-layer(1, "Āyah — concept bonds (NPMI · frequency-controlled)")
+# ════════════ FOUR CHARTS · ONE PER SCALE ════════════
+
+# 1) ĀYAH — which roots bond within a verse
+st.divider()
+layer(1, "Āyah")
 bonds, n_strong = D["bonds"]
-st.caption(f"{n_strong} strong bonds (NPMI > 0.3). Raw co-occurrence is dominated by frequency; "
-           f"NPMI recovers genuine concept-pairs you can read in the verses.")
-top = bonds[:22][::-1]
+top = bonds[:20][::-1]
 fig = go.Figure(go.Bar(x=[n for *_, n in top], y=[f"{a} · {b}" for a, b, _, _ in top],
                        orientation="h", marker_color="#1D9E75",
-                       text=[f"co={w}" for _, _, w, _ in top], textposition="auto"))
-fig.update_layout(xaxis_title="NPMI (bond strength)")
-st.plotly_chart(_lay(fig, "Top āyah-level root bonds", h=560), use_container_width=True)
-st.dataframe(pd.DataFrame([(f"{a} · {b}", w, n) for a, b, w, n in bonds[:60]],
-                          columns=["root pair", "co-occurrence", "NPMI"]),
-             use_container_width=True, hide_index=True, height=300)
-# read-back: the actual āyāt where a chosen bond's two roots co-occur (original + translation)
-_bo = [f"{a} · {b}" for a, b, _, _ in bonds[:40]]
-if _bo:
-    _bi = st.selectbox("Read a bond — where the two roots meet (words per āyah)",
-                       range(len(_bo)), format_func=lambda i: _bo[i], key="bond_read")
+                       hovertext=[f"co-occur {w}×" for _, _, w, _ in top], hoverinfo="text"))
+fig.update_layout(xaxis_title="bond strength (NPMI · frequency-controlled)")
+st.plotly_chart(_lay(fig, "Strongest concept-bonds within a verse", h=520), use_container_width=True)
+with st.expander("read a bond in the text"):
+    _bo = [f"{a} · {b}" for a, b, _, _ in bonds[:40]]
+    _bi = st.selectbox("bond", range(len(_bo)), format_func=lambda i: _bo[i], key="bond_read")
     _bh = _bondh(bonds[_bi][0], bonds[_bi][1])
-    st.caption(f"{len(_bh)} āyāt share both roots:")
-    _hits(_bh, "(no shared verses)")
+    _hits(_bh, "(none)")
     with st.expander("full text + translation"):
         _verse_cards([(s, a) for s, a, _ in _bh[:10]], _MP)
 
-# ── PASSAGE ──────────────────────────────────────────────────────────
+# 2) PASSAGE — sequential weave per sūra
 st.divider()
-layer(2, "Passage — sequential weave (does order matter?)")
+layer(2, "Passage")
 w = D["weave"]
-c1, c2 = st.columns([1, 3])
-c1.metric("weave vs verse-order shuffle", f"z = {w['z']:.0f}")
-c1.caption("Adjacent verses reuse roots far beyond a within-sūra order shuffle — local order is "
-           "load-bearing.")
-per = sorted(w["per"], key=lambda x: x[0])  # by sūra number
+per = sorted(w["per"], key=lambda x: x[0])
 fig = go.Figure(go.Bar(x=[s for s, _ in per], y=[v for _, v in per], marker_color="#1D3557"))
-fig.update_layout(xaxis_title="sūra (canonical order)", yaxis_title="weave per adjacent pair (IDF)")
-c2.plotly_chart(_lay(fig, "Sequential weave per sūra — where the text is tightly woven", h=360),
-                use_container_width=True)
-_tight = sorted(w["per"], key=lambda x: -x[1])[:5]
-st.caption("Most tightly woven sūras: " + " · ".join(f"S{s} ({v:.1f})" for s, v in _tight))
-
-# ── SŪRA ─────────────────────────────────────────────────────────────
-st.divider()
-layer(3, "Sūra — chapter signature + internal coherence")
-sig = D["sig"]
-c1, c2 = st.columns([1, 2])
-c1.metric("internal coherence vs verse→sūra shuffle", f"z = {D['coher']['z']:.0f}")
-c1.caption("Verses cohere to their own chapter's profile far above chance — the sūra is a real "
-           "theme-block, not a container.")
-_names = {}
-try:
-    from analysis import COL_SURAH, COL_SURAH_NAME
-    for s, n in zip(corpus.df[COL_SURAH].astype(int), corpus.df[COL_SURAH_NAME]):
-        _names.setdefault(int(s), str(n))
-except Exception:
-    pass
-_opts = sorted(sig)
-_sel = c2.selectbox("inspect a sūra's signature roots", _opts,
-                    format_func=lambda s: f"{s} · {_names.get(s, '')}")
-c2.markdown("**Signature roots:** " + " · ".join(f"`{r}`" for r in sig.get(_sel, [])))
-c2.caption("Examples — S12 Yūsuf: father · brother · prison · shirt · grief; "
-           "S112 Ikhlāṣ: one · beget; S1 Fātiḥa: path · help · mercy · wrath · praise.")
-# ORIGINAL DATA is the anchor — read the actual āyāt (original Arabic) + your chosen translation,
-# so every structural claim above is verifiable in the text itself.
-st.markdown("**Verify in the original text** — the signature is derived from these āyāt:")
-_SR.peek(corpus, int(_sel), 1, key=f"struct_{_sel}")
-
-# ── QUR'ĀN ───────────────────────────────────────────────────────────
-st.divider()
-layer(4, "Qur'ān — global thematic architecture (NMF · root × sūra)")
-th = D["themes"]
-themes = th["themes"]; suras = th["suras"]; dom = th["dom_per_sura"]
-labels = [" · ".join(t["roots"][:3]) for t in themes]
-st.caption("Each theme is a cluster of roots. Three simple views: WHERE each theme lives, the "
-           "dominant theme of each sūra, and the full directory — all original-anchored.")
-
-# View 1 — where each theme lives (span + center), ordered early → late
-figA = go.Figure()
-figA.add_trace(go.Bar(orientation="h", y=labels, x=[t["hi"] - t["lo"] for t in themes],
-                      base=[t["lo"] for t in themes], marker_color="#D6E3EC",
-                      hoverinfo="skip", showlegend=False))
-figA.add_trace(go.Scatter(
-    x=[t["meanpos"] for t in themes], y=labels, mode="markers",
-    marker=dict(size=13, color=[t["meccan_frac"] for t in themes], colorscale="RdBu",
-                cmin=0, cmax=1, showscale=True,
-                colorbar=dict(title="Meccan<br>share", thickness=12), line=dict(width=1, color="#10243A")),
-    text=[f"peak S{t['suras'][0]} · span S{t['lo']}–{t['hi']} · Meccan {t['meccan_frac']:.0%}"
-          for t in themes], hoverinfo="text", showlegend=False))
-figA.update_layout(xaxis_title="sūra position 1 → 114  (left = early/short sūras, right = late)",
-                   yaxis=dict(autorange="reversed"))
-st.plotly_chart(_lay(figA, "1) Where each theme lives — bar = middle-80% span, dot = center",
+fig.update_layout(xaxis_title="sūra (1 → 114)", yaxis_title="root reuse between adjacent āyāt")
+st.plotly_chart(_lay(fig, f"How tightly adjacent āyāt are woven  ·  vs verse-shuffle z = {w['z']:.0f}",
                      h=420), use_container_width=True)
-st.caption("Blue dots = Meccan-tilted themes (oneness, refuge, judgment — cluster early/late short "
-           "sūras); red = Medinan-tilted (community, law — cluster in the long early-middle sūras).")
 
-# View 2 — the territory as one strip: dominant theme of each sūra
-figB = go.Figure(go.Heatmap(
-    z=[dom], x=suras, y=[""], colorscale="Turbo", showscale=False,
-    customdata=[[labels[d] for d in dom]],
-    hovertemplate="sūra %{x}<br>theme: %{customdata}<extra></extra>"))
-figB.update_layout(xaxis_title="sūra (1 → 114)", yaxis=dict(showticklabels=False))
-st.plotly_chart(_lay(figB, "2) Dominant theme of each sūra — colour = the theme that most defines it",
-                     h=190), use_container_width=True)
-st.caption(f"Runs of one colour = thematic regions. Themes cluster in position (within-theme spread "
-           f"**{th['real_spread']:.0f}** vs **{th['rand_spread']:.0f}** shuffled) — the order is not random.")
+# 3) SŪRA — internal coherence per chapter
+st.divider()
+layer(3, "Sūra")
+cper = sorted(D["coher"]["per"], key=lambda x: x[0])
+fig = go.Figure(go.Bar(x=[s for s, _ in cper], y=[v for _, v in cper], marker_color="#0F6E56"))
+fig.update_layout(xaxis_title="sūra (1 → 114)", yaxis_title="how tightly its āyāt cohere")
+st.plotly_chart(_lay(fig, f"Each chapter's internal coherence  ·  vs verse→sūra shuffle z = {D['coher']['z']:.0f}",
+                     h=420), use_container_width=True)
+sig = D["sig"]
+with st.expander("a sūra's signature roots + text"):
+    _names = {}
+    try:
+        from analysis import COL_SURAH, COL_SURAH_NAME
+        for s, n in zip(corpus.df[COL_SURAH].astype(int), corpus.df[COL_SURAH_NAME]):
+            _names.setdefault(int(s), str(n))
+    except Exception:
+        pass
+    _sel = st.selectbox("sūra", sorted(sig), format_func=lambda s: f"{s} · {_names.get(s, '')}", key="sig_sel")
+    st.markdown("**Signature roots:** " + " · ".join(f"`{r}`" for r in sig.get(_sel, [])))
+    _sigh = _sighits(int(_sel), tuple(sig.get(_sel, [])))
+    _hits(_sigh, "(none)")
+    with st.expander("full text + translation"):
+        _verse_cards([(s, a) for s, a, _ in _sigh[:10]], _MP)
 
-# View 3 — the directory table
-st.markdown("**3) Theme directory**")
-st.dataframe(pd.DataFrame([
-    {"theme (top roots)": " · ".join(t["roots"]),
-     "peak sūras": " ".join(f"S{s}" for s in t["suras"]),
-     "span": f"S{t['lo']}–{t['hi']}",
-     "center": f"S{round(t['meanpos'])}",
-     "Meccan share": f"{t['meccan_frac']:.0%}"} for t in themes]),
-    use_container_width=True, hide_index=True, height=380)
-# read-back: the actual āyāt that most express a chosen theme (original + translation)
-_to = [" · ".join(t["roots"][:4]) for t in themes]
-if _to:
-    _ti = st.selectbox("Read a theme — āyāt that most carry its roots (words)",
-                       range(len(_to)), format_func=lambda i: _to[i], key="theme_read")
+# 4) QUR'ĀN — where each theme lives across the muṣḥaf
+st.divider()
+layer(4, "Qur'ān")
+th = D["themes"]; themes = th["themes"]
+labels = [" · ".join(t["roots"][:3]) for t in themes]
+fig = go.Figure()
+fig.add_trace(go.Bar(orientation="h", y=labels, x=[t["hi"] - t["lo"] for t in themes],
+                     base=[t["lo"] for t in themes], marker_color="#D6E3EC",
+                     hoverinfo="skip", showlegend=False))
+fig.add_trace(go.Scatter(
+    x=[t["meanpos"] for t in themes], y=labels, mode="markers",
+    marker=dict(size=13, color=[t["meccan_frac"] for t in themes], colorscale="RdBu", cmin=0, cmax=1,
+                showscale=True, colorbar=dict(title="Meccan<br>share", thickness=12),
+                line=dict(width=1, color="#10243A")),
+    hovertext=[f"peak S{t['suras'][0]} · span S{t['lo']}–{t['hi']}" for t in themes],
+    hoverinfo="text", showlegend=False))
+fig.update_layout(xaxis_title="sūra position 1 → 114  (left = early, right = late)",
+                  yaxis=dict(autorange="reversed"))
+st.plotly_chart(_lay(fig, f"Where each theme lives  ·  themes cluster (spread {th['real_spread']:.0f} vs {th['rand_spread']:.0f} shuffled)",
+                     h=440), use_container_width=True)
+with st.expander("read a theme in the text"):
+    _to = [" · ".join(t["roots"][:4]) for t in themes]
+    _ti = st.selectbox("theme", range(len(_to)), format_func=lambda i: _to[i], key="theme_read")
     _thh = _themeh(tuple(themes[_ti]["roots"]))
-    st.caption(f"{len(_thh)} āyāt:")
-    _hits(_thh, "(no verses)")
+    _hits(_thh, "(none)")
     with st.expander("full text + translation"):
         _verse_cards([(s, a) for s, a, _ in _thh[:10]], _MP)
-
-st.divider()
-st.caption("All four scales are measured vs the text's own shuffle (research/intrinsic/"
-           "MULTISCALE_STRUCTURE.md). These are robust structural recoveries — the value is the "
-           "scale-honest method (one instrument per scale) and a navigable map of the territory.")
