@@ -54,6 +54,64 @@ INK = "#10243A"
 _MP = _MEAN.translation_control(st)
 st.caption("Original Arabic is the anchor (always shown). Pick a translation to read alongside.")
 
+# ── one-glance scorecard: structure found at each scale, vs the text's own shuffle ──
+_sc_bonds, _sc_n = D["bonds"]
+st.dataframe(pd.DataFrame([
+    {"scale": "Āyah", "structure": "concept bonds (NPMI)",
+     "strength vs shuffle": f"{_sc_n} strong bonds (NPMI > 0.3)"},
+    {"scale": "Passage", "structure": "sequential weave",
+     "strength vs shuffle": f"z = {D['weave']['z']:.0f}"},
+    {"scale": "Sūra", "structure": "internal coherence",
+     "strength vs shuffle": f"z = {D['coher']['z']:.0f}"},
+    {"scale": "Qur'ān", "structure": "thematic blocks (NMF)",
+     "strength vs shuffle": f"{len(D['themes']['themes'])} themes · localized "
+     f"{D['themes']['real_spread']:.0f} vs {D['themes']['rand_spread']:.0f}"},
+]), use_container_width=True, hide_index=True)
+
+_EXPL = {
+    "ayah": (
+        "**Concept.** An āyah is the smallest unit that carries a complete sense. Structure at this "
+        "scale means which root-ideas a verse draws together more than their individual frequencies "
+        "would predict — the verse's internal semantic bonds, measured frequency-controlled (NPMI), "
+        "not by raw co-occurrence (which only reflects how common a word is).\n\n"
+        "**Finding & significance.** The strongest bonds are the Qur'ān's own concept-pairs — جري·تحت "
+        "(rivers flowing beneath), شمس·قمر, نفخ·صور (the Trumpet), مريم·عيسى — and they group into "
+        "coherent families. The verse behaves as a designed semantic packet whose content roots "
+        "co-select rather than co-occur by chance. Value: a verified, readable map of which ideas the "
+        "text binds at verse level. Significance: it grounds every larger-scale claim in observable, "
+        "frequency-honest association. [MEASURED]"),
+    "passage": (
+        "**Concept.** A passage is several consecutive āyāt read as one stretch (a rukūʿ-like unit). "
+        "Structure here is sequential — do neighbouring verses share roots, i.e. does the ORDER of "
+        "verses carry meaning? Measured as IDF-weighted root reuse between adjacent verses against a "
+        "within-sūra verse-order shuffle.\n\n"
+        "**Finding & significance.** The weave runs far above shuffle (z ≈ 40), and reuse decays "
+        "smoothly with distance — strongest for immediate neighbours, fading over a handful of verses, "
+        "which defines the natural passage size. Value: verse order is load-bearing — reorder a "
+        "chapter's verses and the weave collapses. Significance: the Qur'ān is not a bag of independent "
+        "verses; it is sequenced, and the sequence is intrinsic and measurable. [MEASURED]"),
+    "sura": (
+        "**Concept.** A sūra is a chapter — a bounded thematic unit. Structure at this scale is "
+        "whole-chapter coherence: do a sūra's verses share a distinctive vocabulary (a signature) that "
+        "sets the chapter apart? Measured as each verse's fit to its own chapter's root profile versus "
+        "a verse→sūra reassignment shuffle.\n\n"
+        "**Finding & significance.** Coherence is far above chance (z ≈ 54), the per-sūra signatures "
+        "recover each chapter's identity (Yūsuf → prison · shirt · brother; Ikhlāṣ → one · beget; "
+        "Fātiḥa → path · mercy · praise), and it is not a length artifact. Value: the sūra is a genuine "
+        "unit of meaning, not an arbitrary container. Significance: the chapter division is intrinsic "
+        "to the text's own vocabulary, not merely traditional. [MEASURED]"),
+    "quran": (
+        "**Concept.** At the whole-book scale, structure is the macro-architecture: do the roots "
+        "organise into a few themes, and are those themes arranged — placed in particular regions of "
+        "the muṣḥaf rather than scattered? Measured by factoring the root×sūra matrix (NMF) into themes "
+        "and testing their positional spread against a shuffle.\n\n"
+        "**Finding & significance.** Twelve interpretable themes emerge — oneness, judgment, charity, "
+        "refuge, community-and-law — and they localise in canonical order (within-theme spread ≈ 19 vs "
+        "≈ 30 shuffled), each tilting Meccan or Medinan. Value: a navigable map of the book's thematic "
+        "territory. Significance: the canonical arrangement is not random — themes cluster by position, "
+        "intrinsic evidence bearing on why the sūras sit in this order. [MEASURED]"),
+}
+
 
 @st.cache_data(show_spinner=False)
 def _bondh(a, b):
@@ -117,13 +175,13 @@ def _lay(fig, title, h=420):
 # 1) ĀYAH — which roots bond within a verse
 st.divider()
 layer(1, "Āyah")
+with st.expander("ℹ️ concept · finding · significance"):
+    st.markdown(_EXPL["ayah"])
 bonds, n_strong = D["bonds"]
-top = bonds[:20][::-1]
-fig = go.Figure(go.Bar(x=[n for *_, n in top], y=[f"{a} · {b}" for a, b, _, _ in top],
-                       orientation="h", marker_color="#1D9E75",
-                       hovertext=[f"co-occur {w}×" for _, _, w, _ in top], hoverinfo="text"))
-fig.update_layout(xaxis_title="bond strength (NPMI · frequency-controlled)")
-st.plotly_chart(_lay(fig, "Strongest concept-bonds within a verse", h=520), use_container_width=True)
+st.markdown("**Strongest concept-bonds within a verse** (NPMI, frequency-controlled):")
+st.dataframe(pd.DataFrame([{"bond": f"{a} · {b}", "NPMI": n, "co-occurs": w}
+                           for a, b, w, n in bonds[:40]]),
+             use_container_width=True, hide_index=True, height=360)
 # concept families — roots that bond together (connected groups of strong bonds)
 st.markdown("**Concept families** — roots that travel together within verses:")
 _fcells = ["<div style='border:1px solid #cfe4dc;border-radius:8px;padding:6px 10px;background:#F4F9F7'>"
@@ -142,6 +200,8 @@ with st.expander("read a bond in the text"):
 # 2) PASSAGE — sequential weave per sūra
 st.divider()
 layer(2, "Passage")
+with st.expander("ℹ️ concept · finding · significance"):
+    st.markdown(_EXPL["passage"])
 w = D["weave"]
 per = sorted(w["per"], key=lambda x: x[0])
 fig = go.Figure(go.Bar(x=[s for s, _ in per], y=[v for _, v in per], marker_color="#1D3557"))
@@ -164,6 +224,8 @@ st.plotly_chart(_lay(figd, "How far cohesion reaches — reuse fades with distan
 # 3) SŪRA — internal coherence per chapter
 st.divider()
 layer(3, "Sūra")
+with st.expander("ℹ️ concept · finding · significance"):
+    st.markdown(_EXPL["sura"])
 cper = sorted(D["coher"]["per"], key=lambda x: x[0])
 fig = go.Figure(go.Bar(x=[s for s, _ in cper], y=[v for _, v in cper], marker_color="#0F6E56"))
 fig.update_layout(xaxis_title="sūra (1 → 114)", yaxis_title="how tightly its āyāt cohere")
@@ -201,6 +263,8 @@ with st.expander("a sūra's signature roots + text"):
 # 4) QUR'ĀN — where each theme lives across the muṣḥaf
 st.divider()
 layer(4, "Qur'ān")
+with st.expander("ℹ️ concept · finding · significance"):
+    st.markdown(_EXPL["quran"])
 th = D["themes"]; themes = th["themes"]
 labels = [" · ".join(t["roots"][:3]) for t in themes]
 fig = go.Figure()
@@ -228,6 +292,10 @@ figt.add_vline(x=50, line=dict(color="#10243A", width=1, dash="dash"))
 figt.update_layout(xaxis_title="Meccan share of the theme (%)  ·  left = Medinan, right = Meccan")
 st.plotly_chart(_lay(figt, "Each theme's Meccan vs Medinan tilt (revelation arrangement)", h=420),
                 use_container_width=True)
+st.dataframe(pd.DataFrame([{"theme (top roots)": " · ".join(t["roots"]),
+                            "span": f"S{t['lo']}–{t['hi']}", "center": f"S{round(t['meanpos'])}",
+                            "Meccan %": f"{t['meccan_frac']:.0%}"} for t in themes]),
+             use_container_width=True, hide_index=True, height=340)
 with st.expander("read a theme in the text"):
     _to = [" · ".join(t["roots"][:4]) for t in themes]
     _ti = st.selectbox("theme", range(len(_to)), format_func=lambda i: _to[i], key="theme_read")
