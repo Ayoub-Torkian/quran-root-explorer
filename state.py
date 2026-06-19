@@ -60,6 +60,7 @@ NAV_SECTIONS = [
     ]),
     ("💡 DISCOVER", [
         (None, [("pages/39_Concept_Atlas.py", "Concept Atlas · the territory", "🗺️"),
+                ("pages/41_Structure_Map.py", "Structure Map · all scales", "🪜"),
                 ("pages/37_Discovery_Map.py", "Discovery Map · start here", "🗺️"),
                 ("pages/25_Latent_Features.py", "Latent Features", "🧬"),
                 ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
