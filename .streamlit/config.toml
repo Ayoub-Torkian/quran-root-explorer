@@ -1,0 +1,9 @@
+# Pin a LIGHT theme so the app never flips to dark on phones/tablets in dark mode.
+# (All custom HTML uses dark ink on light backgrounds; without this, iOS/Android dark
+#  mode made native text light-on-light = invisible, while emoji icons still showed.)
+[theme]
+base = "light"
+primaryColor = "#1D9E75"
+backgroundColor = "#FAFBFD"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#10243A"
