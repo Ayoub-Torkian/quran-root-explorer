@@ -49,36 +49,47 @@ if "read_s" not in st.session_state:
         st.session_state["read_a"] = 0
     st.session_state["read_s_prev"] = st.session_state["read_s"]
 
-# ── STICKY sūra navigation: stays pinned at the top of the screen while you scroll, so
-#    you can jump to ANY sūra (or āyah) from ANY point without scrolling back to the top ──
+# ── STICKY TOP BAR: sūra navigation + recitation player pinned together at the top of the
+#    screen while you scroll, so you can jump to any sūra/āyah AND reach the player controls
+#    from any point without scrolling back. Built on a KEYED container (stable class) with
+#    position:sticky — which degrades SAFELY to in-flow-visible if a browser ignores it
+#    (unlike the old fixed bottom-dock, which could hide on some laptops). ──
 st.markdown(
     "<style>"
-    "[data-testid='stLayoutWrapper']:has(.rdnav),"
-    "[data-testid='stVerticalBlock'] > [data-testid='stElementContainer']:has(.rdnav){"
-    "position:sticky;top:0;z-index:60;background:#FBFCFE;padding:6px 6px 2px;margin:-4px 0 6px;"
-    "box-shadow:0 5px 12px rgba(16,36,58,.10);border-radius:0 0 12px 12px}"
-    ":has(>.rdnav),.rdnav{margin:0}"
-    "[data-testid='stLayoutWrapper']:has(.rdnav) .stButton button{min-height:40px}"
+    "section[data-testid='stMain'] [data-testid='stVerticalBlock']{gap:.4rem}"
+    "[data-testid='stElementContainer']:has(iframe){margin:0 !important}"
+    ".st-key-topbar{position:sticky;top:0;z-index:100;background:#FBFCFE;"
+    "padding:6px 8px 8px;margin:-4px 0 6px;box-shadow:0 6px 14px rgba(16,36,58,.12);"
+    "border-radius:0 0 14px 14px}"
+    ".st-key-topbar .stButton button{min-height:40px}"
+    ".st-key-topbar iframe{max-width:860px;display:block;margin:0 auto}"
     "</style>", unsafe_allow_html=True)
 
-top = st.columns([1, 3, 1.5, 1])
-top[1].markdown("<div class='rdnav'></div>", unsafe_allow_html=True)
-if top[0].button("◀ Prev", use_container_width=True):
-    st.session_state["read_s"] = max(1, int(st.session_state["read_s"]) - 1)
-if top[3].button("Next ▶", use_container_width=True):
-    st.session_state["read_s"] = min(114, int(st.session_state["read_s"]) + 1)
-sel = top[1].selectbox("Sūra", suras, index=suras.index(int(st.session_state["read_s"])),
-                       format_func=lambda s: f"{s} · {names.get(s, '')}")
+try:
+    _topbar = st.container(key="topbar")
+except TypeError:                       # older Streamlit without container keys → in-flow fallback
+    _topbar = st.container()
+with _topbar:
+    top = st.columns([1, 3, 1.5, 1])
+    if top[0].button("◀ Prev", use_container_width=True):
+        st.session_state["read_s"] = max(1, int(st.session_state["read_s"]) - 1)
+    if top[3].button("Next ▶", use_container_width=True):
+        st.session_state["read_s"] = min(114, int(st.session_state["read_s"]) + 1)
+    sel = top[1].selectbox("Sūra", suras, index=suras.index(int(st.session_state["read_s"])),
+                           format_func=lambda s: f"{s} · {names.get(s, '')}")
 
-# switching sūra clears any āyah-jump (it belonged to the old sūra) — set BEFORE the widget
-if sel != st.session_state.get("read_s_prev"):
-    st.session_state["read_a"] = 0
-    st.session_state["read_s_prev"] = sel
-st.session_state["read_s"] = sel
+    # switching sūra clears any āyah-jump (it belonged to the old sūra) — set BEFORE the widget
+    if sel != st.session_state.get("read_s_prev"):
+        st.session_state["read_a"] = 0
+        st.session_state["read_s_prev"] = sel
+    st.session_state["read_s"] = sel
 
-_n_ayat = int((df[COL_SURAH].astype(int) == sel).sum())
-cur_a = int(top[2].number_input("Jump to āyah (0 = top)", min_value=0, max_value=_n_ayat,
-                                step=1, key="read_a"))
+    _n_ayat = int((df[COL_SURAH].astype(int) == sel).sum())
+    cur_a = int(top[2].number_input("Jump to āyah (0 = top)", min_value=0, max_value=_n_ayat,
+                                    step=1, key="read_a"))
+
+    # recitation player — sticks WITH the nav at the top, always reachable while reading
+    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a))
 
 # ── reflect the current position in the URL (only when it changed → no rerun loop) ──
 if st.query_params.get("s") != str(sel) or st.query_params.get("a", "") != (str(cur_a) if cur_a else ""):
@@ -87,26 +98,6 @@ if st.query_params.get("s") != str(sel) or st.query_params.get("a", "") != (str(
         st.query_params["a"] = str(cur_a)
     elif "a" in st.query_params:
         del st.query_params["a"]
-
-# ── compact spacing + ALWAYS-ON recitation dock pinned to the bottom of the screen ──
-st.markdown(
-    "<style>"
-    "section[data-testid='stMain'] [data-testid='stVerticalBlock']{gap:.4rem}"
-    "[data-testid='stElementContainer']:has(iframe){margin:0 !important}"
-    # keyed container → stable class, reliably pinned to the bottom (degrades to in-flow if unsupported)
-    ".st-key-audiodock{position:fixed;left:0;right:0;bottom:0;z-index:1000;margin:0;background:#EEF3F8;"
-    "padding:6px 10px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -5px 16px rgba(16,36,58,.18)}"
-    ".st-key-audiodock iframe{max-width:860px;display:block;margin:0 auto}"
-    "section[data-testid='stMain'] .block-container{padding-bottom:150px !important}"
-    "</style>", unsafe_allow_html=True)
-
-# ── recitation player — docked at the bottom of the screen, always visible & reachable ──
-try:
-    _dock = st.container(key="audiodock")
-except TypeError:                       # older Streamlit without container keys → in-flow fallback
-    _dock = st.container()
-with _dock:
-    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a))
 
 # ── compact controls: translation + reading settings side by side ──
 _cc = st.columns(2)
