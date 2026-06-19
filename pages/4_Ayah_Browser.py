@@ -2,22 +2,25 @@
 import streamlit as st
 
 from state import (get_corpus, query_controls, compute_all, need_results,
-                   hero, layer, highlight_text, render_quranic_verse, per_root_hint, log_page)
+                   hero, layer, highlight_text, render_quranic_verse, per_root_hint, log_page,
+                   reader_play_handoff, play_link)
 import meaning as _MEAN
 import mobile as _MOB
 
-st.set_page_config(page_title="Ayah Browser", page_icon="📖", layout="wide")
+st.set_page_config(page_title="Matched Āyāt", page_icon="📑", layout="wide")
 _MOB.inject()                       # mobile-first reading CSS + Qur'an webfonts (after set_page_config)
 log_page("ayahs")
 corpus = get_corpus()
+reader_play_handoff()               # a card's ▶ opens that āyah in the Reader and recites it
 raw, normalize, top_p, min_w, run = query_controls(corpus)
 from state import needs_recompute
 if run or needs_recompute():
     compute_all(corpus, raw, normalize, top_p, min_w)
 R = need_results()
 
-hero("📖 Ayah Browser",
-     "Every matched ayah — full diacritized Quranic text, segmented form, and word-by-word alignment.")
+hero("📑 Matched Āyāt",
+     "Every āyah your root query matched — diacritized text, per-sūra profile, table, and word-by-word. "
+     "Tap ▶ to read &amp; hear any verse in the Reader. (For free reading by sūra, use 📖 Read.)")
 per_root_hint(compact=True)
 _MOB.settings_controls(st)          # ⚙️ text size (Arabic-first) + line spacing
 
@@ -126,6 +129,9 @@ st.markdown("""
 .ayah-card .ar{direction:rtl;text-align:right;font-family:'Tahoma','Noto Sans Arabic','Segoe UI',Arial,sans-serif;font-size:18px;line-height:1.7;color:#243447;margin:0 0 4px 0;}
 .ayah-card .en{font-size:13px;color:#10243A;line-height:1.6;margin:0 0 4px 0;}
 .ayah-card .meta{font-size:12px;color:#10243A;margin:0;}
+.ayah-card .vp{color:#fff;background:#1D9E75;font-weight:800;font-size:12.5px;text-decoration:none;
+  border-radius:999px;padding:3px 9px;margin:0 0 4px 0;line-height:1;display:inline-block;
+  -webkit-tap-highlight-color:transparent;}
 </style>
 """, unsafe_allow_html=True)
 # honor the global translation choice (set on Search/Deep-Dive; persists in session)
@@ -144,5 +150,6 @@ for _, row in page_rows.iterrows():
             f"input: <b>{row['Input Root']}</b> · surface: {row['Surface Form(s)']}")
     _en = _MEAN.gloss(f"{int(row['Surah #'])}:{int(row['Ayah #'])}", "en")
     _en_html = f"<div class='en'>{_en}</div>" if _en else ""
-    cards.append(f"<div class='ayah-card'><div class='ar'>{ar}</div>{_en_html}<div class='meta'>{meta}</div></div>")
+    _pl = play_link(int(row['Surah #']), int(row['Ayah #']))
+    cards.append(f"<div class='ayah-card'>{_pl}<div class='ar'>{ar}</div>{_en_html}<div class='meta'>{meta}</div></div>")
 st.markdown(f"<div class='ayah-grid'>{''.join(cards)}</div>", unsafe_allow_html=True)

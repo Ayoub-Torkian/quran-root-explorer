@@ -11,7 +11,7 @@ import re, math
 from collections import defaultdict, Counter
 import streamlit as st
 from analysis import COL_SURAH, COL_AYAH, COL_SURAH_NAME, COL_DIACRITIZED, normalize_letters
-from state import get_corpus, hero, layer, log_page
+from state import get_corpus, hero, layer, log_page, reader_play_handoff
 import meaning as _MEAN
 import mobile as _MOB
 
@@ -21,22 +21,8 @@ _MOB.inject()                       # mobile-first reading CSS + Qur'an webfonts
 corpus = get_corpus()
 INK = "#10243A"
 
-# ── play-from-search hand-off: a verse's ▶ links to ?play=S:A → open it in Read and recite there
-#    (Read is the single recitation home — search results span many sūras, so we hand off rather
-#    than embed a second player). Uses session + switch_page (reliable, no URL-slug guessing). ──
-_pl = st.query_params.get("play")
-if _pl:
-    _m = re.match(r"^(\d+):(\d+)$", str(_pl))
-    if _m:
-        st.session_state["read_s"] = int(_m.group(1))
-        st.session_state["read_a"] = int(_m.group(2))
-        st.session_state["read_s_prev"] = int(_m.group(1))
-        st.session_state["read_autoplay"] = True
-        try:
-            del st.query_params["play"]
-        except Exception:
-            pass
-        st.switch_page("pages/40_Read.py")
+# a verse's ▶ links to ?play=S:A → open it in Read and recite there (shared hand-off helper)
+reader_play_handoff()
 _MP = ()                            # translation language(s); Off by default, set from the selector each run
 _NONLETTER = re.compile(r"[^ء-ي ]")
 

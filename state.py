@@ -37,7 +37,7 @@ NAV_SECTIONS = [
         (None, [("pages/40_Read.py", "Read the Qur'an", "📖"),
                 ("pages/38_Search.py", "Search", "🔎")]),
         ("Study an āyah", [
-            ("pages/4_Ayah_Browser.py", "Ayah Browser", "📖"),
+            ("pages/4_Ayah_Browser.py", "Matched Āyāt", "📑"),
             ("pages/20_Ayah_Deep_Dive.py", "Āyah Deep-Dive", "🔭"),
             ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive", "🔬"),
             ("pages/36_Cross_References.py", "Cross-References", "🔗"),
@@ -1134,6 +1134,35 @@ def hero(title, subtitle=""):
         f"{title}{sub}</div>",
         unsafe_allow_html=True,
     )
+
+
+def reader_play_handoff():
+    """Shared '▶ play in Reader' hand-off. Any page that shows āyāt can offer a link
+    `<a href='?play=S:A'>▶</a>`; calling this near the top routes that click to the Read
+    page at the āyah with autoplay. Read is the single recitation home, so analytic/result
+    surfaces (Search, Matched Āyāt, …) hand off rather than embed a second player."""
+    pl = st.query_params.get("play")
+    if not pl:
+        return
+    import re as _re
+    m = _re.match(r"^(\d+):(\d+)$", str(pl))
+    if not m:
+        return
+    st.session_state["read_s"] = int(m.group(1))
+    st.session_state["read_a"] = int(m.group(2))
+    st.session_state["read_s_prev"] = int(m.group(1))
+    st.session_state["read_autoplay"] = True
+    try:
+        del st.query_params["play"]
+    except Exception:
+        pass
+    st.switch_page("pages/40_Read.py")
+
+
+def play_link(surah, ayah) -> str:
+    """The green ▶ 'play in Reader' affordance (HTML string) for an āyah card/row."""
+    return (f"<a class='vp' href='?play={int(surah)}:{int(ayah)}' "
+            f"title='Play in Reader'>▶</a>")
 
 
 def layer(n, label):
