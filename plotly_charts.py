@@ -2358,3 +2358,65 @@ def chart_triad_significance(df: pd.DataFrame, glob_len: float) -> go.Figure:
                    type="log", gridcolor="#EDF1F6", tickfont=dict(size=12, color="#10243A"),
                    title_font=dict(size=14, color="#10243A")))
     return fig
+
+
+def chart_dependency(dep: dict, root: str, max_each: int = 7) -> go.Figure:
+    """Directed dependency radial for one root. LEFT (teal) = roots that IMPLY this root
+    (X ⇒ root, satellites); RIGHT (orange) = what this root BRINGS (root ⇒ X). Arrow width
+    scales with LIFT (frequency-controlled). `dep` = {'in':[(x,w,conf,lift)], 'out':[...]}."""
+    ins = (dep.get("in") or [])[:max_each]
+    outs = (dep.get("out") or [])[:max_each]
+    fig = go.Figure()
+    if not ins and not outs:
+        return _layout(fig, f"Dependencies · {root}")
+    import math as _m
+    mlift = max([t[3] for t in ins + outs] + [2.0])
+
+    def _ew(lift):
+        return 1.5 + 4.5 * (_m.log(max(lift, 1.01)) / _m.log(max(mlift, 1.02)))
+
+    def _ys(n):
+        if n <= 1:
+            return [0.0]
+        return [1.0 - 2.0 * k / (n - 1) for k in range(n)]
+
+    TEAL, ORANGE, NAVY = "#06AED5", "#F77F00", "#1D3557"
+    nx_, ny_, ntext, ncol = [], [], [], []
+    # incoming (left): arrow X -> root
+    for (x, w, conf, lift), y in zip(ins, _ys(len(ins))):
+        nx_.append(-1); ny_.append(y); ntext.append(x); ncol.append(TEAL)
+        fig.add_annotation(ax=-1, ay=y, x=-0.10, y=0, xref="x", yref="y",
+                           axref="x", ayref="y", showarrow=True, arrowhead=3,
+                           arrowsize=1, arrowwidth=_ew(lift), arrowcolor=TEAL, opacity=0.85,
+                           text=f"<span style='font-size:11px;color:#10243A'> {conf:.2f}·{lift:.0f}× </span>",
+                           font=dict(size=11))
+    # outgoing (right): arrow root -> X
+    for (x, w, conf, lift), y in zip(outs, _ys(len(outs))):
+        nx_.append(1); ny_.append(y); ntext.append(x); ncol.append(ORANGE)
+        fig.add_annotation(ax=0.10, ay=0, x=1, y=y, xref="x", yref="y",
+                           axref="x", ayref="y", showarrow=True, arrowhead=3,
+                           arrowsize=1, arrowwidth=_ew(lift), arrowcolor=ORANGE, opacity=0.85)
+    # leaf nodes
+    fig.add_trace(go.Scatter(
+        x=nx_, y=ny_, mode="markers+text", text=ntext, textposition="middle center",
+        textfont=dict(size=15, color="#FFFFFF"),
+        marker=dict(size=40, color=ncol, line=dict(width=1, color="#10243A")),
+        hoverinfo="text",
+        hovertext=[f"{t}" for t in ntext], showlegend=False))
+    # centre root
+    fig.add_trace(go.Scatter(
+        x=[0], y=[0], mode="markers+text", text=[root], textposition="middle center",
+        textfont=dict(size=18, color="#FFFFFF"),
+        marker=dict(size=66, color=NAVY, line=dict(width=2, color="#10243A")),
+        hoverinfo="skip", showlegend=False))
+    # side labels
+    fig.add_annotation(x=-1, y=1.28, text="<b>implies →</b> "+root, showarrow=False,
+                       font=dict(size=13, color=TEAL), xanchor="center")
+    fig.add_annotation(x=1, y=1.28, text=root+" <b>→ brings</b>", showarrow=False,
+                       font=dict(size=13, color=ORANGE), xanchor="center")
+    _layout(fig, f"Directed dependencies · {root}  (arrow width = lift)", h=460)
+    fig.update_layout(
+        xaxis=dict(visible=False, range=[-1.6, 1.6]),
+        yaxis=dict(visible=False, range=[-1.45, 1.45]),
+        margin=dict(l=10, r=10, t=46, b=10))
+    return fig

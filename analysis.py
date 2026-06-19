@@ -421,6 +421,91 @@ def triad_significance(corpus, triangles_df, normalize, top=40):
     return df, glob_len
 
 
+def root_dependencies(corpus, input_roots, normalize, top=10, min_sup=4, min_lift=1.5):
+    """DIRECTED root relations (vs symmetric co-occurrence). For each input root:
+      • OUT (root ⇒ X): P(X | root) — what the root tends to bring with it.
+      • IN  (X ⇒ root): P(root | X) — roots that strongly imply this one (its 'satellites').
+    Both frequency-controlled by LIFT = P(B|A)/P(B), so a satellite implying a ubiquitous
+    hub isn't trivially top. Returns {root: {'out': [...], 'in': [...]}} where each item is
+    (other_root, support, conf, lift)."""
+    import math
+    idx = corpus.index_norm if normalize else corpus.index_exact
+    K = (normalize_letters if normalize else (lambda t: t))
+    N = corpus.n_ayahs
+    pool = [x for x in idx if len(idx[x]) >= 8]
+    sets = {x: set(idx[x]) for x in pool}
+    out = {}
+    for root in input_roots:
+        rk = K(root)
+        S = set(idx.get(rk, idx.get(root, []))); f = len(S)
+        if f == 0:
+            continue
+        outs, ins = [], []
+        for x in pool:
+            if x == rk:
+                continue
+            w = len(S & sets[x])
+            if w < min_sup:
+                continue
+            fx = len(sets[x]); co = w / f; cin = w / fx; lift = w * N / (f * fx)
+            if co >= 0.10 and lift >= min_lift:
+                outs.append((x, w, round(co, 2), round(lift, 1)))
+            if cin >= 0.45 and lift >= min_lift:
+                ins.append((x, w, round(cin, 2), round(lift, 1)))
+        key = lambda t: -(t[2] * math.log(max(t[3], 1.01)))
+        out[root] = {"out": sorted(outs, key=key)[:top], "in": sorted(ins, key=key)[:top]}
+    return out
+
+
+def root_mediation(corpus, input_roots, normalize, top=6, min_sup=4, n_partners=25):
+    """Where the input root is a MEDIATOR: partner pairs (A, C) that are weakly linked across
+    the whole text but strongly linked INSIDE this root's verses — a context-gated bond the
+    symmetric graph misses (e.g. نفس mediates خلق–وحد). phi = point-correlation; we report
+    pairs whose phi jumps when the root is present. Returns {root: [(A, C, phi_all, phi_in)]}.
+    Descriptive (not gated vs shuffle)."""
+    import math
+    from itertools import combinations
+    idx = corpus.index_norm if normalize else corpus.index_exact
+    K = (normalize_letters if normalize else (lambda t: t))
+    N = corpus.n_ayahs
+    ALL = set(range(N))
+    sets = {x: set(idx[x]) for x in idx if len(idx[x]) >= 8}
+
+    def phi(S1, S2, U):
+        u = len(U)
+        if u == 0:
+            return 0.0
+        n1 = len(S1 & U); n2 = len(S2 & U); n12 = len(S1 & S2 & U)
+        den = math.sqrt(max(n1 * (u - n1) * n2 * (u - n2), 1))
+        return (n12 * u - n1 * n2) / den if den else 0.0
+
+    res = {}
+    for root in input_roots:
+        rk = K(root)
+        B = sets.get(rk) or set(idx.get(rk, idx.get(root, [])))
+        if len(B) < 8:
+            res[root] = []
+            continue
+        part = []
+        for x, Sx in sets.items():
+            if x == rk:
+                continue
+            w = len(B & Sx)
+            if w >= 6:
+                part.append((x, w * N / (len(B) * len(Sx))))
+        part = [p for p, _ in sorted(part, key=lambda t: -t[1])[:n_partners]]
+        meds = []
+        for A, C in combinations(part, 2):
+            if len(sets[A] & sets[C] & B) < min_sup:
+                continue
+            pa = phi(sets[A], sets[C], ALL); pb = phi(sets[A], sets[C], B)
+            if pb - pa >= 0.2 and pb >= 0.3:
+                meds.append((A, C, round(pa, 2), round(pb, 2)))
+        meds.sort(key=lambda t: -(t[3] - t[2]))
+        res[root] = meds[:top]
+    return res
+
+
 def partner_motifs(corpus, input_roots, normalize, top=20):
     K = (normalize_letters if normalize else (lambda t: t))
     rows = []

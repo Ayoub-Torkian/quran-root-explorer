@@ -357,6 +357,54 @@ st.divider()
 
 
 # ─────────────────────────────────────────────────────────────────
+# § 4.5 — DEPENDENCIES & MEDIATION (directed CONDITIONAL structure)
+# ─────────────────────────────────────────────────────────────────
+st.markdown("## 🔗 Dependencies & mediation")
+with st.expander("📌 What this adds beyond the co-occurrence graph (1-min)", expanded=False):
+    st.markdown(
+        "The graphs above are **symmetric** — they can't tell *عنب⇒نخل* from *نخل⇒عنب*. This view is "
+        "**directed and frequency-controlled**:\n\n"
+        "- **⇒ root (teal):** roots that strongly IMPLY this one — its *satellites* "
+        "(e.g. طبع⇒قلب, 'sealed hearts', P=1.00; طين/نطف⇒خلق, created from clay/sperm-drop).\n"
+        "- **root ⇒ (orange):** what this root tends to BRING with it.\n"
+        "- Arrow width = **lift** (above-chance), so ubiquitous roots don't dominate.\n\n"
+        "**Mediation** finds pairs that look unrelated across the whole text but bond INSIDE this "
+        "root's verses — a context-gated link the symmetric graph misses (e.g. نفس mediates خلق–وحد, "
+        "corr 0.02→0.53; خلق mediates قمر–شمس 0.62→1.00).")
+try:
+    _deps = A.root_dependencies(corpus, R["input_roots"], normalize)
+    _meds = A.root_mediation(corpus, R["input_roots"], normalize)
+    _shown = 0
+    for _r in R["input_roots"]:
+        _d = _deps.get(_r)
+        if not _d or (not _d["in"] and not _d["out"]):
+            continue
+        _shown += 1
+        safe_chart(PC.chart_dependency, _d, _r)
+        _bits = []
+        if _d["in"]:
+            _bits.append("**implied by** " + ", ".join(f"{x} (P{c:.2f}, {l:.0f}×)"
+                                                        for x, w, c, l in _d["in"][:3]))
+        if _d["out"]:
+            _bits.append("**brings** " + ", ".join(f"{x} (P{c:.2f}, {l:.0f}×)"
+                                                    for x, w, c, l in _d["out"][:3]))
+        if _bits:
+            st.markdown(f"**📍 {_r}:** " + "  ·  ".join(_bits)
+                        + ".  Arrow width = lift (above chance); read the shared verses in the "
+                          "Ayah Browser before treating a bond as a theme.")
+        _m = _meds.get(_r) or []
+        if _m:
+            st.markdown(f"**{_r} mediates** (pairs whose link appears only inside {_r}'s verses): "
+                        + "  ·  ".join(f"{a}–{c} ({pa:.2f}→**{pb:.2f}**)" for a, c, pa, pb in _m[:5]))
+    if _shown == 0:
+        st.info("No above-chance directed dependencies for the current roots — try a more specific root.")
+except Exception as _e:
+    st.info(f"Dependency view unavailable for this query ({type(_e).__name__}).")
+
+st.divider()
+
+
+# ─────────────────────────────────────────────────────────────────
 # § 5 — ROBUSTNESS — articulation, bridges, MST, k-core
 # ─────────────────────────────────────────────────────────────────
 st.markdown("## 🛡️ Robustness")
