@@ -214,29 +214,50 @@ def quran_themes(corpus, K=12):
     X = X / nrm
     W, H = _nmf(X, K, iters=250, seed=0)
     inv = {i: r for r, i in vi.items()}
-    meanpos = [float(np.average(range(len(susort)), weights=W[:, t] + 1e-9)) for t in range(K)]
+    positions = np.arange(len(susort))
+    sunum = np.array(susort, dtype=float)
+    meanpos = [float(np.average(positions, weights=W[:, t] + 1e-9)) for t in range(K)]
     order = list(np.argsort(meanpos))
     Wo = W[:, order]
+    rev = getattr(corpus, "rev_order_of_surah", {}) or {}
+
+    def _meccan(s):
+        ro = rev.get(s)
+        return ro is not None and ro <= A.MECCAN_CUTOFF
+
+    def _wpct(w, q):
+        o = np.argsort(positions); cw = np.cumsum(w[o])
+        if cw[-1] <= 0:
+            return int(susort[0])
+        cw = cw / cw[-1]
+        idx = min(int(np.searchsorted(cw, q)), len(positions) - 1)
+        return int(susort[o[idx]])
+
     themes = []
     for t in order:
+        w = W[:, t] + 1e-9
         toproots = [inv[i] for i in np.argsort(-H[t])[:6]]
-        domsuras = [susort[i] for i in np.argsort(-W[:, t])[:3]]
-        themes.append({"roots": toproots, "suras": domsuras})
-    # arrangement: within-theme position spread (real) vs shuffled labels
+        domsuras = [int(susort[i]) for i in np.argsort(-W[:, t])[:3]]
+        tot = float(W[:, t].sum()) + 1e-9
+        mfrac = float(sum(W[i, t] for i in range(len(susort)) if _meccan(susort[i])) / tot)
+        themes.append({"roots": toproots, "suras": domsuras,
+                       "meanpos": float(np.average(sunum, weights=w)),
+                       "lo": _wpct(w, 0.10), "hi": _wpct(w, 0.90), "meccan_frac": mfrac})
     dom = np.argmax(Wo, axis=1)
+    dom_per_sura = [int(d) for d in dom]
     real = [np.std([i for i in range(len(susort)) if dom[i] == t])
-            for t in range(K) if list(dom).count(t) >= 3]
+            for t in range(len(order)) if list(dom).count(t) >= 3]
     real_spread = float(np.mean(real)) if real else 0.0
     rand = []
     allpos = list(range(len(susort)))
     for _ in range(100):
         random.shuffle(allpos)
         s = 0.0; c = 0
-        for t in range(K):
+        for t in range(len(order)):
             cnt = list(dom).count(t)
             if cnt >= 3:
                 s += np.std(allpos[:cnt]); c += 1
         rand.append(s / max(c, 1))
     rand_spread = float(np.mean(rand)) if rand else 0.0
-    return {"suras": susort, "themes": themes, "W": Wo,
+    return {"suras": susort, "themes": themes, "W": Wo, "dom_per_sura": dom_per_sura,
             "real_spread": real_spread, "rand_spread": rand_spread}

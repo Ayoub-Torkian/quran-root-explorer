@@ -158,21 +158,50 @@ _SR.peek(corpus, int(_sel), 1, key=f"struct_{_sel}")
 st.divider()
 layer(4, "Qur'ān — global thematic architecture (NMF · root × sūra)")
 th = D["themes"]
-W = th["W"]; suras = th["suras"]; themes = th["themes"]
-ylab = [" · ".join(t["roots"][:3]) for t in themes]
-fig = go.Figure(go.Heatmap(
-    z=[[float(W[i][t]) for i in range(len(suras))] for t in range(len(themes))],
-    x=suras, y=ylab, colorscale="Magma",
-    colorbar=dict(title="theme<br>strength", thickness=12)))
-fig.update_layout(xaxis_title="sūra (canonical muṣḥaf order, 1 → 114)",
-                  yaxis=dict(autorange="reversed"))
-st.plotly_chart(_lay(fig, "12 root-themes across the 114 sūras — themes localize in canonical order",
-                     h=480), use_container_width=True)
-st.caption(f"Themes localize in position: within-theme spread **{th['real_spread']:.0f}** vs "
-           f"**{th['rand_spread']:.0f}** shuffled — the muṣḥaf groups themes, it does not scatter them.")
-st.dataframe(pd.DataFrame([(" · ".join(t["roots"]), " ".join(f"S{s}" for s in t["suras"]))
-                           for t in themes], columns=["theme (top roots)", "dominant sūras"]),
-             use_container_width=True, hide_index=True, height=320)
+themes = th["themes"]; suras = th["suras"]; dom = th["dom_per_sura"]
+labels = [" · ".join(t["roots"][:3]) for t in themes]
+st.caption("Each theme is a cluster of roots. Three simple views: WHERE each theme lives, the "
+           "dominant theme of each sūra, and the full directory — all original-anchored.")
+
+# View 1 — where each theme lives (span + center), ordered early → late
+figA = go.Figure()
+figA.add_trace(go.Bar(orientation="h", y=labels, x=[t["hi"] - t["lo"] for t in themes],
+                      base=[t["lo"] for t in themes], marker_color="#D6E3EC",
+                      hoverinfo="skip", showlegend=False))
+figA.add_trace(go.Scatter(
+    x=[t["meanpos"] for t in themes], y=labels, mode="markers",
+    marker=dict(size=13, color=[t["meccan_frac"] for t in themes], colorscale="RdBu",
+                cmin=0, cmax=1, showscale=True,
+                colorbar=dict(title="Meccan<br>share", thickness=12), line=dict(width=1, color="#10243A")),
+    text=[f"peak S{t['suras'][0]} · span S{t['lo']}–{t['hi']} · Meccan {t['meccan_frac']:.0%}"
+          for t in themes], hoverinfo="text", showlegend=False))
+figA.update_layout(xaxis_title="sūra position 1 → 114  (left = early/short sūras, right = late)",
+                   yaxis=dict(autorange="reversed"))
+st.plotly_chart(_lay(figA, "1) Where each theme lives — bar = middle-80% span, dot = center",
+                     h=420), use_container_width=True)
+st.caption("Blue dots = Meccan-tilted themes (oneness, refuge, judgment — cluster early/late short "
+           "sūras); red = Medinan-tilted (community, law — cluster in the long early-middle sūras).")
+
+# View 2 — the territory as one strip: dominant theme of each sūra
+figB = go.Figure(go.Heatmap(
+    z=[dom], x=suras, y=[""], colorscale="Turbo", showscale=False,
+    customdata=[[labels[d] for d in dom]],
+    hovertemplate="sūra %{x}<br>theme: %{customdata}<extra></extra>"))
+figB.update_layout(xaxis_title="sūra (1 → 114)", yaxis=dict(showticklabels=False))
+st.plotly_chart(_lay(figB, "2) Dominant theme of each sūra — colour = the theme that most defines it",
+                     h=190), use_container_width=True)
+st.caption(f"Runs of one colour = thematic regions. Themes cluster in position (within-theme spread "
+           f"**{th['real_spread']:.0f}** vs **{th['rand_spread']:.0f}** shuffled) — the order is not random.")
+
+# View 3 — the directory table
+st.markdown("**3) Theme directory**")
+st.dataframe(pd.DataFrame([
+    {"theme (top roots)": " · ".join(t["roots"]),
+     "peak sūras": " ".join(f"S{s}" for s in t["suras"]),
+     "span": f"S{t['lo']}–{t['hi']}",
+     "center": f"S{round(t['meanpos'])}",
+     "Meccan share": f"{t['meccan_frac']:.0%}"} for t in themes]),
+    use_container_width=True, hide_index=True, height=380)
 # read-back: the actual āyāt that most express a chosen theme (original + translation)
 _to = [" · ".join(t["roots"][:4]) for t in themes]
 if _to:
