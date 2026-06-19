@@ -93,11 +93,11 @@ st.markdown("<style>section[data-testid='stMain'] [data-testid='stVerticalBlock'
             "[data-testid='stElementContainer']:has(iframe){margin:0 !important}</style>",
             unsafe_allow_html=True)
 
-# ── recitation player — prominent, right under the nav, with a clear ▶ Play button ──
+# ── recitation player — top of page, clear ▶ Play; keeps playing as you scroll (localStorage) ──
 st.markdown("<div style='font-size:13px;font-weight:800;color:#0F6E56;margin:2px 0 0'>"
             "🔊 Recitation — pick a reciter and tap <span style='color:#1D9E75'>▶ Play</span> "
-            "(auto-advances through the sūra)</div>", unsafe_allow_html=True)
-_AUD.render(corpus, int(sel), start_ayah=(cur_a or 1))
+            "(auto-advances; keeps playing while you scroll or jump)</div>", unsafe_allow_html=True)
+_AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a))
 
 # ── compact controls: translation + reading settings side by side ──
 _cc = st.columns(2)

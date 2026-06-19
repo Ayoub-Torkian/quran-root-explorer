@@ -57,10 +57,11 @@ def global_index(corpus, surah: int, ayah: int) -> int:
     return _offsets(corpus).get(int(surah), 1) + (int(ayah) - 1)
 
 
-def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int) -> str:
+def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int, jumped: bool) -> str:
     cfg = _json.dumps({
         "cdn": _CDN, "surah": int(surah), "gstart": int(gstart),
         "n": int(n_ayat), "start": int(start_ayah) if start_ayah else 1,
+        "jumped": bool(jumped),
         "br": {e: br for e, _l, br in RECITERS},
     })
     opts = "".join(f"<option value='{e}'>{lbl}</option>" for e, lbl, _br in RECITERS)
@@ -104,9 +105,18 @@ const au=document.getElementById('au'), ref=document.getElementById('ref'),
       pp=document.getElementById('pp'), bar=document.getElementById('bar'),
       err=document.getElementById('err'), rec=document.getElementById('rec'),
       spdB=document.getElementById('spd'), repB=document.getElementById('rep');
-let a=C.start, repeat=0, si=0;                 // repeat: 0 off·1 āyah·2 sūra ; si=speed index
-const REP=['↻ off','↻ āyah','↻ sūra'], SPD=[1,1.25,1.5,0.75];
-try{var _sv=localStorage.getItem('qre_reciter');if(_sv){for(var i=0;i<rec.options.length;i++){if(rec.options[i].value==_sv){rec.value=_sv;break;}}}}catch(e){}
+let a=C.start, repeat=0, si=0, wantPlay=false;   // repeat:0 off·1 āyah·2 sūra ; si=speed index
+const REP=['↻ off','↻ āyah','↻ sūra'], SPD=[1,1.25,1.5,1.75,2,0.75];
+function LS(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function setLS(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+var _r=LS('qre_reciter');if(_r){for(var i=0;i<rec.options.length;i++){if(rec.options[i].value==_r){rec.value=_r;break;}}}
+var _si=LS('qre_spd');if(_si!=null){si=Math.max(0,Math.min(SPD.length-1,+_si));}
+spdB.textContent=SPD[si]+'×';
+// resume position/state across page reruns (same sūra) unless this is an explicit āyah-jump
+var savedSur=+LS('qre_surah'), savedPos=+LS('qre_pos'), savedPlay=(LS('qre_play')=='1');
+var sameSurah=(savedSur===C.surah);
+if(!C.jumped && sameSurah && savedPos){a=savedPos;}
+function persist(){setLS('qre_surah',C.surah);setLS('qre_pos',a);setLS('qre_play',wantPlay?'1':'0');setLS('qre_spd',si);}
 function src(n){return C.cdn+'/'+C.br[rec.value]+'/'+rec.value+'/'+(C.gstart+n-1)+'.mp3';}
 function hi(n){try{var d=window.parent.document;
     d.querySelectorAll('.rdr details.playing').forEach(function(e){e.classList.remove('playing');});
@@ -114,14 +124,15 @@ function hi(n){try{var d=window.parent.document;
     if(el){el.classList.add('playing');el.scrollIntoView({block:'center'});}
   }catch(e){}}
 function load(n,go){a=Math.max(1,Math.min(C.n,n));ref.textContent=C.surah+':'+a;err.textContent='';
-  au.src=src(a);au.playbackRate=SPD[si];hi(a);if(go){au.play().catch(function(){});}}
+  au.src=src(a);au.playbackRate=SPD[si];hi(a);if(go){wantPlay=true;}persist();if(go){au.play().catch(function(){});}}
 function setpp(p){pp.textContent=p?'⏸ Pause':'▶ Play';pp.title=p?'pause':'play';}
-pp.onclick=function(){if(!au.src)load(a,false);if(au.paused){au.play().catch(function(){});}else{au.pause();}};
+pp.onclick=function(){if(!au.src)load(a,false);
+  if(au.paused){wantPlay=true;persist();au.play().catch(function(){});}else{wantPlay=false;persist();au.pause();}};
 document.getElementById('prev').onclick=function(){load(a-1,true);};
 document.getElementById('next').onclick=function(){load(a+1,true);};
 repB.onclick=function(){repeat=(repeat+1)%3;repB.textContent=REP[repeat];};
-spdB.onclick=function(){si=(si+1)%SPD.length;au.playbackRate=SPD[si];spdB.textContent=SPD[si]+'×';};
-rec.onchange=function(){try{localStorage.setItem('qre_reciter',rec.value);}catch(e){}var was=!au.paused;au.src=src(a);au.playbackRate=SPD[si];if(was)au.play().catch(function(){});};
+spdB.onclick=function(){si=(si+1)%SPD.length;au.playbackRate=SPD[si];spdB.textContent=SPD[si]+'×';persist();};
+rec.onchange=function(){setLS('qre_reciter',rec.value);var was=!au.paused;au.src=src(a);au.playbackRate=SPD[si];if(was)au.play().catch(function(){});};
 au.onplay=function(){setpp(true);};
 au.onpause=function(){setpp(false);};
 au.ontimeupdate=function(){if(au.duration)bar.style.width=(100*au.currentTime/au.duration)+'%';};
@@ -130,17 +141,21 @@ au.onended=function(){
   if(repeat==1){au.currentTime=0;au.play().catch(function(){});return;}
   if(a<C.n){load(a+1,true);}
   else if(repeat==2){load(1,true);}
-  else{setpp(false);bar.style.width='0';}
+  else{wantPlay=false;persist();setpp(false);bar.style.width='0';}
 };
 load(a,false);
+// after a page rerun, pick up where we were playing (same sūra, or an explicit jump)
+if(savedPlay && (sameSurah || C.jumped)){wantPlay=true;persist();au.play().catch(function(){});}
 </script>
 """.replace("__CFG__", cfg).replace("__OPTS__", opts)
 
 
-def render(corpus, surah: int, start_ayah: int = 1, height: int = 104):
-    """Render the recitation player bar for `surah`, cued to `start_ayah`."""
+def render(corpus, surah: int, start_ayah: int = 1, jumped: bool = False, height: int = 104):
+    """Render the recitation player bar for `surah`, cued to `start_ayah`.
+    `jumped` = the āyah was explicitly chosen (jump box) → cue there; otherwise the
+    player resumes the last-played position so a page rerun doesn't stop recitation."""
     df = corpus.df
     n_ayat = int((df[COL_SURAH].astype(int) == int(surah)).sum())
     gstart = _offsets(corpus).get(int(surah), 1)
-    _components.html(_player_html(int(surah), gstart, n_ayat, int(start_ayah or 1)),
+    _components.html(_player_html(int(surah), gstart, n_ayat, int(start_ayah or 1), bool(jumped)),
                      height=height)
