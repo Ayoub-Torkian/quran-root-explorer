@@ -303,3 +303,80 @@ with st.expander("read a theme in the text"):
     _hits(_thh, "(none)")
     with st.expander("full text + translation"):
         _verse_cards([(s, a) for s, a, _ in _thh[:10]], _MP)
+
+# ════════════ SYNTHESIS — the four scales as one structure ════════════
+st.divider()
+st.markdown("## Synthesis — the four scales as one structure")
+st.markdown(
+    "Read bottom-up, the scales **nest**: verse-level concept-bonds chain into a sequential "
+    f"**passage** weave (z ≈ {D['weave']['z']:.0f}); passages cohere into thematic **sūras** "
+    f"(z ≈ {D['coher']['z']:.0f}); sūras condense into {len(themes)} **themes** that are *placed*, "
+    f"not scattered ({th['real_spread']:.0f} vs {th['rand_spread']:.0f} shuffled). The same roots, "
+    "magnified, become **bond → sequence → theme → arrangement** — one object at four resolutions, "
+    "each beating its own shuffle.")
+st.markdown(
+    "**What four scales gave us that one scale could not:** (1) a method correction — structure does "
+    "**not** all live in co-occurrence; widen the window and it *saturates*, so the higher scales are "
+    "invisible to the verse-level tool and need different instruments; (2) evidence the design is "
+    "**multi-scale** — every rung independently beats shuffle, so it is neither merely local "
+    "verse-pairing nor merely global arrangement, but a coherent ladder where each rung is load-bearing.")
+
+# summary chart — co-occurrence saturates with scale (measured)
+_sc = ["āyah", "passage", "sūra", "Qur'ān"]
+figsat = go.Figure()
+figsat.add_trace(go.Bar(x=_sc, y=[53, 98, 100, 100], name="triad closure %", marker_color="#B23A3A"))
+figsat.add_trace(go.Scatter(x=_sc, y=[1.5, 0.0, 0.0, 0.0], name="genuine 3-way %", yaxis="y2",
+                            mode="lines+markers", line=dict(color="#1D9E75", width=3)))
+figsat.update_layout(yaxis=dict(title="triad closure %"),
+                     yaxis2=dict(title="genuine 3-way %", overlaying="y", side="right"),
+                     legend=dict(font=dict(size=12), orientation="h", y=1.15, x=0))
+st.plotly_chart(_lay(figsat, "Why one method can't span scales — co-occurrence saturates as the window grows",
+                     h=340), use_container_width=True)
+st.caption("As the window grows almost every root-pair co-occurs (closure → 100%) and genuine "
+           "higher-order signal vanishes — co-occurrence is a verse-scale tool. [MEASURED]")
+
+# summary table — the nesting ladder
+st.dataframe(pd.DataFrame([
+    {"scale": "Āyah", "unit": "verse", "mechanism": "concept-bonds (which ideas pair)", "composes": "→ passages"},
+    {"scale": "Passage", "unit": "~rukūʿ", "mechanism": "sequential weave (verse order)", "composes": "→ sūras"},
+    {"scale": "Sūra", "unit": "chapter", "mechanism": "thematic coherence (chapter identity)", "composes": "→ the book"},
+    {"scale": "Qur'ān", "unit": "muṣḥaf", "mechanism": "theme arrangement (placed by position)", "composes": "— whole"},
+]), use_container_width=True, hide_index=True)
+
+# ════════════ METHODS LANDSCAPE — where each tool fits ════════════
+st.divider()
+st.markdown("## Where each method fits — frequency · co-occurrence · dependency · motif")
+# chart — which scale(s) each method serves
+_meth = [("frequency (the null)", 1, 4, "#9AA7B2"), ("co-occurrence", 1, 1, "#1D9E75"),
+         ("dependency graph", 1, 1.7, "#0F6E56"), ("motif (on bonds)", 1, 1, "#7209B7"),
+         ("sequence / weave", 2, 2, "#1D3557"), ("coherence / signature", 3, 3, "#2C4A6E"),
+         ("factorization (NMF)", 4, 4, "#E63946")]
+figm = go.Figure()
+for nm, lo, hi, col in _meth:
+    figm.add_trace(go.Bar(orientation="h", y=[nm], x=[(hi - lo) + 0.8], base=[lo - 0.4],
+                          marker_color=col, hovertext=nm, hoverinfo="text", showlegend=False))
+figm.update_layout(barmode="overlay",
+                   xaxis=dict(title="scale", tickvals=[1, 2, 3, 4],
+                              ticktext=["āyah", "passage", "sūra", "Qur'ān"], range=[0.4, 4.6]),
+                   yaxis=dict(autorange="reversed"))
+st.plotly_chart(_lay(figm, "Which scale each method serves", h=320), use_container_width=True)
+# table — the landscape
+st.dataframe(pd.DataFrame([
+    {"method": "Frequency", "captures": "how common each root is", "native scale": "all (control)",
+     "role / limit": "NOT structure — the null you divide out (NPMI/lift)"},
+    {"method": "Co-occurrence", "captures": "symmetric 'share a verse'", "native scale": "āyah",
+     "role / limit": "saturates above the verse (closure→100%); no direction/order"},
+    {"method": "Dependency graph", "captures": "directed P(B|A) + mediation (A–C via B)",
+     "native scale": "āyah / local", "role / limit": "richest local lens; still within-verse"},
+    {"method": "Motif (triads+)", "captures": "higher-order templates", "native scale": "āyah, on bond graph",
+     "role / limit": "on raw co-occ only ~0.5% beyond pairwise — use on sparse bonds"},
+    {"method": "Sequence (weave)", "captures": "order of verses", "native scale": "passage",
+     "role / limit": "the channel co-occurrence cannot see"},
+    {"method": "Coherence (signature)", "captures": "chapter identity", "native scale": "sūra",
+     "role / limit": "a profile method, not pairwise"},
+    {"method": "Factorization (NMF)", "captures": "themes + arrangement", "native scale": "Qur'ān",
+     "role / limit": "the global tool co-occurrence saturates over"},
+]), use_container_width=True, hide_index=True)
+st.caption("Frequency is the yardstick, not a finding. Co-occurrence — and its directed refinement, the "
+           "dependency graph — is a verse-scale tool; motif belongs on the sparsified bond graph; the "
+           "higher scales need sequence, coherence, and factorization.")
