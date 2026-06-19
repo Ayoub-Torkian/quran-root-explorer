@@ -296,19 +296,18 @@ def verse_html(i, target, qwords, substr=False):
     ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]} "
                f"{sname[i]}</b>")
     _more = len(marked) > 50
-    head = " ".join(marked[:50]) + (" …" if _more else "")
     full = " ".join(marked)
     _cls = "vrow long" if _more else "vrow"
-    _chev = "<span class='ex' title='click to read the full āyah'>⌄</span> " if _more else ""
+    _chev = "<span class='ex' title='click to expand / collapse'>⌄</span> " if _more else ""
     _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}")   # 4-lang meaning, shown only when expanded
+    # The full verse lives INSIDE <summary> so clicking the āyah text itself toggles open/closed
+    # (clamped to one line when closed, wraps + enlarges when open). The Meaning sits in the body.
     return (
         f"<details class='{_cls}' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
-        + (f"<summary title='click to read the full āyah — partial shown' " if _more else "<summary ")
-        + "style='direction:rtl;text-align:right;font-size:13px;color:#10243A;line-height:1.65;"
-        "white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer'>"
-        f"{_chev}{ref_lbl} &nbsp;{head}</summary>"
-        f"<div style='direction:rtl;text-align:right;font-size:14.5px;color:#10243A;line-height:1.95;"
-        f"white-space:normal;padding:4px 2px 8px'>{full}</div>"
+        "<summary title='click the āyah to expand / collapse' "
+        "style='direction:rtl;text-align:right;color:#10243A;cursor:pointer'>"
+        f"<span class='vhead'>{_chev}{ref_lbl}</span> "
+        f"<span class='vtext'>&nbsp;{full}</span></summary>"
         f"{_mean}"
         "</details>")
 
@@ -499,9 +498,14 @@ for lab, idx in groups:
     _hq = qwords - _STOP                                            # never highlight function words
     cells = "".join(verse_html(i, _htarget, _hq, kind == "text") for i in shown)
     grid = ("<style>"
-            ".vgrid summary{display:block;list-style:none;cursor:pointer}"
+            ".vgrid summary{display:block;list-style:none;cursor:pointer;font-size:13px;line-height:1.65}"
             ".vgrid summary::-webkit-details-marker{display:none}"
             ".vgrid summary::marker{content:\"\"}"
+            # CLOSED: whole row clamps to one line (ref + start of āyah, ellipsis).
+            ".vgrid details:not([open]) summary{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
+            # OPEN: row wraps; the āyah text enlarges and drops to its own line so clicking it collapses.
+            ".vgrid details[open] summary{white-space:normal}"
+            ".vgrid details[open] summary .vtext{display:block;margin-top:4px;font-size:14.5px;line-height:1.95}"
             ".vgrid details[open]{background:#fbfdfc;border-radius:6px;box-shadow:inset 0 0 0 1px #e3efe9}"
             ".vgrid .ex{color:#0F6E56;font-weight:800;display:inline-block;font-size:14px}"
             ".vgrid details[open] .ex{transform:rotate(180deg)}"
