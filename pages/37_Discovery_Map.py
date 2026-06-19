@@ -93,7 +93,28 @@ fig.update_layout(height=560, plot_bgcolor="white", margin=dict(l=10, r=10, t=10
                   yaxis=dict(showticklabels=False, showgrid=False, zeroline=False))
 st.plotly_chart(fig, use_container_width=True)
 
-layer(2, "Integration hubs — the load-bearing discoveries")
+layer(2, "Every discovery in plain words — grouped by scale")
+st.caption("The columns above as readable cards. Each scale-rung (atom → whole text) lists its "
+           "discoveries: what it is, and why it matters / where it fits the bigger picture.")
+for c in cats:
+    fs = sorted([f for f in feats if f["category"] == c], key=lambda z: -z["review"]["grade"])
+    if not fs:
+        continue
+    blocks = [f"<div style='font-weight:800;color:{ccolor[c]};font-size:15px;margin:12px 0 4px'>"
+              f"▸ {c} <span style='font-weight:600;color:#10243A;font-size:12.5px'>"
+              f"({len(fs)} discover{'y' if len(fs)==1 else 'ies'})</span></div>"]
+    for f in fs:
+        blocks.append(
+            f"<div style='border-left:3px solid {ccolor[c]};padding:6px 12px;margin:5px 0;"
+            f"background:#FAFBFD;border-radius:0 8px 8px 0'>"
+            f"<div style='font-size:14px;color:#10243A'><b>{f['id']} · {f['name']}</b> "
+            f"<span style='color:#0F6E56;font-weight:700'>(grade {f['review']['grade']})</span></div>"
+            f"<div style='font-size:13px;color:#10243A;line-height:1.6;margin-top:2px'>{f.get('plain','')}</div>"
+            f"<div style='font-size:12.5px;color:#10243A;line-height:1.55;margin-top:3px'>"
+            f"<b>Significance:</b> {f.get('user_value','')}</div></div>")
+    st.markdown("".join(blocks), unsafe_allow_html=True)
+
+layer(3, "Integration hubs — the load-bearing discoveries")
 st.caption("Most cross-referenced features: the findings the rest of the structure leans on most.")
 hubs = sorted(feats, key=lambda f: -deg[f["id"]])[:6]
 cols = st.columns(6)
@@ -101,7 +122,7 @@ for k, f in enumerate(hubs):
     cols[k].metric(f"{f['id']} · {deg[f['id']]} links", f"grade {f['review']['grade']}",
                    help=f["name"] + " — " + f.get("plain", "")[:140])
 
-layer(3, "The temporal journey — where we started → where we are")
+layer(4, "The temporal journey — where we started → where we are")
 phases = [("Phase A · founding (2026-06-09)", [f for f in feats if f.get("phase") == "A"]),
           ("Phase B · boundary & order (2026-06-09)", [f for f in feats if f.get("phase") == "B"]),
           ("Expansion (2026-06-10 →)", [f for f in feats if not f.get("phase")])]
@@ -113,7 +134,7 @@ for title, fs in phases:
     st.markdown(f"<div style='font-size:13px;color:#10243A;margin:4px 0'><b>{title}</b> &nbsp;{chips}</div>",
                 unsafe_allow_html=True)
 
-layer(4, "Inspect a discovery")
+layer(5, "Inspect a discovery")
 pick = st.selectbox("Feature", [f"{f['id']} · {f['name']}" for f in sorted(feats, key=lambda z: z['id'])])
 f = by_id[pick.split(" · ")[0]]
 linked = [r for r in (f.get("cross_refs") or []) if r in by_id]
