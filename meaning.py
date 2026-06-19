@@ -10,6 +10,9 @@ chosen to fit this app's al-Mizan (Shia scholarly) orientation:
 All four cover every one of the 6,236 āyāt (verified 1:1 against Book6). To swap a
 translator later, re-bundle meaning.json from a different edition id — nothing else
 changes. This is translation (the MEANING layer), NOT tafsīr; al-Mizan tafsīr is Tier B.
+
+Display: a `primary` language (the reader's pick) shows immediately under each āyah;
+the rest sit behind a JS-free "+ more languages" reveal — the market-app pattern.
 """
 from __future__ import annotations
 import json, os
@@ -26,6 +29,7 @@ EDITIONS = {
 }
 LANGS = ("en", "ar", "ur", "fa")          # all bundled editions
 DISPLAY = ("en", "ar", "ur", "fa")        # shown by default — all four (ar = Tafsīr al-Jalālayn concise gloss)
+LANG_LABEL = {"en": "English", "ar": "العربية", "ur": "اردو", "fa": "فارسی"}
 INK = "#10243A"
 TEAL = "#0F6E56"
 
@@ -62,42 +66,58 @@ def gloss(ref: str, lang: str = "en", limit: int = 0) -> str:
     return (t[:limit] + "…") if (limit and len(t) > limit) else t
 
 
-def meaning_block_html(ref: str, langs=DISPLAY, title: str = "💬 Meaning",
-                       source_note: bool = False) -> str:
-    """Self-contained HTML card with the four translations (inline styles only, so it
-    renders identically inside an RTL <details> body or a standalone st.markdown)."""
+def _row(code: str, txt: str) -> str:
+    """One translation row. Uses CSS classes (mobile.py) for typography, with inline
+    direction/align/font so it still looks right if the mobile CSS isn't injected."""
+    label, author, direction, font = EDITIONS[code]
+    align = "right" if direction == "rtl" else "left"
+    fam = f"font-family:{font};" if font else ""
+    return (f"<div class='qrow' style='direction:{direction};text-align:{align}'>"
+            f"<span class='qlab'>{label}</span>"
+            f"<div class='qtxt {code}' style='color:{INK};{fam}'>{txt}</div></div>")
+
+
+def meaning_block_html(ref: str, primary=("en",), title: str = "💬 Meaning",
+                       more_toggle: bool = True) -> str:
+    """Self-contained HTML meaning card. `primary` = the language(s) shown immediately;
+    the remaining languages sit behind a JS-free '+ more languages' reveal (the
+    market-app pattern). If more_toggle is False, all selected languages show inline."""
     d = get(ref)
     if not d:
         return ""
-    rows = []
-    for code in langs:
-        txt = (d.get(code) or "").strip()
-        if not txt:
-            continue
-        label, author, direction, font = EDITIONS[code]
-        align = "right" if direction == "rtl" else "left"
-        fam = f"font-family:{font};" if font else ""
-        rows.append(
-            f"<div style='margin:5px 0;direction:{direction};text-align:{align}'>"
-            f"<span style='display:inline-block;font-size:12px;font-weight:700;color:{TEAL};"
-            f"background:#EAF4F0;border-radius:6px;padding:0 8px;margin-bottom:2px'>{label}</span>"
-            f"<div style='font-size:15px;color:{INK};line-height:1.85;{fam}'>{txt}</div></div>")
-    if not rows:
+    prim = [c for c in DISPLAY if c in primary] or ["en"]
+    rest = [c for c in DISPLAY if c not in prim]
+    prim_rows = "".join(_row(c, t) for c in prim if (t := (d.get(c) or "").strip()))
+    rest_rows = "".join(_row(c, t) for c in rest if (t := (d.get(c) or "").strip()))
+    if not prim_rows and not rest_rows:
         return ""
-    note = ("<div style='font-size:12px;color:%s;margin-top:6px'>Translations — the meaning layer "
-            "(English: Qarai · Urdu: Jawadi · Persian: Makarem).</div>" % INK) if source_note else ""
-    return (
-        "<div style='direction:ltr;text-align:left;margin-top:8px;border-top:1px dashed #cfe0d9;"
-        "padding-top:6px'>"
-        f"<div style='font-size:13px;font-weight:800;color:{TEAL};margin-bottom:2px'>{title} "
-        f"<span style='font-size:12px;font-weight:600;color:{INK}'>· {ref}</span></div>"
-        + "".join(rows) + note + "</div>")
+    more = ""
+    if rest_rows and more_toggle:
+        n = sum(1 for c in rest if (d.get(c) or "").strip())
+        more = (f"<details class='qmore'><summary>＋ {n} more language"
+                f"{'s' if n != 1 else ''}</summary>{rest_rows}</details>")
+    elif rest_rows:
+        prim_rows += rest_rows
+    head = (f"<div class='qmean-h'>{title} "
+            f"<span style='font-weight:600;color:{INK}'>· {ref}</span></div>")
+    return "<div class='qmean'>" + head + prim_rows + more + "</div>"
 
 
-def render(ref: str, expanded: bool = False, title: str = "💬 Meaning · 4 languages"):
-    """Streamlit helper: an expander holding the four translations for one āyah."""
+def language_selector(st, key: str = "meaning_langs", default=("en",)):
+    """Compact language picker for the top of a reading surface. Returns the chosen
+    primary language codes (tuple); the rest appear behind '+ more' under each āyah."""
+    if key not in st.session_state:
+        st.session_state[key] = list(default)
+    sel = st.multiselect(
+        "🌐 Show translation", list(DISPLAY), format_func=lambda c: LANG_LABEL[c], key=key,
+        help="Pick your language(s). The others stay one tap away under each āyah.")
+    return tuple(sel) if sel else default
+
+
+def render(ref: str, primary=("en",), expanded: bool = False, title: str = "💬 Meaning"):
+    """Streamlit helper: an expander holding the translations for one āyah."""
     import streamlit as st
-    html = meaning_block_html(ref, title="💬 Meaning")
+    html = meaning_block_html(ref, primary=primary, title="💬 Meaning")
     if not html:
         return
     with st.expander(f"{title}  ·  {ref}", expanded=expanded):

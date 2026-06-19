@@ -4,8 +4,10 @@ import streamlit as st
 from state import (get_corpus, query_controls, compute_all, need_results,
                    hero, layer, highlight_text, render_quranic_verse, per_root_hint, log_page)
 import meaning as _MEAN
+import mobile as _MOB
 
 st.set_page_config(page_title="Ayah Browser", page_icon="📖", layout="wide")
+_MOB.inject()                       # mobile-first reading CSS + Qur'an webfonts (after set_page_config)
 log_page("ayahs")
 corpus = get_corpus()
 raw, normalize, top_p, min_w, run = query_controls(corpus)

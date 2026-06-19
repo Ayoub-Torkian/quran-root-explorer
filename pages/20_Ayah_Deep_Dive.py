@@ -18,10 +18,12 @@ import analysis as _A
 import deep_dive as DD
 import plotly_charts as PC
 import meaning as _MEAN
+import mobile as _MOB
 from state import get_corpus, hero, log_page
 
 st.set_page_config(page_title="Ayah Deep-Dive", page_icon="🔭", layout="wide")
 log_page("ayah_deep_dive")
+_MOB.inject()                       # mobile-first reading CSS + Qur'an webfonts
 corpus = get_corpus()
 st.markdown("<style>section[data-testid='stMain'] [data-testid='stCaptionContainer'],"
             "section[data-testid='stMain'] [data-testid='stCaptionContainer'] *"
@@ -427,13 +429,14 @@ except Exception as e:
     st.warning(f"⚠️  {e}")
     st.stop()
 
+_MP = _MEAN.language_selector(st)
 for sd in res["seed"]:
     st.markdown(f"### {sd['ref']}")
-    st.markdown(f"<div style='font-size:29px;line-height:1.95;margin:6px 0 8px;"
+    st.markdown(f"<div class='qv-ar' dir='rtl' style='font-size:29px;line-height:2.0;margin:6px 0 8px;"
                 f"color:#10243A'>{sd['text']}</div>", unsafe_allow_html=True)
     st.markdown("**concepts:**")
     _show_chips(sd["roots"])
-    _mhtml = _MEAN.meaning_block_html(sd["ref"], title="💬 Meaning")
+    _mhtml = _MEAN.meaning_block_html(sd["ref"], primary=_MP, title="💬 Meaning")
     if _mhtml:
         st.markdown(_mhtml, unsafe_allow_html=True)
     _hero_strip(sd["ref"], res)

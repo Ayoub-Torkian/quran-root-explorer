@@ -13,11 +13,14 @@ import streamlit as st
 from analysis import COL_SURAH, COL_AYAH, COL_SURAH_NAME, COL_DIACRITIZED, normalize_letters
 from state import get_corpus, hero, layer, log_page
 import meaning as _MEAN
+import mobile as _MOB
 
 st.set_page_config(page_title="Search", page_icon="🔎", layout="wide")
 log_page("search")
+_MOB.inject()                       # mobile-first reading CSS + Qur'an webfonts
 corpus = get_corpus()
 INK = "#10243A"
+_MP = ("en",)                       # primary translation language(s); set from the selector each run
 _NONLETTER = re.compile(r"[^ء-ي ]")
 
 def norm(s):
@@ -299,7 +302,7 @@ def verse_html(i, target, qwords, substr=False):
     full = " ".join(marked)
     _cls = "vrow long" if _more else "vrow"
     _chev = "<span class='ex' title='click to expand / collapse'>⌄</span> " if _more else ""
-    _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}")   # 4-lang meaning, shown only when expanded
+    _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", primary=_MP)  # selected lang + more
     # The full verse lives INSIDE <summary> so clicking the āyah text itself toggles open/closed
     # (clamped to one line when closed, wraps + enlarges when open). The Meaning sits in the body.
     return (
@@ -307,7 +310,7 @@ def verse_html(i, target, qwords, substr=False):
         "<summary title='click the āyah to expand / collapse' "
         "style='direction:rtl;text-align:right;color:#10243A;cursor:pointer'>"
         f"<span class='vhead'>{_chev}{ref_lbl}</span> "
-        f"<span class='vtext'>&nbsp;{full}</span></summary>"
+        f"<span class='vtext qv-ar'>&nbsp;{full}</span></summary>"
         f"{_mean}"
         "</details>")
 
@@ -489,6 +492,8 @@ if _copy_idxs:
             "setTimeout(function(){document.getElementById('cpb').textContent='📋 Copy these verses'},1200)};</script>")
     st.components.v1.html(_btn, height=40)
 
+# ── language selector (market-app pattern: pick your language, the rest one tap away) ──
+_MP = _MEAN.language_selector(st)
 ln = 1
 for lab, idx in groups:
     if not idx: continue
@@ -512,8 +517,8 @@ for lab, idx in groups:
             "</style>"
             "<div class='vgrid' style='display:grid;grid-template-columns:1fr;gap:0;direction:rtl'>"
             f"{cells}</div>")
-    grid = (f"<div style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
-            f"border-radius:6px;padding:2px 4px'>{grid}</div>")   # consistent box; scrolls only when tall
+    grid = (f"<div class='vscroll' style='max-height:560px;overflow-y:auto;border:1px solid #dbe6e0;"
+            f"border-radius:6px;padding:2px 4px'>{grid}</div>")   # desktop: boxed; mobile: full-flow (vscroll)
     st.markdown(grid, unsafe_allow_html=True)
 if total == 0:
     st.warning("No matches. Try the bare root, fewer words, or a reference like 2:255.")
