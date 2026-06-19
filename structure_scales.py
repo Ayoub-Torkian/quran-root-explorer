@@ -31,6 +31,58 @@ def _prep(corpus):
     return vroots, fr, suras, N
 
 
+def _nmf(X, k, iters=250, seed=0):
+    """Tiny multiplicative-update NMF (numpy only) — the HF Space has numpy/scipy, no sklearn."""
+    rng = np.random.RandomState(seed)
+    n, m = X.shape
+    W = np.abs(rng.rand(n, k)) + 1e-3
+    H = np.abs(rng.rand(k, m)) + 1e-3
+    for _ in range(iters):
+        H *= (W.T @ X) / (W.T @ (W @ H) + 1e-9)
+        W *= (X @ H.T) / ((W @ H) @ H.T + 1e-9)
+    return W, H
+
+
+def _refs(corpus):
+    su = [int(x) for x in corpus.df[A.COL_SURAH].tolist()]
+    ay = []
+    for x in corpus.df[A.COL_AYAH].tolist():
+        try:
+            ay.append(int(float(x)))
+        except Exception:
+            ay.append(0)
+    return list(zip(su, ay))
+
+
+def bond_verses(corpus, ra, rb, limit=20):
+    """Original-text read-back for an āyah bond: the (sūra, āyah) refs where both roots occur."""
+    norm = A.normalize_letters
+    refs = _refs(corpus)
+    out = []
+    for i, toks in enumerate(corpus.root_tokens):
+        s = set(norm(t) for t in toks if t and t != "-")
+        if ra in s and rb in s:
+            out.append(refs[i])
+            if len(out) >= limit:
+                break
+    return out
+
+
+def theme_exemplars(corpus, roots, limit=20, min_hits=2):
+    """Original-text read-back for a theme: verses containing the most of the theme's top roots."""
+    norm = A.normalize_letters
+    rs = set(roots)
+    refs = _refs(corpus)
+    scored = []
+    for i, toks in enumerate(corpus.root_tokens):
+        s = set(norm(t) for t in toks if t and t != "-")
+        h = len(s & rs)
+        if h >= min_hits:
+            scored.append((h, i))
+    scored.sort(key=lambda x: -x[0])
+    return [refs[i] for _h, i in scored[:limit]]
+
+
 def ayah_bonds(corpus, min_co=5, top=150):
     """Within-āyah concept bonds ranked by NPMI (frequency-controlled), not raw count."""
     vroots, fr, suras, N = _prep(corpus)
@@ -144,8 +196,6 @@ def quran_themes(corpus, K=12):
     mean canonical position), and the arrangement-localization stat (real vs shuffled spread)."""
     import random
     random.seed(0)
-    from sklearn.decomposition import NMF
-    from sklearn.feature_extraction.text import TfidfTransformer
     vroots, fr, suras, N = _prep(corpus)
     drop = set(r for r, _ in fr.most_common(12))
     susort = sorted(set(suras)); si = {s: i for i, s in enumerate(susort)}
@@ -156,9 +206,13 @@ def quran_themes(corpus, K=12):
         for r in vroots[i]:
             if r in vi:
                 M[si[suras[i]], vi[r]] += 1
-    X = TfidfTransformer().fit_transform(M)
-    model = NMF(n_components=K, init="nndsvd", max_iter=400, random_state=0)
-    W = model.fit_transform(X); H = model.components_
+    # TF-IDF (numpy only — no sklearn)
+    df = (M > 0).sum(axis=0)
+    idf = np.log((M.shape[0] + 1.0) / (df + 1.0)) + 1.0
+    X = M * idf
+    nrm = np.sqrt((X ** 2).sum(axis=1, keepdims=True)) + 1e-9
+    X = X / nrm
+    W, H = _nmf(X, K, iters=250, seed=0)
     inv = {i: r for r, i in vi.items()}
     meanpos = [float(np.average(range(len(susort)), weights=W[:, t] + 1e-9)) for t in range(K)]
     order = list(np.argsort(meanpos))

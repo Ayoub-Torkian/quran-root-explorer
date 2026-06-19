@@ -47,6 +47,42 @@ def _compute(_cid):
 D = _compute(id(corpus))
 INK = "#10243A"
 
+# ONE translation control for the whole page — ORIGINAL Arabic is always the anchor; this only
+# chooses which translation rides alongside in the read-backs below.
+_MP = _MEAN.translation_control(st)
+st.caption("Original Arabic is the anchor (always shown). Pick a translation to read alongside.")
+
+
+@st.cache_data(show_spinner=False)
+def _bondv(a, b):
+    return SS.bond_verses(corpus, a, b, 20)
+
+
+@st.cache_data(show_spinner=False)
+def _themev(roots):
+    return SS.theme_exemplars(corpus, list(roots), 20)
+
+
+def _verse_cards(refs, langs, empty="(no verses)"):
+    """Render āyāt: ORIGINAL Arabic (anchor) + the chosen translation."""
+    if not refs:
+        st.caption(empty); return
+    rl = langs if langs else ("en",)
+    parts = ["<div style='display:grid;grid-template-columns:1fr;gap:6px;margin-top:4px'>"]
+    for s, a in refs:
+        try:
+            ar = _SR._aryah(f"{s}:{a}") or ""
+        except Exception:
+            ar = ""
+        mean = _MEAN.meaning_block_html(f"{s}:{a}", langs=rl)
+        parts.append(
+            "<div style='border:1px solid #E2E8F1;border-radius:10px;padding:8px 12px;background:#fff'>"
+            f"<div style='font-size:12.5px;font-weight:800;color:#0F6E56'>{s}:{a}</div>"
+            f"<div class='qv-ar' dir='rtl' style='text-align:right;font-size:19px;line-height:2;color:#10243A'>{ar}</div>"
+            f"{mean}</div>")
+    parts.append("</div>")
+    st.markdown("".join(parts), unsafe_allow_html=True)
+
 
 def _lay(fig, title, h=420):
     fig.update_layout(title=dict(text=f"<b>{title}</b>", x=0.5, font=dict(size=15)),
@@ -69,6 +105,12 @@ st.plotly_chart(_lay(fig, "Top āyah-level root bonds", h=560), use_container_wi
 st.dataframe(pd.DataFrame([(f"{a} · {b}", w, n) for a, b, w, n in bonds[:60]],
                           columns=["root pair", "co-occurrence", "NPMI"]),
              use_container_width=True, hide_index=True, height=300)
+# read-back: the actual āyāt where a chosen bond's two roots co-occur (original + translation)
+_bo = [f"{a} · {b}" for a, b, _, _ in bonds[:40]]
+if _bo:
+    _bi = st.selectbox("Read a bond in the original text — āyāt where both roots occur",
+                       range(len(_bo)), format_func=lambda i: _bo[i], key="bond_read")
+    _verse_cards(_bondv(bonds[_bi][0], bonds[_bi][1]), _MP, "(no shared verses)")
 
 # ── PASSAGE ──────────────────────────────────────────────────────────
 st.divider()
@@ -110,7 +152,6 @@ c2.caption("Examples — S12 Yūsuf: father · brother · prison · shirt · gri
 # ORIGINAL DATA is the anchor — read the actual āyāt (original Arabic) + your chosen translation,
 # so every structural claim above is verifiable in the text itself.
 st.markdown("**Verify in the original text** — the signature is derived from these āyāt:")
-_MEAN.translation_control(st)        # pick a translation; the original Arabic is always shown
 _SR.peek(corpus, int(_sel), 1, key=f"struct_{_sel}")
 
 # ── QUR'ĀN ───────────────────────────────────────────────────────────
@@ -132,6 +173,12 @@ st.caption(f"Themes localize in position: within-theme spread **{th['real_spread
 st.dataframe(pd.DataFrame([(" · ".join(t["roots"]), " ".join(f"S{s}" for s in t["suras"]))
                            for t in themes], columns=["theme (top roots)", "dominant sūras"]),
              use_container_width=True, hide_index=True, height=320)
+# read-back: the actual āyāt that most express a chosen theme (original + translation)
+_to = [" · ".join(t["roots"][:4]) for t in themes]
+if _to:
+    _ti = st.selectbox("Read a theme in the original text — āyāt that most carry its roots",
+                       range(len(_to)), format_func=lambda i: _to[i], key="theme_read")
+    _verse_cards(_themev(tuple(themes[_ti]["roots"])), _MP, "(no exemplar verses)")
 
 st.divider()
 st.caption("All four scales are measured vs the text's own shuffle (research/intrinsic/"
