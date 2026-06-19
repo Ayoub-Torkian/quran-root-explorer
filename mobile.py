@@ -84,6 +84,15 @@ html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
   h1,h2{{font-size:1.25rem !important}}
   [data-testid='stMetricValue']{{font-size:1.1rem !important}}
 }}
+/* PHONES IN LANDSCAPE + small tablets (<=1024px): keep reading FULL-FLOW (no nested
+   scroll box, single column, full width) so rotating portrait↔landscape just reflows
+   the āyah width instead of trapping it in a boxed scroller. */
+@media (max-width:1024px){{
+  .vscroll{{max-height:none !important;overflow:visible !important;border:none !important;border-radius:0 !important;padding:0 !important}}
+  .vgrid{{grid-template-columns:1fr !important}}
+  .ayah-grid{{grid-template-columns:1fr !important}}
+  section[data-testid='stMain'] .block-container{{max-width:100% !important}}
+}}
 @media (max-width:480px){{ .stApp:has(div[data-testid='stStatusWidget'])::after{{display:none}} }}
 </style>
 """
