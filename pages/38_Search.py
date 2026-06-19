@@ -316,18 +316,19 @@ def verse_html(i, target, qwords, substr=False):
         qhit = any(qw in nw for qw in qwords) if substr else (nw in qwords)
         hit = (k in hl) or (qwords and qhit)
         marked.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
-    _num = f"<span class='vnum'>{refs[i][0]}:{refs[i][1]} · {sname[i]}</span>"
+    _num = f"<span class='vnum'>{refs[i][0]}:{refs[i][1]} · <bdi>{sname[i]}</bdi></span>"
     full = " ".join(marked)
-    _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_MP)  # chosen language(s)
-    if not _mean:                       # translations Off → āyah only, reference inline on the same line
+    _rlangs = _MP if _MP else ("en",)   # tap reveals a translation (English) even when mode is Off
+    _open = " open" if _MP else ""      # shown by default only if a language mode is on
+    _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_rlangs)
+    if not _mean:                       # safety: no translation at all → āyah only
         return ("<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
                 f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;line-height:2.0'>"
                 f"{_num} {full}</div></div>")
-    # Reference sits INLINE with the āyah (compact — saves a line). Translation is the
-    # <details> body, OPEN by default; tap the āyah line to collapse it (non-empty body → iOS toggles).
+    # Tap the āyah to reveal its translation; tap again to collapse — works in any mode.
     return (
         "<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
-        "<details class='vrow' open>"
+        f"<details class='vrow'{_open}>"
         f"<summary><div class='vtext qv-ar' dir='rtl' style='text-align:right;line-height:2.0'>"
         f"<span class='ex'>⌄</span> {_num} {full}</div></summary>"
         f"{_mean}"

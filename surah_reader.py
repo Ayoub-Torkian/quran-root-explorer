@@ -49,15 +49,18 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
     sub = sub.sort_values("__a")
     name = str(sub[COL_SURAH_NAME].iloc[0]) if COL_SURAH_NAME in df.columns and len(sub) else ""
     ar_px = round(20 * fs, 1); tr_px = round(15.5 * fs, 1)
+    open_attr = " open" if langs else ""          # translation shown by default if a mode is on
+    rlangs = langs if langs else ("en",)          # tap reveals this (English) even when mode is Off
     rows = []
     for _, r in sub.iterrows():
-        a = int(r["__a"]); ar = _aryah(f"{int(surah)}:{a}") or str(r[COL_DIACRITIZED])
+        a = int(r["__a"]); ar = str(r[COL_DIACRITIZED])   # Book6 = the one authoritative, clean source
         cur = (a == int(cur_ayah))
-        tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=langs) if langs else ""
+        tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=rlangs)
         rows.append(
-            f"<div {'id=cur' if cur else ''} class='ay{' cur' if cur else ''}'>"
-            f"<div class='ar' dir='rtl'><span class='num'>{int(surah)}:{a} · {name}</span> {ar}"
-            f"{' <span class=here>◂ here</span>' if cur else ''}</div>{tr}</div>")
+            f"<details {'id=cur' if cur else ''} class='ay{' cur' if cur else ''}'{open_attr}>"
+            f"<summary><div class='ar' dir='rtl'><span class='num'>{int(surah)}:{a} · <bdi>{name}</bdi></span> {ar}"
+            f"{' <span class=here>◂ here</span>' if cur else ''}</div></summary>"
+            f"{tr}</details>")
     css = f"""
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Noto+Nastaliq+Urdu&family=Vazirmatn&family=Inter:wght@400;600;700&display=swap');
     *{{box-sizing:border-box;-webkit-text-size-adjust:100%}}
@@ -66,6 +69,9 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
       font-size:14px;z-index:9;box-shadow:0 1px 4px rgba(0,0,0,.15)}}
     .ay{{padding:9px 12px;border-bottom:1px solid #eef2f4}}
     .ay.cur{{background:#FFF6DA;border-radius:10px;box-shadow:inset 0 0 0 2px #EAD9A0;margin:4px 6px}}
+    summary{{list-style:none;cursor:pointer;display:block}}
+    summary::-webkit-details-marker{{display:none}}
+    details[open]:not(.cur){{background:#fbfdfc;border-radius:8px}}
     .ar .num{{font-size:0.6em;font-weight:800;color:#0F6E56;vertical-align:0.15em}}
     .ar .here{{font-size:0.5em;font-weight:700;color:#B07A1A;vertical-align:0.2em}}
     .ar{{font-family:'Tahoma','Noto Sans Arabic','Segoe UI',Arial,sans-serif;font-size:{ar_px}px;
@@ -140,15 +146,27 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
             f"background:#F4F9F7;border:1px solid #cfe4dc;border-radius:12px;padding:10px;margin:4px 0 8px'>"
             f"📖 Sūra {int(surah)} · <bdi>{name}</bdi> "
             f"<span style='font-weight:600;color:#10243A'>· {len(sub)} āyāt</span></div>")
+    # Each āyah is a <details>: tap it to reveal the translation and tap again to collapse.
+    # Works regardless of the global mode — if translations are Off, the tap still reveals
+    # English (rlangs); if a language is chosen, it shows by default (open) and tap collapses.
+    open_attr = " open" if langs else ""
+    rlangs = langs if langs else ("en",)
+    css = ("<style>"
+           ".rdr details{border-bottom:1px solid #eef2f4;padding:9px 10px}"
+           ".rdr details[open]{background:#fbfdfc;border-radius:8px}"
+           ".rdr summary{list-style:none;cursor:pointer;display:block}"
+           ".rdr summary::-webkit-details-marker{display:none}.rdr summary::marker{content:''}"
+           ".rdr .vnum{color:#0F6E56;font-weight:800;font-size:0.6em;vertical-align:0.15em}"
+           "</style>")
     rows = [head]
     for _, r in sub.iterrows():
-        a = int(r["__a"]); ar = _aryah(f"{int(surah)}:{a}") or str(r[COL_DIACRITIZED])
-        tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=langs) if langs else ""
+        a = int(r["__a"]); ar = str(r[COL_DIACRITIZED])   # Book6 = the one authoritative, clean source
+        tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=rlangs)
         hl = "background:#FFF6DA;border-radius:10px;" if (cur and a == int(cur)) else ""
         rows.append(
-            f"<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:9px 10px;{hl}'>"
-            f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.05'>"
-            f"<span style='color:#0F6E56;font-weight:800;font-size:0.6em;vertical-align:0.15em'>"
-            f"{int(surah)}:{a} · {name}</span> {ar}</div>{tr}</div>")
-    return ("<div style='max-width:820px;margin:0 auto'><div class='vgrid'>"
-            + "".join(rows) + "</div></div>")
+            f"<details{open_attr} style='{hl}'>"
+            f"<summary><div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.05'>"
+            f"<span class='vnum'>{int(surah)}:{a} · <bdi>{name}</bdi></span> {ar}</div></summary>"
+            f"{tr}</details>")
+    return (css + "<div class='rdr' style='max-width:820px;margin:0 auto'>"
+            + "".join(rows) + "</div>")
