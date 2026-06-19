@@ -316,23 +316,20 @@ def verse_html(i, target, qwords, substr=False):
         qhit = any(qw in nw for qw in qwords) if substr else (nw in qwords)
         hit = (k in hl) or (qwords and qhit)
         marked.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
-    ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]} {sname[i]}</b>")
+    _num = f"<span class='vnum'>{refs[i][0]}:{refs[i][1]}</span>"
     full = " ".join(marked)
     _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_MP)  # chosen language(s)
-    _ar = (f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;"
-           f"line-height:2.0'>{full}</div>")
-    if not _mean:                       # translations Off → nothing to collapse; show āyah only
+    if not _mean:                       # translations Off → āyah only, reference inline on the same line
         return ("<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
-                f"<div class='vhead' style='font-size:12.5px;margin-bottom:3px'>{ref_lbl}</div>"
-                f"{_ar}</div>")
-    # Translation is the <details> BODY, OPEN by default (visible). Tap the āyah (summary)
-    # to collapse it. Non-empty body → iOS Safari toggles reliably (the empty-body version
-    # was why collapse didn't work before). Āyah text shows full in both states.
+                f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;line-height:2.0'>"
+                f"{_num} {full}</div></div>")
+    # Reference sits INLINE with the āyah (compact — saves a line). Translation is the
+    # <details> body, OPEN by default; tap the āyah line to collapse it (non-empty body → iOS toggles).
     return (
         "<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
         "<details class='vrow' open>"
-        f"<summary><div class='vhead' style='font-size:12.5px;margin-bottom:3px'>"
-        f"<span class='ex'>⌄</span> {ref_lbl}</div>{_ar}</summary>"
+        f"<summary><div class='vtext qv-ar' dir='rtl' style='text-align:right;line-height:2.0'>"
+        f"<span class='ex'>⌄</span> {_num} {full}</div></summary>"
         f"{_mean}"
         "</details>"
         "</div>")
@@ -539,6 +536,7 @@ for lab, idx in groups:
             ".vgrid details[open]{background:#fbfdfc;border-radius:6px;box-shadow:inset 0 0 0 1px #eef4f1}"
             ".vgrid .ex{color:#0F6E56;font-weight:800;display:inline-block;transition:transform .15s}"
             ".vgrid details:not([open]) .ex{transform:rotate(-90deg)}"   # collapsed → chevron points in
+            ".vgrid .vnum{color:#0F6E56;font-weight:800;font-size:0.6em;vertical-align:0.15em}"  # ref inline w/ āyah
             "</style>"
             "<div class='vgrid' style='display:grid;grid-template-columns:1fr;gap:0;direction:rtl'>"
             f"{cells}</div>")

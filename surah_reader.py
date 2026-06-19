@@ -37,29 +37,27 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
         tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=langs) if langs else ""
         rows.append(
             f"<div {'id=cur' if cur else ''} class='ay{' cur' if cur else ''}'>"
-            f"<div class='hd'><span class='num'>{int(surah)}:{a}</span>"
-            f"{'<span class=here>• reading from here</span>' if cur else ''}</div>"
-            f"<div class='ar' dir='rtl'>{ar}</div>{tr}</div>")
+            f"<div class='ar' dir='rtl'><span class='num'>{int(surah)}:{a}</span> {ar}"
+            f"{' <span class=here>◂ here</span>' if cur else ''}</div>{tr}</div>")
     css = f"""
-    @import url('https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Nastaliq+Urdu&family=Vazirmatn&family=Inter:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Noto+Nastaliq+Urdu&family=Vazirmatn&family=Inter:wght@400;600;700&display=swap');
     *{{box-sizing:border-box;-webkit-text-size-adjust:100%}}
     body{{margin:0;font-family:'Inter',system-ui,sans-serif;color:#10243A;background:#FFFFFF}}
     .bar{{position:sticky;top:0;background:#1D3557;color:#fff;padding:8px 12px;font-weight:700;
       font-size:14px;z-index:9;box-shadow:0 1px 4px rgba(0,0,0,.15)}}
     .ay{{padding:9px 12px;border-bottom:1px solid #eef2f4}}
     .ay.cur{{background:#FFF6DA;border-radius:10px;box-shadow:inset 0 0 0 2px #EAD9A0;margin:4px 6px}}
-    .hd{{display:flex;align-items:center;gap:10px}}
-    .hd .num{{font-size:12.5px;font-weight:800;color:#0F6E56}}
-    .hd .here{{font-size:11.5px;font-weight:700;color:#B07A1A}}
-    .ar{{font-family:'Amiri','Noto Naskh Arabic',serif;font-size:{ar_px}px;line-height:2.05;
-      color:#10243A;text-align:right;margin-top:4px}}
+    .ar .num{{font-size:0.6em;font-weight:800;color:#0F6E56;vertical-align:0.15em}}
+    .ar .here{{font-size:0.5em;font-weight:700;color:#B07A1A;vertical-align:0.2em}}
+    .ar{{font-family:'Tahoma','Noto Sans Arabic','Segoe UI',Arial,sans-serif;font-size:{ar_px}px;
+      line-height:2.05;color:#10243A;text-align:right}}
     .qmean{{margin-top:6px;border-top:1px dashed #cfe0d9;padding-top:6px}}
     .qmean-h{{font-size:13px;font-weight:800;color:#0F6E56;margin-bottom:2px}}
     .qrow{{margin:4px 0}}
     .qlab{{display:inline-block;font-size:12px;font-weight:700;color:#0F6E56;background:#EAF4F0;
       border-radius:999px;padding:1px 10px;margin-bottom:2px}}
     .qtxt{{font-size:{tr_px}px;line-height:1.85;color:#10243A}}
-    .qtxt.ar{{font-family:'Amiri',serif;font-size:{round(17*fs,1)}px}}
+    .qtxt.ar{{font-family:'Tahoma','Noto Sans Arabic',sans-serif;font-size:{round(17*fs,1)}px}}
     .qtxt.ur{{font-family:'Noto Nastaliq Urdu',serif;font-size:{round(17*fs,1)}px;line-height:2.4}}
     .qtxt.fa{{font-family:'Vazirmatn',sans-serif;font-size:{round(16.5*fs,1)}px}}
     """
@@ -113,9 +111,8 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
         hl = "background:#FFF6DA;border-radius:10px;" if (cur and a == int(cur)) else ""
         rows.append(
             f"<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:9px 10px;{hl}'>"
-            f"<div class='vhead' style='font-size:12.5px;margin-bottom:3px'>"
-            f"<b style='color:#0F6E56'>{int(surah)}:{a}</b></div>"
-            f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;"
-            f"line-height:2.05'>{ar}</div>{tr}</div>")
+            f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.05'>"
+            f"<span style='color:#0F6E56;font-weight:800;font-size:0.6em;vertical-align:0.15em'>"
+            f"{int(surah)}:{a}</span> {ar}</div>{tr}</div>")
     return ("<div style='max-width:820px;margin:0 auto'><div class='vgrid'>"
             + "".join(rows) + "</div></div>")

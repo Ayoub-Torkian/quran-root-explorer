@@ -123,7 +123,7 @@ st.markdown("""
 <style>
 .ayah-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;}
 .ayah-card{border:1px solid #E2E8F1;border-radius:10px;padding:8px 12px;background:#FFFFFF;}
-.ayah-card .ar{direction:rtl;text-align:right;font-family:'Amiri','Amiri Quran','Noto Naskh Arabic',serif;font-size:18px;line-height:1.55;color:#243447;margin:0 0 4px 0;}
+.ayah-card .ar{direction:rtl;text-align:right;font-family:'Tahoma','Noto Sans Arabic','Segoe UI',Arial,sans-serif;font-size:18px;line-height:1.7;color:#243447;margin:0 0 4px 0;}
 .ayah-card .en{font-size:13px;color:#10243A;line-height:1.6;margin:0 0 4px 0;}
 .ayah-card .meta{font-size:12px;color:#10243A;margin:0;}
 </style>

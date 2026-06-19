@@ -43,7 +43,7 @@ def _css(fs: float, lh: float) -> str:
     L = lambda base: round(base * lh, 2)
     return f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Vazirmatn:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Vazirmatn:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
 
 html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
 *{{-webkit-tap-highlight-color:transparent}}
@@ -54,7 +54,7 @@ html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
   border-radius:999px;padding:1px 10px;margin-bottom:3px;font-family:'Inter',system-ui,sans-serif}}
 .qtxt{{color:{INK};font-size:{tr}px;line-height:{L(1.85)}}}
 .qtxt.en{{font-family:'Inter',system-ui,sans-serif}}
-.qtxt.ar{{font-family:'Amiri','Noto Naskh Arabic',serif;font-size:{arT}px;line-height:{L(2.0)}}}
+.qtxt.ar{{font-family:'Tahoma','Noto Sans Arabic','Segoe UI',Arial,sans-serif;font-size:{arT}px;line-height:{L(2.0)}}}
 .qtxt.ur{{font-family:'Noto Nastaliq Urdu',serif;font-size:{ur}px;line-height:{L(2.4)}}}
 .qtxt.fa{{font-family:'Vazirmatn','Noto Naskh Arabic',sans-serif;font-size:{fa}px;line-height:{L(2.05)}}}
 .qmean{{direction:ltr;text-align:left;margin-top:8px;border-top:1px dashed #cfe0d9;padding-top:7px}}
@@ -65,8 +65,9 @@ html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
 .qmore>summary::-webkit-details-marker{{display:none}}
 .qmore[open]>summary{{background:#E4F0EB;margin-bottom:4px}}
 
-/* the ORIGINAL ARABIC āyah — the hero. Scales most; !important beats inline + page CSS. */
-.qv-ar{{font-family:'Amiri','Noto Naskh Arabic',serif}}
+/* the ORIGINAL ARABIC āyah — the hero. Pars Quran look: Tahoma / Noto Sans Arabic (clean,
+   not calligraphic). Scales most; !important beats inline + page CSS. */
+.qv-ar{{font-family:'Tahoma','Noto Sans Arabic','Segoe UI',Arial,sans-serif}}
 .vitem .vtext{{font-size:{ar}px !important;line-height:{L(2.0)} !important}}
 .dd-hero{{font-size:{round(22*fs,1)}px !important;line-height:{L(2.05)} !important}}
 .ayah-card .ar{{font-size:{round(19*fs,1)}px !important;line-height:{L(1.9)} !important}}
