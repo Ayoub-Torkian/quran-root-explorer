@@ -530,7 +530,7 @@ for lab, idx in groups:
     _hq = qwords - _STOP                                            # never highlight function words
     cells = "".join(verse_html(i, _htarget, _hq, kind == "text") for i in shown)
     grid = ("<style>"
-            ".vgrid summary{display:block;list-style:none;cursor:pointer}"
+            ".vgrid summary{list-style:none;cursor:pointer}"   # no display:block (breaks iOS tap-toggle)
             ".vgrid summary::-webkit-details-marker{display:none}"
             ".vgrid summary::marker{content:\"\"}"
             # āyah text stays full whether open or collapsed; only the translation toggles

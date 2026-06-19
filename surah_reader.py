@@ -69,7 +69,7 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
       font-size:14px;z-index:9;box-shadow:0 1px 4px rgba(0,0,0,.15)}}
     .ay{{padding:9px 12px;border-bottom:1px solid #eef2f4}}
     .ay.cur{{background:#FFF6DA;border-radius:10px;box-shadow:inset 0 0 0 2px #EAD9A0;margin:4px 6px}}
-    summary{{list-style:none;cursor:pointer;display:block}}
+    summary{{list-style:none;cursor:pointer}}
     summary::-webkit-details-marker{{display:none}}
     details[open]:not(.cur){{background:#fbfdfc;border-radius:8px}}
     .ar .num{{font-size:0.6em;font-weight:800;color:#0F6E56;vertical-align:0.15em}}
@@ -154,7 +154,7 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
     css = ("<style>"
            ".rdr details{border-bottom:1px solid #eef2f4;padding:9px 10px}"
            ".rdr details[open]{background:#fbfdfc;border-radius:8px}"
-           ".rdr summary{list-style:none;cursor:pointer;display:block}"
+           ".rdr summary{list-style:none;cursor:pointer}"
            ".rdr summary::-webkit-details-marker{display:none}.rdr summary::marker{content:''}"
            ".rdr .vnum{color:#0F6E56;font-weight:800;font-size:0.6em;vertical-align:0.15em}"
            "</style>")
