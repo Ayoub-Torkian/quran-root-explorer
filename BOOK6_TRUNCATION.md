@@ -31,14 +31,30 @@ Because Search / Ayah Browser / Deep-Dive read this column, they now display the
 āyāt. The dedicated **Read** page + pop-out reader already use `arabic.json` (the complete
 canonical text, 6,236 verses) for display.
 
-## What still needs doing  ⚠️ [substrate — do NOT guess-fill]
-The **root / segmented / surface columns** for these 9 āyāt are **still truncated** (e.g.
-2:25 stores 20 root-tokens but the full verse has ~23 — missing **زوج · طهر · خلد**).
-These are the analytical *substrate*. Per the locked BASE-TRUTH rules, the correct fix is
-to **re-run Book6's own morphology pipeline** on the now-complete text — NOT to inject
-hand-derived roots (which would contaminate the corpus). Until then, root-based analyses
-(network/stats/mathānī, and any derived JSON computed from them) under-count these 9 verses
-only. Low impact (9 / 6236), but logged here so it is not forgotten.
+## CORRECTION (re-verified) — the substrate was NOT truncated  ✅ [MEASURED]
+An earlier draft claimed the root/segmented/surface columns were also short. **That was
+wrong** — an attribution error: it compared Book6's *content*-root count (e.g. 20 for 2:25)
+against the *canonical word count* (~39), which inflates the figure with function words and
+pause marks (و، ال، مِنْ، ۖ) that carry no root.
+
+Direct inspection of the stored columns shows the roots reach the **end** of every one of
+the 9 āyāt:
+
+| āyah | last content word | Book6's last stored root |
+|------|-------------------|--------------------------|
+| 2:25 | خالدون | خلد (أزواج→زوج, مطهرة→طهر also present) |
+| 2:264 | الكافرين | کفر |
+| 5:45 | الظالمون | ظلم |
+| 6:6 | آخرين | ءخر |
+| 6:128 | عليم | علم |
+| 33:53 | عظيمًا | عظم |
+| 47:15 | أمعاءهم | معی |
+| 48:29 | عظيمًا | عظم |
+| 59:2 | الأبصار | بصر |
+
+So the **only** defect was the diacritized *display* column, now repaired. The analytical
+substrate (roots/surface/segmented) was complete all along — **no re-derivation needed**,
+no root-based analysis was ever affected.
 
 ## Files
 - `Book6.xlsx` — display column repaired (this change).
