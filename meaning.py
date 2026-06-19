@@ -24,7 +24,8 @@ EDITIONS = {
     "ur": ("اردو", "Zeeshan Haider Jawadi", "rtl", "'Noto Nastaliq Urdu','Jameel Noori Nastaleeq',serif"),
     "fa": ("فارسی", "Makarem Shirazi", "rtl", "'Vazirmatn','Noto Naskh Arabic',serif"),
 }
-LANGS = ("en", "ar", "ur", "fa")
+LANGS = ("en", "ar", "ur", "fa")          # all bundled editions
+DISPLAY = ("en", "ar", "ur", "fa")        # shown by default — all four (ar = Tafsīr al-Jalālayn concise gloss)
 INK = "#10243A"
 TEAL = "#0F6E56"
 
@@ -61,8 +62,8 @@ def gloss(ref: str, lang: str = "en", limit: int = 0) -> str:
     return (t[:limit] + "…") if (limit and len(t) > limit) else t
 
 
-def meaning_block_html(ref: str, langs=LANGS, title: str = "💬 Meaning",
-                       source_note: bool = True) -> str:
+def meaning_block_html(ref: str, langs=DISPLAY, title: str = "💬 Meaning",
+                       source_note: bool = False) -> str:
     """Self-contained HTML card with the four translations (inline styles only, so it
     renders identically inside an RTL <details> body or a standalone st.markdown)."""
     d = get(ref)
@@ -83,9 +84,8 @@ def meaning_block_html(ref: str, langs=LANGS, title: str = "💬 Meaning",
             f"<div style='font-size:15px;color:{INK};line-height:1.85;{fam}'>{txt}</div></div>")
     if not rows:
         return ""
-    note = ("<div style='font-size:12px;color:%s;margin-top:6px'>Translations (the meaning layer). "
-            "Arabic row is Tafsīr al-Jalālayn's concise gloss. al-Mizan tafsīr is the next tier.</div>"
-            % INK) if source_note else ""
+    note = ("<div style='font-size:12px;color:%s;margin-top:6px'>Translations — the meaning layer "
+            "(English: Qarai · Urdu: Jawadi · Persian: Makarem).</div>" % INK) if source_note else ""
     return (
         "<div style='direction:ltr;text-align:left;margin-top:8px;border-top:1px dashed #cfe0d9;"
         "padding-top:6px'>"
