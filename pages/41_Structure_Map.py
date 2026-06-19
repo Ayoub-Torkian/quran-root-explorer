@@ -380,3 +380,51 @@ st.dataframe(pd.DataFrame([
 st.caption("Frequency is the yardstick, not a finding. Co-occurrence — and its directed refinement, the "
            "dependency graph — is a verse-scale tool; motif belongs on the sparsified bond graph; the "
            "higher scales need sequence, coherence, and factorization.")
+
+# ════════════ IN PLAIN WORDS — summary & takeaway ════════════
+st.divider()
+st.markdown("""
+## In plain words — what this tab shows
+
+**The idea in one breath.** Think of the Qur'ān like a piece of music, or a building: you can look at
+a single note, a phrase, a movement, or the whole symphony — and each level has its own kind of order.
+This tab looks at the text's **root-words** (the original Arabic, stripped to their core) at four zoom
+levels — a verse, a few verses, a chapter, and the whole book — and at each level asks: is there real
+structure here, or is it random? To stay honest, every pattern is compared against the text's **own
+shuffled version** (its words reshuffled by chance). Only patterns that beat that shuffle count.
+
+**Āyah — the words that keep company.** Inside one verse, certain ideas travel together far more than
+chance: sun with moon, rivers with "flowing beneath," the Trumpet with "blowing." It is like noticing
+which instruments tend to play in the same chord. We measure it *fairly* — dividing out how common each
+word is — so everyday words can't fake a bond. The result is a clean map of the Qur'ān's own
+concept-pairs, and they fall into natural families.
+
+**Passage — verses holding hands.** Move up to a handful of consecutive verses and a second order
+appears: each verse reuses words from the one before it, like a melody where every phrase echoes the
+last. It runs far beyond a shuffled order, and it fades the farther apart two verses sit — which reveals
+the natural size of a "paragraph." Reorder a chapter's verses and the thread breaks: the sequence is
+doing real work.
+
+**Sūra — each chapter's fingerprint.** Zoom to a whole chapter and it has a distinctive vocabulary — a
+fingerprint. Joseph's chapter leans on *father, brother, prison, shirt*; Sincerity on *one, beget*; the
+Opening on *path, mercy, praise*. Its verses cling to that fingerprint far more than chance, so a chapter
+is a real unit of meaning, not just a box drawn around some verses.
+
+**Qur'ān — the shelves of the whole library.** Step all the way back and the thousands of roots collapse
+into about a dozen themes — oneness, judgment, charity, refuge, community and law. The striking part:
+these themes are **placed, not scattered** — like a library where books on one subject sit on the same
+shelf, related chapters cluster in one region of the book, each theme leaning earlier (Meccan) or later
+(Medinan). The order of the chapters carries design.
+
+**Why four different tools?** You'd expect one method to handle all of it. It can't — and that's a real
+lesson. "Co-occurrence" (do two words share a verse?) works beautifully up close, but as you zoom out it
+blurs: in a whole chapter almost every word shares space with every other, so the lens goes white.
+Different distances need different instruments — a microscope for the verse, a thread-tracer for the
+passage, a fingerprint reader for the chapter, a floor-plan for the book. Frequency itself is never the
+structure; it is only how loudly a word is repeated — the yardstick we divide out.
+
+**The takeaway.** Anchored entirely on the original Arabic roots and tested only against the text's own
+shuffle, structure shows up at **every** scale — and the scales **nest**: word-bonds build passages,
+passages build chapters, chapters arrange into a themed whole. The Qur'ān is not a bag of verses, and
+its order is not arbitrary; it is organized top to bottom, and that organization is measurable.
+""")
