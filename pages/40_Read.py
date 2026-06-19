@@ -88,9 +88,23 @@ if st.query_params.get("s") != str(sel) or st.query_params.get("a", "") != (str(
     elif "a" in st.query_params:
         del st.query_params["a"]
 
-# ── translation choice + text size (shared across the app) ──
-_MP = _MEAN.translation_control(st)
-_MOB.settings_controls(st)
+# ── compact spacing for this reading surface (kill empty bands around iframes) ──
+st.markdown("<style>section[data-testid='stMain'] [data-testid='stVerticalBlock']{gap:.4rem}"
+            "[data-testid='stElementContainer']:has(iframe){margin:0 !important}</style>",
+            unsafe_allow_html=True)
+
+# ── recitation player — prominent, right under the nav, with a clear ▶ Play button ──
+st.markdown("<div style='font-size:13px;font-weight:800;color:#0F6E56;margin:2px 0 0'>"
+            "🔊 Recitation — pick a reciter and tap <span style='color:#1D9E75'>▶ Play</span> "
+            "(auto-advances through the sūra)</div>", unsafe_allow_html=True)
+_AUD.render(corpus, int(sel), start_ayah=(cur_a or 1))
+
+# ── compact controls: translation + reading settings side by side ──
+_cc = st.columns(2)
+with _cc[0]:
+    _MP = _MEAN.translation_control(st)
+with _cc[1]:
+    _MOB.settings_controls(st)
 
 
 # ── bookmarks · resume · per-verse copy/share (localStorage, JS-free for the user) ──
@@ -112,7 +126,7 @@ def _read_tools(s: int, a: int, sname: str):
 <style>
  *{box-sizing:border-box;font-family:'Inter',system-ui,sans-serif}
  body{margin:0;color:#10243A}
- .bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:2px 0 8px}
+ .bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:0 0 5px}
  .btn{font-size:13px;font-weight:700;border:1px solid #cfe4dc;background:#F4F9F7;color:#0F6E56;
    border-radius:999px;padding:5px 12px;cursor:pointer}
  .btn:active{background:#E4F0EB}
@@ -123,7 +137,7 @@ def _read_tools(s: int, a: int, sname: str):
  .chip .x{color:#B23A3A;margin-left:5px;font-weight:800}
  .cont{display:inline-block;font-size:13px;font-weight:800;text-decoration:none;color:#1D3557;
    background:#FFF6DA;border:1px solid #EAD9A0;border-radius:10px;padding:5px 12px;margin:2px 0}
- .row{margin:4px 0}
+ .row{margin:2px 0}
  .ok{color:#0F6E56;font-weight:700;font-size:12.5px;margin-left:6px}
 </style>
 <div id=app>
@@ -178,16 +192,10 @@ document.getElementById('cpl').onclick=function(){
 render();
 </script>
 """.replace("__PAYLOAD__", payload)
-    _components.html(html, height=150, scrolling=True)
+    _components.html(html, height=84, scrolling=True)
 
 
 _read_tools(int(sel), cur_a, names.get(int(sel), ""))
-
-# ── recitation player (mobile-first): play the sūra continuously, follow along ──
-st.markdown("<div style='font-size:13px;font-weight:800;color:#0F6E56;margin:8px 0 2px'>"
-            "🔊 Listen — tap ▶ to recite the sūra; it follows along & auto-advances</div>",
-            unsafe_allow_html=True)
-_AUD.render(corpus, int(sel), start_ayah=(cur_a or 1))
 
 # ── the whole sūra, inline (page scrolls), highlighting the jumped-to āyah ──
 st.markdown(_SR.inline_html(corpus, sel, _MP, cur=(cur_a or None)), unsafe_allow_html=True)

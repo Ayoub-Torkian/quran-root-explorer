@@ -64,23 +64,23 @@ def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int) -> str:
 <style>
  *{box-sizing:border-box;font-family:'Inter',system-ui,sans-serif}
  body{margin:0;color:#10243A;background:transparent}
- .pl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-   background:#1D3557;border-radius:14px;padding:8px 10px;box-shadow:0 3px 10px rgba(16,36,58,.18)}
- .pl button{min-width:44px;min-height:44px;border:none;border-radius:10px;background:#2C4A6E;color:#fff;
-   font-size:18px;font-weight:700;cursor:pointer}
- .pl button.pp{background:#1D9E75;min-width:52px;font-size:20px}
+ .pl{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;
+   background:#1D3557;border-radius:12px;padding:5px 7px;box-shadow:0 2px 8px rgba(16,36,58,.18)}
+ .pl button{min-width:40px;height:40px;border:none;border-radius:9px;background:#2C4A6E;color:#fff;
+   font-size:17px;font-weight:700;cursor:pointer;flex:0 0 auto}
+ .pl button.pp{background:#1D9E75;padding:0 12px;min-width:82px;font-size:14px;font-weight:800;white-space:nowrap}
  .pl button:active{filter:brightness(.92)}
- .ref{color:#fff;font-weight:800;font-size:15px;min-width:64px;text-align:center}
- .rep{font-size:13px !important;min-width:64px !important}
- select{min-height:40px;border-radius:10px;border:1px solid #2C4A6E;background:#fff;color:#10243A;
-   font-size:13px;font-weight:700;padding:2px 6px;max-width:46vw}
- .barwrap{height:4px;background:#2C4A6E;border-radius:99px;margin-top:7px;overflow:hidden}
+ .ref{color:#fff;font-weight:800;font-size:14px;min-width:48px;text-align:center;flex:0 0 auto}
+ .rep{font-size:12px !important;min-width:46px !important}
+ select{height:38px;border-radius:9px;border:1px solid #2C4A6E;background:#fff;color:#10243A;
+   font-size:12.5px;font-weight:700;padding:2px 4px;flex:1 1 auto;min-width:0}
+ .barwrap{height:4px;background:#2C4A6E;border-radius:99px;margin-top:5px;overflow:hidden}
  #bar{height:100%;width:0;background:#7FD9BD}
  .err{color:#FFD7C2;font-size:12.5px;font-weight:700}
 </style>
 <div class=pl>
   <button id=prev title='previous āyah'>⏮</button>
-  <button id=pp class=pp title='play'>▶</button>
+  <button id=pp class=pp title='play'>▶ Play</button>
   <button id=next title='next āyah'>⏭</button>
   <span class=ref id=ref>—</span>
   <button id=rep class=rep title='repeat'>↻ off</button>
@@ -107,7 +107,7 @@ function hi(n){ // best-effort: highlight + scroll the matching āyah in the pag
 }
 function load(n,go){a=Math.max(1,Math.min(C.n,n));ref.textContent=C.surah+':'+a;err.textContent='';
   au.src=src(a);hi(a);if(go){au.play().catch(function(){});}}
-function setpp(p){playing=p;pp.textContent=p?'⏸':'▶';pp.title=p?'pause':'play';}
+function setpp(p){playing=p;pp.textContent=p?'⏸ Pause':'▶ Play';pp.title=p?'pause':'play';}
 pp.onclick=function(){if(!au.src)load(a,false);if(au.paused){au.play().catch(function(){});}else{au.pause();}};
 document.getElementById('prev').onclick=function(){load(a-1,true);};
 document.getElementById('next').onclick=function(){load(a+1,true);};
@@ -128,7 +128,7 @@ load(a,false);
 """.replace("__CFG__", cfg).replace("__OPTS__", opts)
 
 
-def render(corpus, surah: int, start_ayah: int = 1, height: int = 116):
+def render(corpus, surah: int, start_ayah: int = 1, height: int = 66):
     """Render the recitation player bar for `surah`, cued to `start_ayah`."""
     df = corpus.df
     n_ayat = int((df[COL_SURAH].astype(int) == int(surah)).sum())
