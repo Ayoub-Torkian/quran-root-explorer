@@ -8,6 +8,7 @@ from collections import Counter, defaultdict
 import streamlit as st
 from analysis import COL_SURAH, COL_AYAH, COL_SURAH_NAME, COL_DIACRITIZED, COL_ROOTS
 from state import get_corpus, hero, layer, log_page
+import surah_reader as _SR
 
 st.set_page_config(page_title="Cross-References", page_icon="🪢", layout="wide")
 log_page("cross_references")
@@ -131,6 +132,8 @@ st.markdown(
     f"<span style='font-size:13px;color:#10243A'>{refs[qi]} · {sname.get(sura[qi],'')}</span><br>{hl_text(qi, crootsets[qi])}</div>",
     unsafe_allow_html=True)
 st.caption("Roots: " + " · ".join(sorted(rootsets[qi])))
+_xs, _xa = refs[qi].split(":")                     # read the whole sūra from this āyah
+_SR.peek(corpus, int(_xs), int(_xa))
 
 layer(1, "Follow a parallel to keep walking")
 rel = related(qi, k, excl, frozenset(path))

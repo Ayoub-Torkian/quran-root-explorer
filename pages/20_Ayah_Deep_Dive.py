@@ -19,6 +19,7 @@ import deep_dive as DD
 import plotly_charts as PC
 import meaning as _MEAN
 import mobile as _MOB
+import surah_reader as _SR
 from state import get_corpus, hero, log_page
 
 st.set_page_config(page_title="Ayah Deep-Dive", page_icon="🔭", layout="wide")
@@ -440,6 +441,8 @@ for sd in res["seed"]:
     _mhtml = _MEAN.meaning_block_html(sd["ref"], langs=_MP, title="💬 Meaning")
     if _mhtml:
         st.markdown(_mhtml, unsafe_allow_html=True)
+    _ss, _sa = sd["ref"].split(":")               # read the whole sūra from this āyah
+    _SR.peek(corpus, int(_ss), int(_sa))
     _hero_strip(sd["ref"], res)
     _seal_panel(sd["ref"])
 

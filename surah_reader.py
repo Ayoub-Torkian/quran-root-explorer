@@ -85,6 +85,15 @@ def render(corpus, surah: int, cur_ayah: int, langs=None, height: int = 560):
                     height=height, scrolling=True)
 
 
+def peek(corpus, surah, ayah, height: int = 520):
+    """Reusable affordance — a '📖 Read the whole sūra from here' expander that opens
+    the scrollable sūra reader centered on this āyah. Drop onto ANY surface that shows
+    an āyah (Search, Āyah Deep-Dive, Cross-References, …) so reading is always one tap away."""
+    with st.expander(f"📖 Read the whole sūra — open at {int(surah)}:{int(ayah)} "
+                     f"(scroll start → end)"):
+        render(corpus, int(surah), int(ayah), height=height)
+
+
 def inline_html(corpus, surah: int, langs, cur=None) -> str:
     """Whole sūra as INLINE HTML (uses the app's .vitem/.qv-ar/.qmean classes so the
     page's fonts + text-size control apply, and the PAGE scrolls — no nested box).
