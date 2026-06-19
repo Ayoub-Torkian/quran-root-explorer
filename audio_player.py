@@ -219,7 +219,11 @@ au.onended=function(){
 };
 // TAP-TO-PLAY: the reader posts {qre_cmd:'play', a:N}; this also re-enters if exited
 window.addEventListener('message',function(e){var d=e.data||{};
-  if(d&&d.qre_cmd==='play'&&d.a){if(exited)setExited(false);load(+d.a,true);gotoAy(+d.a);}});
+  if(d&&d.qre_cmd==='play'&&d.a){
+    if(exited)setExited(false);
+    if(+d.a===a && !au.paused){wantPlay=false;persist();au.pause();}   // 2nd tap on the playing āyah → stop
+    else{load(+d.a,true);gotoAy(+d.a);}                                // else play from there
+  }});
 pl.classList.toggle('exited',exited);
 load(a,false);
 // autoplay (e.g. tap-to-play / Search hand-off) overrides an exited state and re-enters;
