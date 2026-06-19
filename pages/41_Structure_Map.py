@@ -54,13 +54,26 @@ st.caption("Original Arabic is the anchor (always shown). Pick a translation to 
 
 
 @st.cache_data(show_spinner=False)
-def _bondv(a, b):
-    return SS.bond_verses(corpus, a, b, 20)
+def _bondh(a, b):
+    return SS.bond_word_hits(corpus, a, b, 30)
 
 
 @st.cache_data(show_spinner=False)
-def _themev(roots):
-    return SS.theme_exemplars(corpus, list(roots), 20)
+def _themeh(roots):
+    return SS.theme_word_hits(corpus, list(roots), 30)
+
+
+def _hits(rows, empty="(none)"):
+    """Compact read-out: one line per āyah — ref + the actual words (original). No bulk."""
+    if not rows:
+        st.caption(empty); return
+    h = ["<div style='display:flex;flex-direction:column;gap:1px'>"]
+    for s, a, words in rows:
+        h.append("<div style='display:flex;gap:10px;align-items:baseline;border-bottom:1px solid #eef2f4;padding:3px 0'>"
+                 f"<span style='font-weight:800;color:#0F6E56;font-size:13px;min-width:46px'>{s}:{a}</span>"
+                 f"<span class='qv-ar' dir='rtl' style='font-size:18px;color:#10243A'>{words}</span></div>")
+    h.append("</div>")
+    st.markdown("".join(h), unsafe_allow_html=True)
 
 
 def _verse_cards(refs, langs, empty="(no verses)"):
@@ -108,9 +121,13 @@ st.dataframe(pd.DataFrame([(f"{a} · {b}", w, n) for a, b, w, n in bonds[:60]],
 # read-back: the actual āyāt where a chosen bond's two roots co-occur (original + translation)
 _bo = [f"{a} · {b}" for a, b, _, _ in bonds[:40]]
 if _bo:
-    _bi = st.selectbox("Read a bond in the original text — āyāt where both roots occur",
+    _bi = st.selectbox("Read a bond — where the two roots meet (words per āyah)",
                        range(len(_bo)), format_func=lambda i: _bo[i], key="bond_read")
-    _verse_cards(_bondv(bonds[_bi][0], bonds[_bi][1]), _MP, "(no shared verses)")
+    _bh = _bondh(bonds[_bi][0], bonds[_bi][1])
+    st.caption(f"{len(_bh)} āyāt share both roots:")
+    _hits(_bh, "(no shared verses)")
+    with st.expander("full text + translation"):
+        _verse_cards([(s, a) for s, a, _ in _bh[:10]], _MP)
 
 # ── PASSAGE ──────────────────────────────────────────────────────────
 st.divider()
@@ -205,9 +222,13 @@ st.dataframe(pd.DataFrame([
 # read-back: the actual āyāt that most express a chosen theme (original + translation)
 _to = [" · ".join(t["roots"][:4]) for t in themes]
 if _to:
-    _ti = st.selectbox("Read a theme in the original text — āyāt that most carry its roots",
+    _ti = st.selectbox("Read a theme — āyāt that most carry its roots (words)",
                        range(len(_to)), format_func=lambda i: _to[i], key="theme_read")
-    _verse_cards(_themev(tuple(themes[_ti]["roots"])), _MP, "(no exemplar verses)")
+    _thh = _themeh(tuple(themes[_ti]["roots"]))
+    st.caption(f"{len(_thh)} āyāt:")
+    _hits(_thh, "(no verses)")
+    with st.expander("full text + translation"):
+        _verse_cards([(s, a) for s, a, _ in _thh[:10]], _MP)
 
 st.divider()
 st.caption("All four scales are measured vs the text's own shuffle (research/intrinsic/"

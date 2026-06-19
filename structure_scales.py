@@ -83,6 +83,38 @@ def theme_exemplars(corpus, roots, limit=20, min_hits=2):
     return [refs[i] for _h, i in scored[:limit]]
 
 
+def bond_word_hits(corpus, ra, rb, limit=30):
+    """Dense bond read-out: per co-occurring āyah, the actual surface WORDS whose root is ra or rb
+    (so you see where the two roots meet, not a wall of full verses). Returns [(sūra, āyah, words)]."""
+    norm = A.normalize_letters
+    refs = _refs(corpus)
+    out = []
+    for i, (rts, sfs) in enumerate(zip(corpus.root_tokens, corpus.surface_tokens)):
+        nr = [norm(r) for r in rts]
+        if ra in nr and rb in nr:
+            words = [sf for r, sf in zip(nr, sfs) if r in (ra, rb)]
+            out.append((refs[i][0], refs[i][1], " · ".join(dict.fromkeys(words))))
+            if len(out) >= limit:
+                break
+    return out
+
+
+def theme_word_hits(corpus, roots, limit=30, min_hits=2):
+    """Dense theme read-out: āyāt carrying the most of the theme's roots, with the actual words."""
+    norm = A.normalize_letters
+    rs = set(roots)
+    refs = _refs(corpus)
+    scored = []
+    for i, (rts, sfs) in enumerate(zip(corpus.root_tokens, corpus.surface_tokens)):
+        nr = [norm(r) for r in rts]
+        words = [sf for r, sf in zip(nr, sfs) if r in rs]
+        h = len(set(r for r in nr if r in rs))
+        if h >= min_hits:
+            scored.append((h, refs[i][0], refs[i][1], " · ".join(dict.fromkeys(words))))
+    scored.sort(key=lambda x: -x[0])
+    return [(s, a, w) for _h, s, a, w in scored[:limit]]
+
+
 def ayah_bonds(corpus, min_co=5, top=150):
     """Within-āyah concept bonds ranked by NPMI (frequency-controlled), not raw count."""
     vroots, fr, suras, N = _prep(corpus)
