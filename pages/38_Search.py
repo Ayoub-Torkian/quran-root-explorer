@@ -299,14 +299,22 @@ def verse_html(i, target, qwords, substr=False):
     ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]} {sname[i]}</b>")
     full = " ".join(marked)
     _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_MP)  # chosen language(s)
-    # One reading card: ref + FULL āyah (Arabic always shown, wraps) + the chosen
-    # translation beneath. No <details> collapse — it was unreliable on iOS Safari and
-    # left the Arabic clamped/hidden. Full text is always visible now.
+    _ar = (f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;"
+           f"line-height:2.0'>{full}</div>")
+    if not _mean:                       # translations Off → nothing to collapse; show āyah only
+        return ("<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
+                f"<div class='vhead' style='font-size:12.5px;margin-bottom:3px'>{ref_lbl}</div>"
+                f"{_ar}</div>")
+    # Translation is the <details> BODY, OPEN by default (visible). Tap the āyah (summary)
+    # to collapse it. Non-empty body → iOS Safari toggles reliably (the empty-body version
+    # was why collapse didn't work before). Āyah text shows full in both states.
     return (
         "<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
-        f"<div class='vhead' style='font-size:12.5px;margin-bottom:3px'>{ref_lbl}</div>"
-        f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.0'>{full}</div>"
+        "<details class='vrow' open>"
+        f"<summary><div class='vhead' style='font-size:12.5px;margin-bottom:3px'>"
+        f"<span class='ex'>⌄</span> {ref_lbl}</div>{_ar}</summary>"
         f"{_mean}"
+        "</details>"
         "</div>")
 
 hero("🔎 Search — anything, any form",
@@ -499,17 +507,13 @@ for lab, idx in groups:
     _hq = qwords - _STOP                                            # never highlight function words
     cells = "".join(verse_html(i, _htarget, _hq, kind == "text") for i in shown)
     grid = ("<style>"
-            ".vgrid summary{display:block;list-style:none;cursor:pointer;font-size:13px;line-height:1.65}"
+            ".vgrid summary{display:block;list-style:none;cursor:pointer}"
             ".vgrid summary::-webkit-details-marker{display:none}"
             ".vgrid summary::marker{content:\"\"}"
-            # CLOSED: whole row clamps to one line (ref + start of āyah, ellipsis).
-            ".vgrid details:not([open]) summary{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
-            # OPEN: row wraps; the āyah text enlarges and drops to its own line so clicking it collapses.
-            ".vgrid details[open] summary{white-space:normal}"
-            ".vgrid details[open] summary .vtext{display:block;margin-top:4px;font-size:14.5px;line-height:1.95}"
-            ".vgrid details[open]{background:#fbfdfc;border-radius:6px;box-shadow:inset 0 0 0 1px #e3efe9}"
-            ".vgrid .ex{color:#0F6E56;font-weight:800;display:inline-block;font-size:14px}"
-            ".vgrid details[open] .ex{transform:rotate(180deg)}"
+            # āyah text stays full whether open or collapsed; only the translation toggles
+            ".vgrid details[open]{background:#fbfdfc;border-radius:6px;box-shadow:inset 0 0 0 1px #eef4f1}"
+            ".vgrid .ex{color:#0F6E56;font-weight:800;display:inline-block;transition:transform .15s}"
+            ".vgrid details:not([open]) .ex{transform:rotate(-90deg)}"   # collapsed → chevron points in
             "</style>"
             "<div class='vgrid' style='display:grid;grid-template-columns:1fr;gap:0;direction:rtl'>"
             f"{cells}</div>")
