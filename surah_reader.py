@@ -77,8 +77,36 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
 
 
 def render(corpus, surah: int, cur_ayah: int, langs=None, height: int = 560):
-    """Show the whole-sūra reader, scrolled to the current āyah."""
+    """Show the whole-sūra reader (iframe), scrolled to the current āyah. Best for a
+    quick peek from a verse under study."""
     if langs is None:
         langs = _langs()
     components.html(build_html(corpus, surah, cur_ayah, langs, _scale(), height),
                     height=height, scrolling=True)
+
+
+def inline_html(corpus, surah: int, langs, cur=None) -> str:
+    """Whole sūra as INLINE HTML (uses the app's .vitem/.qv-ar/.qmean classes so the
+    page's fonts + text-size control apply, and the PAGE scrolls — no nested box).
+    For the dedicated 📖 Read surface, read top→bottom on phone or computer."""
+    df = corpus.df
+    sub = df[df[COL_SURAH].astype(int) == int(surah)].copy()
+    sub["__a"] = sub[COL_AYAH].astype(float).astype(int)
+    sub = sub.sort_values("__a")
+    name = str(sub[COL_SURAH_NAME].iloc[0]) if (COL_SURAH_NAME in df.columns and len(sub)) else ""
+    head = (f"<div style='text-align:center;font-weight:800;color:#1D3557;font-size:16px;"
+            f"background:#F4F9F7;border:1px solid #cfe4dc;border-radius:12px;padding:10px;margin:4px 0 8px'>"
+            f"📖 Sūra {int(surah)} · {name} <span style='font-weight:600;color:#10243A'>· {len(sub)} āyāt</span></div>")
+    rows = [head]
+    for _, r in sub.iterrows():
+        a = int(r["__a"]); ar = str(r[COL_DIACRITIZED])
+        tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=langs) if langs else ""
+        hl = "background:#FFF6DA;border-radius:10px;" if (cur and a == int(cur)) else ""
+        rows.append(
+            f"<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:9px 10px;{hl}'>"
+            f"<div class='vhead' style='font-size:12.5px;margin-bottom:3px'>"
+            f"<b style='color:#0F6E56'>{int(surah)}:{a}</b></div>"
+            f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;"
+            f"line-height:2.05'>{ar}</div>{tr}</div>")
+    return ("<div style='max-width:820px;margin:0 auto'><div class='vgrid'>"
+            + "".join(rows) + "</div></div>")
