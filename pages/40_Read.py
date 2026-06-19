@@ -47,8 +47,6 @@ if "read_s" not in st.session_state:
         st.session_state["read_a"] = max(0, int(_qp.get("a", 0)))
     except Exception:
         st.session_state["read_a"] = 0
-    # remembered collapse preference (?c=1) — survives reloads / bookmarks / resume links
-    st.session_state["read_compact"] = (str(_qp.get("c", "0")) == "1")
     st.session_state["read_s_prev"] = st.session_state["read_s"]
 
 # ── STICKY TOP BAR: sūra navigation + recitation player pinned together at the top of the
@@ -72,21 +70,14 @@ try:
 except TypeError:                       # older Streamlit without container keys → in-flow fallback
     _topbar = st.container()
 with _topbar:
-    # icon-only Prev/Next (sūra) frees width for the collapse chevron without crowding phones
-    top = st.columns([0.8, 3, 1.5, 0.8, 0.8])
+    # icon-only Prev/Next (sūra) keep the bar slim; the picker shows the current sūra
+    top = st.columns([0.8, 3, 1.6, 0.8])
     if top[0].button("◀", use_container_width=True, help="previous sūra"):
         st.session_state["read_s"] = max(1, int(st.session_state["read_s"]) - 1)
     if top[3].button("▶", use_container_width=True, help="next sūra"):
         st.session_state["read_s"] = min(114, int(st.session_state["read_s"]) + 1)
     sel = top[1].selectbox("Sūra", suras, index=suras.index(int(st.session_state["read_s"])),
                            format_func=lambda s: f"{s} · {names.get(s, '')}")
-
-    # one-tap collapse: shrink the player to a slim play strip to reclaim reading space
-    _compact = bool(st.session_state.get("read_compact", False))
-    if top[4].button("⌄" if _compact else "⌃", use_container_width=True,
-                     help="show full player" if _compact else "collapse player"):
-        st.session_state["read_compact"] = not _compact
-        st.rerun()
 
     # switching sūra clears any āyah-jump (it belonged to the old sūra) — set BEFORE the widget
     if sel != st.session_state.get("read_s_prev"):
@@ -98,24 +89,16 @@ with _topbar:
     cur_a = int(top[2].number_input("Jump to āyah (0 = top)", min_value=0, max_value=_n_ayat,
                                     step=1, key="read_a"))
 
-    # recitation player — sticks WITH the nav at the top, always reachable while reading
-    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a), compact=_compact)
+    # recitation player — slim strip with a ⋯ options sheet; sticks at the top, always reachable
+    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a))
 
-# ── reflect position + collapse state in the URL (only on change → no rerun loop) ──
-_want_a = str(cur_a) if cur_a else ""
-_want_c = "1" if st.session_state.get("read_compact", False) else ""
-if (st.query_params.get("s") != str(sel)
-        or st.query_params.get("a", "") != _want_a
-        or st.query_params.get("c", "") != _want_c):
+# ── reflect the current position in the URL (only when it changed → no rerun loop) ──
+if st.query_params.get("s") != str(sel) or st.query_params.get("a", "") != (str(cur_a) if cur_a else ""):
     st.query_params["s"] = str(sel)
     if cur_a:
         st.query_params["a"] = str(cur_a)
     elif "a" in st.query_params:
         del st.query_params["a"]
-    if _want_c:
-        st.query_params["c"] = "1"
-    elif "c" in st.query_params:
-        del st.query_params["c"]
 
 # ── compact controls: translation + reading settings side by side ──
 _cc = st.columns(2)
@@ -217,6 +200,24 @@ _read_tools(int(sel), cur_a, names.get(int(sel), ""))
 
 # ── the whole sūra, inline (page scrolls), highlighting the jumped-to āyah ──
 st.markdown(_SR.inline_html(corpus, sel, _MP, cur=(cur_a or None)), unsafe_allow_html=True)
+
+# ── TAP-TO-PLAY bridge: a tap on any āyah's ▶ tells the recitation player to play from
+#    there (and auto-continue). The reader is plain markdown in the MAIN doc, so this tiny
+#    helper (in its own iframe) delegates the click on the parent doc and postMessages every
+#    iframe — the player picks up {qre_cmd:'play'}. Best-effort: a no-op if the browser
+#    blocks parent access (the ▶ then simply does nothing; tap-to-reveal still works). ──
+_components.html(
+    "<script>try{var pd=window.parent.document;"
+    "if(pd&&!pd.__qreTap){pd.__qreTap=1;"
+    "pd.addEventListener('click',function(ev){var t=ev.target;"
+    "while(t&&t!==pd){if(t.classList&&t.classList.contains('vp'))break;t=t.parentNode;}"
+    "if(!t||t===pd||!t.classList||!t.classList.contains('vp'))return;"
+    "ev.preventDefault();ev.stopPropagation();"
+    "var a=+t.getAttribute('data-a');if(!a)return;"
+    "var f=pd.querySelectorAll('iframe');"
+    "for(var i=0;i<f.length;i++){try{f[i].contentWindow.postMessage({qre_cmd:'play',a:a},'*');}catch(e){}}"
+    "},true);}}catch(e){}</script>",
+    height=0)
 
 # best-effort: scroll the page to the jumped-to āyah (graceful no-op if the browser blocks it)
 if cur_a:

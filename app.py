@@ -406,6 +406,22 @@ def main():
         "<div style='height:3px;background:linear-gradient(90deg,#1D3557,#1D9E75 55%%,rgba(29,158,117,0));"
         "border-radius:3px;margin:0 0 16px'></div>" % _nr,
         unsafe_allow_html=True)
+
+    # ====== PRIMARY PATH — Read & Listen leads (the >90%, phone-first audience) ======
+    with st.container(border=True):
+        st.markdown(
+            "<div style='display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:2px 0 6px'>"
+            "<span style='font-size:21px;font-weight:800;color:#1D3557'>📖 Read &amp; listen to the Qur'an</span>"
+            "<span style='font-size:13.5px;font-weight:700;color:#1D9E75'>start here</span></div>"
+            "<div style='font-size:14px;color:#10243A;line-height:1.6;margin:0 0 10px'>"
+            "Read any sūra with translation, and tap an āyah's ▶ to hear it recited — the player stays "
+            "at the top and follows along as you read.</div>", unsafe_allow_html=True)
+        _r1, _r2 = st.columns([2, 1])
+        if _r1.button("📖 Open the Reader  →", type="primary", width='stretch', key="home_open_read"):
+            st.switch_page("pages/40_Read.py")
+        if _r2.button("🔎 Search", width='stretch', key="home_open_search"):
+            st.switch_page("pages/38_Search.py")
+
     # ====== ORIENTATION — distinct bordered panel (redundant "Read & explore" removed) ======
     with st.container(border=True):
         st.markdown("<div style='font-size:14px;color:#10243A;margin:0 0 4px'>"

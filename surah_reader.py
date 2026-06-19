@@ -166,6 +166,10 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
            "transition:transform .15s;display:inline-block}"
            ".rdr details[open] .rex{transform:rotate(180deg)}"
            ".rdr details.playing{background:#EAF7F1;box-shadow:inset 0 0 0 2px #1D9E75;border-radius:10px}"
+           ".rdr .vp{float:left;color:#fff;background:#1D9E75;font-weight:800;font-size:12.5px;"
+           "border-radius:999px;padding:4px 9px;margin:1px 8px 0 0;cursor:pointer;line-height:1;"
+           "-webkit-tap-highlight-color:transparent}"
+           ".rdr .vp:active{filter:brightness(.92)}"
            ".rdr .bism{text-align:center;font-family:'Tahoma','Noto Sans Arabic',serif;color:#1D3557;"
            "font-size:1.35em;padding:6px 4px 12px;direction:rtl;border-bottom:1px solid #eef2f4;margin-bottom:4px}"
            "</style>")
@@ -181,6 +185,7 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
         rows.append(
             f"<details id='qa{int(surah)}_{a}'{op} style='{hl}'>"
             f"<summary><span class='rex'>⌄</span>"
+            f"<span class='vp' data-a='{a}' title='Play recitation from here'>▶</span>"
             f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.05'>"
             f"<span class='vnum'>{int(surah)}:{a} · <bdi>{name}</bdi></span> {ar}</div></summary>"
             f"{tr}</details>")
