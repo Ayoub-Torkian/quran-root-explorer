@@ -177,12 +177,17 @@ function fit(){try{var fe=window.frameElement;if(fe){
     fe.style.height=(exited?LAUNCH_H:(sheetOpen?(C.baseh+sheet.scrollHeight+12):C.baseh))+'px';}}catch(e){}}
 function clearHi(){try{var d=window.parent.document;
     d.querySelectorAll('.rdr details.playing').forEach(function(e){e.classList.remove('playing');});}catch(e){}}
-// FOLLOW: highlight + scroll the reader (lives in the MAIN doc) to the playing āyah
-function hi(n){if(!follow)return;try{var d=window.parent.document;
+// FOLLOW: highlight + scroll the reader (lives in the MAIN doc) to the playing āyah.
+// Instant scroll (NO behavior:'smooth' — cross-frame smooth scrollIntoView is unreliable on
+// iOS Safari, which made the page fail to jump). Highlight always; auto-scroll only if follow.
+function hi(n){try{var d=window.parent.document;
     d.querySelectorAll('.rdr details.playing').forEach(function(e){e.classList.remove('playing');});
     var el=d.getElementById('qa'+C.surah+'_'+n);
-    if(el){el.classList.add('playing');el.scrollIntoView({block:'center',behavior:'smooth'});}
+    if(el){el.classList.add('playing');if(follow)el.scrollIntoView({block:'center'});}
   }catch(e){}}
+// force an instant jump to āyah n (used by an explicit tap-to-play, regardless of follow)
+function gotoAy(n){try{var d=window.parent.document;var el=d.getElementById('qa'+C.surah+'_'+n);
+    if(el)el.scrollIntoView({block:'center'});}catch(e){}}
 function setExited(v){exited=v;setLS('qre_exited',v?'1':'0');pl.classList.toggle('exited',v);
   if(v){sheetOpen=false;pl.classList.remove('open');more.textContent='⋯';}fit();}
 function load(n,go){a=Math.max(1,Math.min(C.n,n));ref.textContent=C.surah+':'+a;err.textContent='';
@@ -214,7 +219,7 @@ au.onended=function(){
 };
 // TAP-TO-PLAY: the reader posts {qre_cmd:'play', a:N}; this also re-enters if exited
 window.addEventListener('message',function(e){var d=e.data||{};
-  if(d&&d.qre_cmd==='play'&&d.a){if(exited)setExited(false);load(+d.a,true);}});
+  if(d&&d.qre_cmd==='play'&&d.a){if(exited)setExited(false);load(+d.a,true);gotoAy(+d.a);}});
 pl.classList.toggle('exited',exited);
 load(a,false);
 // autoplay (e.g. tap-to-play / Search hand-off) overrides an exited state and re-enters;
