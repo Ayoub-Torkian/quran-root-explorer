@@ -11,6 +11,25 @@ import streamlit as st
 import streamlit.components.v1 as components
 from analysis import COL_SURAH, COL_AYAH, COL_SURAH_NAME, COL_DIACRITIZED
 import meaning as _MEAN
+import json as _json, os as _os
+
+_ARABIC = None
+
+
+def _aryah(ref):
+    """Complete canonical Arabic (Tanzil 'simple' — matches Pars Quran) for 'S:A'.
+    Book6's stored diacritized column is truncated for some āyāt (e.g. 2:25), so the
+    reader displays this complete text instead, falling back to Book6 only if absent."""
+    global _ARABIC
+    if _ARABIC is None:
+        try:
+            with open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "arabic.json"),
+                      encoding="utf-8") as fh:
+                _ARABIC = _json.load(fh)
+        except Exception:
+            _ARABIC = {}
+    return _ARABIC.get(ref, "")
+
 
 _FS = {"A−": 0.9, "A": 1.0, "A+": 1.2, "A++": 1.45}
 
@@ -32,7 +51,7 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
     ar_px = round(20 * fs, 1); tr_px = round(15.5 * fs, 1)
     rows = []
     for _, r in sub.iterrows():
-        a = int(r["__a"]); ar = str(r[COL_DIACRITIZED])
+        a = int(r["__a"]); ar = _aryah(f"{int(surah)}:{a}") or str(r[COL_DIACRITIZED])
         cur = (a == int(cur_ayah))
         tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=langs) if langs else ""
         rows.append(
@@ -122,7 +141,7 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
             f"📖 Sūra {int(surah)} · {name} <span style='font-weight:600;color:#10243A'>· {len(sub)} āyāt</span></div>")
     rows = [head]
     for _, r in sub.iterrows():
-        a = int(r["__a"]); ar = str(r[COL_DIACRITIZED])
+        a = int(r["__a"]); ar = _aryah(f"{int(surah)}:{a}") or str(r[COL_DIACRITIZED])
         tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=langs) if langs else ""
         hl = "background:#FFF6DA;border-radius:10px;" if (cur and a == int(cur)) else ""
         rows.append(
