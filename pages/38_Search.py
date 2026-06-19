@@ -302,17 +302,19 @@ def verse_html(i, target, qwords, substr=False):
     full = " ".join(marked)
     _cls = "vrow long" if _more else "vrow"
     _chev = "<span class='ex' title='click to expand / collapse'>⌄</span> " if _more else ""
-    _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", primary=_MP)  # selected lang + more
-    # The full verse lives INSIDE <summary> so clicking the āyah text itself toggles open/closed
-    # (clamped to one line when closed, wraps + enlarges when open). The Meaning sits in the body.
+    _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_MP)  # chosen language(s)
+    # The āyah lives in <summary> (tap to expand the full Arabic). The translation sits
+    # OUTSIDE the <details>, so the chosen language is ALWAYS visible without tapping.
     return (
-        f"<details name='ayahacc' class='{_cls}' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
+        "<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
+        f"<details name='ayahacc' class='{_cls}'>"
         "<summary title='click the āyah to expand / collapse' "
         "style='direction:rtl;text-align:right;color:#10243A;cursor:pointer'>"
         f"<span class='vhead'>{_chev}{ref_lbl}</span> "
         f"<span class='vtext qv-ar'>&nbsp;{full}</span></summary>"
+        "</details>"
         f"{_mean}"
-        "</details>")
+        "</div>")
 
 hero("🔎 Search — anything, any form",
      "A root · a word · a phrase · an āyah · a reference or range (2:255 · 2:35-82 · 1:1،112:1). Paste a verse to find it AND similar ones.")
@@ -492,8 +494,8 @@ if _copy_idxs:
             "setTimeout(function(){document.getElementById('cpb').textContent='📋 Copy these verses'},1200)};</script>")
     st.components.v1.html(_btn, height=40)
 
-# ── language selector + reading settings (market-app pattern) ──
-_MP = _MEAN.language_selector(st)
+# ── translation control (one language / all / off — persists across pages) + reading settings ──
+_MP = _MEAN.translation_control(st)
 _MOB.settings_controls(st)          # ⚙️ text size (Arabic-first) + line spacing
 ln = 1
 for lab, idx in groups:

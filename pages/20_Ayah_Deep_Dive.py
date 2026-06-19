@@ -429,7 +429,7 @@ except Exception as e:
     st.warning(f"⚠️  {e}")
     st.stop()
 
-_MP = _MEAN.language_selector(st)
+_MP = _MEAN.translation_control(st)
 _MOB.settings_controls(st)          # ⚙️ text size (Arabic-first) + line spacing
 for sd in res["seed"]:
     st.markdown(f"### {sd['ref']}")
@@ -437,7 +437,7 @@ for sd in res["seed"]:
                 f"color:#10243A'>{sd['text']}</div>", unsafe_allow_html=True)
     st.markdown("**concepts:**")
     _show_chips(sd["roots"])
-    _mhtml = _MEAN.meaning_block_html(sd["ref"], primary=_MP, title="💬 Meaning")
+    _mhtml = _MEAN.meaning_block_html(sd["ref"], langs=_MP, title="💬 Meaning")
     if _mhtml:
         st.markdown(_mhtml, unsafe_allow_html=True)
     _hero_strip(sd["ref"], res)
