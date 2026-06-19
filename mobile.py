@@ -102,6 +102,16 @@ def inject():
     """Inject reading CSS + webfonts every rerun (Streamlit rebuilds the DOM each time)."""
     fs, lh = _scale()
     st.markdown(_css(fs, lh), unsafe_allow_html=True)
+    # Nudge Streamlit to re-measure on rotation: on orientationchange, fire a resize on the
+    # parent so the layout reflows to the new width (otherwise it can stay at portrait width).
+    try:
+        import streamlit.components.v1 as _c
+        _c.html(
+            "<script>try{var w=window.parent||window;function p(){w.dispatchEvent(new Event('resize'));}"
+            "w.addEventListener('orientationchange',function(){setTimeout(p,150);setTimeout(p,500);"
+            "setTimeout(p,1000);});}catch(e){}</script>", height=0)
+    except Exception:
+        pass
 
 
 def settings_controls(st_, expanded: bool = False):

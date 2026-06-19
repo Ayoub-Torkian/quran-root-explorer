@@ -316,7 +316,7 @@ def verse_html(i, target, qwords, substr=False):
         qhit = any(qw in nw for qw in qwords) if substr else (nw in qwords)
         hit = (k in hl) or (qwords and qhit)
         marked.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
-    _num = f"<span class='vnum'>{refs[i][0]}:{refs[i][1]}</span>"
+    _num = f"<span class='vnum'>{refs[i][0]}:{refs[i][1]} · {sname[i]}</span>"
     full = " ".join(marked)
     _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_MP)  # chosen language(s)
     if not _mean:                       # translations Off → āyah only, reference inline on the same line

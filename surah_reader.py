@@ -37,7 +37,7 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
         tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=langs) if langs else ""
         rows.append(
             f"<div {'id=cur' if cur else ''} class='ay{' cur' if cur else ''}'>"
-            f"<div class='ar' dir='rtl'><span class='num'>{int(surah)}:{a}</span> {ar}"
+            f"<div class='ar' dir='rtl'><span class='num'>{int(surah)}:{a} · {name}</span> {ar}"
             f"{' <span class=here>◂ here</span>' if cur else ''}</div>{tr}</div>")
     css = f"""
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Noto+Nastaliq+Urdu&family=Vazirmatn&family=Inter:wght@400;600;700&display=swap');
@@ -129,6 +129,6 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
             f"<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:9px 10px;{hl}'>"
             f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.05'>"
             f"<span style='color:#0F6E56;font-weight:800;font-size:0.6em;vertical-align:0.15em'>"
-            f"{int(surah)}:{a}</span> {ar}</div>{tr}</div>")
+            f"{int(surah)}:{a} · {name}</span> {ar}</div>{tr}</div>")
     return ("<div style='max-width:820px;margin:0 auto'><div class='vgrid'>"
             + "".join(rows) + "</div></div>")

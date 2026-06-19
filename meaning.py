@@ -104,9 +104,9 @@ def meaning_block_html(ref: str, langs=("en",), title: str = "💬 Meaning") -> 
     rows = "".join(_row(c, t) for c in DISPLAY if c in langs and (t := (d.get(c) or "").strip()))
     if not rows:
         return ""
-    head = (f"<div class='qmean-h'>{title} "
-            f"<span style='font-weight:600;color:{INK}'>· {ref}</span></div>")
-    return "<div class='qmean'>" + head + rows + "</div>"
+    # No "💬 Meaning · x:y" header line — the verse already carries its address inline;
+    # the dashed top-border on .qmean is enough to separate translation from the āyah.
+    return "<div class='qmean'>" + rows + "</div>"
 
 
 def render(ref: str, langs=("en",), expanded: bool = True, title: str = "💬 Meaning"):
