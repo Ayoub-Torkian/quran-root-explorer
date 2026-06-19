@@ -191,6 +191,63 @@ def passage_weave(corpus, n_null=40, seed=7):
     return {"obs": obs, "mu": mu, "sd": sd, "z": (obs - mu) / sd, "per": perpair}
 
 
+def ayah_clusters(corpus, npmi_min=0.35, max_clusters=14):
+    """Āyah-scale concept FAMILIES: connected components of the strong-NPMI bond graph
+    (roots that bond together form coherent groups — sun/moon/night/day, buy/sell/price …)."""
+    import networkx as nx
+    vroots, fr, suras, N = _prep(corpus)
+    drop = set(r for r, _ in fr.most_common(12))
+    roots = [r for r, v in fr.items() if v >= 10 and r not in drop]
+    rset = {r: set() for r in roots}
+    for i, s in enumerate(vroots):
+        for r in s:
+            if r in rset:
+                rset[r].add(i)
+    rl = sorted(roots, key=lambda r: -fr[r])
+    G = nx.Graph()
+    for i in range(len(rl)):
+        a = rl[i]; Sa = rset[a]
+        for j in range(i + 1, len(rl)):
+            b = rl[j]; w = len(Sa & rset[b])
+            if w >= 5:
+                pab = w / N
+                npmi = math.log(pab / ((fr[a] / N) * (fr[b] / N))) / (-math.log(pab))
+                if npmi >= npmi_min:
+                    G.add_edge(a, b)
+    comps = [sorted(c, key=lambda r: -fr[r]) for c in nx.connected_components(G) if len(c) >= 2]
+    comps.sort(key=len, reverse=True)
+    return comps[:max_clusters]
+
+
+def weave_decay(corpus, maxd=12, seed=3):
+    """Passage-scale cohesion DECAY: IDF-weighted root reuse between āyāt d apart (d=1..maxd),
+    real vs within-sūra order-shuffle floor. Shows how far cohesion reaches (the passage size)."""
+    import random
+    random.seed(seed)
+    vroots, fr, suras, N = _prep(corpus)
+    drop = set(r for r, _ in fr.most_common(12))
+    idf = {r: math.log(N / v) for r, v in fr.items()}
+    bysu = collections.defaultdict(list)
+    for i in range(N):
+        bysu[suras[i]].append(vroots[i])
+    seqs = list(bysu.values())
+
+    def reuse(ss, d):
+        tot = 0.0; npairs = 0
+        for seq in ss:
+            for k in range(len(seq) - d):
+                tot += sum(idf[r] for r in (seq[k] & seq[k + d]) if r not in drop)
+                npairs += 1
+        return tot / max(npairs, 1)
+
+    real = [reuse(seqs, d) for d in range(1, maxd + 1)]
+    sh = []
+    for s in seqs:
+        c = s[:]; random.shuffle(c); sh.append(c)
+    floor = [reuse(sh, d) for d in range(1, maxd + 1)]
+    return {"d": list(range(1, maxd + 1)), "real": real, "floor": floor}
+
+
 def sura_signatures(corpus, k=6):
     """Per-sūra TF-IDF signature roots (chapter identity)."""
     vroots, fr, suras, N = _prep(corpus)

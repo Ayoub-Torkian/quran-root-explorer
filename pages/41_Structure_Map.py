@@ -37,7 +37,9 @@ st.markdown(
 def _compute(_cid):
     return {
         "bonds": SS.ayah_bonds(corpus),
+        "clusters": SS.ayah_clusters(corpus),
         "weave": SS.passage_weave(corpus),
+        "decay": SS.weave_decay(corpus),
         "sig": SS.sura_signatures(corpus),
         "coher": SS.sura_coherence(corpus),
         "themes": SS.quran_themes(corpus),
@@ -122,6 +124,13 @@ fig = go.Figure(go.Bar(x=[n for *_, n in top], y=[f"{a} · {b}" for a, b, _, _ i
                        hovertext=[f"co-occur {w}×" for _, _, w, _ in top], hoverinfo="text"))
 fig.update_layout(xaxis_title="bond strength (NPMI · frequency-controlled)")
 st.plotly_chart(_lay(fig, "Strongest concept-bonds within a verse", h=520), use_container_width=True)
+# concept families — roots that bond together (connected groups of strong bonds)
+st.markdown("**Concept families** — roots that travel together within verses:")
+_fcells = ["<div style='border:1px solid #cfe4dc;border-radius:8px;padding:6px 10px;background:#F4F9F7'>"
+           f"<span class='qv-ar' dir='rtl' style='font-size:18px;color:#10243A'>{' · '.join(fam[:8])}</span></div>"
+           for fam in D["clusters"]]
+st.markdown("<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px'>"
+            + "".join(_fcells) + "</div>", unsafe_allow_html=True)
 with st.expander("read a bond in the text"):
     _bo = [f"{a} · {b}" for a, b, _, _ in bonds[:40]]
     _bi = st.selectbox("bond", range(len(_bo)), format_func=lambda i: _bo[i], key="bond_read")
@@ -139,6 +148,18 @@ fig = go.Figure(go.Bar(x=[s for s, _ in per], y=[v for _, v in per], marker_colo
 fig.update_layout(xaxis_title="sūra (1 → 114)", yaxis_title="root reuse between adjacent āyāt")
 st.plotly_chart(_lay(fig, f"How tightly adjacent āyāt are woven  ·  vs verse-shuffle z = {w['z']:.0f}",
                      h=420), use_container_width=True)
+# cohesion decay — how far the weave reaches (the passage size)
+dc = D["decay"]
+figd = go.Figure()
+figd.add_trace(go.Scatter(x=dc["d"], y=dc["real"], mode="lines+markers", name="actual order",
+                          line=dict(color="#1D3557", width=3)))
+figd.add_trace(go.Scatter(x=dc["d"], y=dc["floor"], mode="lines", name="shuffled floor",
+                          line=dict(color="#B23A3A", width=2, dash="dash")))
+figd.update_layout(xaxis_title="distance between āyāt (verses apart)",
+                   yaxis_title="shared-root reuse (IDF)",
+                   legend=dict(font=dict(size=12), orientation="h", y=1.12, x=0))
+st.plotly_chart(_lay(figd, "How far cohesion reaches — reuse fades with distance (the passage size)",
+                     h=360), use_container_width=True)
 
 # 3) SŪRA — internal coherence per chapter
 st.divider()
@@ -148,6 +169,19 @@ fig = go.Figure(go.Bar(x=[s for s, _ in cper], y=[v for _, v in cper], marker_co
 fig.update_layout(xaxis_title="sūra (1 → 114)", yaxis_title="how tightly its āyāt cohere")
 st.plotly_chart(_lay(fig, f"Each chapter's internal coherence  ·  vs verse→sūra shuffle z = {D['coher']['z']:.0f}",
                      h=420), use_container_width=True)
+# coherence vs length — coherence is not merely a size effect
+from analysis import COL_SURAH as _CS
+import collections as _coll
+_nay = _coll.Counter(int(s) for s in corpus.df[_CS].astype(int))
+_cohd = dict(D["coher"]["per"])
+_sx = sorted(_cohd)
+figc = go.Figure(go.Scatter(
+    x=[_nay.get(s, 0) for s in _sx], y=[_cohd[s] for s in _sx], mode="markers",
+    marker=dict(size=8, color="#0F6E56", line=dict(width=1, color="#10243A")),
+    text=[f"S{s}" for s in _sx], hoverinfo="text+x+y"))
+figc.update_layout(xaxis_title="sūra length (# āyāt)", yaxis_title="internal coherence")
+st.plotly_chart(_lay(figc, "Coherence vs length — coherence is not just a size effect", h=340),
+                use_container_width=True)
 sig = D["sig"]
 with st.expander("a sūra's signature roots + text"):
     _names = {}
@@ -184,6 +218,16 @@ fig.update_layout(xaxis_title="sūra position 1 → 114  (left = early, right = 
                   yaxis=dict(autorange="reversed"))
 st.plotly_chart(_lay(fig, f"Where each theme lives  ·  themes cluster (spread {th['real_spread']:.0f} vs {th['rand_spread']:.0f} shuffled)",
                      h=440), use_container_width=True)
+# Meccan / Medinan tilt per theme (the revelation-arrangement dimension)
+_tilt = sorted(themes, key=lambda t: t["meccan_frac"])
+figt = go.Figure(go.Bar(
+    orientation="h", y=[" · ".join(t["roots"][:3]) for t in _tilt],
+    x=[t["meccan_frac"] * 100 for t in _tilt],
+    marker=dict(color=[t["meccan_frac"] for t in _tilt], colorscale="RdBu", cmin=0, cmax=1)))
+figt.add_vline(x=50, line=dict(color="#10243A", width=1, dash="dash"))
+figt.update_layout(xaxis_title="Meccan share of the theme (%)  ·  left = Medinan, right = Meccan")
+st.plotly_chart(_lay(figt, "Each theme's Meccan vs Medinan tilt (revelation arrangement)", h=420),
+                use_container_width=True)
 with st.expander("read a theme in the text"):
     _to = [" · ".join(t["roots"][:4]) for t in themes]
     _ti = st.selectbox("theme", range(len(_to)), format_func=lambda i: _to[i], key="theme_read")
