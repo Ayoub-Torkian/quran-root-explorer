@@ -29,8 +29,17 @@ for s, n in zip(df[COL_SURAH].astype(int), df[_col_name]):
 if "read_s" not in st.session_state:
     st.session_state["read_s"] = 1
 
-# ── sūra navigation: prev / picker / next (buttons run before the picker so it stays in sync) ──
+# ── STICKY sūra navigation: stays pinned at the top of the screen while you scroll, so
+#    you can jump to ANY sūra from ANY āyah without scrolling back to the top ──
+st.markdown(
+    "<style>"
+    "[data-testid='stHorizontalBlock']:has(.rdnav){position:sticky;top:0;z-index:60;"
+    "background:#FBFCFE;padding:6px 4px 2px;margin:-4px 0 6px;"
+    "box-shadow:0 5px 12px rgba(16,36,58,.10);border-radius:0 0 12px 12px}"
+    "[data-testid='stHorizontalBlock']:has(.rdnav) .stButton button{min-height:40px}"
+    "</style>", unsafe_allow_html=True)
 top = st.columns([1, 4, 1])
+top[1].markdown("<div class='rdnav'></div>", unsafe_allow_html=True)
 if top[0].button("◀ Prev", use_container_width=True):
     st.session_state["read_s"] = max(1, int(st.session_state["read_s"]) - 1)
 if top[2].button("Next ▶", use_container_width=True):
