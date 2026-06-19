@@ -296,23 +296,16 @@ def verse_html(i, target, qwords, substr=False):
         qhit = any(qw in nw for qw in qwords) if substr else (nw in qwords)
         hit = (k in hl) or (qwords and qhit)
         marked.append(f"<mark style='background:#FCEFB4'>{w}</mark>" if hit else w)
-    ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]} "
-               f"{sname[i]}</b>")
-    _more = len(marked) > 50
+    ref_lbl = (f"<b style='color:#0F6E56'>{refs[i][0]}:{refs[i][1]} {sname[i]}</b>")
     full = " ".join(marked)
-    _cls = "vrow long" if _more else "vrow"
-    _chev = "<span class='ex' title='click to expand / collapse'>⌄</span> " if _more else ""
     _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_MP)  # chosen language(s)
-    # The āyah lives in <summary> (tap to expand the full Arabic). The translation sits
-    # OUTSIDE the <details>, so the chosen language is ALWAYS visible without tapping.
+    # One reading card: ref + FULL āyah (Arabic always shown, wraps) + the chosen
+    # translation beneath. No <details> collapse — it was unreliable on iOS Safari and
+    # left the Arabic clamped/hidden. Full text is always visible now.
     return (
-        "<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
-        f"<details name='ayahacc' class='{_cls}'>"
-        "<summary title='click the āyah to expand / collapse' "
-        "style='direction:rtl;text-align:right;color:#10243A;cursor:pointer'>"
-        f"<span class='vhead'>{_chev}{ref_lbl}</span> "
-        f"<span class='vtext qv-ar'>&nbsp;{full}</span></summary>"
-        "</details>"
+        "<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
+        f"<div class='vhead' style='font-size:12.5px;margin-bottom:3px'>{ref_lbl}</div>"
+        f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.0'>{full}</div>"
         f"{_mean}"
         "</div>")
 

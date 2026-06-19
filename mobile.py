@@ -67,7 +67,7 @@ html{{-webkit-text-size-adjust:100%;text-size-adjust:100%}}
 
 /* the ORIGINAL ARABIC āyah — the hero. Scales most; !important beats inline + page CSS. */
 .qv-ar{{font-family:'Amiri','Noto Naskh Arabic',serif}}
-.vgrid details[open] summary .vtext{{font-size:{ar}px !important;line-height:{L(2.0)} !important}}
+.vitem .vtext{{font-size:{ar}px !important;line-height:{L(2.0)} !important}}
 .dd-hero{{font-size:{round(22*fs,1)}px !important;line-height:{L(2.05)} !important}}
 .ayah-card .ar{{font-size:{round(19*fs,1)}px !important;line-height:{L(1.9)} !important}}
 
