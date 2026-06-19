@@ -84,11 +84,12 @@ def translation_control(st, key: str = "tr_lang"):
 
 
 def _row(code: str, txt: str) -> str:
-    label, author, direction, font = EDITIONS[code]
+    # No language label chip — the script itself identifies the language, and dropping
+    # the label makes the block more compact (user request).
+    _label, _author, direction, font = EDITIONS[code]
     align = "right" if direction == "rtl" else "left"
     fam = f"font-family:{font};" if font else ""
     return (f"<div class='qrow' style='direction:{direction};text-align:{align}'>"
-            f"<span class='qlab'>{label}</span>"
             f"<div class='qtxt {code}' style='color:{INK};{fam}'>{txt}</div></div>")
 
 
