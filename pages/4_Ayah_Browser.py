@@ -19,6 +19,7 @@ R = need_results()
 hero("📖 Ayah Browser",
      "Every matched ayah — full diacritized Quranic text, segmented form, and word-by-word alignment.")
 per_root_hint(compact=True)
+_MOB.settings_controls(st)          # ⚙️ text size (Arabic-first) + line spacing
 
 occ = R["occurrences"]
 

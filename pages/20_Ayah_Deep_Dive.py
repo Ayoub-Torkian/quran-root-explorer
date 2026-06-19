@@ -430,9 +430,10 @@ except Exception as e:
     st.stop()
 
 _MP = _MEAN.language_selector(st)
+_MOB.settings_controls(st)          # ⚙️ text size (Arabic-first) + line spacing
 for sd in res["seed"]:
     st.markdown(f"### {sd['ref']}")
-    st.markdown(f"<div class='qv-ar' dir='rtl' style='font-size:29px;line-height:2.0;margin:6px 0 8px;"
+    st.markdown(f"<div class='qv-ar dd-hero' dir='rtl' style='font-size:29px;line-height:2.0;margin:6px 0 8px;"
                 f"color:#10243A'>{sd['text']}</div>", unsafe_allow_html=True)
     st.markdown("**concepts:**")
     _show_chips(sd["roots"])

@@ -306,7 +306,7 @@ def verse_html(i, target, qwords, substr=False):
     # The full verse lives INSIDE <summary> so clicking the āyah text itself toggles open/closed
     # (clamped to one line when closed, wraps + enlarges when open). The Meaning sits in the body.
     return (
-        f"<details class='{_cls}' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
+        f"<details name='ayahacc' class='{_cls}' style='border-bottom:1px solid #eef2f4;padding:1px 8px'>"
         "<summary title='click the āyah to expand / collapse' "
         "style='direction:rtl;text-align:right;color:#10243A;cursor:pointer'>"
         f"<span class='vhead'>{_chev}{ref_lbl}</span> "
@@ -492,8 +492,9 @@ if _copy_idxs:
             "setTimeout(function(){document.getElementById('cpb').textContent='📋 Copy these verses'},1200)};</script>")
     st.components.v1.html(_btn, height=40)
 
-# ── language selector (market-app pattern: pick your language, the rest one tap away) ──
+# ── language selector + reading settings (market-app pattern) ──
 _MP = _MEAN.language_selector(st)
+_MOB.settings_controls(st)          # ⚙️ text size (Arabic-first) + line spacing
 ln = 1
 for lab, idx in groups:
     if not idx: continue
