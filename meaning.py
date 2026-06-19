@@ -29,8 +29,8 @@ EDITIONS = {
 }
 DISPLAY = ("en", "ar", "ur", "fa")
 
-# the single translation control (one choice, persists across pages)
-_CHOICES = ["English", "العربية", "اردو", "فارسی", "All languages", "Off"]
+# the single translation control (one choice, persists across pages). Default = Off.
+_CHOICES = ["Off", "English", "العربية", "اردو", "فارسی", "All languages"]
 _CHOICE2LANGS = {
     "English": ("en",), "العربية": ("ar",), "اردو": ("ur",), "فارسی": ("fa",),
     "All languages": DISPLAY, "Off": (),
@@ -75,12 +75,12 @@ def translation_control(st, key: str = "tr_lang"):
     () for Off, (code,) for one language, or DISPLAY for All. Persists across pages
     (shared session key) so the choice is global; each page can still change it."""
     if key not in st.session_state:
-        st.session_state[key] = "English"
+        st.session_state[key] = "Off"          # default: no translations until the reader picks one
     choice = st.selectbox(
         "🌐 Translation", _CHOICES, key=key,
-        help="Show one language under each āyah, all of them, or turn translations off. "
-             "Your choice carries across pages.")
-    return _CHOICE2LANGS.get(choice, ("en",))
+        help="Off by default. Pick one language to show it under each āyah, 'All languages' "
+             "for every translation, or leave Off. Your choice carries across pages.")
+    return _CHOICE2LANGS.get(choice, ())
 
 
 def _row(code: str, txt: str) -> str:

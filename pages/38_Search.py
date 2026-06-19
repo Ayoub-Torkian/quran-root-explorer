@@ -20,7 +20,7 @@ log_page("search")
 _MOB.inject()                       # mobile-first reading CSS + Qur'an webfonts
 corpus = get_corpus()
 INK = "#10243A"
-_MP = ("en",)                       # primary translation language(s); set from the selector each run
+_MP = ()                            # translation language(s); Off by default, set from the selector each run
 _NONLETTER = re.compile(r"[^ء-ي ]")
 
 def norm(s):

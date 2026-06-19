@@ -129,7 +129,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 # honor the global translation choice (set on Search/Deep-Dive; persists in session)
-_trchoice = st.session_state.get("tr_lang", "English")
+_trchoice = st.session_state.get("tr_lang", "Off")
 _trlang = {"English": "en", "العربية": "ar", "اردو": "ur", "فارسی": "fa",
            "All languages": "en", "Off": None}.get(_trchoice, "en")
 _trdir = "rtl" if _trlang in ("ar", "ur", "fa") else "ltr"
