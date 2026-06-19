@@ -56,7 +56,7 @@ st.caption("Original Arabic is the anchor (always shown). Pick a translation to 
 
 # ── one-glance scorecard: structure found at each scale, vs the text's own shuffle ──
 _sc_bonds, _sc_n = D["bonds"]
-st.dataframe(pd.DataFrame([
+st.table(pd.DataFrame([
     {"scale": "Āyah", "structure": "concept bonds", "method": "NPMI (frequency-controlled)",
      "strength vs shuffle": f"{_sc_n} strong bonds (NPMI > 0.3)",
      "what it means": "which ideas a verse pairs together"},
@@ -72,7 +72,7 @@ st.dataframe(pd.DataFrame([
      "strength vs shuffle": f"{len(D['themes']['themes'])} themes · localized "
      f"{D['themes']['real_spread']:.0f} vs {D['themes']['rand_spread']:.0f}",
      "what it means": "themes are placed, not scattered"},
-]), use_container_width=True, hide_index=True)
+]).set_index("scale"))
 
 _EXPL = {
     "ayah": (
@@ -298,10 +298,9 @@ figt.add_vline(x=50, line=dict(color="#10243A", width=1, dash="dash"))
 figt.update_layout(xaxis_title="Meccan share of the theme (%)  ·  left = Medinan, right = Meccan")
 st.plotly_chart(_lay(figt, "Each theme's Meccan vs Medinan tilt (revelation arrangement)", h=420),
                 use_container_width=True)
-st.dataframe(pd.DataFrame([{"theme (top roots)": " · ".join(t["roots"]),
-                            "span": f"S{t['lo']}–{t['hi']}", "center": f"S{round(t['meanpos'])}",
-                            "Meccan %": f"{t['meccan_frac']:.0%}"} for t in themes]),
-             use_container_width=True, hide_index=True, height=340)
+st.table(pd.DataFrame([{"theme (top roots)": " · ".join(t["roots"]),
+                        "span": f"S{t['lo']}–{t['hi']}", "center": f"S{round(t['meanpos'])}",
+                        "Meccan %": f"{t['meccan_frac']:.0%}"} for t in themes]).set_index("theme (top roots)"))
 try:                       # cross-link: this is corpus-wide NMF; Topic Modeling is per-root (Louvain)
     st.page_link("pages/9_Topic_Modeling.py",
                  label="→ Topic Modeling — query-driven, per-root themes (the complementary lens)", icon="🧩")
@@ -332,27 +331,23 @@ st.markdown(
     "**multi-scale** — every rung independently beats shuffle, so it is neither merely local "
     "verse-pairing nor merely global arrangement, but a coherent ladder where each rung is load-bearing.")
 
-# summary chart — co-occurrence saturates with scale (measured)
-_sc = ["āyah", "passage", "sūra", "Qur'ān"]
-figsat = go.Figure()
-figsat.add_trace(go.Bar(x=_sc, y=[53, 98, 100, 100], name="triad closure %", marker_color="#B23A3A"))
-figsat.add_trace(go.Scatter(x=_sc, y=[1.5, 0.0, 0.0, 0.0], name="genuine 3-way %", yaxis="y2",
-                            mode="lines+markers", line=dict(color="#1D9E75", width=3)))
-figsat.update_layout(yaxis=dict(title="triad closure %"),
-                     yaxis2=dict(title="genuine 3-way %", overlaying="y", side="right"),
-                     legend=dict(font=dict(size=12), orientation="h", y=1.15, x=0))
-st.plotly_chart(_lay(figsat, "Why one method can't span scales — co-occurrence saturates as the window grows",
-                     h=340), use_container_width=True)
+# co-occurrence saturates with scale — a small honest readout (4 measured numbers, not a chart)
+st.markdown("**Why one method can't span scales — co-occurrence saturates as the window grows:**")
+st.table(pd.DataFrame([
+    {"scale": "āyah", "triad closure": "53%", "genuine 3-way beyond pairwise": "1.5%"},
+    {"scale": "passage (±5)", "triad closure": "98%", "genuine 3-way beyond pairwise": "≈0%"},
+    {"scale": "sūra", "triad closure": "100%", "genuine 3-way beyond pairwise": "0%"},
+]).set_index("scale"))
 st.caption("As the window grows almost every root-pair co-occurs (closure → 100%) and genuine "
            "higher-order signal vanishes — co-occurrence is a verse-scale tool. [MEASURED]")
 
 # summary table — the nesting ladder
-st.dataframe(pd.DataFrame([
+st.table(pd.DataFrame([
     {"scale": "Āyah", "unit": "verse", "mechanism": "concept-bonds (which ideas pair)", "composes": "→ passages"},
     {"scale": "Passage", "unit": "~rukūʿ", "mechanism": "sequential weave (verse order)", "composes": "→ sūras"},
     {"scale": "Sūra", "unit": "chapter", "mechanism": "thematic coherence (chapter identity)", "composes": "→ the book"},
     {"scale": "Qur'ān", "unit": "muṣḥaf", "mechanism": "theme arrangement (placed by position)", "composes": "— whole"},
-]), use_container_width=True, hide_index=True)
+]).set_index("scale"))
 
 # ════════════ METHODS LANDSCAPE — where each tool fits ════════════
 st.divider()
@@ -368,11 +363,12 @@ for nm, lo, hi, col in _meth:
                           marker_color=col, hovertext=nm, hoverinfo="text", showlegend=False))
 figm.update_layout(barmode="overlay",
                    xaxis=dict(title="scale", tickvals=[1, 2, 3, 4],
-                              ticktext=["āyah", "passage", "sūra", "Qur'ān"], range=[0.4, 4.6]),
-                   yaxis=dict(autorange="reversed"))
+                              ticktext=["āyah", "passage", "sūra", "Qur'ān"], range=[0.4, 4.6],
+                              showgrid=True, gridcolor="#C2CCD8", gridwidth=1, zeroline=False),
+                   yaxis=dict(autorange="reversed", showgrid=False))
 st.plotly_chart(_lay(figm, "Which scale each method serves", h=320), use_container_width=True)
 # table — the landscape
-st.dataframe(pd.DataFrame([
+st.table(pd.DataFrame([
     {"method": "Frequency", "captures": "how common each root is", "native scale": "all (control)",
      "role / limit": "NOT structure — the null you divide out (NPMI/lift)"},
     {"method": "Co-occurrence", "captures": "symmetric 'share a verse'", "native scale": "āyah",
@@ -387,7 +383,7 @@ st.dataframe(pd.DataFrame([
      "role / limit": "a profile method, not pairwise"},
     {"method": "Factorization (NMF)", "captures": "themes + arrangement", "native scale": "Qur'ān",
      "role / limit": "the global tool co-occurrence saturates over"},
-]), use_container_width=True, hide_index=True)
+]).set_index("method"))
 st.caption("Frequency is the yardstick, not a finding. Co-occurrence — and its directed refinement, the "
            "dependency graph — is a verse-scale tool; motif belongs on the sparsified bond graph; the "
            "higher scales need sequence, coherence, and factorization.")
