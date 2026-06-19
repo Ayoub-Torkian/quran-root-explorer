@@ -70,13 +70,21 @@ try:
 except TypeError:                       # older Streamlit without container keys → in-flow fallback
     _topbar = st.container()
 with _topbar:
-    top = st.columns([1, 3, 1.5, 1])
-    if top[0].button("◀ Prev", use_container_width=True):
+    # icon-only Prev/Next (sūra) frees width for the collapse chevron without crowding phones
+    top = st.columns([0.8, 3, 1.5, 0.8, 0.8])
+    if top[0].button("◀", use_container_width=True, help="previous sūra"):
         st.session_state["read_s"] = max(1, int(st.session_state["read_s"]) - 1)
-    if top[3].button("Next ▶", use_container_width=True):
+    if top[3].button("▶", use_container_width=True, help="next sūra"):
         st.session_state["read_s"] = min(114, int(st.session_state["read_s"]) + 1)
     sel = top[1].selectbox("Sūra", suras, index=suras.index(int(st.session_state["read_s"])),
                            format_func=lambda s: f"{s} · {names.get(s, '')}")
+
+    # one-tap collapse: shrink the player to a slim play strip to reclaim reading space
+    _compact = bool(st.session_state.get("read_compact", False))
+    if top[4].button("⌄" if _compact else "⌃", use_container_width=True,
+                     help="show full player" if _compact else "collapse player"):
+        st.session_state["read_compact"] = not _compact
+        st.rerun()
 
     # switching sūra clears any āyah-jump (it belonged to the old sūra) — set BEFORE the widget
     if sel != st.session_state.get("read_s_prev"):
@@ -89,7 +97,7 @@ with _topbar:
                                     step=1, key="read_a"))
 
     # recitation player — sticks WITH the nav at the top, always reachable while reading
-    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a))
+    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a), compact=_compact)
 
 # ── reflect the current position in the URL (only when it changed → no rerun loop) ──
 if st.query_params.get("s") != str(sel) or st.query_params.get("a", "") != (str(cur_a) if cur_a else ""):

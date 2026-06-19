@@ -57,7 +57,8 @@ def global_index(corpus, surah: int, ayah: int) -> int:
     return _offsets(corpus).get(int(surah), 1) + (int(ayah) - 1)
 
 
-def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int, jumped: bool) -> str:
+def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int, jumped: bool,
+                 compact: bool = False) -> str:
     cfg = _json.dumps({
         "cdn": _CDN, "surah": int(surah), "gstart": int(gstart),
         "n": int(n_ayat), "start": int(start_ayah) if start_ayah else 1,
@@ -82,8 +83,11 @@ def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int, jumped: 
  select{height:40px;border-radius:9px;border:1px solid #2C4A6E;background:#fff;color:#10243A;
    font-size:13px;font-weight:700;padding:2px 6px;flex:1 1 auto;min-width:0}
  .err{color:#FFD7C2;font-size:12px;font-weight:700;flex:0 0 auto}
+ /* compact: keep only the play strip; row 2 (repeat/speed/reciter) stays in the DOM
+    so its localStorage settings still load and apply — just hidden to save height. */
+ .pl.compact .row2{display:none}
 </style>
-<div class=pl>
+<div class="pl __PLCLS__">
   <div class=prow>
     <button id=prev title='previous āyah'>⏮</button>
     <button id=pp class=pp title='play'>▶ Play</button>
@@ -91,7 +95,7 @@ def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int, jumped: 
     <span class=ref id=ref>—</span>
     <div class=barwrap><div id=bar></div></div>
   </div>
-  <div class=prow>
+  <div class="prow row2">
     <button id=rep title='repeat'>↻ off</button>
     <button id=spd title='speed'>1×</button>
     <select id=rec title='reciter'>__OPTS__</select>
@@ -154,15 +158,21 @@ load(a,false);
 // after a page rerun, pick up where we were playing (same sūra, or an explicit jump)
 if(savedPlay && (sameSurah || C.jumped)){wantPlay=true;persist();PLAY();}
 </script>
-""".replace("__CFG__", cfg).replace("__OPTS__", opts)
+""".replace("__CFG__", cfg).replace("__OPTS__", opts).replace("__PLCLS__", "compact" if compact else "")
 
 
-def render(corpus, surah: int, start_ayah: int = 1, jumped: bool = False, height: int = 104):
+def render(corpus, surah: int, start_ayah: int = 1, jumped: bool = False,
+           compact: bool = False, height: int = None):
     """Render the recitation player bar for `surah`, cued to `start_ayah`.
     `jumped` = the āyah was explicitly chosen (jump box) → cue there; otherwise the
-    player resumes the last-played position so a page rerun doesn't stop recitation."""
+    player resumes the last-played position so a page rerun doesn't stop recitation.
+    `compact` = slim one-row strip (▶/⏮/⏭ + ref + progress); speed/reciter/repeat are
+    hidden but still active from localStorage. Reclaims vertical space in the sticky bar."""
     df = corpus.df
     n_ayat = int((df[COL_SURAH].astype(int) == int(surah)).sum())
     gstart = _offsets(corpus).get(int(surah), 1)
-    _components.html(_player_html(int(surah), gstart, n_ayat, int(start_ayah or 1), bool(jumped)),
-                     height=height)
+    if height is None:
+        height = 62 if compact else 104
+    _components.html(
+        _player_html(int(surah), gstart, n_ayat, int(start_ayah or 1), bool(jumped), bool(compact)),
+        height=height)
