@@ -17,6 +17,7 @@ import streamlit.components.v1 as _components
 import meaning as _MEAN
 import mobile as _MOB
 import surah_reader as _SR
+import audio_player as _AUD
 from analysis import COL_SURAH, COL_SURAH_NAME, COL_DIACRITIZED
 from state import get_corpus, hero, log_page
 
@@ -182,14 +183,20 @@ render();
 
 _read_tools(int(sel), cur_a, names.get(int(sel), ""))
 
+# ── recitation player (mobile-first): play the sūra continuously, follow along ──
+st.markdown("<div style='font-size:13px;font-weight:800;color:#0F6E56;margin:8px 0 2px'>"
+            "🔊 Listen — tap ▶ to recite the sūra; it follows along & auto-advances</div>",
+            unsafe_allow_html=True)
+_AUD.render(corpus, int(sel), start_ayah=(cur_a or 1))
+
 # ── the whole sūra, inline (page scrolls), highlighting the jumped-to āyah ──
 st.markdown(_SR.inline_html(corpus, sel, _MP, cur=(cur_a or None)), unsafe_allow_html=True)
 
 # best-effort: scroll the page to the jumped-to āyah (graceful no-op if the browser blocks it)
 if cur_a:
     _components.html(
-        "<script>try{var d=window.parent.document;var el=d.getElementById('a%d');"
-        "if(el)el.scrollIntoView({block:'center'});}catch(e){}</script>" % int(cur_a),
+        "<script>try{var d=window.parent.document;var el=d.getElementById('qa%d_%d');"
+        "if(el)el.scrollIntoView({block:'center'});}catch(e){}</script>" % (int(sel), int(cur_a)),
         height=0)
 
 # ── bottom nav ──

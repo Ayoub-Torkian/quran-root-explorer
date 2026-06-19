@@ -165,6 +165,7 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
            ".rdr .rex{float:left;color:#0F6E56;font-weight:800;font-size:0.9em;margin:2px 0 0 6px;"
            "transition:transform .15s;display:inline-block}"
            ".rdr details[open] .rex{transform:rotate(180deg)}"
+           ".rdr details.playing{background:#EAF7F1;box-shadow:inset 0 0 0 2px #1D9E75;border-radius:10px}"
            ".rdr .bism{text-align:center;font-family:'Tahoma','Noto Sans Arabic',serif;color:#1D3557;"
            "font-size:1.35em;padding:6px 4px 12px;direction:rtl;border-bottom:1px solid #eef2f4;margin-bottom:4px}"
            "</style>")
@@ -176,10 +177,9 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
         tr = _MEAN.meaning_block_html(f"{int(surah)}:{a}", langs=rlangs)
         _iscur = bool(cur and a == int(cur))
         hl = "background:#FFF6DA;border-radius:10px;" if _iscur else ""
-        aid = f" id='a{a}'" if _iscur else ""
         op = " open" if (langs or _iscur) else ""   # jumped-to āyah opens so its translation shows
         rows.append(
-            f"<details{aid}{op} style='{hl}'>"
+            f"<details id='qa{int(surah)}_{a}'{op} style='{hl}'>"
             f"<summary><span class='rex'>⌄</span>"
             f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;color:#10243A;line-height:2.05'>"
             f"<span class='vnum'>{int(surah)}:{a} · <bdi>{name}</bdi></span> {ar}</div></summary>"
