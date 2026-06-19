@@ -498,6 +498,15 @@ if _copy_idxs:
 # ── translation control (one language / all / off — persists across pages) + reading settings ──
 _MP = _MEAN.translation_control(st)
 _MOB.settings_controls(st)          # ⚙️ text size (Arabic-first) + line spacing
+# ── whole-sūra reader: when the results sit in ONE sūra, offer to read the entire sūra,
+#    opening at the current āyah and scrollable from the start to the end ──
+_all_shown = [i for _lab, _idx in groups for i in _idx]
+if _all_shown and len({refs[i][0] for i in _all_shown}) == 1:
+    _rs, _ra = refs[_all_shown[0]]
+    with st.expander(f"📖 Read the whole sūra — Sūra {_rs} {sname[_all_shown[0]]} "
+                     f"(opens at {_rs}:{_ra}, scroll start → end)"):
+        import surah_reader as _SR
+        _SR.render(corpus, _rs, _ra, langs=_MP)
 ln = 1
 for lab, idx in groups:
     if not idx: continue
