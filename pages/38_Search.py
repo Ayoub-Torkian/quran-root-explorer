@@ -42,6 +42,25 @@ def build(_cid):
     for i in range(N):
         for r, sf in zip(corpus.root_tokens[i], corpus.surface_tokens[i]):
             nform2roots[norm(sf)].add(r); root2forms[r].add(sf)
+    # full INFLECTED words -> root, via the same alignment the highlighter uses, so a typed
+    # word like "يمشون" (stem یمش + ون suffix) or "الارض" resolves to its root (مشی / ءرض)
+    # even though only the segmented stem is stored. This is what makes phrase "similar" work.
+    def _dd(t):
+        o = []
+        for ch in t:
+            if not o or o[-1] != ch: o.append(ch)
+        return "".join(o)
+    nword2roots = defaultdict(set)
+    for i in range(N):
+        dwords = ntext[i].split()
+        content = [(_dd(norm(sf)), r) for r, sf in zip(corpus.root_tokens[i], corpus.surface_tokens[i])
+                   if r and r != "-" and len(norm(sf)) >= 2]
+        di = 0
+        for cm, r in content:
+            k = di
+            while k < len(dwords) and cm not in _dd(dwords[k]): k += 1
+            if k < len(dwords):
+                nword2roots[dwords[k]].add(r); di = k + 1
     roots_norm = {norm(r): r for r in corpus.index_exact}
     root_idf = {r: math.log(N / max(1, len(corpus.index_exact.get(r, [])))) for r in corpus.index_exact}
     anorm = [math.sqrt(sum(root_idf.get(r, 0) ** 2 for r in rootset[i])) for i in range(N)]
@@ -51,9 +70,9 @@ def build(_cid):
         if ssn not in sura_nuzul:
             try: sura_nuzul[ssn] = int(df["ترتیب نزول"][i])
             except Exception: pass
-    return refs, sname, disp, words, ntext, nwords, rootset, dict(nform2roots), dict(root2forms), roots_norm, root_idf, anorm, sura_nuzul
+    return refs, sname, disp, words, ntext, nwords, rootset, dict(nform2roots), dict(nword2roots), dict(root2forms), roots_norm, root_idf, anorm, sura_nuzul
 
-refs, sname, disp, words, ntext, nwords, rootset, nform2roots, root2forms, roots_norm, root_idf, anorm, sura_nuzul = build(id(corpus))
+refs, sname, disp, words, ntext, nwords, rootset, nform2roots, nword2roots, root2forms, roots_norm, root_idf, anorm, sura_nuzul = build(id(corpus))
 N = len(refs)
 
 # Layer-2/3 similarity is CONTENT-root based: drop the most ubiquitous (function/grammatical) roots
@@ -73,6 +92,7 @@ def resolve(w):
     R = set()
     if w in roots_norm: R.add(roots_norm[w])
     if w in nform2roots: R |= nform2roots[w]
+    if w in nword2roots: R |= nword2roots[w]        # full inflected word (e.g. يمشون, الارض)
     if R: return R
     for pre in _PREF:
         if w.startswith(pre) and len(w) - len(pre) >= 2:
