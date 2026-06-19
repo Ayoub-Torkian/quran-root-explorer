@@ -109,6 +109,13 @@ let a=C.start, repeat=0, si=0, wantPlay=false;   // repeat:0 off·1 āyah·2 sū
 const REP=['↻ off','↻ āyah','↻ sūra'], SPD=[1,1.25,1.5,1.75,2,0.75];
 function LS(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function setLS(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+// SINGLE‑INSTANCE GUARD: only the newest player may sound. When this instance starts
+// playing it claims ownership; any older instance (kept alive briefly across a rerun, or
+// a second tab) hears the change and pauses itself → never two recitations at once.
+var MYID=Math.random().toString(36).slice(2)+Date.now();
+function claim(){setLS('qre_owner',MYID);}
+function PLAY(){claim();var p=au.play();if(p&&p.catch){p.catch(function(){});}}
+window.addEventListener('storage',function(e){if(e.key=='qre_owner'&&e.newValue&&e.newValue!=MYID){try{au.pause();}catch(x){}}});
 var _r=LS('qre_reciter');if(_r){for(var i=0;i<rec.options.length;i++){if(rec.options[i].value==_r){rec.value=_r;break;}}}
 var _si=LS('qre_spd');if(_si!=null){si=Math.max(0,Math.min(SPD.length-1,+_si));}
 spdB.textContent=SPD[si]+'×';
@@ -124,28 +131,28 @@ function hi(n){try{var d=window.parent.document;
     if(el){el.classList.add('playing');el.scrollIntoView({block:'center'});}
   }catch(e){}}
 function load(n,go){a=Math.max(1,Math.min(C.n,n));ref.textContent=C.surah+':'+a;err.textContent='';
-  au.src=src(a);au.playbackRate=SPD[si];hi(a);if(go){wantPlay=true;}persist();if(go){au.play().catch(function(){});}}
+  au.src=src(a);au.playbackRate=SPD[si];hi(a);if(go){wantPlay=true;}persist();if(go){PLAY();}}
 function setpp(p){pp.textContent=p?'⏸ Pause':'▶ Play';pp.title=p?'pause':'play';}
 pp.onclick=function(){if(!au.src)load(a,false);
-  if(au.paused){wantPlay=true;persist();au.play().catch(function(){});}else{wantPlay=false;persist();au.pause();}};
+  if(au.paused){wantPlay=true;persist();PLAY();}else{wantPlay=false;persist();au.pause();}};
 document.getElementById('prev').onclick=function(){load(a-1,true);};
 document.getElementById('next').onclick=function(){load(a+1,true);};
 repB.onclick=function(){repeat=(repeat+1)%3;repB.textContent=REP[repeat];};
 spdB.onclick=function(){si=(si+1)%SPD.length;au.playbackRate=SPD[si];spdB.textContent=SPD[si]+'×';persist();};
-rec.onchange=function(){setLS('qre_reciter',rec.value);var was=!au.paused;au.src=src(a);au.playbackRate=SPD[si];if(was)au.play().catch(function(){});};
+rec.onchange=function(){setLS('qre_reciter',rec.value);var was=!au.paused;au.src=src(a);au.playbackRate=SPD[si];if(was)PLAY();};
 au.onplay=function(){setpp(true);};
 au.onpause=function(){setpp(false);};
 au.ontimeupdate=function(){if(au.duration)bar.style.width=(100*au.currentTime/au.duration)+'%';};
 au.onerror=function(){err.textContent='unavailable — skipping';if(a<C.n)setTimeout(function(){load(a+1,true);},600);};
 au.onended=function(){
-  if(repeat==1){au.currentTime=0;au.play().catch(function(){});return;}
+  if(repeat==1){au.currentTime=0;PLAY();return;}
   if(a<C.n){load(a+1,true);}
   else if(repeat==2){load(1,true);}
   else{wantPlay=false;persist();setpp(false);bar.style.width='0';}
 };
 load(a,false);
 // after a page rerun, pick up where we were playing (same sūra, or an explicit jump)
-if(savedPlay && (sameSurah || C.jumped)){wantPlay=true;persist();au.play().catch(function(){});}
+if(savedPlay && (sameSurah || C.jumped)){wantPlay=true;persist();PLAY();}
 </script>
 """.replace("__CFG__", cfg).replace("__OPTS__", opts)
 

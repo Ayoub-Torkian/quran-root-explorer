@@ -88,16 +88,25 @@ if st.query_params.get("s") != str(sel) or st.query_params.get("a", "") != (str(
     elif "a" in st.query_params:
         del st.query_params["a"]
 
-# ── compact spacing for this reading surface (kill empty bands around iframes) ──
-st.markdown("<style>section[data-testid='stMain'] [data-testid='stVerticalBlock']{gap:.4rem}"
-            "[data-testid='stElementContainer']:has(iframe){margin:0 !important}</style>",
-            unsafe_allow_html=True)
+# ── compact spacing + ALWAYS-ON recitation dock pinned to the bottom of the screen ──
+st.markdown(
+    "<style>"
+    "section[data-testid='stMain'] [data-testid='stVerticalBlock']{gap:.4rem}"
+    "[data-testid='stElementContainer']:has(iframe){margin:0 !important}"
+    # keyed container → stable class, reliably pinned to the bottom (degrades to in-flow if unsupported)
+    ".st-key-audiodock{position:fixed;left:0;right:0;bottom:0;z-index:1000;margin:0;background:#EEF3F8;"
+    "padding:6px 10px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -5px 16px rgba(16,36,58,.18)}"
+    ".st-key-audiodock iframe{max-width:860px;display:block;margin:0 auto}"
+    "section[data-testid='stMain'] .block-container{padding-bottom:150px !important}"
+    "</style>", unsafe_allow_html=True)
 
-# ── recitation player — top of page, clear ▶ Play; keeps playing as you scroll (localStorage) ──
-st.markdown("<div style='font-size:13px;font-weight:800;color:#0F6E56;margin:2px 0 0'>"
-            "🔊 Recitation — pick a reciter and tap <span style='color:#1D9E75'>▶ Play</span> "
-            "(auto-advances; keeps playing while you scroll or jump)</div>", unsafe_allow_html=True)
-_AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a))
+# ── recitation player — docked at the bottom of the screen, always visible & reachable ──
+try:
+    _dock = st.container(key="audiodock")
+except TypeError:                       # older Streamlit without container keys → in-flow fallback
+    _dock = st.container()
+with _dock:
+    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a))
 
 # ── compact controls: translation + reading settings side by side ──
 _cc = st.columns(2)
