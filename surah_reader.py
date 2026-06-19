@@ -83,13 +83,29 @@ def render(corpus, surah: int, cur_ayah: int, langs=None, height: int = 560):
                     height=height, scrolling=True)
 
 
-def peek(corpus, surah, ayah, height: int = 520):
-    """Reusable affordance — a '📖 Read the whole sūra from here' expander that opens
-    the scrollable sūra reader centered on this āyah. Drop onto ANY surface that shows
-    an āyah (Search, Āyah Deep-Dive, Cross-References, …) so reading is always one tap away."""
-    with st.expander(f"📖 Read the whole sūra — open at {int(surah)}:{int(ayah)} "
-                     f"(scroll start → end)"):
-        render(corpus, int(surah), int(ayah), height=height)
+def peek(corpus, surah, ayah, height: int = 520, key: str = ""):
+    """Reusable affordance — a '📖 Read a sūra' expander that opens the scrollable reader
+    at this āyah, AND lets the reader switch to any other sūra (picker + ◀ ▶). Drop onto
+    ANY surface that shows an āyah (Search, Āyah Deep-Dive, Cross-References, …)."""
+    df = corpus.df
+    with st.expander(f"📖 Read a sūra — opens at {int(surah)}:{int(ayah)} "
+                     f"(pick any sūra below · scroll start → end)"):
+        suras = sorted(set(df[COL_SURAH].astype(int)))
+        names = {}
+        _cn = COL_SURAH_NAME if COL_SURAH_NAME in df.columns else COL_SURAH
+        for s, n in zip(df[COL_SURAH].astype(int), df[_cn]):
+            names.setdefault(int(s), str(n))
+        sk = "peeksel_" + (key or f"{int(surah)}_{int(ayah)}")
+        if sk not in st.session_state:
+            st.session_state[sk] = int(surah)
+        c = st.columns([1, 5, 1])
+        if c[0].button("◀", key=sk + "_p"):
+            st.session_state[sk] = max(1, int(st.session_state[sk]) - 1)
+        if c[2].button("▶", key=sk + "_n"):
+            st.session_state[sk] = min(114, int(st.session_state[sk]) + 1)
+        sel = c[1].selectbox("Sūra", suras, format_func=lambda s: f"{s} · {names.get(s, '')}", key=sk)
+        cur = int(ayah) if int(sel) == int(surah) else 1   # open at the studied āyah, else at the top
+        render(corpus, int(sel), cur, height=height)
 
 
 def inline_html(corpus, surah: int, langs, cur=None) -> str:

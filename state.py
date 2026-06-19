@@ -36,7 +36,7 @@ NAV_SECTIONS = [
     ("🔭 EXPLORE", [
         (None, [("pages/40_Read.py", "Read the Qur'an", "📖"),
                 ("pages/38_Search.py", "Search", "🔎")]),
-        ("Read", [
+        ("Study an āyah", [
             ("pages/4_Ayah_Browser.py", "Ayah Browser", "📖"),
             ("pages/20_Ayah_Deep_Dive.py", "Āyah Deep-Dive", "🔭"),
             ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive", "🔬"),
