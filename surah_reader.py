@@ -80,12 +80,12 @@ def build_html(corpus, surah: int, cur_ayah: int, langs, fs: float, height: int)
     .qtxt.ur{{font-family:'Noto Nastaliq Urdu',serif;font-size:{round(17*fs,1)}px;line-height:2.4}}
     .qtxt.fa{{font-family:'Vazirmatn',sans-serif;font-size:{round(16.5*fs,1)}px}}
     """
-    bar = (f"📖 Sūra {int(surah)} · {_html.escape(name)} — {len(sub)} āyāt"
+    bar = (f"📖 Sūra {int(surah)} · <bdi>{_html.escape(name)}</bdi> — {len(sub)} āyāt"
            "  ·  scroll ↑ to the start, ↓ to the end")
     return (
         "<!doctype html><html><head><meta charset='utf-8'>"
         f"<style>{css}</style></head><body>"
-        f"<div class='bar'>{bar}</div>"
+        f"<div class='bar' dir='ltr'>{bar}</div>"
         f"{''.join(rows)}"
         "<script>function ctr(){var c=document.getElementById('cur');"
         "if(c){c.scrollIntoView({block:'center'});}}"
@@ -136,9 +136,10 @@ def inline_html(corpus, surah: int, langs, cur=None) -> str:
     sub["__a"] = sub[COL_AYAH].astype(float).astype(int)
     sub = sub.sort_values("__a")
     name = str(sub[COL_SURAH_NAME].iloc[0]) if (COL_SURAH_NAME in df.columns and len(sub)) else ""
-    head = (f"<div style='text-align:center;font-weight:800;color:#1D3557;font-size:16px;"
+    head = (f"<div dir='ltr' style='text-align:center;font-weight:800;color:#1D3557;font-size:16px;"
             f"background:#F4F9F7;border:1px solid #cfe4dc;border-radius:12px;padding:10px;margin:4px 0 8px'>"
-            f"📖 Sūra {int(surah)} · {name} <span style='font-weight:600;color:#10243A'>· {len(sub)} āyāt</span></div>")
+            f"📖 Sūra {int(surah)} · <bdi>{name}</bdi> "
+            f"<span style='font-weight:600;color:#10243A'>· {len(sub)} āyāt</span></div>")
     rows = [head]
     for _, r in sub.iterrows():
         a = int(r["__a"]); ar = _aryah(f"{int(surah)}:{a}") or str(r[COL_DIACRITIZED])

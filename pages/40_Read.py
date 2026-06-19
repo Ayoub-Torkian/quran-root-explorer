@@ -33,10 +33,14 @@ if "read_s" not in st.session_state:
 #    you can jump to ANY sūra from ANY āyah without scrolling back to the top ──
 st.markdown(
     "<style>"
-    "[data-testid='stHorizontalBlock']:has(.rdnav){position:sticky;top:0;z-index:60;"
-    "background:#FBFCFE;padding:6px 4px 2px;margin:-4px 0 6px;"
+    # sticky must sit on the wrapper that is a CHILD of the tall content block, not the
+    # inner horizontal block (whose parent is only nav-height → zero sticky travel).
+    "[data-testid='stLayoutWrapper']:has(.rdnav),"
+    "[data-testid='stVerticalBlock'] > [data-testid='stElementContainer']:has(.rdnav){"
+    "position:sticky;top:0;z-index:60;background:#FBFCFE;padding:6px 6px 2px;margin:-4px 0 6px;"
     "box-shadow:0 5px 12px rgba(16,36,58,.10);border-radius:0 0 12px 12px}"
-    "[data-testid='stHorizontalBlock']:has(.rdnav) .stButton button{min-height:40px}"
+    ":has(>.rdnav),.rdnav{margin:0}"
+    "[data-testid='stLayoutWrapper']:has(.rdnav) .stButton button{min-height:40px}"
     "</style>", unsafe_allow_html=True)
 top = st.columns([1, 4, 1])
 top[1].markdown("<div class='rdnav'></div>", unsafe_allow_html=True)
