@@ -217,8 +217,10 @@ window.addEventListener('message',function(e){var d=e.data||{};
   if(d&&d.qre_cmd==='play'&&d.a){if(exited)setExited(false);load(+d.a,true);}});
 pl.classList.toggle('exited',exited);
 load(a,false);
-// after a rerun, resume where we were (same sūra/jump) — but NOT while exited
-if(!exited && ((savedPlay && (sameSurah || C.jumped)) || C.autoplay)){wantPlay=true;persist();PLAY();}
+// autoplay (e.g. tap-to-play / Search hand-off) overrides an exited state and re-enters;
+// otherwise resume where we were (same sūra/jump) — but NOT while exited.
+if(C.autoplay){if(exited)setExited(false);wantPlay=true;persist();PLAY();}
+else if(!exited && savedPlay && (sameSurah || C.jumped)){wantPlay=true;persist();PLAY();}
 fit();
 </script>
 """.replace("__CFG__", cfg).replace("__OPTS__", opts)

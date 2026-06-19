@@ -20,6 +20,23 @@ log_page("search")
 _MOB.inject()                       # mobile-first reading CSS + Qur'an webfonts
 corpus = get_corpus()
 INK = "#10243A"
+
+# ── play-from-search hand-off: a verse's ▶ links to ?play=S:A → open it in Read and recite there
+#    (Read is the single recitation home — search results span many sūras, so we hand off rather
+#    than embed a second player). Uses session + switch_page (reliable, no URL-slug guessing). ──
+_pl = st.query_params.get("play")
+if _pl:
+    _m = re.match(r"^(\d+):(\d+)$", str(_pl))
+    if _m:
+        st.session_state["read_s"] = int(_m.group(1))
+        st.session_state["read_a"] = int(_m.group(2))
+        st.session_state["read_s_prev"] = int(_m.group(1))
+        st.session_state["read_autoplay"] = True
+        try:
+            del st.query_params["play"]
+        except Exception:
+            pass
+        st.switch_page("pages/40_Read.py")
 _MP = ()                            # translation language(s); Off by default, set from the selector each run
 _NONLETTER = re.compile(r"[^ء-ي ]")
 
@@ -321,16 +338,17 @@ def verse_html(i, target, qwords, substr=False):
     _rlangs = _MP if _MP else ("en",)   # tap reveals a translation (English) even when mode is Off
     _open = " open" if _MP else ""      # shown by default only if a language mode is on
     _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_rlangs)
+    _play = f"<a class='vp' href='?play={refs[i][0]}:{refs[i][1]}' title='Play in Reader'>▶</a>"
     if not _mean:                       # safety: no translation at all → āyah only
         return ("<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
                 f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;line-height:2.0'>"
-                f"{_num} {full}</div></div>")
+                f"{_play} {_num} {full}</div></div>")
     # Tap the āyah to reveal its translation; tap again to collapse — works in any mode.
     return (
         "<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
         f"<details class='vrow'{_open}>"
         f"<summary><div class='vtext qv-ar' dir='rtl' style='text-align:right;line-height:2.0'>"
-        f"<span class='ex'>⌄</span> {_num} {full}</div></summary>"
+        f"<span class='ex'>⌄</span> {_play} {_num} {full}</div></summary>"
         f"{_mean}"
         "</details>"
         "</div>")
@@ -538,6 +556,9 @@ for lab, idx in groups:
             ".vgrid .ex{color:#0F6E56;font-weight:800;display:inline-block;transition:transform .15s}"
             ".vgrid details:not([open]) .ex{transform:rotate(-90deg)}"   # collapsed → chevron points in
             ".vgrid .vnum{color:#0F6E56;font-weight:800;font-size:0.6em;vertical-align:0.15em}"  # ref inline w/ āyah
+            ".vgrid .vp{color:#fff;background:#1D9E75;font-weight:800;font-size:12.5px;text-decoration:none;"
+            "border-radius:999px;padding:3px 9px;margin:0 2px;line-height:1;display:inline-block;vertical-align:0.1em;"
+            "-webkit-tap-highlight-color:transparent}"
             "</style>"
             "<div class='vgrid' style='display:grid;grid-template-columns:1fr;gap:0;direction:rtl'>"
             f"{cells}</div>")

@@ -89,8 +89,10 @@ with _topbar:
     cur_a = int(top[2].number_input("Jump to āyah (0 = top)", min_value=0, max_value=_n_ayat,
                                     step=1, key="read_a"))
 
-    # recitation player — slim strip with a ⋯ options sheet; sticks at the top, always reachable
-    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a))
+    # recitation player — slim strip with a ⋯ options sheet; sticks at the top, always reachable.
+    # autoplay (one-shot) when arriving from a Search "▶ Play in Reader" hand-off.
+    _AUD.render(corpus, int(sel), start_ayah=(cur_a or 1), jumped=bool(cur_a),
+                autoplay=bool(st.session_state.pop("read_autoplay", False)))
 
 # ── reflect the current position in the URL (only when it changed → no rerun loop) ──
 if st.query_params.get("s") != str(sel) or st.query_params.get("a", "") != (str(cur_a) if cur_a else ""):
