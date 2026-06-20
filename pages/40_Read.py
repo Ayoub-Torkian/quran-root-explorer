@@ -243,6 +243,24 @@ with st.expander("📐 What this āyah is part of — its place in the Qur'ān's
                             f"({_f['support']} verses)")
         else:
             st.caption("· Not part of a book-wide recurring template — a mostly unique combination of ideas.")
+        _th = _CX.get("sura_theme", {}).get(int(sel))
+        if _th:
+            st.markdown("**The theme this chapter centers on** — its dominant thread across the whole book "
+                        "(the Qur'ān's global topic-model), like which section of a library a book sits in:")
+            st.markdown("`" + " · ".join(_th["roots"]) + "`"
+                        + f"  — most concentrated in chapters **{_th['lo']}–{_th['hi']}**")
+        _dist = _CX.get("dist", {})
+        _core = [(r, _dist[r]) for r in _cr if r in _dist and _dist[r]["arch"] == "Distributed core"]
+        _pocket = [(r, _dist[r]) for r in _cr if r in _dist and _dist[r]["arch"] == "Concentrated pocket"]
+        if _core or _pocket:
+            st.markdown("**How its ideas are laid out in the book** — *core* ideas are load-bearing columns "
+                        "present throughout; *pocket* ideas are furniture specific to one room:")
+            if _core:
+                st.markdown("- 🏛️ **Distributed core** (woven through most of the book): "
+                            + " · ".join(f"`{r}` — {d['n_suras']} chapters" for r, d in _core[:6]))
+            if _pocket:
+                st.markdown("- 📍 **Concentrated pocket** (situational, a few chapters): "
+                            + " · ".join(f"`{r}` — {d['n_suras']} chapters" for r, d in _pocket[:6]))
 
 # ── the whole sūra, inline (page scrolls), highlighting the jumped-to āyah ──
 st.markdown(_SR.inline_html(corpus, sel, _MP, cur=(cur_a or None)), unsafe_allow_html=True)

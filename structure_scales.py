@@ -305,7 +305,19 @@ def read_context(corpus, npmi_min=0.30, min_co=5, tmpl_top=80):
             i = refs.get((s, a))
             if i is not None:
                 vt[i].append({"roots": f["roots"], "n_suras": f["n_suras"], "support": f["support"]})
-    return {"refs": refs, "vroots": vroots, "drop": drop, "npmi": npmi, "vt": dict(vt)}
+    # distribution character per content root (core vs pocket) — reuse the distribution engine
+    dprof, _dz = distribution_profiles(corpus)
+    dist = {p["root"]: {"arch": p["archetype"], "n_suras": p["n_suras"], "cov": p["coverage"]}
+            for p in dprof}
+    # this chapter's dominant global theme — reuse the NMF theme engine
+    th = quran_themes(corpus)
+    tsuras = th["suras"]; dps = th["dom_per_sura"]; thlist = th["themes"]
+    sura_theme = {}
+    for k, s in enumerate(tsuras):
+        t = thlist[dps[k]]
+        sura_theme[int(s)] = {"roots": t["roots"], "lo": t["lo"], "hi": t["hi"]}
+    return {"refs": refs, "vroots": vroots, "drop": drop, "npmi": npmi,
+            "vt": dict(vt), "dist": dist, "sura_theme": sura_theme}
 
 
 def ayah_bonds(corpus, min_co=5, top=150):
