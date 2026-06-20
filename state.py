@@ -1702,13 +1702,15 @@ def render_top_input_bar(corpus, empty_samples=True):
         _cur = st.session_state.get("_form_scope_last")
         # ── back/collapse path: a Selected line + an always-visible Clear so the user can drop
         #    the current set and choose another (clearing brings the theme starters back). ──
-        _cc1, _cc2, _cc3 = st.columns([3, 1, 3], vertical_alignment="bottom")
-        _cc1.markdown(
-            "<span class='t-label'>Selected:</span> &nbsp;"
-            "<span class='t-sub'>" + " · ".join(st.session_state.query_roots[:6]) + "</span>",
-            unsafe_allow_html=True)
-        if _cc2.button("✕ Clear", key="clear_all_top", width='stretch',
-                       help="Clear this selection and choose a different root or theme"):
+        with st.container(key="fitrow-selclear"):
+            _cc1, _cc2 = st.columns([6, 1], vertical_alignment="bottom")
+            _cc1.markdown(
+                "<span class='t-label'>Selected:</span> &nbsp;"
+                "<span class='t-sub'>" + " · ".join(st.session_state.query_roots[:6]) + "</span>",
+                unsafe_allow_html=True)
+            _do_clear = _cc2.button("✕ Clear", key="clear_all_top",
+                                    help="Clear this selection and choose a different root or theme")
+        if _do_clear:
             st.session_state.query_roots = []
             for _k in ("results", "_form_scope_last", "_last_processed_top"):
                 st.session_state.pop(_k, None)
@@ -1816,11 +1818,15 @@ def render_top_input_bar(corpus, empty_samples=True):
     # We only render compact remove buttons when there are 2+ roots so the
     # user can drop one without retyping. Single-root queries get no extra UI.
     if len(st.session_state.query_roots) >= 2:
-        cols = st.columns(min(8, len(st.session_state.query_roots)))
-        for i, r in enumerate(list(st.session_state.query_roots)):
-            with cols[i % len(cols)]:
-                if st.button(f"✕ {r}", key=f"rm_top_{r}", width='stretch'):
-                    _remove_root(r); st.rerun()
+        st.markdown("<div class='t-cap' style='margin:4px 0 0 2px'>Remove a root:</div>",
+                    unsafe_allow_html=True)
+        _qr_list = list(st.session_state.query_roots)
+        with chip_row("rmroots"):                       # small content-sized chips, not full-width
+            _rc = st.columns(len(_qr_list))
+            for i, r in enumerate(_qr_list):
+                with _rc[i]:
+                    if st.button(f"✕ {r}", key=f"rm_top_{r}"):
+                        _remove_root(r); st.rerun()
 
     st.markdown("</div>", unsafe_allow_html=True)
     return run_top
