@@ -562,6 +562,29 @@ def inject_css():
         border: none !important;
     }
 
+    /* ===== TYPE SCALE — LOCKED role-based hierarchy (see CLAUDE.md). Use these classes,
+       never a one-off inline font-size. Each role differs in size AND weight. ===== */
+    .t-title{font-size:22px !important;font-weight:800 !important;color:#1D3557 !important;line-height:1.2 !important;margin:0 !important}
+    .t-section{font-size:18px !important;font-weight:800 !important;color:#1D3557 !important;line-height:1.25 !important;margin:0 !important}
+    .t-sub{font-size:15px !important;font-weight:700 !important;color:#1D3557 !important;line-height:1.3 !important;margin:0 !important}
+    .t-body{font-size:14px !important;font-weight:400 !important;color:#10243A !important;line-height:1.5 !important}
+    .t-label{font-size:13px !important;font-weight:600 !important;color:#10243A !important;line-height:1.4 !important}
+    .t-cap{font-size:12px !important;font-weight:500 !important;color:#10243A !important;line-height:1.4 !important}
+    .t-accent{color:#1D9E75 !important;font-weight:700 !important}
+    /* soft grouping surfaces — add colour/form without clutter (pick ONE per context) */
+    .surf-green{background:#F4F9F7 !important;border:1px solid #cfe4dc !important;border-radius:10px !important;padding:8px 14px !important}
+    .surf-blue{background:#EAF2FB !important;border:1px solid #CFE0F2 !important;border-radius:10px !important;padding:8px 14px !important}
+
+    /* ===== CHIP ROWS — content-sized, wrapping, left-aligned (LOCKED density layer).
+       Wrap a row/grid of short clickable chips in st.container(key="chiprow-...") and render
+       buttons WITHOUT width='stretch'; this turns Streamlit's full-width equal columns into
+       small chips that fit one line and wrap. ===== */
+    [class*="st-key-chiprow-"] [data-testid="stHorizontalBlock"]{flex-wrap:wrap !important;gap:4px 6px !important;justify-content:flex-start !important}
+    [class*="st-key-chiprow-"] [data-testid="stColumn"]{width:auto !important;flex:0 0 auto !important;min-width:0 !important}
+    [class*="st-key-chiprow-"] [data-testid="stVerticalBlock"]{gap:3px !important}
+    [class*="st-key-chiprow-"] .stButton{margin:0 !important}
+    [class*="st-key-chiprow-"] .stButton button{padding:2px 10px !important;min-height:0 !important;height:auto !important;font-size:12.5px !important;line-height:1.5 !important;border-radius:8px !important;width:auto !important}
+
     /* ===== EXPANDERS / TABLES ===== */
     [data-testid="stExpander"] {
         border: 1px solid #E2E8F1 !important;
@@ -1554,6 +1577,17 @@ def query_controls(corpus):
     return raw, normalize, top_p, min_w, run
 
 
+def chip_row(key):
+    """A keyed container whose buttons render as small, left-aligned, WRAPPING chips (content-sized,
+    not full-width equal columns). LOCKED density primitive — see CLAUDE.md.
+    Usage:
+        with chip_row("sf-0"):
+            cols = st.columns(n)            # n can be large; CSS makes cells content-width + wrap
+            ... st.button(label, ...)       # render WITHOUT width='stretch'
+    The `st-key-chiprow-<key>` class is the CSS hook in inject_css(). Keep `key` ASCII (index-based)."""
+    return st.container(key=f"chiprow-{key}")
+
+
 def render_top_input_bar(corpus, empty_samples=True):
     # No default-fill: a fresh session / post-reset starts EMPTY so the user is
     # never presented with a query they didn't ask for.
@@ -1571,9 +1605,9 @@ def render_top_input_bar(corpus, empty_samples=True):
     # vertical_alignment="bottom" makes the Analyze button line up with the input box
     # (no detached/offset look) since the input has no label to balance it.
     st.markdown("<div class='top-input-box'>", unsafe_allow_html=True)
-    # input shrunk to ~60% + Analyze compact beside it; the trailing column is breathing
-    # room so the box stops reading as a wide empty bar.
-    c1, c2, _c3 = st.columns([5, 1, 2], vertical_alignment="bottom")
+    # LOCKED density rule: a paste box is sized to need, not full-bleed. Input ~45% + Analyze
+    # beside it; the right ~45% is plain whitespace (we do NOT stretch to fill the monitor).
+    c1, c2, _c3 = st.columns([4, 1, 4], vertical_alignment="bottom")
     def _on_input_change():
         # Force a fresh rerun so the suggestions panel reflects the new prefix.
         st.session_state.pop("_last_processed_top", None)
@@ -1657,10 +1691,11 @@ def render_top_input_bar(corpus, empty_samples=True):
         _cur = st.session_state.get("_form_scope_last")
         # ── back/collapse path: a Selected line + an always-visible Clear so the user can drop
         #    the current set and choose another (clearing brings the theme starters back). ──
-        _cc1, _cc2 = st.columns([4, 1])
+        _cc1, _cc2, _cc3 = st.columns([3, 1, 3], vertical_alignment="bottom")
         _cc1.markdown(
-            "<div style='font-size:13px;color:#10243A;margin:3px 0 0 2px'>Selected: <b>"
-            + " · ".join(st.session_state.query_roots[:6]) + "</b></div>", unsafe_allow_html=True)
+            "<span class='t-label'>Selected:</span> &nbsp;"
+            "<span class='t-sub'>" + " · ".join(st.session_state.query_roots[:6]) + "</span>",
+            unsafe_allow_html=True)
         if _cc2.button("✕ Clear", key="clear_all_top", width='stretch',
                        help="Clear this selection and choose a different root or theme"):
             st.session_state.query_roots = []
@@ -1669,28 +1704,27 @@ def render_top_input_bar(corpus, empty_samples=True):
             st.session_state["_force_rerun"] = True
             st.rerun()
         st.markdown(
-            "<div style='font-size:12px;color:#10243A;margin:2px 0 0 2px;'>"
-            "🔬 <b>Surface forms</b> — click ONE to scope the analysis to only its āyahs; ✕ to release."
-            "</div>", unsafe_allow_html=True)
-        for _qr in st.session_state.query_roots[:3]:
+            "<div class='t-cap' style='margin:3px 0 0 2px'>"
+            "🔬 <b>Surface forms</b> — click ONE to scope the analysis to only its āyahs; ✕ to release.</div>",
+            unsafe_allow_html=True)
+        for _idx, _qr in enumerate(st.session_state.query_roots[:3]):
             _dd = _r2f.get(_K9(_qr))
             if not _dd:
                 continue
             _forms = sorted(_dd.items(), key=lambda t: -t[1])  # NO cutoff (long tail in expander)
-            st.markdown(f"<span style='color:#1D3557;font-size:13px;font-weight:700;'>"
-                        f"{_qr}</span>", unsafe_allow_html=True)
-            _ncol = 8
+            st.markdown(f"<span class='t-sub'>{_qr}</span>", unsafe_allow_html=True)
 
-            def _emit_forms(_subset, _qr=_qr):
-                for _rs in range(0, len(_subset), _ncol):
-                    _row = _subset[_rs:_rs + _ncol]
-                    _fcols = st.columns(_ncol)
-                    for _k, (_f9, _c9) in enumerate(_row):
+            def _emit_forms(_subset, _qr=_qr, _idx=_idx, _tag=""):
+                # chip_row → small, content-sized, wrapping chips (LOCKED density layer); the
+                # ACTIVE/scoped chip is green (primary) so colour encodes status, not decoration.
+                with chip_row(f"sf-{_idx}{_tag}"):
+                    _cols = st.columns(max(1, len(_subset)))
+                    for _k, (_f9, _c9) in enumerate(_subset):
                         _act = (_cur == (_qr, _f9))
                         _nay = len(_rf2ix.get((_K9(_qr), _f9), ()))
-                        with _fcols[_k]:
+                        with _cols[_k]:
                             if st.button(("✕ " if _act else "") + f"{_f9} ×{_c9}",
-                                         key=f"fs_{_qr}_{_f9}", width='stretch',
+                                         key=f"fs_{_qr}_{_f9}",
                                          type=("primary" if _act else "secondary"),
                                          help=("SCOPED — click to release" if _act else
                                                f"analyze ONLY the {_nay} āyah(s) where "
@@ -1700,11 +1734,11 @@ def render_top_input_bar(corpus, empty_samples=True):
                                 st.session_state["_force_rerun"] = True
                                 st.rerun()
 
-            _HEAD = 16                                   # 2 compact rows inline; rest tucked away
+            _HEAD = 14                                   # one tight wrapping line; rest tucked away
             _emit_forms(_forms[:_HEAD])
             if len(_forms) > _HEAD:
                 with st.expander(f"▾ {len(_forms) - _HEAD} more form(s) of {_qr}"):
-                    _emit_forms(_forms[_HEAD:])
+                    _emit_forms(_forms[_HEAD:], _tag="-more")
         _sigc = st.session_state.get("_form_scope_last")
         if _sigc:
             _ixs = _rf2ix.get((_K9(_sigc[0]), _sigc[1]))

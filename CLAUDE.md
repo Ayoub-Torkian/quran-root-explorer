@@ -122,3 +122,100 @@
 2. **Beautiful, readable UI.** The UI must be attractive and clean: clear hierarchy, generous whitespace,
    ink-on-light (no grey text, ≥12px per the locked UI rules), aligned, uncluttered. Dense ≠ messy —
    density must stay readable and elegant.
+
+## DESIGN NORTH STAR — LOCKED (added 2026-06-20) — هر چیزی به جای خویش نیکوست
+> جهان چون چشم و خط و خال و ابروست / که هر چیزی به جای خویش نیکوست  *(Shabistarī, Gulshan‑i Rāz)*
+> "The world is like eye, down, mole, and brow — for each thing is good in its proper place."
+
+**The governing principle for ALL UI work.** A screen is a face: its beauty is not any one feature but the
+**proportion and placement of every element in service of the whole.** Operationalised — these are the test
+the three standards below exist to pass, judged on the WHOLE composition, never a part in isolation:
+1. **Proper place** — every element earns its position by role; nothing orphaned, nothing where it doesn't belong.
+2. **Proper proportion** — size, weight, and colour scale to importance (the type scale + palette). A title
+   dominates; a caption recedes. Mis‑proportion (a caption as big as a title, a CTA as wide as the page) is ugliness.
+3. **Proper measure of space** — each element takes only the space it needs; emptiness is not free, and filling
+   the whole monitor is not a goal. Whitespace is deliberate, not leftover.
+4. **Proper colour** — colour marks meaning (structure / action / grouping / status), present enough to give life,
+   restrained enough to stay calm.
+5. **Harmony over parts** — change one element only after asking what it does to the whole face.
+
+**LOOK BEFORE YOU PUBLISH — LOCKED process (this is why issues recurred).** A UI change is NOT done from a
+mockup or from reading the code — those are my approximation, not the screen. Before declaring any UI change
+complete: **view the ACTUAL rendered result and inspect the whole composition** against the five tests above.
+Mechanism in this environment: after deploy, load the live Space in‑browser (Claude‑in‑Chrome) and inspect the
+real page; fix what the eye catches, then redeploy. (Sandbox self‑render is unavailable — a headless browser
+engine cannot be installed here — so the live‑page inspection loop is the standard, and "looks right in a
+mockup" is never sufficient.) Add to the deliverable checklist: *"Did I look at the real rendered screen?"*
+
+## LAYOUT DENSITY — LOCKED (added 2026-06-20, honor EVERY session) — the recurring "wasted space" bug
+**Why this keeps recurring (root cause, not symptom):** Streamlit runs `layout="wide"`, and **`st.columns(N)`
+ALWAYS stretches to the full container width and forces N EQUAL cells.** So any row with few or short items
+(buttons, chips, an input + a button) sprawls edge-to-edge with big gaps and half-empty boxes. Fixing it
+case-by-case is whack-a-mole; it has reappeared in every session. These rules kill it at the source.
+
+**LOCKED rules — apply to every page, every row, before it ships:**
+1. **Never add a spacer/empty column to create a gap.** An empty `st.columns` cell reads as an empty box.
+2. **Short rows ≠ full width.** An input, a single CTA, or < ~6 short chips must NOT span the viewport. Put them
+   in a left-bounded sub-column (e.g. `st.columns([3,2])` and render into the first) or use `chip_row`.
+3. **Chip/option rows use `chip_row(key)`**, never a bare `st.columns(N)` of buttons. `chip_row` renders
+   content-sized, left-aligned, WRAPPING chips (small boxes that fit one line and wrap), not equal full-width
+   cells. Defined in `state.py` + backed by the `st-key-chiprow-` CSS density layer in `inject_css()`.
+4. **Inputs are sized to need, not full-bleed.** A search/paste box ~50–60% width max on desktop; the rest is
+   plain whitespace, never a bordered empty field.
+5. **Tight vertical rhythm:** no empty `div`/`p`; chip rows gap ≤6px; don't stack a header + control with a
+   blank line between. ≥12px everywhere still holds.
+6. **Content width is capped** (`block-container max-width` in `inject_css`); do not remove the cap to "fill"
+   a wide monitor — filling the monitor is exactly the bug.
+
+**PRE-DEPLOY DENSITY CHECKLIST (run before EVERY UI ship — part of the deliverable checklist):**
+- [ ] Walk each row top-to-bottom and ask: *is any element mostly empty? could it be narrower?*
+- [ ] No bare `st.columns(N)` of short buttons/chips — those are `chip_row`.
+- [ ] No spacer columns. No element spanning full width whose content fills < ~60% of it.
+- [ ] Chips are small, left-aligned, wrap to fit; vertical gaps are tight; nothing < 12px.
+- [ ] Confirm on a WIDE monitor (the failure mode only shows when the viewport is wide).
+
+## TYPOGRAPHIC HIERARCHY — LOCKED (added 2026-06-20, honor EVERY session) — the recurring "flat type" bug
+**Why this keeps recurring:** the app hand-rolls `<div style='font-size:Npx'>` everywhere with ad-hoc numbers
+(13 · 13.5 · 14 · 14.5 · 15 …). A title and a caption end up nearly the same size, so the eye gets NO hierarchy —
+font size is **role-blind**. Stop picking pixel numbers per element. Pick the element's ROLE; the role fixes the size.
+
+**LOCKED type scale (role → size/weight/colour). Each step differs by size AND weight so it's distinguishable.**
+Use the `inject_css` utility classes (`t-title · t-section · t-sub · t-body · t-label · t-cap`) — do NOT invent
+inline `font-size`:
+- **t-title** — page hero: 22px / 800 / ink-navy `#1D3557`.
+- **t-section** — card or area header (e.g. "Read & listen", "Surface forms"): 18px / 800 / `#1D3557`.
+- **t-sub** — group/subsection label (e.g. a single root header, a panel sub-label): 15px / 700 / `#1D3557`.
+- **t-body** — sentences/descriptions: 14px / 400 / ink `#10243A`.
+- **t-label** — control labels, button-adjacent text: 13px / 600 / ink.
+- **t-cap** — hints, meta, counts, captions: 12px / 500 / ink (the floor; still ≥12px, never grey).
+- **t-accent** — the green "start here" / emphasis token: inherits size, `#1D9E75` / 700.
+
+**Rules:** (1) every text element maps to exactly ONE role above — never a one-off size. (2) Adjacent roles
+must differ by ≥2px AND a weight step so they're visibly distinct. (3) A title is never the same size as its
+caption. (4) Proportion is by role/importance, not by whim. (5) Add to the PRE-DEPLOY checklist:
+*"does each text read at the right level — title bigger/bolder than body, body bigger than caption?"*
+
+## COLOUR SYSTEM — LOCKED (added 2026-06-20, honor EVERY session) — simple palette, used to build form
+**The balance to hold:** keep the palette SMALL (few colours, few roles) — but DO use it to create form,
+hierarchy, and grouping. The failure modes are both extremes: a rainbow of ad-hoc hexes (chaotic) OR
+all-white/ink flatness (lifeless). Neither. A small palette, each colour earning its place by MEANING.
+
+**LOCKED palette (role → hex). Do not introduce a hex without a role here.**
+- **Ink** `#10243A` — ALL body/label/caption text (never grey).
+- **Brand navy** `#1D3557` — structure: titles, section headers, structural emphasis.
+- **Action green** `#1D9E75` (deep `#0F6E56` for hover/contrast) — primary actions, positive accent,
+  the "start here" token. This is the colour that makes the UI feel alive — USE it on the primary path.
+- **Surfaces** — white `#FFFFFF` cards on page `#FAFBFD`; to GROUP a related block use ONE soft tint:
+  green tint `#F4F9F7` or blue tint `#EAF2FB` (pick one per context, with a matching 1px border
+  `#cfe4dc` / `#CFE0F2`). Tinted panels are how we add colour/form without clutter.
+- **Gridlines/borders** `#E2E8F1` (default) · `#C9D6E8` (emphasis) — borders ONLY, never text.
+- **Semantic, SPARINGLY** — red `#E63946` (destructive only, e.g. Start over) · blue `#378ADD`
+  (neutral data/info) · amber `#EF9F27` (caution/tier). Never decorative.
+
+**Rules:** (1) Two brand colours (navy + green) + ink carry the whole look; everything else is surface or
+semantic. (2) Every colour must ENCODE something — navy=structure, green=action/positive, tint=grouping,
+semantic=status. No colour as decoration; no rainbowing a row of chips. (3) But DON'T go colourless: the
+primary action is green, sections are navy, and related blocks sit on a soft tint — a screen that is all
+white + ink has failed this rule too. (4) New surfaces inherit this palette; no new hex without adding its
+role here first. (5) PRE-DEPLOY check: *"is the palette ≤ the locked set, does each colour mean something,
+AND is the primary path visibly coloured (not flat white)?"*
