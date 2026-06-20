@@ -399,12 +399,14 @@ def main():
     st.markdown(
         "<div style='display:flex;align-items:baseline;gap:13px;padding:10px 2px 5px;flex-wrap:wrap'>"
         "<span style='font-size:29px;font-weight:800;color:#1D3557;letter-spacing:-.3px'>📖 Quran Explorer</span>"
-        "<span style='font-size:16px;font-weight:700;color:#1D9E75'>Root Exploration</span>"
+        "<span style='font-size:16px;font-weight:700;color:#1D9E75'>Read &middot; Explore &middot; Learn &middot; Reflect</span>"
         "<span style='margin-left:auto;font-size:13.5px;font-weight:700;color:#10243A'>"
         "114 sūras &middot; 6,236 āyāt &middot; %s roots</span>"
         "</div>"
+        "<div style='font-size:12.5px;color:#10243A;margin:1px 0 7px 2px'>"
+        "Anchored in fact, not interpretation — every claim measured from the text itself.</div>"
         "<div style='height:3px;background:linear-gradient(90deg,#1D3557,#1D9E75 55%%,rgba(29,158,117,0));"
-        "border-radius:3px;margin:0 0 16px'></div>" % _nr,
+        "border-radius:3px;margin:0 0 14px'></div>" % _nr,
         unsafe_allow_html=True)
 
     # ====== COMMAND CENTER — ONE compact card: primary Read on the left, the three
