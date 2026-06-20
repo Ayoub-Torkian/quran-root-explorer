@@ -1554,9 +1554,11 @@ def query_controls(corpus):
     return raw, normalize, top_p, min_w, run
 
 
-def render_top_input_bar(corpus):
+def render_top_input_bar(corpus, empty_samples=True):
     # No default-fill: a fresh session / post-reset starts EMPTY so the user is
     # never presented with a query they didn't ask for.
+    # empty_samples=False suppresses the random-root grid on EMPTY input (the caller
+    # supplies its own meaningful starters); prefix-typed suggestions still show.
     if "query_roots" not in st.session_state:
         st.session_state.query_roots = []
     if "prefix_top" not in st.session_state:
@@ -1716,8 +1718,10 @@ def render_top_input_bar(corpus):
     # Suggestions are an ENTRY aid — once root(s) are selected and the box is
     # empty, they are redundant (user mandate): hide them. They reappear the
     # moment the user types a new prefix.
-    samples = ([] if (st.session_state.query_roots and not prefix.strip())
-               else _random_samples(prefix, all_roots, normalize_pre, k=30))
+    if not prefix.strip() and (not empty_samples or st.session_state.query_roots):
+        samples = []                       # empty input → caller's themed starters replace random roots
+    else:
+        samples = _random_samples(prefix, all_roots, normalize_pre, k=30)
     if samples:
         if prefix.strip():
             _hdr = (f"«{prefix.strip()}» — {len(samples)} of "

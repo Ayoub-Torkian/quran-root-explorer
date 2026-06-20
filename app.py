@@ -407,41 +407,46 @@ def main():
         "border-radius:3px;margin:0 0 16px'></div>" % _nr,
         unsafe_allow_html=True)
 
-    # ====== PRIMARY PATH — Read & Listen leads (the >90%, phone-first audience) ======
+    # ====== COMMAND CENTER — ONE compact card: primary Read on the left, the three
+    #        other entry paths as high-contrast buttons on the right (replaces the two
+    #        stacked boxes + the faint page-links that read as clutter). ======
     with st.container(border=True):
-        st.markdown(
-            "<div style='display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:2px 0 6px'>"
-            "<span style='font-size:21px;font-weight:800;color:#1D3557'>📖 Read &amp; listen to the Qur'an</span>"
-            "<span style='font-size:13.5px;font-weight:700;color:#1D9E75'>start here</span></div>"
-            "<div style='font-size:14px;color:#10243A;line-height:1.6;margin:0 0 10px'>"
-            "Read any sūra with translation, and tap an āyah's ▶ to hear it recited — the player stays "
-            "at the top and follows along as you read.</div>", unsafe_allow_html=True)
-        _r1, _r2 = st.columns([2, 1])
-        if _r1.button("📖 Open the Reader  →", type="primary", width='stretch', key="home_open_read"):
-            st.switch_page("pages/40_Read.py")
-        if _r2.button("🔎 Search", width='stretch', key="home_open_search"):
-            st.switch_page("pages/38_Search.py")
+        _L, _Rt = st.columns([3, 2], gap="large")
+        with _L:
+            st.markdown(
+                "<div style='display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:0 0 4px'>"
+                "<span style='font-size:20px;font-weight:800;color:#1D3557'>📖 Read &amp; listen</span>"
+                "<span style='font-size:13px;font-weight:700;color:#1D9E75'>start here</span></div>"
+                "<div style='font-size:13.5px;color:#10243A;line-height:1.55;margin:0 0 10px'>"
+                "Read any sūra with translation; tap an āyah's ▶ to hear it recited — the player "
+                "follows along as you read.</div>", unsafe_allow_html=True)
+            if st.button("📖 Open the Reader  →", type="primary", width='stretch', key="home_open_read"):
+                st.switch_page("pages/40_Read.py")
+        with _Rt:
+            st.markdown("<div style='font-size:13.5px;font-weight:700;color:#1D3557;margin:0 0 6px'>"
+                        "🧭 Or jump straight to</div>", unsafe_allow_html=True)
+            if st.button("🔎  Search anything", width='stretch', key="home_open_search",
+                         help="A word, phrase, root, or verse (2:255) — any spelling, diacritics optional."):
+                st.switch_page("pages/38_Search.py")
+            if st.button("💡  What was discovered", width='stretch', key="home_open_disc",
+                         help="The map of graded findings and how they connect."):
+                st.switch_page("pages/37_Discovery_Map.py")
+            if st.button("🧪  Check the rigor / claims", width='stretch', key="home_open_rigor",
+                         help="18 lenses, verdicts, and reviewed claims."):
+                st.switch_page("pages/22_Lens_Lab.py")
 
-    # ====== ORIENTATION — distinct bordered panel (redundant "Read & explore" removed) ======
-    with st.container(border=True):
-        st.markdown("<div style='font-size:14px;color:#10243A;margin:0 0 4px'>"
-                    "<b>🧭 New here? Start with what you want to do</b></div>", unsafe_allow_html=True)
-        _oc = st.columns(3)
-        _paths = [
-            ("pages/38_Search.py", "🔎 Search anything", "A word, phrase, root, or verse (2:255) — any spelling, diacritics optional."),
-            ("pages/37_Discovery_Map.py", "💡 See what was discovered", "The map of graded findings and how they connect."),
-            ("pages/22_Lens_Lab.py", "🧪 Check the rigor / claims", "18 lenses, verdicts, and reviewed claims."),
-        ]
-        for _i, (_p, _lab, _h) in enumerate(_paths):
-            try:
-                _oc[_i].page_link(_p, label=_lab, help=_h)
-            except Exception:
-                pass
-
-    # ====== ROOT-EXPLORE section — distinct heading separating it from the orientation panel ======
-    st.markdown("<div style='font-size:15px;color:#1D3557;margin:14px 0 2px'>"
-                "<b>🌱 Explore the text — type or tap a root</b></div>", unsafe_allow_html=True)
-    run_top = render_top_input_bar(corpus)
+    # ====== ROOT-EXPLORE — research entry: input bar + MEANINGFUL themed starters
+    #        (the old empty-state grid of 30 random roots was patchy/confusing). ======
+    st.markdown("<div style='font-size:14.5px;color:#1D3557;margin:14px 0 2px'>"
+                "<b>🌱 Explore by root</b> — type or paste Arabic root(s), or start from a theme below"
+                "</div>", unsafe_allow_html=True)
+    run_top = render_top_input_bar(corpus, empty_samples=False)
+    if not st.session_state.get("query_roots") and not st.session_state.get("prefix_top", "").strip():
+        _tc = st.columns(4)
+        for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
+            if _tc[_i % 4].button(_lab, key=f"theme_{_i}", width='stretch',
+                                  help="Load this root cluster: " + " · ".join(_rts)):
+                _set_query(_rts); st.rerun()
 
     # About / help tucked BELOW the action so it never pushes empty space up top.
     with st.expander("ℹ️  About this tool · page guide · new here?", expanded=False):
