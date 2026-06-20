@@ -1651,37 +1651,56 @@ def render_top_input_bar(corpus, empty_samples=True):
     if st.session_state.query_roots:
         from analysis import normalize_letters as _K9
         _cur = st.session_state.get("_form_scope_last")
+        # ── back/collapse path: a Selected line + an always-visible Clear so the user can drop
+        #    the current set and choose another (clearing brings the theme starters back). ──
+        _cc1, _cc2 = st.columns([4, 1])
+        _cc1.markdown(
+            "<div style='font-size:13px;color:#10243A;margin:3px 0 0 2px'>Selected: <b>"
+            + " · ".join(st.session_state.query_roots[:6]) + "</b></div>", unsafe_allow_html=True)
+        if _cc2.button("✕ Clear", key="clear_all_top", width='stretch',
+                       help="Clear this selection and choose a different root or theme"):
+            st.session_state.query_roots = []
+            for _k in ("results", "_form_scope_last", "_last_processed_top"):
+                st.session_state.pop(_k, None)
+            st.session_state["_force_rerun"] = True
+            st.rerun()
         st.markdown(
-            "<div style='font-size:13.5px;color:#16365C;margin:4px 0 0 2px;'>"
-            "🔬 <b>Surface forms of your root(s)</b> — <b>click ONE form</b> to limit the "
-            "entire analysis to ONLY its āyahs (the chip turns dark; click ✕ to release):"
+            "<div style='font-size:12px;color:#10243A;margin:2px 0 0 2px;'>"
+            "🔬 <b>Surface forms</b> — click ONE to scope the analysis to only its āyahs; ✕ to release."
             "</div>", unsafe_allow_html=True)
         for _qr in st.session_state.query_roots[:3]:
             _dd = _r2f.get(_K9(_qr))
             if not _dd:
                 continue
-            _forms = sorted(_dd.items(), key=lambda t: -t[1])  # NO cutoff
-            st.markdown(f"<span style='color:#1D3557;font-size:15px;font-weight:700;'>"
+            _forms = sorted(_dd.items(), key=lambda t: -t[1])  # NO cutoff (long tail in expander)
+            st.markdown(f"<span style='color:#1D3557;font-size:13px;font-weight:700;'>"
                         f"{_qr}</span>", unsafe_allow_html=True)
             _ncol = 8
-            for _rs in range(0, len(_forms), _ncol):
-                _row = _forms[_rs:_rs + _ncol]
-                _fcols = st.columns(_ncol)
-                for _k, (_f9, _c9) in enumerate(_row):
-                    _act = (_cur == (_qr, _f9))
-                    _nay = len(_rf2ix.get((_K9(_qr), _f9), ()))
-                    with _fcols[_k]:
-                        if st.button(("✕ " if _act else "") + f"{_f9} ×{_c9}",
-                                     key=f"fs_{_qr}_{_f9}", width='stretch',
-                                     type=("primary" if _act else "secondary"),
-                                     help=("SCOPED — click to release" if _act else
-                                           f"analyze ONLY the {_nay} āyah(s) where "
-                                           f"{_qr} appears as {_f9}")):
-                            st.session_state["_form_scope_last"] = (None if _act
-                                                                    else (_qr, _f9))
-                            st.session_state.pop("results", None)
-                            st.session_state["_force_rerun"] = True
-                            st.rerun()
+
+            def _emit_forms(_subset, _qr=_qr):
+                for _rs in range(0, len(_subset), _ncol):
+                    _row = _subset[_rs:_rs + _ncol]
+                    _fcols = st.columns(_ncol)
+                    for _k, (_f9, _c9) in enumerate(_row):
+                        _act = (_cur == (_qr, _f9))
+                        _nay = len(_rf2ix.get((_K9(_qr), _f9), ()))
+                        with _fcols[_k]:
+                            if st.button(("✕ " if _act else "") + f"{_f9} ×{_c9}",
+                                         key=f"fs_{_qr}_{_f9}", width='stretch',
+                                         type=("primary" if _act else "secondary"),
+                                         help=("SCOPED — click to release" if _act else
+                                               f"analyze ONLY the {_nay} āyah(s) where "
+                                               f"{_qr} appears as {_f9}")):
+                                st.session_state["_form_scope_last"] = (None if _act else (_qr, _f9))
+                                st.session_state.pop("results", None)
+                                st.session_state["_force_rerun"] = True
+                                st.rerun()
+
+            _HEAD = 16                                   # 2 compact rows inline; rest tucked away
+            _emit_forms(_forms[:_HEAD])
+            if len(_forms) > _HEAD:
+                with st.expander(f"▾ {len(_forms) - _HEAD} more form(s) of {_qr}"):
+                    _emit_forms(_forms[_HEAD:])
         _sigc = st.session_state.get("_form_scope_last")
         if _sigc:
             _ixs = _rf2ix.get((_K9(_sigc[0]), _sigc[1]))
