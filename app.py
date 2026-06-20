@@ -403,7 +403,7 @@ def main():
         "<span style='margin-left:auto;font-size:13.5px;font-weight:700;color:#10243A'>"
         "114 sūras &middot; 6,236 āyāt &middot; %s roots</span>"
         "</div>"
-        "<div style='font-size:12.5px;color:#10243A;margin:1px 0 7px 2px'>"
+        "<div style='font-size:14px;font-weight:500;color:#10243A;margin:2px 0 8px 2px'>"
         "Anchored in fact, not interpretation — every claim measured from the text itself.</div>"
         "<div style='height:3px;background:linear-gradient(90deg,#1D3557,#1D9E75 55%%,rgba(29,158,117,0));"
         "border-radius:3px;margin:0 0 14px'></div>" % _nr,

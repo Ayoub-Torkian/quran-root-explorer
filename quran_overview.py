@@ -64,19 +64,26 @@ def _facts(_corpus, _cid):
                     rev[sv] = int(float(rv))
                 except Exception:
                     pass
-    mecc_s = medi_s = mecc_a = medi_a = 0
+    # words per sūra (diacritized tokens) — the CONTENT-VOLUME measure, since Medinan āyāt run
+    # much longer than Meccan ones; verse-count alone overstates the Meccan share.
+    words_sura = {}
+    for s_row, dw in zip(su.tolist(), di):
+        s_row = int(s_row)
+        words_sura[s_row] = words_sura.get(s_row, 0) + len(dw)
+    mecc_s = medi_s = mecc_a = medi_a = mecc_w = medi_w = 0
     for s in range(1, 115):
-        a = su_counts.get(s, 0)
+        a = su_counts.get(s, 0); w = words_sura.get(s, 0)
         if rev.get(s, 999) <= A.MECCAN_CUTOFF:
-            mecc_s += 1; mecc_a += a
+            mecc_s += 1; mecc_a += a; mecc_w += w
         else:
-            medi_s += 1; medi_a += a
+            medi_s += 1; medi_a += a; medi_w += w
     return dict(cols=cols, top=top, surahs=114, ayahs=NA, letters=letters,
                 cov100=cov(100), cov500=cov(500), hapax=hapax, n_roots=len(fc),
                 longest_s=longest_s, longest_name=nmap.get(longest_s, ""), longest_n=longest_n,
                 shortest_n=shortest_n, avg_ayah=NA / 114.0, long_ay=long_ay, long_ay_w=wc[li],
-                slen=slen, mecc_s=mecc_s, medi_s=medi_s, mecc_a=mecc_a, medi_a=medi_a,
-                has_rev=len(rev) > 0)
+                slen=slen, wlen=[words_sura.get(s, 0) for s in range(1, 115)],
+                mecc_s=mecc_s, medi_s=medi_s, mecc_a=mecc_a, medi_a=medi_a,
+                mecc_w=mecc_w, medi_w=medi_w, has_rev=len(rev) > 0)
 
 
 def render_overview(corpus, source="Book6"):
@@ -146,33 +153,47 @@ def render_overview(corpus, source="Book6"):
                 "<span><b>%.0f%%</b> of roots appear once</span></div>") % (
         d["longest_name"] or d["longest_s"], f(d["longest_n"]), f(d["shortest_n"]),
         d["avg_ayah"], d["long_ay"], f(d["long_ay_w"]), 100 * d["hapax"] / max(1, d["n_roots"]))
-    # — sūra-length sparkline (āyāt per sūra, mushaf order) —
-    _mx = max(d["slen"]) or 1
+    # — twin sparklines: āyāt per sūra (verse count) AND words per sūra (content volume),
+    #   same mushaf order 1→114, so the eye can compare the two shapes. —
     _W, _H, _bw = 720.0, 34.0, 720.0 / 114.0
-    _bars = "".join(
-        "<rect x='%.1f' y='%.1f' width='%.1f' height='%.1f' fill='#1D9E75'/>" % (
-            i * _bw, _H - (v / _mx) * (_H - 3), max(1.0, _bw - 0.6), (v / _mx) * (_H - 3))
-        for i, v in enumerate(d["slen"]))
-    _spark = ("<svg viewBox='0 0 %d %d' width='100%%' style='max-width:520px;display:block'>"
-              "<line x1='0' y1='%.0f' x2='%d' y2='%.0f' stroke='#cfe4dc' stroke-width='1'/>%s</svg>"
-              % (_W, _H, _H - 1, _W, _H - 1, _bars))
+
+    def _spk(vals, color):
+        _m = max(vals) or 1
+        bars = "".join(
+            "<rect x='%.1f' y='%.1f' width='%.1f' height='%.1f' fill='%s'/>" % (
+                i * _bw, _H - (v / _m) * (_H - 3), max(1.0, _bw - 0.6), (v / _m) * (_H - 3), color)
+            for i, v in enumerate(vals))
+        return ("<svg viewBox='0 0 %d %d' width='100%%' style='max-width:520px;display:block'>"
+                "<line x1='0' y1='%.0f' x2='%d' y2='%.0f' stroke='#cfe4dc' stroke-width='1'/>%s</svg>"
+                % (_W, _H, _H - 1, _W, _H - 1, bars))
+
     _spark_box = ("<div style='flex:1;min-width:300px'>"
-                  "<div class='ov-c' style='margin:0 0 3px'><b>Sūra lengths</b> — āyāt per sūra, "
-                  "mushaf order 1→114 (longest = al-Baqara)</div>" + _spark + "</div>")
+                  "<div class='ov-c' style='margin:0 0 3px'><b style='color:#0F6E56'>Sūra length</b> — "
+                  "<b>āyāt</b> per sūra, mushaf order 1→114 (longest = al-Baqara)</div>"
+                  + _spk(d["slen"], "#1D9E75") +
+                  "<div class='ov-c' style='margin:7px 0 3px'><b style='color:#1D3557'>Sūra content</b> — "
+                  "<b>words</b> per sūra (same order; al-Baqara still largest, but the profile differs — "
+                  "some sūras hold more text in fewer, longer āyāt)</div>"
+                  + _spk(d["wlen"], "#1D3557") + "</div>")
     # — Meccan vs Medinan period split (scholarly nuzūl reconstruction) —
-    if d.get("has_rev") and (d["mecc_a"] + d["medi_a"]):
-        _tot = d["mecc_a"] + d["medi_a"]; _mp = 100.0 * d["mecc_a"] / _tot
+    if d.get("has_rev") and (d["mecc_w"] + d["medi_w"]):
+        _wt = d["mecc_w"] + d["medi_w"]; _wp = 100.0 * d["mecc_w"] / _wt     # by CONTENT (words)
+        _at = d["mecc_a"] + d["medi_a"]; _ap = 100.0 * d["mecc_a"] / _at     # by āyāt (context)
+        _maw = d["mecc_w"] / max(1, d["mecc_a"]); _daw = d["medi_w"] / max(1, d["medi_a"])
         _mm_bar = ("<div style='display:flex;height:14px;border-radius:4px;overflow:hidden;"
                    "max-width:340px;border:1px solid #cfe4dc'>"
                    "<div style='width:%.0f%%;background:#1D3557'></div>"
-                   "<div style='width:%.0f%%;background:#1D9E75'></div></div>" % (_mp, 100 - _mp))
+                   "<div style='width:%.0f%%;background:#1D9E75'></div></div>" % (_wp, 100 - _wp))
         _mm_box = ("<div style='flex:1;min-width:300px'>"
-                   "<div class='ov-c' style='margin:0 0 3px'><b>Revelation period</b> — by nuzūl order "
-                   "(scholarly reconstruction, not intrinsic to the rasm)</div>" + _mm_bar +
+                   "<div class='ov-c' style='margin:0 0 3px'><b>Revelation period</b> — share of the "
+                   "actual <b>text</b> (words), not verse-count · by nuzūl order (scholarly)</div>" + _mm_bar +
                    "<div class='ov-c' style='margin-top:4px'>"
-                   "<b style='color:#1D3557'>Meccan</b> %d sūras · %s āyāt (%.0f%%) &nbsp;·&nbsp; "
-                   "<b style='color:#0F6E56'>Medinan</b> %d sūras · %s āyāt (%.0f%%)</div></div>"
-                   % (d["mecc_s"], f(d["mecc_a"]), _mp, d["medi_s"], f(d["medi_a"]), 100 - _mp))
+                   "<b style='color:#1D3557'>Meccan</b> %.0f%% of words (%d sūras · %.0f%% of āyāt) &nbsp;·&nbsp; "
+                   "<b style='color:#0F6E56'>Medinan</b> %.0f%% of words (%d sūras · %.0f%% of āyāt)</div>"
+                   "<div class='ov-c' style='margin-top:2px'>Medinan āyāt run far longer — "
+                   "<b>%.0f</b> vs <b>%.0f</b> words per āyah — so verse-count understates Medinan content.</div>"
+                   "</div>"
+                   % (_wp, d["mecc_s"], _ap, 100 - _wp, d["medi_s"], 100 - _ap, _daw, _maw))
     else:
         _mm_box = ""
     _extra = ("<div style='display:flex;gap:26px;flex-wrap:wrap;padding:9px 18px;"
