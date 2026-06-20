@@ -62,6 +62,17 @@ hero("🗺️ Discovery Map — how the findings connect",
      "A connectome of the graded latent features: laid out atom → whole along the scale ladder, "
      "linked by their cross-references. Where we started, how it integrates, where we are now.")
 
+# ── signpost: which of the three DISCOVER maps to open ──
+st.markdown(
+    "<div style='font-size:13px;color:#10243A;line-height:1.55;background:#EAF2FB;"
+    "border:1px solid #CFE0F2;border-radius:10px;padding:8px 13px;margin:2px 0 10px'>"
+    "<b>Three maps, three questions</b> &nbsp;·&nbsp; "
+    "🧭 <b>Discovery Map</b> (here) — <i>how the findings connect</i> · "
+    "🗺️ <b>Concept Atlas</b> — <i>what the concepts are &amp; where they live</i> · "
+    "🪜 <b>Structure Map</b> — <i>the evidence at each scale (āyah→Qur'ān)</i>. "
+    "Start here for the overview, then dive into a concept (Atlas) or a scale (Structure).</div>",
+    unsafe_allow_html=True)
+
 st.markdown(
     "<div style='font-size:14px;color:#10243A;line-height:1.6'>Each dot is a graded discovery "
     "(bigger = higher grade). Columns are <b>scales</b>, left→right from word-level to whole-text "

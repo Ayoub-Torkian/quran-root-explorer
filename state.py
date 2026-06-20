@@ -39,11 +39,11 @@ NAV_SECTIONS = [
         ("Study an āyah", [
             ("pages/4_Ayah_Browser.py", "Matched Āyāt", "📑"),
             ("pages/20_Ayah_Deep_Dive.py", "Āyah Deep-Dive", "🔭"),
-            ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive", "🔬"),
             ("pages/36_Cross_References.py", "Cross-References", "🔗"),
         ]),
         ("Roots & relations", [
             ("pages/1_Per_Root_Profile.py", "Per-Root Profile", "🔍"),
+            ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive", "🔬"),
             ("pages/2_Network.py", "Network", "🌐"),
             ("pages/3_Motifs.py", "Motifs", "🔺"),
             ("pages/5_Compare_Heatmaps.py", "Compare & Heatmaps", "📊"),
@@ -59,9 +59,9 @@ NAV_SECTIONS = [
         ]),
     ]),
     ("💡 DISCOVER", [
-        (None, [("pages/39_Concept_Atlas.py", "Concept Atlas · the territory", "🗺️"),
-                ("pages/41_Structure_Map.py", "Structure Map · all scales", "🪜"),
-                ("pages/37_Discovery_Map.py", "Discovery Map · start here", "🗺️"),
+        (None, [("pages/37_Discovery_Map.py", "Discovery Map · start here", "🧭"),
+                ("pages/39_Concept_Atlas.py", "Concept Atlas · the concepts", "🗺️"),
+                ("pages/41_Structure_Map.py", "Structure Map · the scales", "🪜"),
                 ("pages/25_Latent_Features.py", "Latent Features", "🧬"),
                 ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
         ("Close-up essays", [
