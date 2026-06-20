@@ -86,6 +86,7 @@ def _player_html(surah: int, gstart: int, n_ayat: int, start_ayah: int, jumped: 
  .pl button.pp{background:#1D9E75;font-size:16px;font-weight:800}
  .pl button:active{filter:brightness(.92)}
  #exit{background:#3A5680}
+ .pl.open #more{background:#1D9E75}
  .ref{color:#fff;font-weight:800;font-size:14px;min-width:44px;text-align:center;flex:0 0 auto}
  .barwrap{flex:1 1 auto;height:6px;background:#2C4A6E;border-radius:99px;overflow:hidden;min-width:24px}
  #bar{height:100%;width:0;background:#7FD9BD}
@@ -189,7 +190,7 @@ function hi(n){try{var d=window.parent.document;
 function gotoAy(n){try{var d=window.parent.document;var el=d.getElementById('qa'+C.surah+'_'+n);
     if(el)el.scrollIntoView({block:'center'});}catch(e){}}
 function setExited(v){exited=v;setLS('qre_exited',v?'1':'0');pl.classList.toggle('exited',v);
-  if(v){sheetOpen=false;pl.classList.remove('open');more.textContent='⋯';}fit();}
+  if(v){sheetOpen=false;pl.classList.remove('open');}fit();}
 function load(n,go){a=Math.max(1,Math.min(C.n,n));ref.textContent=C.surah+':'+a;err.textContent='';
   au.src=src(a);au.playbackRate=SPD[si];hi(a);if(go){wantPlay=true;}persist();if(go){PLAY();}}
 function setpp(p){pp.textContent=p?'⏸':'▶';pp.title=p?'pause':'play';}
@@ -203,7 +204,7 @@ repc.onclick=function(e){var t=e.target;if(t&&t.getAttribute('data-r')!=null){re
 fol.onclick=function(){follow=!follow;paintFol();setLS('qre_follow',follow?'1':'0');if(follow)hi(a);};
 rec.onchange=function(){setLS('qre_reciter',rec.value);var was=!au.paused;au.src=src(a);au.playbackRate=SPD[si];if(was)PLAY();};
 // OPTIONS SHEET
-more.onclick=function(){sheetOpen=!sheetOpen;pl.classList.toggle('open',sheetOpen);more.textContent=sheetOpen?'✕':'⋯';fit();};
+more.onclick=function(){sheetOpen=!sheetOpen;pl.classList.toggle('open',sheetOpen);fit();};
 // EXIT recitation → stop, clear highlight, collapse to the 🎧 launcher (reading unobstructed)
 $('exit').onclick=function(){wantPlay=false;au.pause();persist();clearHi();setExited(true);};
 $('enter').onclick=function(){setExited(false);};
