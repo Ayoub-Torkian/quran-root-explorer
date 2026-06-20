@@ -43,6 +43,69 @@ def _nmf(X, k, iters=250, seed=0):
     return W, H
 
 
+def distribution_profiles(corpus, min_freq=20, K=15):
+    """How each root is LAID OUT across the book. Per root: burstiness (gap-CV, local clumping),
+    dispersion (Juilland D), coverage (frac of 114 sūras touched), partner-consistency (1 − entropy
+    of companion roots = keeps the same company), positional trend. Rule-based archetype on coverage.
+    Plus corpus-level z vs a frequency-preserving random-placement null (the 'characteristic' test).
+    Returns (profiles, z_summary). Numpy only — no sklearn (HF Space)."""
+    import random
+    random.seed(7)
+    vroots, fr, suras, N = _prep(corpus)
+    drop = set(r for r, _ in fr.most_common(12))
+    roots = [r for r, v in fr.items() if v >= min_freq and r not in drop]
+    rset = set(roots)
+    content = [s & rset for s in vroots]
+    occ = {r: [i for i in range(N) if r in vroots[i]] for r in roots}
+    M = 20; binsz = N / M
+
+    def modes(p, comp):
+        p = sorted(p)
+        g = np.diff(np.array(p)) if len(p) > 1 else np.array([1.0])
+        B = g.std() / g.mean() if g.mean() > 0 else 0.0
+        bc = np.zeros(M)
+        for x in p:
+            bc[min(M - 1, int(x // binsz))] += 1
+        D = 1 - (bc.std() / bc.mean()) / math.sqrt(M - 1) if bc.mean() > 0 else 0.0
+        cov = len(set(suras[i] for i in p)) / 114.0
+        cc = {}
+        for i in p:
+            for x in comp[i]:
+                cc[x] = cc.get(x, 0) + 1
+        tot = sum(cc.values())
+        H = (-sum((c / tot) * math.log(c / tot) for c in cc.values()) / math.log(len(cc))
+             if tot > 0 and len(cc) > 1 else 0.0)
+        trend = 2 * abs((sum(p) / len(p)) / N - 0.5)
+        return B, D, cov, H, trend
+
+    profiles = []
+    for r in roots:
+        B, D, cov, H, trend = modes(occ[r], content)
+        arch = ("Distributed core" if cov >= 0.33 else
+                "Concentrated pocket" if cov <= 0.16 else "Broadly woven")
+        profiles.append({"root": r, "freq": fr[r], "burstiness": round(B, 2),
+                         "coverage": round(cov, 2), "dispersion": round(D, 3),
+                         "partner_consistency": round(1 - H, 2), "trend": round(trend, 2),
+                         "archetype": arch, "n_suras": int(round(cov * 114))})
+
+    def cmeans(rand):
+        vals = []
+        for r in roots:
+            p = random.sample(range(N), fr[r]) if rand else occ[r]
+            B, D, cov, H, trend = modes(p, content)
+            vals.append([B, D, cov, 1 - H, trend])
+        return np.array(vals).mean(0)
+
+    canon = cmeans(False)
+    nulls = np.array([cmeans(True) for _ in range(K)])
+    mu = nulls.mean(0); sd = nulls.std(0) + 1e-9
+    nm = ["burstiness", "dispersion", "coverage", "partner-consistency", "trend"]
+    zsum = [{"mode": nm[j], "canonical": round(float(canon[j]), 3),
+             "random": round(float(mu[j]), 3), "z": round(float((canon[j] - mu[j]) / sd[j]))}
+            for j in range(5)]
+    return profiles, zsum
+
+
 def _refs(corpus):
     su = [int(x) for x in corpus.df[A.COL_SURAH].tolist()]
     ay = []

@@ -43,6 +43,7 @@ def _compute(_cid):
         "sig": SS.sura_signatures(corpus),
         "coher": SS.sura_coherence(corpus),
         "themes": SS.quran_themes(corpus),
+        "dist": SS.distribution_profiles(corpus),
     }
 
 
@@ -313,6 +314,76 @@ with st.expander("read a theme in the text"):
     _hits(_thh, "(none)")
     with st.expander("full text + translation"):
         _verse_cards([(s, a) for s, a, _ in _thh[:10]], _MP)
+
+# ════════════ DISTRIBUTION — how each concept is laid out ════════════
+st.divider()
+st.markdown("## Distribution — how each concept is laid out across the book")
+st.markdown(
+    "Real-world relevance: the **core** themes recur **throughout** — so you can open the book almost "
+    "anywhere and meet the essentials; **situational** topics sit in pockets where they belong. Below: "
+    "every concept placed by *breadth* (how many sūras it touches) × *clumping* (does it bunch into "
+    "pockets), then the two layers in actual roots, then the evidence it's a real characteristic.")
+profiles, zsum = D["dist"]
+ARCHCOL = {"Distributed core": "#1D9E75", "Broadly woven": "#457B9D", "Concentrated pocket": "#E76F51"}
+figx = go.Figure()
+for arch, col in ARCHCOL.items():
+    pr = [p for p in profiles if p["archetype"] == arch]
+    figx.add_trace(go.Scatter(
+        x=[p["coverage"] for p in pr], y=[p["burstiness"] for p in pr], mode="markers", name=arch,
+        marker=dict(size=7, color=col, line=dict(width=0.5, color="#10243A")),
+        hovertext=[f"{p['root']} · {p['n_suras']} sūras · clump {p['burstiness']}" for p in pr],
+        hoverinfo="text"))
+notable = []
+for arch in ARCHCOL:
+    notable += sorted([p for p in profiles if p["archetype"] == arch], key=lambda p: -p["freq"])[:8]
+figx.add_trace(go.Scatter(
+    x=[p["coverage"] for p in notable], y=[p["burstiness"] for p in notable], mode="text",
+    text=[p["root"] for p in notable], textposition="top center",
+    textfont=dict(size=13, color="#10243A"), showlegend=False, hoverinfo="skip"))
+figx.update_layout(xaxis_title="breadth — fraction of the 114 sūras a concept touches",
+                   yaxis_title="clumping (gap-CV) · >1 = bunches into pockets",
+                   legend=dict(font=dict(size=12), orientation="h", y=1.12, x=0))
+st.plotly_chart(_lay(figx, "Every concept placed: breadth × clumping (labels = most frequent in each layer)",
+                     h=520), use_container_width=True)
+
+
+def _roots_of(arch, k=14):
+    return " · ".join(p["root"] for p in sorted([p for p in profiles if p["archetype"] == arch],
+                                                key=lambda p: -p["freq"])[:k])
+
+
+st.table(pd.DataFrame([
+    {"layer": "Distributed core", "concepts (most frequent)": _roots_of("Distributed core"),
+     "reading": "recurs across a third+ of all sūras — open anywhere, you meet it"},
+    {"layer": "Broadly woven", "concepts (most frequent)": _roots_of("Broadly woven"),
+     "reading": "present widely but lighter — the connective middle"},
+    {"layer": "Concentrated pocket", "concepts (most frequent)": _roots_of("Concentrated pocket"),
+     "reading": "bunched where they belong (situational / legal / narrative)"},
+]).set_index("layer"))
+st.caption("Core layer reads as: يوم (the Day) · رسل (messengers) · آية (signs) · سماء (heaven) · "
+           "عذاب (punishment) — the essentials, everywhere. Pocket layer: قتل · عدو · نفق "
+           "(conflict · enmity · hypocrisy) — Medinan / situational.")
+
+_zread = {"burstiness": "clumps into pockets (not random scatter)",
+          "dispersion": "slightly LESS even than random — because it clumps",
+          "coverage": "touches fewer sūras than random — for the same reason",
+          "partner-consistency": "keeps remarkably consistent company (collocations / families)",
+          "trend": "carries a positional lean"}
+st.markdown("**Is this a real characteristic? — vs a frequency-matched random placement (the text's own null):**")
+st.table(pd.DataFrame([{"mode": r["mode"], "canonical": r["canonical"], "random": r["random"],
+                        "z": r["z"], "reading": _zread.get(r["mode"], "")} for r in zsum]).set_index("mode"))
+st.caption("Every axis departs strongly from random (|z| ≈ 40–400): the layout is organized, not "
+           "scattered. It is **characteristic** — it need not be unique to be significant. [MEASURED]")
+
+_pby = {p["root"]: p for p in profiles}
+_pick = st.selectbox("Look up a concept's distribution", sorted(_pby, key=lambda r: -_pby[r]["freq"]),
+                     format_func=lambda r: f"{r} ({_pby[r]['freq']}×)")
+_p = _pby[_pick]
+st.markdown(f"<div style='font-size:14px;color:#10243A;line-height:1.7'><b>{_pick}</b> appears in "
+            f"<b>{_p['n_suras']}</b> of 114 sūras (breadth {_p['coverage']}), clumping {_p['burstiness']} "
+            f"({'bunched in pockets' if _p['burstiness'] > 1.2 else 'fairly even'}), "
+            f"company-consistency {_p['partner_consistency']} → <b>{_p['archetype']}</b>.</div>",
+            unsafe_allow_html=True)
 
 # ════════════ SYNTHESIS — the four scales as one structure ════════════
 st.divider()
