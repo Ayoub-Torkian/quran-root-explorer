@@ -50,10 +50,33 @@ def _facts(_corpus, _cid):
         else [len(t) for t in surftok]
     li = max(range(len(wc)), key=lambda i: wc[i])
     long_ay = "%d:%d" % (int(df[S].iloc[li]), int(df[AY].iloc[li]))
+    # — sūra-length profile (āyāt per sūra in mushaf order 1→114), for the glance sparkline —
+    su_counts = {int(s): int(c) for s, c in cnt.items()}
+    slen = [su_counts.get(s, 0) for s in range(1, 115)]
+    # — Meccan vs Medinan by the Egyptian-standard nuzūl cutoff (rev-order ≤ 86 = Meccan).
+    #   This is a SCHOLARLY reconstruction (nuzūl), NOT intrinsic to the rasm — tagged as such. —
+    rev = {}
+    if A.COL_REV_ORDER in df.columns:
+        for sv, rv in zip(su, df[A.COL_REV_ORDER]):
+            sv = int(sv)
+            if sv not in rev:
+                try:
+                    rev[sv] = int(float(rv))
+                except Exception:
+                    pass
+    mecc_s = medi_s = mecc_a = medi_a = 0
+    for s in range(1, 115):
+        a = su_counts.get(s, 0)
+        if rev.get(s, 999) <= A.MECCAN_CUTOFF:
+            mecc_s += 1; mecc_a += a
+        else:
+            medi_s += 1; medi_a += a
     return dict(cols=cols, top=top, surahs=114, ayahs=NA, letters=letters,
                 cov100=cov(100), cov500=cov(500), hapax=hapax, n_roots=len(fc),
                 longest_s=longest_s, longest_name=nmap.get(longest_s, ""), longest_n=longest_n,
-                shortest_n=shortest_n, avg_ayah=NA / 114.0, long_ay=long_ay, long_ay_w=wc[li])
+                shortest_n=shortest_n, avg_ayah=NA / 114.0, long_ay=long_ay, long_ay_w=wc[li],
+                slen=slen, mecc_s=mecc_s, medi_s=medi_s, mecc_a=mecc_a, medi_a=medi_a,
+                has_rev=len(rev) > 0)
 
 
 def render_overview(corpus, source="Book6"):
@@ -123,7 +146,38 @@ def render_overview(corpus, source="Book6"):
                 "<span><b>%.0f%%</b> of roots appear once</span></div>") % (
         d["longest_name"] or d["longest_s"], f(d["longest_n"]), f(d["shortest_n"]),
         d["avg_ayah"], d["long_ay"], f(d["long_ay_w"]), 100 * d["hapax"] / max(1, d["n_roots"]))
+    # — sūra-length sparkline (āyāt per sūra, mushaf order) —
+    _mx = max(d["slen"]) or 1
+    _W, _H, _bw = 720.0, 34.0, 720.0 / 114.0
+    _bars = "".join(
+        "<rect x='%.1f' y='%.1f' width='%.1f' height='%.1f' fill='#1D9E75'/>" % (
+            i * _bw, _H - (v / _mx) * (_H - 3), max(1.0, _bw - 0.6), (v / _mx) * (_H - 3))
+        for i, v in enumerate(d["slen"]))
+    _spark = ("<svg viewBox='0 0 %d %d' width='100%%' style='max-width:520px;display:block'>"
+              "<line x1='0' y1='%.0f' x2='%d' y2='%.0f' stroke='#cfe4dc' stroke-width='1'/>%s</svg>"
+              % (_W, _H, _H - 1, _W, _H - 1, _bars))
+    _spark_box = ("<div style='flex:1;min-width:300px'>"
+                  "<div class='ov-c' style='margin:0 0 3px'><b>Sūra lengths</b> — āyāt per sūra, "
+                  "mushaf order 1→114 (longest = al-Baqara)</div>" + _spark + "</div>")
+    # — Meccan vs Medinan period split (scholarly nuzūl reconstruction) —
+    if d.get("has_rev") and (d["mecc_a"] + d["medi_a"]):
+        _tot = d["mecc_a"] + d["medi_a"]; _mp = 100.0 * d["mecc_a"] / _tot
+        _mm_bar = ("<div style='display:flex;height:14px;border-radius:4px;overflow:hidden;"
+                   "max-width:340px;border:1px solid #cfe4dc'>"
+                   "<div style='width:%.0f%%;background:#1D3557'></div>"
+                   "<div style='width:%.0f%%;background:#1D9E75'></div></div>" % (_mp, 100 - _mp))
+        _mm_box = ("<div style='flex:1;min-width:300px'>"
+                   "<div class='ov-c' style='margin:0 0 3px'><b>Revelation period</b> — by nuzūl order "
+                   "(scholarly reconstruction, not intrinsic to the rasm)</div>" + _mm_bar +
+                   "<div class='ov-c' style='margin-top:4px'>"
+                   "<b style='color:#1D3557'>Meccan</b> %d sūras · %s āyāt (%.0f%%) &nbsp;·&nbsp; "
+                   "<b style='color:#0F6E56'>Medinan</b> %d sūras · %s āyāt (%.0f%%)</div></div>"
+                   % (d["mecc_s"], f(d["mecc_a"]), _mp, d["medi_s"], f(d["medi_a"]), 100 - _mp))
+    else:
+        _mm_box = ""
+    _extra = ("<div style='display:flex;gap:26px;flex-wrap:wrap;padding:9px 18px;"
+              "border-bottom:1px solid #EEF2F7'>" + _spark_box + _mm_box + "</div>")
     html = (css + "<div class='ov-card'><div class='ov-head'>"
             "<b>📖 The Qur'an at a Glance</b><span style='margin-left:auto'>" + strip_line + "</span></div>"
-            + insights + "<div class='ov-row'>" + box_a + box_b + "</div></div>")
+            + insights + _extra + "<div class='ov-row'>" + box_a + box_b + "</div></div>")
     st.markdown(html, unsafe_allow_html=True)
