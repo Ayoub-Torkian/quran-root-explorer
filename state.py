@@ -589,6 +589,11 @@ def inject_css():
     [class*="st-key-chiprow-"] .stButton button{padding:2px 10px !important;min-height:0 !important;height:auto !important;font-size:12.5px !important;line-height:1.5 !important;border-radius:8px !important;width:auto !important}
     /* the search/paste bar is sized to need, left-aligned — it must NOT grow with the wide page */
     [class*="st-key-inputbar"]{max-width:640px !important}
+    /* fit-row: buttons hug their text and wrap, left-aligned — NO full-width stretch, but keep
+       NORMAL button size (unlike chip_row, which shrinks). For nav/command rows. */
+    [class*="st-key-fitrow-"] [data-testid="stHorizontalBlock"]{flex-wrap:wrap !important;gap:8px !important;justify-content:flex-start !important}
+    [class*="st-key-fitrow-"] [data-testid="stColumn"]{width:auto !important;flex:0 0 auto !important;min-width:0 !important}
+    [class*="st-key-fitrow-"] .stButton{margin:0 !important}
 
     /* ===== EXPANDERS / TABLES ===== */
     [data-testid="stExpander"] {

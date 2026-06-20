@@ -420,19 +420,20 @@ def main():
             "<span style='font-size:13px;color:#10243A;margin-left:4px'>— read any sūra with "
             "translation; tap an āyah's ▶ to hear it recited, the player follows along.</span>"
             "</div>", unsafe_allow_html=True)
-        # Everything on ONE row — 4 EQUAL buttons so the primary isn't a wide empty band.
-        _b1, _b2, _b3, _b4 = st.columns(4)
-        if _b1.button("📖 Open the Reader  →", type="primary", width='stretch', key="home_open_read"):
-            st.switch_page("pages/40_Read.py")
-        if _b2.button("🔎 Search", width='stretch', key="home_open_search",
-                      help="A word, phrase, root, or verse (2:255) — any spelling, diacritics optional."):
-            st.switch_page("pages/38_Search.py")
-        if _b3.button("💡 Discovered", width='stretch', key="home_open_disc",
-                      help="The map of graded findings and how they connect."):
-            st.switch_page("pages/37_Discovery_Map.py")
-        if _b4.button("🧪 Rigor / claims", width='stretch', key="home_open_rigor",
-                      help="18 lenses, verdicts, and reviewed claims."):
-            st.switch_page("pages/22_Lens_Lab.py")
+        # Buttons hug their text and sit left-aligned (fit-row) — NO full-width stretch / empty bands.
+        with st.container(key="fitrow-homecmd"):
+            _b1, _b2, _b3, _b4 = st.columns(4)
+            if _b1.button("📖 Open the Reader  →", type="primary", key="home_open_read"):
+                st.switch_page("pages/40_Read.py")
+            if _b2.button("🔎 Search", key="home_open_search",
+                          help="A word, phrase, root, or verse (2:255) — any spelling, diacritics optional."):
+                st.switch_page("pages/38_Search.py")
+            if _b3.button("💡 Discovered", key="home_open_disc",
+                          help="The map of graded findings and how they connect."):
+                st.switch_page("pages/37_Discovery_Map.py")
+            if _b4.button("🧪 Rigor / claims", key="home_open_rigor",
+                          help="18 lenses, verdicts, and reviewed claims."):
+                st.switch_page("pages/22_Lens_Lab.py")
 
     # ====== ROOT-EXPLORE — research entry: input bar + MEANINGFUL themed starters
     #        (the old empty-state grid of 30 random roots was patchy/confusing). ======
