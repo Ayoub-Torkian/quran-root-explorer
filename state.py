@@ -49,13 +49,13 @@ NAV_SECTIONS = [
             ("pages/5_Compare_Heatmaps.py", "Compare & Heatmaps", "📊"),
             ("pages/9_Topic_Modeling.py", "Topic Modeling", "🧩"),
             ("pages/8c_My_Topics.py", "My Topics", "📌"),
-            (["pages/8_Calibration.py", "pages/8e_Calibration.py"], "Calibration", "🎚️"),
+            ("pages/8e_Calibration.py", "Calibration", "🎚️"),
         ]),
         ("Morphology & interpret", [
             ("pages/6_Morphology.py", "Morphology", "🧬"),
             ("pages/8d_Surface_Divergence.py", "Surface Divergence", "🔀"),
-            (["pages/11_Interpret.py", "pages/8a_Interpret.py"], "Interpret", "🧠"),
-            (["pages/10_Practical_Lens.py", "pages/8f_Practical_Lens.py"], "Practical Lens", "🔭"),
+            ("pages/8a_Interpret.py", "Interpret", "🧠"),
+            ("pages/8f_Practical_Lens.py", "Practical Lens", "🔭"),
         ]),
     ]),
     ("💡 DISCOVER", [
@@ -95,8 +95,8 @@ NAV_SECTIONS = [
     ("🛠️ TOOLS", [
         (None, [
             ("pages/7_Statistics.py", "Statistics", "📈"),
-            (["pages/12_Export.py", "pages/8_Export.py"], "Export", "⬇️"),
-            (["pages/13_Usage.py", "pages/9_Usage.py"], "Usage", "📊"),
+            ("pages/8_Export.py", "Export", "⬇️"),
+            ("pages/9_Usage.py", "Usage", "📊"),
             ("pages/21_Feedback_and_Bugs.py", "Feedback & Bugs", "🐞"),
             ("pages/0_Help.py", "Help", "❓"),
         ]),

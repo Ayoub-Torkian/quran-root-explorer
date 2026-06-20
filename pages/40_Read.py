@@ -19,7 +19,7 @@ import mobile as _MOB
 import surah_reader as _SR
 import audio_player as _AUD
 import structure_scales as _SS
-from analysis import COL_SURAH, COL_SURAH_NAME, COL_DIACRITIZED
+from analysis import COL_SURAH, COL_SURAH_NAME, COL_DIACRITIZED, COL_AYAH
 from state import get_corpus, hero, log_page
 
 st.set_page_config(page_title="Read", page_icon="📖", layout="wide")
@@ -220,9 +220,24 @@ def _struct_ctx(_cid):
     return _SS.read_context(corpus)
 
 
+@st.cache_data(show_spinner=False)
+def _vtext_map(_cid):
+    """(sūra, āyah) → original Arabic, for previewing a jump-link before leaving your place."""
+    m = {}
+    col_t = COL_DIACRITIZED if COL_DIACRITIZED in df.columns else COL_SURAH
+    for s, a, t in zip(df[COL_SURAH].astype(int), df[COL_AYAH], df[col_t]):
+        try:
+            a = int(float(a))
+        except Exception:
+            continue
+        m[(int(s), a)] = str(t)
+    return m
+
+
 def _jump_btns(verses, keyp, cur=None, limit=8):
     """Compact row of '{s}:{a}' buttons that jump the reader to that verse (rerun-free of the
-    nav widgets — they stash a target the top-of-page handler applies before the widgets build)."""
+    nav widgets — they stash a target the top-of-page handler applies before the widgets build).
+    Hover a button to preview that verse's Arabic before jumping."""
     seen = []
     for sa in verses:
         s, a = int(sa[0]), int(sa[1])
@@ -234,10 +249,13 @@ def _jump_btns(verses, keyp, cur=None, limit=8):
             break
     if not seen:
         return
+    _vt = _vtext_map(id(corpus))
     cols = st.columns(min(len(seen), 4))
     for j, (s, a) in enumerate(seen):
+        _tx = _vt.get((s, a), "")
+        _hlp = ((_tx[:110] + "…") if len(_tx) > 110 else _tx) or f"open {s}:{a} in the reader"
         if cols[j % len(cols)].button(f"{s}:{a}", key=f"{keyp}_{s}_{a}",
-                                      help=f"open {s}:{a} in the reader", use_container_width=True):
+                                      help=_hlp, use_container_width=True):
             st.session_state["_jump_to"] = (s, a)
             st.rerun()
 
