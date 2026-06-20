@@ -26,10 +26,11 @@ hero("🪜 Structure Map — every scale",
 st.markdown(
     "<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;padding:10px 14px;"
     "font-size:13.5px;color:#10243A;line-height:1.7;margin:2px 0 8px'>"
-    "Co-occurrence <b>saturates</b> as the window grows (triad closure 53% → 98% → 100% from āyah to "
-    "sūra), so one method cannot span scales. Here each scale gets its own robust instrument: "
-    "<b>āyah</b> = frequency-controlled bonds (NPMI); <b>passage</b> = sequential weave; "
-    "<b>sūra</b> = TF-IDF signature + coherence; <b>Qur'ān</b> = NMF theme factorization.</div>",
+    "Structure measured at every scale, each with the method that fits it, every one reported against "
+    "the text's own shuffle: <b>āyah</b> = frequency-controlled bonds (NPMI) · <b>passage</b> = "
+    "sequential weave · <b>sūra</b> = TF-IDF signature + coherence · <b>Qur'ān</b> = NMF themes · "
+    "<b>distribution</b> = how each concept is spread. (One method can't span scales — co-occurrence "
+    "saturates above the verse; quantified in the Synthesis below.)</div>",
     unsafe_allow_html=True)
 
 
@@ -319,6 +320,7 @@ with st.expander("read a theme in the text"):
 st.divider()
 layer(5, "Distribution — how each concept is laid out across the book")
 st.markdown(
+    "*(A cross-cutting view — not a fifth scale.)* "
     "Real-world relevance: the **core** themes recur **throughout** — so you can open the book almost "
     "anywhere and meet the essentials; **situational** topics sit in pockets where they belong. Below: "
     "every concept placed by *breadth* (how many sūras it touches) × *clumping* (does it bunch into "
