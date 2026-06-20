@@ -594,6 +594,12 @@ def inject_css():
     [class*="st-key-fitrow-"] [data-testid="stHorizontalBlock"]{flex-wrap:wrap !important;gap:8px !important;justify-content:flex-start !important}
     [class*="st-key-fitrow-"] [data-testid="stColumn"]{width:auto !important;flex:0 0 auto !important;min-width:0 !important}
     [class*="st-key-fitrow-"] .stButton{margin:0 !important}
+    /* Clear = destructive/reset → red, so colour draws the eye (matches Start over) */
+    [class*="st-key-fitrow-selclear"] .stButton button,
+    [class*="st-key-fitrow-selclear"] .stButton button p{color:#E63946 !important;font-weight:700 !important}
+    [class*="st-key-fitrow-selclear"] .stButton button{border:1.5px solid #E63946 !important}
+    [class*="st-key-fitrow-selclear"] .stButton button:hover{background:#E63946 !important;border-color:#A32D2D !important}
+    [class*="st-key-fitrow-selclear"] .stButton button:hover p{color:#FFFFFF !important}
 
     /* ===== EXPANDERS / TABLES ===== */
     [data-testid="stExpander"] {
@@ -1724,34 +1730,26 @@ def render_top_input_bar(corpus, empty_samples=True):
             _dd = _r2f.get(_K9(_qr))
             if not _dd:
                 continue
-            _forms = sorted(_dd.items(), key=lambda t: -t[1])  # NO cutoff (long tail in expander)
+            _forms = sorted(_dd.items(), key=lambda t: -t[1])  # ALL forms; chips wrap, no expander
             st.markdown(f"<span class='t-sub'>{_qr}</span>", unsafe_allow_html=True)
-
-            def _emit_forms(_subset, _qr=_qr, _idx=_idx, _tag=""):
-                # chip_row → small, content-sized, wrapping chips (LOCKED density layer); the
-                # ACTIVE/scoped chip is green (primary) so colour encodes status, not decoration.
-                with chip_row(f"sf-{_idx}{_tag}"):
-                    _cols = st.columns(max(1, len(_subset)))
-                    for _k, (_f9, _c9) in enumerate(_subset):
-                        _act = (_cur == (_qr, _f9))
-                        _nay = len(_rf2ix.get((_K9(_qr), _f9), ()))
-                        with _cols[_k]:
-                            if st.button(("✕ " if _act else "") + f"{_f9} ×{_c9}",
-                                         key=f"fs_{_qr}_{_f9}",
-                                         type=("primary" if _act else "secondary"),
-                                         help=("SCOPED — click to release" if _act else
-                                               f"analyze ONLY the {_nay} āyah(s) where "
-                                               f"{_qr} appears as {_f9}")):
-                                st.session_state["_form_scope_last"] = (None if _act else (_qr, _f9))
-                                st.session_state.pop("results", None)
-                                st.session_state["_force_rerun"] = True
-                                st.rerun()
-
-            _HEAD = 14                                   # one tight wrapping line; rest tucked away
-            _emit_forms(_forms[:_HEAD])
-            if len(_forms) > _HEAD:
-                with st.expander(f"▾ {len(_forms) - _HEAD} more form(s) of {_qr}"):
-                    _emit_forms(_forms[_HEAD:], _tag="-more")
+            # All forms flow in ONE wrapping chip row (no inline/expander split, no full-width
+            # empty bar). The ACTIVE/scoped chip is green (primary) so colour encodes status.
+            with chip_row(f"sf-{_idx}"):
+                _cols = st.columns(max(1, len(_forms)))
+                for _k, (_f9, _c9) in enumerate(_forms):
+                    _act = (_cur == (_qr, _f9))
+                    _nay = len(_rf2ix.get((_K9(_qr), _f9), ()))
+                    with _cols[_k]:
+                        if st.button(("✕ " if _act else "") + f"{_f9} ×{_c9}",
+                                     key=f"fs_{_qr}_{_f9}",
+                                     type=("primary" if _act else "secondary"),
+                                     help=("SCOPED — click to release" if _act else
+                                           f"analyze ONLY the {_nay} āyah(s) where "
+                                           f"{_qr} appears as {_f9}")):
+                            st.session_state["_form_scope_last"] = (None if _act else (_qr, _f9))
+                            st.session_state.pop("results", None)
+                            st.session_state["_force_rerun"] = True
+                            st.rerun()
         _sigc = st.session_state.get("_form_scope_last")
         if _sigc:
             _ixs = _rf2ix.get((_K9(_sigc[0]), _sigc[1]))
