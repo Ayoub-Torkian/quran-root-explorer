@@ -1918,15 +1918,15 @@ def render_start_over_button():
         st.markdown(
             "<span class='dl-so-marker' style='display:none'></span>"
             "<style>"
-            # Pull the whole row up so it stops reading as a wasted full-height band (app-wide).
-            "div[data-testid='stHorizontalBlock']:has(.dl-so-marker){margin-bottom:-14px}"
+            # Pull the row up a little so it isn't a wasted band, but keep the button readable.
+            "div[data-testid='stHorizontalBlock']:has(.dl-so-marker){margin-bottom:-6px}"
             "div[data-testid='stColumn']:has(.dl-so-marker) .stButton button,"
             "div[data-testid='column']:has(.dl-so-marker) .stButton button{"
-            "color:#E63946!important;border:1.5px solid #E63946!important;"
-            "background:#FFFFFF!important;font-weight:700!important;"
-            "font-size:13px!important;min-height:0!important;padding:2px 10px!important;}"
+            "color:#E63946!important;border:2px solid #E63946!important;"
+            "background:#FFFFFF!important;font-weight:800!important;"
+            "font-size:14.5px!important;padding:5px 16px!important;}"
             "div[data-testid='stColumn']:has(.dl-so-marker) .stButton button p{"
-            "color:#E63946!important;font-weight:700!important;font-size:13px!important;}"
+            "color:#E63946!important;font-weight:800!important;font-size:14.5px!important;}"
             "div[data-testid='stColumn']:has(.dl-so-marker) .stButton button:hover,"
             "div[data-testid='column']:has(.dl-so-marker) .stButton button:hover{"
             "background:#E63946!important;color:#FFFFFF!important;"

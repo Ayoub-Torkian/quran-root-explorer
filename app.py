@@ -411,29 +411,26 @@ def main():
     #        other entry paths as high-contrast buttons on the right (replaces the two
     #        stacked boxes + the faint page-links that read as clutter). ======
     with st.container(border=True):
-        _L, _Rt = st.columns([3, 2], gap="large")
-        with _L:
-            st.markdown(
-                "<div style='display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:0 0 4px'>"
-                "<span style='font-size:20px;font-weight:800;color:#1D3557'>📖 Read &amp; listen</span>"
-                "<span style='font-size:13px;font-weight:700;color:#1D9E75'>start here</span></div>"
-                "<div style='font-size:13.5px;color:#10243A;line-height:1.55;margin:0 0 10px'>"
-                "Read any sūra with translation; tap an āyah's ▶ to hear it recited — the player "
-                "follows along as you read.</div>", unsafe_allow_html=True)
-            if st.button("📖 Open the Reader  →", type="primary", width='stretch', key="home_open_read"):
-                st.switch_page("pages/40_Read.py")
-        with _Rt:
-            st.markdown("<div style='font-size:13.5px;font-weight:700;color:#1D3557;margin:0 0 6px'>"
-                        "🧭 Or jump straight to</div>", unsafe_allow_html=True)
-            if st.button("🔎  Search anything", width='stretch', key="home_open_search",
-                         help="A word, phrase, root, or verse (2:255) — any spelling, diacritics optional."):
-                st.switch_page("pages/38_Search.py")
-            if st.button("💡  What was discovered", width='stretch', key="home_open_disc",
-                         help="The map of graded findings and how they connect."):
-                st.switch_page("pages/37_Discovery_Map.py")
-            if st.button("🧪  Check the rigor / claims", width='stretch', key="home_open_rigor",
-                         help="18 lenses, verdicts, and reviewed claims."):
-                st.switch_page("pages/22_Lens_Lab.py")
+        st.markdown(
+            "<div style='display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:0 0 6px'>"
+            "<span style='font-size:20px;font-weight:800;color:#1D3557'>📖 Read &amp; listen</span>"
+            "<span style='font-size:13px;font-weight:700;color:#1D9E75'>start here</span>"
+            "<span style='font-size:13px;color:#10243A;margin-left:4px'>— read any sūra with "
+            "translation; tap an āyah's ▶ to hear it recited, the player follows along.</span>"
+            "</div>", unsafe_allow_html=True)
+        # Everything on ONE row — primary Reader (wider) + the 3 jumps — no empty bands.
+        _b1, _b2, _b3, _b4 = st.columns([2, 1, 1, 1])
+        if _b1.button("📖 Open the Reader  →", type="primary", width='stretch', key="home_open_read"):
+            st.switch_page("pages/40_Read.py")
+        if _b2.button("🔎 Search", width='stretch', key="home_open_search",
+                      help="A word, phrase, root, or verse (2:255) — any spelling, diacritics optional."):
+            st.switch_page("pages/38_Search.py")
+        if _b3.button("💡 Discovered", width='stretch', key="home_open_disc",
+                      help="The map of graded findings and how they connect."):
+            st.switch_page("pages/37_Discovery_Map.py")
+        if _b4.button("🧪 Rigor / claims", width='stretch', key="home_open_rigor",
+                      help="18 lenses, verdicts, and reviewed claims."):
+            st.switch_page("pages/22_Lens_Lab.py")
 
     # ====== ROOT-EXPLORE — research entry: input bar + MEANINGFUL themed starters
     #        (the old empty-state grid of 30 random roots was patchy/confusing). ======
@@ -442,9 +439,9 @@ def main():
                 "</div>", unsafe_allow_html=True)
     run_top = render_top_input_bar(corpus, empty_samples=False)
     if not st.session_state.get("query_roots") and not st.session_state.get("prefix_top", "").strip():
-        _tc = st.columns(4)
+        _tc = st.columns(8)                                  # all 8 themes on one compact line
         for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
-            if _tc[_i % 4].button(_lab, key=f"theme_{_i}", width='stretch',
+            if _tc[_i % 8].button(_lab, key=f"theme_{_i}", width='stretch',
                                   help="Load this root cluster: " + " · ".join(_rts)):
                 _set_query(_rts); st.rerun()
 
