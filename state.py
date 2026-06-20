@@ -1571,7 +1571,9 @@ def render_top_input_bar(corpus, empty_samples=True):
     # vertical_alignment="bottom" makes the Analyze button line up with the input box
     # (no detached/offset look) since the input has no label to balance it.
     st.markdown("<div class='top-input-box'>", unsafe_allow_html=True)
-    c1, c2 = st.columns([6, 1], vertical_alignment="bottom")
+    # input shrunk to ~60% + Analyze compact beside it; the trailing column is breathing
+    # room so the box stops reading as a wide empty bar.
+    c1, c2, _c3 = st.columns([5, 1, 2], vertical_alignment="bottom")
     def _on_input_change():
         # Force a fresh rerun so the suggestions panel reflects the new prefix.
         st.session_state.pop("_last_processed_top", None)

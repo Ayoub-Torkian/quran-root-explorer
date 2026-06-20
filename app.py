@@ -418,8 +418,8 @@ def main():
             "<span style='font-size:13px;color:#10243A;margin-left:4px'>— read any sūra with "
             "translation; tap an āyah's ▶ to hear it recited, the player follows along.</span>"
             "</div>", unsafe_allow_html=True)
-        # Everything on ONE row — primary Reader (wider) + the 3 jumps — no empty bands.
-        _b1, _b2, _b3, _b4 = st.columns([2, 1, 1, 1])
+        # Everything on ONE row — 4 EQUAL buttons so the primary isn't a wide empty band.
+        _b1, _b2, _b3, _b4 = st.columns(4)
         if _b1.button("📖 Open the Reader  →", type="primary", width='stretch', key="home_open_read"):
             st.switch_page("pages/40_Read.py")
         if _b2.button("🔎 Search", width='stretch', key="home_open_search",
