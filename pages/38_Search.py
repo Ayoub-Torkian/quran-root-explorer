@@ -14,6 +14,7 @@ from analysis import COL_SURAH, COL_AYAH, COL_SURAH_NAME, COL_DIACRITIZED, norma
 from state import get_corpus, hero, layer, log_page, reader_play_handoff
 import meaning as _MEAN
 import mobile as _MOB
+import structure_scales as _SS
 
 st.set_page_config(page_title="Search", page_icon="🔎", layout="wide")
 log_page("search")
@@ -77,6 +78,35 @@ def build(_cid):
 
 refs, sname, disp, words, ntext, nwords, rootset, nform2roots, nword2roots, root2forms, roots_norm, root_idf, anorm, sura_nuzul = build(id(corpus))
 N = len(refs)
+
+# ── STRUCTURE FINGERPRINT (opt-in) — reuse the SAME cached engine + math as the Read-page chip,
+#    so a hit's structural character (concept-bonds · templates · core/pocket lean · theme) is
+#    visible BEFORE opening Read. Heavy first compute (cached); per-verse lookup is instant. ──
+@st.cache_data(show_spinner="Reading structure…")
+def _struct_ctx(_cid):
+    return _SS.read_context(corpus)
+
+def _fp_html(i, CX):
+    """Compact one-liner pill for verse-row index i, looked up by (sūra, āyah) — never positional."""
+    ii = CX["refs"].get((refs[i][0], refs[i][1]))
+    if ii is None:
+        return ""
+    _vr = CX["vroots"][ii]; _dr = CX["drop"]; _np = CX["npmi"]
+    _cr = sorted(r for r in _vr if r not in _dr)
+    _nb = sum(1 for _a in range(len(_cr)) for _b in range(_a + 1, len(_cr))
+              if frozenset((_cr[_a], _cr[_b])) in _np)
+    _nt = len(CX["vt"].get(ii, []))
+    _dst = CX.get("dist", {})
+    _nc = sum(1 for r in _cr if _dst.get(r, {}).get("arch") == "Distributed core")
+    _npk = sum(1 for r in _cr if _dst.get(r, {}).get("arch") == "Concentrated pocket")
+    _lean = ("core-leaning" if _nc > _npk else "pocket-leaning" if _npk > _nc else "balanced")
+    _thf = CX.get("sura_theme", {}).get(refs[i][0])
+    _tht = f" · theme ‹{_thf['roots'][0]}›" if _thf else ""
+    return ("<span style='display:inline-block;background:#EAF2FB;border:1px solid #CFE0F2;"
+            "border-radius:999px;padding:1px 10px;font-size:12px;color:#10243A;font-weight:600;"
+            "line-height:1.6'>"
+            f"📐 {_nb} bond{'s' if _nb != 1 else ''} · {_nt} "
+            f"template{'s' if _nt != 1 else ''} · {_lean}{_tht}</span>")
 
 # Layer-2/3 similarity is CONTENT-root based: drop the most ubiquitous (function/grammatical) roots
 # (ءله، کون، قول …) so verses aren't matched on "kāna…" type formulas, only on meaningful shared roots.
@@ -308,9 +338,10 @@ def hl_idx(i, target):
             di = j + 1
     return res
 
-def verse_html(i, target, qwords, substr=False):
+def verse_html(i, target, qwords, substr=False, fp=""):
     """Collapsed: ref + first 50 words FROM THE START of the āyah (one line). Click to expand the
-    full āyah content (native <details>, no reload). Matches are highlighted throughout."""
+    full āyah content (native <details>, no reload). Matches are highlighted throughout.
+    `fp` (optional) = structure-fingerprint pill HTML, shown on its own line under the āyah."""
     hl = hl_idx(i, target)
     W = words[i]
     marked = []
@@ -325,16 +356,17 @@ def verse_html(i, target, qwords, substr=False):
     _open = " open" if _MP else ""      # shown by default only if a language mode is on
     _mean = _MEAN.meaning_block_html(f"{refs[i][0]}:{refs[i][1]}", langs=_rlangs)
     _play = f"<a class='vp' href='?play={refs[i][0]}:{refs[i][1]}' title='Play in Reader'>▶</a>"
+    _fp = f"<div dir='ltr' style='text-align:left;margin:3px 0 0'>{fp}</div>" if fp else ""
     if not _mean:                       # safety: no translation at all → āyah only
         return ("<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
                 f"<div class='vtext qv-ar' dir='rtl' style='text-align:right;line-height:2.0'>"
-                f"{_play} {_num} {full}</div></div>")
+                f"{_play} {_num} {full}</div>{_fp}</div>")
     # Tap the āyah to reveal its translation; tap again to collapse — works in any mode.
     return (
         "<div class='vitem' style='border-bottom:1px solid #eef2f4;padding:8px'>"
         f"<details class='vrow'{_open}>"
         f"<summary><div class='vtext qv-ar' dir='rtl' style='text-align:right;line-height:2.0'>"
-        f"<span class='ex'>⌄</span> {_play} {_num} {full}</div></summary>"
+        f"<span class='ex'>⌄</span> {_play} {_num} {full}</div>{_fp}</summary>"
         f"{_mean}"
         "</details>"
         "</div>")
@@ -520,6 +552,14 @@ if _copy_idxs:
 # ── translation control (one language / all / off — persists across pages) + reading settings ──
 _MP = _MEAN.translation_control(st)
 _MOB.settings_controls(st)          # ⚙️ text size (Arabic-first) + line spacing
+# 📐 opt-in structure fingerprint per hit — reuses the cached read_context engine; persists across
+# searches. First use computes once (a few seconds), then every lookup is instant.
+_show_fp = st.checkbox("📐 Structure fingerprint per verse", value=st.session_state.get("_fp_on", False),
+                       help="Show each hit's structural character before opening Read — concept-bonds it "
+                            "activates, recurring templates (mathānī) it belongs to, core-vs-pocket lean, "
+                            "and its chapter theme. Measured on the roots against the text's own shuffle.")
+st.session_state["_fp_on"] = _show_fp
+_CXfp = _struct_ctx(id(corpus)) if _show_fp else None
 # ── whole-sūra reader: open the full sūra from the first result, at that āyah ──
 _all_shown = [i for _lab, _idx in groups for i in _idx]
 if _all_shown:
@@ -532,7 +572,8 @@ for lab, idx in groups:
     shown = idx[:300]
     _htarget = (roots - DROP_SIM) if kind == "phrase" else roots   # zoom highlight on CONTENT roots
     _hq = qwords - _STOP                                            # never highlight function words
-    cells = "".join(verse_html(i, _htarget, _hq, kind == "text") for i in shown)
+    cells = "".join(verse_html(i, _htarget, _hq, kind == "text",
+                               _fp_html(i, _CXfp) if _CXfp else "") for i in shown)
     grid = ("<style>"
             ".vgrid summary{list-style:none;cursor:pointer}"   # no display:block (breaks iOS tap-toggle)
             ".vgrid summary::-webkit-details-marker{display:none}"
