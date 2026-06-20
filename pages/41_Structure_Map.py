@@ -417,14 +417,6 @@ st.table(pd.DataFrame([
 st.caption("As the window grows almost every root-pair co-occurs (closure → 100%) and genuine "
            "higher-order signal vanishes — co-occurrence is a verse-scale tool. [MEASURED]")
 
-# summary table — the nesting ladder
-st.table(pd.DataFrame([
-    {"scale": "Āyah", "unit": "verse", "mechanism": "concept-bonds (which ideas pair)", "composes": "→ passages"},
-    {"scale": "Passage", "unit": "~rukūʿ", "mechanism": "sequential weave (verse order)", "composes": "→ sūras"},
-    {"scale": "Sūra", "unit": "chapter", "mechanism": "thematic coherence (chapter identity)", "composes": "→ the book"},
-    {"scale": "Qur'ān", "unit": "muṣḥaf", "mechanism": "theme arrangement (placed by position)", "composes": "— whole"},
-]).set_index("scale"))
-
 # ════════════ METHODS LANDSCAPE — where each tool fits ════════════
 st.divider()
 st.markdown("## Where each method fits — frequency · co-occurrence · dependency · motif")
