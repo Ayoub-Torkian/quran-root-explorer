@@ -75,8 +75,8 @@ def render_overview(corpus, source="Book6"):
              "<div class='ov-c'>Each verse stored 4 ways: diacritized → rasm → word-forms → roots.</div>"
              "</div>")
 
-    rgrp = ("<colgroup><col style='width:14%'><col style='width:26%'><col style='width:34%'>"
-            "<col style='width:13%'><col style='width:13%'></colgroup>")
+    rgrp = ("<colgroup><col style='width:14%'><col style='width:22%'><col style='width:30%'>"
+            "<col style='width:17%'><col style='width:17%'></colgroup>")
     mx = d["top"][0][3] if d["top"] else 1.0
     rrows = "".join(
         "<tr><td class='rr' dir='rtl'>%s</td><td class='rg'>%s</td>"
