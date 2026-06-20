@@ -304,7 +304,8 @@ def read_context(corpus, npmi_min=0.30, min_co=5, tmpl_top=80):
         for (s, a) in f["verses"]:
             i = refs.get((s, a))
             if i is not None:
-                vt[i].append({"roots": f["roots"], "n_suras": f["n_suras"], "support": f["support"]})
+                vt[i].append({"roots": f["roots"], "n_suras": f["n_suras"], "support": f["support"],
+                              "verses": f["verses"]})
     # distribution character per content root (core vs pocket) — reuse the distribution engine
     dprof, _dz = distribution_profiles(corpus)
     dist = {p["root"]: {"arch": p["archetype"], "n_suras": p["n_suras"], "cov": p["coverage"]}

@@ -50,6 +50,18 @@ if "read_s" not in st.session_state:
         st.session_state["read_a"] = 0
     st.session_state["read_s_prev"] = st.session_state["read_s"]
 
+# ── apply a pending jump from the structural-context panel BEFORE the nav widgets are built
+#    (the read_s / read_a keys are bound to widgets below, so they must be set up here) ──
+_jt = st.session_state.pop("_jump_to", None)
+if _jt:
+    try:
+        _js, _ja = int(_jt[0]), int(_jt[1])
+        st.session_state["read_s"] = max(1, min(114, _js))
+        st.session_state["read_s_prev"] = st.session_state["read_s"]
+        st.session_state["read_a"] = max(0, _ja)
+    except Exception:
+        pass
+
 # ── STICKY TOP BAR: sūra navigation + recitation player pinned together at the top of the
 #    screen while you scroll, so you can jump to any sūra/āyah AND reach the player controls
 #    from any point without scrolling back. Built on a KEYED container (stable class) with
@@ -208,6 +220,28 @@ def _struct_ctx(_cid):
     return _SS.read_context(corpus)
 
 
+def _jump_btns(verses, keyp, cur=None, limit=8):
+    """Compact row of '{s}:{a}' buttons that jump the reader to that verse (rerun-free of the
+    nav widgets — they stash a target the top-of-page handler applies before the widgets build)."""
+    seen = []
+    for sa in verses:
+        s, a = int(sa[0]), int(sa[1])
+        if cur is not None and (s, a) == cur:
+            continue
+        if (s, a) not in seen:
+            seen.append((s, a))
+        if len(seen) >= limit:
+            break
+    if not seen:
+        return
+    cols = st.columns(min(len(seen), 4))
+    for j, (s, a) in enumerate(seen):
+        if cols[j % len(cols)].button(f"{s}:{a}", key=f"{keyp}_{s}_{a}",
+                                      help=f"open {s}:{a} in the reader", use_container_width=True):
+            st.session_state["_jump_to"] = (s, a)
+            st.rerun()
+
+
 with st.expander("📐 What this āyah is part of — its place in the Qur'ān's structure"):
     st.caption("A reading lens (optional): how this single āyah sits in the larger pattern — the "
                "idea-pairs it links, and any repeated formula (mathānī) it shares with verses elsewhere. "
@@ -232,15 +266,22 @@ with st.expander("📐 What this āyah is part of — its place in the Qur'ān's
             st.markdown("**Concept-bonds it activates** — pairs of ideas the Qur'ān links far more than "
                         "chance, like two notes that keep sounding together as a chord:")
             st.markdown(" · ".join(f"`{a}·{b}` **{v}**" for a, b, v in _bonds[:10]))
+            _ba, _bb, _bv0 = _bonds[0]
+            _inv = {i: sa for sa, i in _CX["refs"].items()}
+            _bverses = [_inv[i] for i in range(len(_CX["vroots"]))
+                        if _ba in _CX["vroots"][i] and _bb in _CX["vroots"][i]]
+            st.caption(f"Read other verses where ‹{_ba}› and ‹{_bb}› meet:")
+            _jump_btns(_bverses, "bond", cur=(int(sel), _aysel))
         else:
             st.caption("· No strong concept-bonds (beyond plain word frequency) in this āyah.")
         _fams = _CX["vt"].get(_i, [])
         if _fams:
             st.markdown("**Recurring template (mathānī) it belongs to** — a formula echoed across the "
-                        "book, like a chorus that returns through a song:")
-            for _f in _fams[:4]:
+                        "book, like a chorus that returns through a song. Tap a verse to read it:")
+            for _fi, _f in enumerate(_fams[:4]):
                 st.markdown(f"- `{' · '.join(_f['roots'])}` — recurs in **{_f['n_suras']} chapters** "
                             f"({_f['support']} verses)")
+                _jump_btns(_f.get("verses", []), f"tmpl{_fi}", cur=(int(sel), _aysel))
         else:
             st.caption("· Not part of a book-wide recurring template — a mostly unique combination of ideas.")
         _th = _CX.get("sura_theme", {}).get(int(sel))
