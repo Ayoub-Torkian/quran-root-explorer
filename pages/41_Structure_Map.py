@@ -197,6 +197,12 @@ _fcells = ["<div style='border:1px solid #cfe4dc;border-radius:8px;padding:6px 1
            for fam in D["clusters"]]
 st.markdown("<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px'>"
             + "".join(_fcells) + "</div>", unsafe_allow_html=True)
+try:                       # motif = higher-order (triads) on the bond graph — its own page
+    st.page_link("pages/3_Motifs.py",
+                 label="→ Motifs — triads & higher-order patterns on these bonds (significance-ranked)",
+                 icon="🔺")
+except Exception:
+    pass
 with st.expander("read a bond in the text"):
     _bo = [f"{a} · {b}" for a, b, _, _ in bonds[:40]]
     _bi = st.selectbox("bond", range(len(_bo)), format_func=lambda i: _bo[i], key="bond_read")
