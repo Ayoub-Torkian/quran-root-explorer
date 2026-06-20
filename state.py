@@ -1607,9 +1607,9 @@ def render_top_input_bar(corpus, empty_samples=True):
     # vertical_alignment="bottom" makes the Analyze button line up with the input box
     # (no detached/offset look) since the input has no label to balance it.
     st.markdown("<div class='top-input-box'>", unsafe_allow_html=True)
-    # LOCKED density rule: a paste box is sized to need, not full-bleed. Input ~45% + Analyze
-    # beside it; the right ~45% is plain whitespace (we do NOT stretch to fill the monitor).
-    c1, c2, _c3 = st.columns([4, 1, 4], vertical_alignment="bottom")
+    # Within the 960px cap the column is already bounded, so input + Analyze share the row with
+    # NO empty spacer; Analyze keeps enough width to stay on one line.
+    c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
     def _on_input_change():
         # Force a fresh rerun so the suggestions panel reflects the new prefix.
         st.session_state.pop("_last_processed_top", None)
