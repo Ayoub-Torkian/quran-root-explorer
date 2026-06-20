@@ -1731,12 +1731,15 @@ def render_top_input_bar(corpus, empty_samples=True):
             if not _dd:
                 continue
             _forms = sorted(_dd.items(), key=lambda t: -t[1])
-            st.markdown(f"<span class='t-sub'>{_qr}</span>", unsafe_allow_html=True)
+            # root = group header → distinct NAVY badge (structure), set apart from the form boxes
+            st.markdown(f"<span style='display:inline-block;background:#1D3557;color:#FFFFFF;"
+                        f"font-size:14px;font-weight:800;padding:2px 12px;border-radius:7px;"
+                        f"margin:2px 0 1px'>{_qr}</span>", unsafe_allow_html=True)
             # Show ~one line of chips; the rest collapse behind a small "+N more" chip (a content-
             # sized toggle, NOT a full-width expander). The ACTIVE/scoped chip is green (status).
             _mkey = f"_sfmore_{_idx}"
             _show_all = st.session_state.get(_mkey, False)
-            _HEAD = 12
+            _HEAD = 8                                    # ~one line on desktop; rest behind "+N more"
             _vis = _forms if _show_all else _forms[:_HEAD]
             _over = len(_forms) - len(_vis)
             with chip_row(f"sf-{_idx}"):
