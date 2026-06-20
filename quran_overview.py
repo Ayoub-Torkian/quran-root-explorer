@@ -124,6 +124,6 @@ def render_overview(corpus, source="Book6"):
         d["longest_name"] or d["longest_s"], f(d["longest_n"]), f(d["shortest_n"]),
         d["avg_ayah"], d["long_ay"], f(d["long_ay_w"]), 100 * d["hapax"] / max(1, d["n_roots"]))
     html = (css + "<div class='ov-card'><div class='ov-head'>"
-            "<b>📖 The Qur'an at a Glance</b><span>" + strip_line + "</span></div>"
+            "<b>📖 The Qur'an at a Glance</b><span style='margin-left:auto'>" + strip_line + "</span></div>"
             + insights + "<div class='ov-row'>" + box_a + box_b + "</div></div>")
     st.markdown(html, unsafe_allow_html=True)
