@@ -261,14 +261,16 @@ def inject_css():
     <style>
     /* ===== APP BACKGROUND ===== */
     .stApp { background: #FAFBFD; }
-    .main .block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 1400px; }
+    .main .block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 960px; }
 
     /* ===== v2.0 GLOBAL READABILITY + SPACE-EFFICIENCY SWEEP (user-mandated) =====
        Goals: no dead vertical space, nothing below 13px, higher contrast for
        secondary text, tighter rhythm — applies to EVERY page from this one file. */
     section[data-testid="stMain"] .block-container {
         padding-top: 1.0rem !important; padding-bottom: 1.6rem !important;
-        max-width: 1500px !important;
+        /* THE single lever against full-width sprawl: a readable centred column, not the whole
+           monitor. Everything inside is bounded by this — fix width here, not element-by-element. */
+        max-width: 960px !important; margin-left: auto !important; margin-right: auto !important;
     }
     section[data-testid="stMain"] div[data-testid="stVerticalBlock"] { gap: 0.55rem !important; }
     section[data-testid="stMain"] hr { margin: 0.5rem 0 !important; }

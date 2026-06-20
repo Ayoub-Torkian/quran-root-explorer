@@ -171,8 +171,10 @@ case-by-case is whack-a-mole; it has reappeared in every session. These rules ki
    plain whitespace, never a bordered empty field.
 5. **Tight vertical rhythm:** no empty `div`/`p`; chip rows gap ≤6px; don't stack a header + control with a
    blank line between. ≥12px everywhere still holds.
-6. **Content width is capped** (`block-container max-width` in `inject_css`); do not remove the cap to "fill"
-   a wide monitor — filling the monitor is exactly the bug.
+6. **Content width is capped at ~960px** (`block-container max-width` in `inject_css`, centred). This is THE
+   primary, systemic defence against full-width sprawl — fix width HERE, globally, not element-by-element.
+   Do NOT raise it to "fill" a wide monitor; filling the monitor is exactly the bug. Per-element width work
+   is only for proportion WITHIN this 960px column, never to reclaim monitor width.
 
 **PRE-DEPLOY DENSITY CHECKLIST (run before EVERY UI ship — part of the deliverable checklist):**
 - [ ] Walk each row top-to-bottom and ask: *is any element mostly empty? could it be narrower?*
