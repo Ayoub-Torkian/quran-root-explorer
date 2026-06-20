@@ -1714,8 +1714,8 @@ def render_top_input_bar(corpus, empty_samples=True):
                 "<span class='t-label'>Selected:</span> &nbsp;"
                 "<span class='t-sub'>" + " · ".join(st.session_state.query_roots[:6]) + "</span>",
                 unsafe_allow_html=True)
-            _do_clear = _cc2.button("✕ Clear", key="clear_all_top",
-                                    help="Clear this selection and choose a different root or theme")
+            _do_clear = _cc2.button("↺ Reset", key="clear_all_top",
+                                    help="Reset — clear the selected roots and choose again")
         if _do_clear:
             st.session_state.query_roots = []
             for _k in ("results", "_form_scope_last", "_last_processed_top"):
@@ -1730,16 +1730,22 @@ def render_top_input_bar(corpus, empty_samples=True):
             _dd = _r2f.get(_K9(_qr))
             if not _dd:
                 continue
-            _forms = sorted(_dd.items(), key=lambda t: -t[1])  # ALL forms; chips wrap, no expander
+            _forms = sorted(_dd.items(), key=lambda t: -t[1])
             st.markdown(f"<span class='t-sub'>{_qr}</span>", unsafe_allow_html=True)
-            # All forms flow in ONE wrapping chip row (no inline/expander split, no full-width
-            # empty bar). The ACTIVE/scoped chip is green (primary) so colour encodes status.
+            # Show ~one line of chips; the rest collapse behind a small "+N more" chip (a content-
+            # sized toggle, NOT a full-width expander). The ACTIVE/scoped chip is green (status).
+            _mkey = f"_sfmore_{_idx}"
+            _show_all = st.session_state.get(_mkey, False)
+            _HEAD = 12
+            _vis = _forms if _show_all else _forms[:_HEAD]
+            _over = len(_forms) - len(_vis)
             with chip_row(f"sf-{_idx}"):
-                _cols = st.columns(max(1, len(_forms)))
-                for _k, (_f9, _c9) in enumerate(_forms):
+                _cols = st.columns(max(1, len(_vis) + (1 if (_over > 0 or _show_all) else 0)))
+                _ci = 0
+                for (_f9, _c9) in _vis:
                     _act = (_cur == (_qr, _f9))
                     _nay = len(_rf2ix.get((_K9(_qr), _f9), ()))
-                    with _cols[_k]:
+                    with _cols[_ci]:
                         if st.button(("✕ " if _act else "") + f"{_f9} ×{_c9}",
                                      key=f"fs_{_qr}_{_f9}",
                                      type=("primary" if _act else "secondary"),
@@ -1749,6 +1755,15 @@ def render_top_input_bar(corpus, empty_samples=True):
                             st.session_state["_form_scope_last"] = (None if _act else (_qr, _f9))
                             st.session_state.pop("results", None)
                             st.session_state["_force_rerun"] = True
+                            st.rerun()
+                    _ci += 1
+                if _over > 0 or _show_all:
+                    with _cols[_ci]:
+                        if st.button(("− less" if _show_all else "+%d more" % _over),
+                                     key=f"sfmore_{_idx}",
+                                     help=("Show fewer" if _show_all else
+                                           "Show all surface forms of this root")):
+                            st.session_state[_mkey] = not _show_all
                             st.rerun()
         _sigc = st.session_state.get("_form_scope_last")
         if _sigc:
