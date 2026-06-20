@@ -47,6 +47,15 @@ R = need_results()
 hero("🔺 Motif Analysis",
      "Triad census, triangle subgraphs, partner-motif clusters per input root.")
 per_root_hint(compact=True)
+st.info("This page analyses motifs **within a single verse** (triads). Measured: within-verse "
+        "higher-order structure is ≈ null beyond the pairs. The Qur'ān's real higher-order structure is "
+        "**cross-verse** — recurring multi-root templates (the mathānī).")
+try:
+    st.page_link("pages/35_Mathani_Lab.py",
+                 label="→ Mathānī Lab — recurring templates across the book (the real higher-order layer)",
+                 icon="🔁")
+except Exception:
+    pass
 
 # ── LAYER 1 ──────────────────────────────────────────────────────
 layer(1, "Triad census — bird's eye  (📌 comprehensive summary)")

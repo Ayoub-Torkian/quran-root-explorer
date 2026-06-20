@@ -76,6 +76,17 @@ st.table(pd.DataFrame([
      "what it means": "themes are placed, not scattered"},
 ]).set_index("scale"))
 
+st.caption("This is the hub — go deeper into any layer:")
+_dl = st.columns(4)
+for _ci, _pp, _lab in [(0, "pages/39_Concept_Atlas.py", "🗺️ Concept Atlas (root graph)"),
+                       (1, "pages/2_Network.py", "🌐 Network (query a root)"),
+                       (2, "pages/9_Topic_Modeling.py", "🧩 Topic Modeling (themes)"),
+                       (3, "pages/35_Mathani_Lab.py", "🔁 Mathānī (recurring patterns)")]:
+    try:
+        _dl[_ci].page_link(_pp, label=_lab)
+    except Exception:
+        pass
+
 _EXPL = {
     "ayah": (
         "**Concept.** An āyah is the smallest unit that carries a complete sense. Structure at this "

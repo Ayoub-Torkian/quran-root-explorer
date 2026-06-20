@@ -196,6 +196,71 @@ def sura_sig_hits(corpus, sura, roots, limit=15):
     return out
 
 
+def template_families(corpus, min_support=3, min_suras=2, top=50, fmin=3, fmax=120):
+    """Recurring multi-root TEMPLATES across the book (the mathānī, generalized from L21 verse-pairs
+    to 3-root families): root-triples that co-occur in ≥min_support verses spanning ≥min_suras sūras.
+    Frequent-itemset mining on mid/rare content roots; greedy-deduped by verse overlap so one formula
+    isn't listed many times. Each family is a coherent, cross-chapter recurring template."""
+    norm = A.normalize_letters
+    su = [int(x) for x in corpus.df[A.COL_SURAH].tolist()]
+    ay = []
+    for x in corpus.df[A.COL_AYAH].tolist():
+        try:
+            ay.append(int(float(x)))
+        except Exception:
+            ay.append(0)
+    fr = collections.Counter()
+    rows = []
+    for toks in corpus.root_tokens:
+        s = set(norm(t) for t in toks if t and t != "-")
+        rows.append(s)
+        for r in s:
+            fr[r] += 1
+    TR = set(r for r, v in fr.items() if fmin <= v <= fmax)
+    inc = [s & TR for s in rows]
+    pair = collections.Counter()
+    for s in inc:
+        sl = sorted(s)
+        for i in range(len(sl)):
+            for j in range(i + 1, len(sl)):
+                pair[(sl[i], sl[j])] += 1
+    adj = collections.defaultdict(set)
+    for (a, b), c in pair.items():
+        if c >= min_support:
+            adj[a].add(b); adj[b].add(a)
+    tri = collections.defaultdict(list)
+    for idx, s in enumerate(inc):
+        sl = sorted(x for x in s if x in adj)
+        for i in range(len(sl)):
+            a = sl[i]
+            for j in range(i + 1, len(sl)):
+                b = sl[j]
+                if b not in adj[a]:
+                    continue
+                for k in range(j + 1, len(sl)):
+                    c = sl[k]
+                    if c in adj[a] and c in adj[b]:
+                        tri[(a, b, c)].append(idx)
+    fams = []
+    for trip, idxs in tri.items():
+        if len(idxs) >= min_support:
+            suras = set(su[i] for i in idxs)
+            if len(suras) >= min_suras:
+                fams.append({"roots": list(trip), "support": len(idxs), "n_suras": len(suras),
+                             "verses": [(su[i], ay[i]) for i in idxs], "_v": set(idxs)})
+    fams.sort(key=lambda f: (-f["n_suras"], -f["support"]))
+    kept = []
+    for f in fams:
+        if any(len(f["_v"] & g["_v"]) / len(f["_v"] | g["_v"]) > 0.6 for g in kept):
+            continue
+        kept.append(f)
+        if len(kept) >= top:
+            break
+    for f in kept:
+        f.pop("_v", None)
+    return kept
+
+
 def ayah_bonds(corpus, min_co=5, top=150):
     """Within-āyah concept bonds ranked by NPMI (frequency-controlled), not raw count."""
     vroots, fr, suras, N = _prep(corpus)

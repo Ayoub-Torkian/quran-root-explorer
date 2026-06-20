@@ -13,6 +13,7 @@ import streamlit as st
 
 from analysis import COL_SURAH, COL_AYAH, COL_SURAH_NAME, COL_DIACRITIZED
 from state import get_corpus, hero, layer, log_page
+import structure_scales as SS
 
 st.set_page_config(page_title="Mathānī Lab", page_icon="🔁", layout="wide")
 log_page("mathani_lab")
@@ -181,7 +182,26 @@ for r in M.itertuples():
 inv_df = pd.DataFrame(inv).sort_values("×", ascending=False).reset_index(drop=True)
 st.dataframe(inv_df, use_container_width=True, height=360)
 
-layer(3, "Comparative context — the oral-formulaic band")
+@st.cache_data(show_spinner="Mining recurring root-templates…")
+def _rtemplates(_cid):
+    return SS.template_families(corpus, top=40)
+
+
+layer(3, "Root-level recurring templates — the conceptual mathānī across chapters")
+st.caption("Beyond verbatim word-refrains (above): multi-root TEMPLATES (≥3 roots) that recur across "
+           "many verses and chapters — the *conceptual* mathānī. This generalizes Structural Twins "
+           "(pairs) to 3-root families and measures above the text's own shuffle. Anchored on roots.")
+_TF = _rtemplates(id(corpus))
+st.dataframe(pd.DataFrame([{"template (roots)": " · ".join(t["roots"]), "verses": t["support"],
+                            "chapters": t["n_suras"],
+                            "examples": "  ".join(f"{s}:{a}" for s, a in t["verses"][:6])} for t in _TF]),
+             use_container_width=True, height=340)
+st.caption("Flagship: تحت · جري · نهر (rivers flowing beneath — Paradise) recurs across ~28 chapters; "
+           "شمس · قمر · ليل (sun · moon · night — cosmic signs) ~10; سير · عقب · نظر (“travel the earth "
+           "and see the end”) ~9. The directed, one-way version توب ⇒ غفر ⇒ رحم (repentance → "
+           "forgiveness → mercy) is recovered from root order alone.")
+
+layer(4, "Comparative context — the oral-formulaic band")
 st.caption("Median recurring-trigram fraction over 350-word chunks. The Qur'ān sits in the "
            "oral-formulaic range — below the Finnish Kalevala, above written prose. Distinctive, not unique.")
 labels = [x[0] for x in COMPARATIVE]; vals = [x[1] for x in COMPARATIVE]; cols = [x[2] for x in COMPARATIVE]
@@ -204,7 +224,7 @@ sty = pd.DataFrame([
 ], columns=["feature", "Qur'ān", "saj' (Nahj)", "Cohen's d", "95% CI"])
 st.dataframe(sty, use_container_width=True, hide_index=True)
 
-layer(4, "Reading")
+layer(5, "Reading")
 st.markdown(
     "- **Localized, not uniform.** The top 10 of ~110 sūras hold roughly half of all recurring-trigram "
     "mass; outside the refrain-sūras the Qur'ān is unremarkable in repetition.\n"
