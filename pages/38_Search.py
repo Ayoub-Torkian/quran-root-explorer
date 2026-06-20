@@ -86,11 +86,12 @@ N = len(refs)
 def _struct_ctx(_cid):
     return _SS.read_context(corpus)
 
-def _fp_html(i, CX):
-    """Compact one-liner pill for verse-row index i, looked up by (sūra, āyah) — never positional."""
+def _fp_metrics(i, CX):
+    """(n_bonds, n_templates, lean, theme_root) for verse-row i — looked up by (sūra, āyah),
+    never positional. The single source of truth shared by the pill AND the sort/filter."""
     ii = CX["refs"].get((refs[i][0], refs[i][1]))
     if ii is None:
-        return ""
+        return None
     _vr = CX["vroots"][ii]; _dr = CX["drop"]; _np = CX["npmi"]
     _cr = sorted(r for r in _vr if r not in _dr)
     _nb = sum(1 for _a in range(len(_cr)) for _b in range(_a + 1, len(_cr))
@@ -101,7 +102,15 @@ def _fp_html(i, CX):
     _npk = sum(1 for r in _cr if _dst.get(r, {}).get("arch") == "Concentrated pocket")
     _lean = ("core-leaning" if _nc > _npk else "pocket-leaning" if _npk > _nc else "balanced")
     _thf = CX.get("sura_theme", {}).get(refs[i][0])
-    _tht = f" · theme ‹{_thf['roots'][0]}›" if _thf else ""
+    return (_nb, _nt, _lean, _thf["roots"][0] if _thf else None)
+
+def _fp_html(i, CX):
+    """Compact one-liner pill for verse-row index i."""
+    m = _fp_metrics(i, CX)
+    if m is None:
+        return ""
+    _nb, _nt, _lean, _throot = m
+    _tht = f" · theme ‹{_throot}›" if _throot else ""
     return ("<span style='display:inline-block;background:#EAF2FB;border:1px solid #CFE0F2;"
             "border-radius:999px;padding:1px 10px;font-size:12px;color:#10243A;font-weight:600;"
             "line-height:1.6'>"
@@ -560,6 +569,15 @@ _show_fp = st.checkbox("📐 Structure fingerprint per verse", value=st.session_
                             "and its chapter theme. Measured on the roots against the text's own shuffle.")
 st.session_state["_fp_on"] = _show_fp
 _CXfp = _struct_ctx(id(corpus)) if _show_fp else None
+# ── fingerprint as a LENS: sort hits by structural weight and filter to the structured ones.
+#    Pure reuse of the cached engine (_fp_metrics) — no recompute. Only shown when the chip is on. ──
+_fp_sort, _fp_only_t, _fp_only_c = "Result order", False, False
+if _CXfp is not None:
+    _sc1, _sc2, _sc3 = st.columns([2, 1, 1])
+    _fp_sort = _sc1.radio("Sort hits by", ["Result order", "Most concept-bonds", "Most templates"],
+                          horizontal=True, key="_fp_sort")
+    _fp_only_t = _sc2.checkbox("Only in a template", key="_fp_only_t")
+    _fp_only_c = _sc3.checkbox("Only core-leaning", key="_fp_only_c")
 # ── whole-sūra reader: open the full sūra from the first result, at that āyah ──
 _all_shown = [i for _lab, _idx in groups for i in _idx]
 if _all_shown:
@@ -568,8 +586,21 @@ if _all_shown:
 ln = 1
 for lab, idx in groups:
     if not idx: continue
-    layer(ln, f"{lab} ({len(idx)})"); ln += 1
     shown = idx[:300]
+    _filtered = False
+    if _CXfp is not None:                                          # apply the fingerprint lens
+        _m = {i: (_fp_metrics(i, _CXfp) or (0, 0, "balanced", None)) for i in shown}
+        if _fp_only_t:
+            shown = [i for i in shown if _m[i][1] > 0]; _filtered = True
+        if _fp_only_c:
+            shown = [i for i in shown if _m[i][2] == "core-leaning"]; _filtered = True
+        if _fp_sort == "Most concept-bonds":
+            shown = sorted(shown, key=lambda i: (-_m[i][0], -_m[i][1]))
+        elif _fp_sort == "Most templates":
+            shown = sorted(shown, key=lambda i: (-_m[i][1], -_m[i][0]))
+    layer(ln, f"{lab} ({len(shown)} of {len(idx)})" if _filtered else f"{lab} ({len(idx)})"); ln += 1
+    if not shown:
+        st.caption("No verses in this group match the structure filter."); continue
     _htarget = (roots - DROP_SIM) if kind == "phrase" else roots   # zoom highlight on CONTENT roots
     _hq = qwords - _STOP                                            # never highlight function words
     cells = "".join(verse_html(i, _htarget, _hq, kind == "text",
