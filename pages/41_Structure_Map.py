@@ -317,7 +317,7 @@ with st.expander("read a theme in the text"):
 
 # ════════════ DISTRIBUTION — how each concept is laid out ════════════
 st.divider()
-st.markdown("## Distribution — how each concept is laid out across the book")
+layer(5, "Distribution — how each concept is laid out across the book")
 st.markdown(
     "Real-world relevance: the **core** themes recur **throughout** — so you can open the book almost "
     "anywhere and meet the essentials; **situational** topics sit in pockets where they belong. Below: "
@@ -330,16 +330,16 @@ for arch, col in ARCHCOL.items():
     pr = [p for p in profiles if p["archetype"] == arch]
     figx.add_trace(go.Scatter(
         x=[p["coverage"] for p in pr], y=[p["burstiness"] for p in pr], mode="markers", name=arch,
-        marker=dict(size=7, color=col, line=dict(width=0.5, color="#10243A")),
+        marker=dict(size=8, color=col, line=dict(width=0.5, color="#10243A")),
         hovertext=[f"{p['root']} · {p['n_suras']} sūras · clump {p['burstiness']}" for p in pr],
         hoverinfo="text"))
 notable = []
-for arch in ARCHCOL:
-    notable += sorted([p for p in profiles if p["archetype"] == arch], key=lambda p: -p["freq"])[:8]
+for arch in ARCHCOL:                       # fewer labels (5/layer) so they don't overlap
+    notable += sorted([p for p in profiles if p["archetype"] == arch], key=lambda p: -p["freq"])[:5]
 figx.add_trace(go.Scatter(
     x=[p["coverage"] for p in notable], y=[p["burstiness"] for p in notable], mode="text",
-    text=[p["root"] for p in notable], textposition="top center",
-    textfont=dict(size=13, color="#10243A"), showlegend=False, hoverinfo="skip"))
+    text=[f"<b>{p['root']}</b>" for p in notable], textposition="top center",
+    textfont=dict(size=16, color="#10243A"), showlegend=False, hoverinfo="skip"))
 figx.update_layout(xaxis_title="breadth — fraction of the 114 sūras a concept touches",
                    yaxis_title="clumping (gap-CV) · >1 = bunches into pockets",
                    legend=dict(font=dict(size=12), orientation="h", y=1.12, x=0))
@@ -387,7 +387,7 @@ st.markdown(f"<div style='font-size:14px;color:#10243A;line-height:1.7'><b>{_pic
 
 # ════════════ SYNTHESIS — the four scales as one structure ════════════
 st.divider()
-st.markdown("## Synthesis — the four scales as one structure")
+st.markdown("## Synthesis — the four scales + their distribution, as one structure")
 st.markdown(
     "Read bottom-up, the scales **nest**: verse-level concept-bonds chain into a sequential "
     f"**passage** weave (z ≈ {D['weave']['z']:.0f}); passages cohere into thematic **sūras** "
@@ -396,11 +396,14 @@ st.markdown(
     "magnified, become **bond → sequence → theme → arrangement** — one object at four resolutions, "
     "each beating its own shuffle.")
 st.markdown(
-    "**What four scales gave us that one scale could not:** (1) a method correction — structure does "
+    "**What these views gave us that one scale could not:** (1) a method correction — structure does "
     "**not** all live in co-occurrence; widen the window and it *saturates*, so the higher scales are "
     "invisible to the verse-level tool and need different instruments; (2) evidence the design is "
     "**multi-scale** — every rung independently beats shuffle, so it is neither merely local "
-    "verse-pairing nor merely global arrangement, but a coherent ladder where each rung is load-bearing.")
+    "verse-pairing nor merely global arrangement, but a coherent ladder where each rung is load-bearing; "
+    "(3) a fifth, cross-cutting view — **distribution** — showing the *core* themes are the broadly-spread "
+    "layer (open anywhere → the essentials) while situational topics pocket, and that the text's departure "
+    "from random is toward **organization** (consistent partners, local pockets), not extra spread.")
 
 # co-occurrence saturates with scale — a small honest readout (4 measured numbers, not a chart)
 st.markdown("**Why one method can't span scales — co-occurrence saturates as the window grows:**")
@@ -467,8 +470,8 @@ st.markdown("""
 **The idea in one breath.** Think of the Qur'ān like a piece of music, or a building: you can look at
 a single note, a phrase, a movement, or the whole symphony — and each level has its own kind of order.
 This tab looks at the text's **root-words** (the original Arabic, stripped to their core) at four zoom
-levels — a verse, a few verses, a chapter, and the whole book — and at each level asks: is there real
-structure here, or is it random? To stay honest, every pattern is compared against the text's **own
+levels — a verse, a few verses, a chapter, and the whole book — plus how each concept is spread across
+all of it — and asks at each: is there real structure here, or is it random? To stay honest, every pattern is compared against the text's **own
 shuffled version** (its words reshuffled by chance). Only patterns that beat that shuffle count.
 
 **Āyah — the words that keep company.** Inside one verse, certain ideas travel together far more than
@@ -494,6 +497,14 @@ these themes are **placed, not scattered** — like a library where books on one
 shelf, related chapters cluster in one region of the book, each theme leaning earlier (Meccan) or later
 (Medinan). The order of the chapters carries design.
 
+**Distribution — why you can open anywhere.** Look at *how each concept is spread* and a two-layer
+pattern appears: the **core** themes — the Day, messengers, signs, heaven, mercy — recur across a third
+or more of all chapters, so wherever you open you meet the essentials; **situational** topics (conflict,
+hypocrisy, specific rulings) sit in concentrated pockets where they belong. Measured against a random
+reshuffle, the text is not *more* spread than chance — it is more **organized**: concepts keep consistent
+company and bunch into coherent pockets. So "distributed" here means *the essentials are everywhere*, not
+that everything is evenly sprinkled.
+
 **Why four different tools?** You'd expect one method to handle all of it. It can't — and that's a real
 lesson. "Co-occurrence" (do two words share a verse?) works beautifully up close, but as you zoom out it
 blurs: in a whole chapter almost every word shares space with every other, so the lens goes white.
@@ -504,5 +515,7 @@ structure; it is only how loudly a word is repeated — the yardstick we divide 
 **The takeaway.** Anchored entirely on the original Arabic roots and tested only against the text's own
 shuffle, structure shows up at **every** scale — and the scales **nest**: word-bonds build passages,
 passages build chapters, chapters arrange into a themed whole. The Qur'ān is not a bag of verses, and
-its order is not arbitrary; it is organized top to bottom, and that organization is measurable.
+its order is not arbitrary; it is organized top to bottom, and that organization is measurable. And
+because the **core themes are distributed throughout**, you can begin at almost any page and still meet
+the heart of the message.
 """)
