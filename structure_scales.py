@@ -261,6 +261,53 @@ def template_families(corpus, min_support=3, min_suras=2, top=50, fmin=3, fmax=1
     return kept
 
 
+def read_context(corpus, npmi_min=0.30, min_co=5, tmpl_top=80):
+    """Per-āyah structural context for the reader: strong concept-bonds (NPMI) among a verse's roots,
+    and any recurring template (mathānī family) the verse instantiates. Computed once (cache it);
+    lookup by (sūra, āyah) is instant. Pure-python / deployable."""
+    norm = A.normalize_letters
+    su = [int(x) for x in corpus.df[A.COL_SURAH].tolist()]
+    ay = []
+    for x in corpus.df[A.COL_AYAH].tolist():
+        try:
+            ay.append(int(float(x)))
+        except Exception:
+            ay.append(0)
+    vroots = [set(norm(t) for t in toks if t and t != "-") for toks in corpus.root_tokens]
+    N = len(vroots)
+    fr = collections.Counter()
+    for s in vroots:
+        for r in s:
+            fr[r] += 1
+    drop = set(r for r, _ in fr.most_common(12))
+    cand = [r for r, v in fr.items() if v >= 8 and r not in drop]
+    cs = set(cand)
+    rset = {r: set() for r in cand}
+    for i, s in enumerate(vroots):
+        for r in (s & cs):
+            rset[r].add(i)
+    rl = sorted(cand, key=lambda r: -fr[r])
+    npmi = {}
+    for i in range(len(rl)):
+        a = rl[i]; Sa = rset[a]
+        for j in range(i + 1, len(rl)):
+            b = rl[j]; w = len(Sa & rset[b])
+            if w >= min_co:
+                pab = w / N
+                v = math.log(pab / ((fr[a] / N) * (fr[b] / N))) / (-math.log(pab))
+                if v >= npmi_min:
+                    npmi[frozenset((a, b))] = round(v, 2)
+    refs = {(su[i], ay[i]): i for i in range(N)}
+    fams = template_families(corpus, top=tmpl_top)
+    vt = collections.defaultdict(list)
+    for f in fams:
+        for (s, a) in f["verses"]:
+            i = refs.get((s, a))
+            if i is not None:
+                vt[i].append({"roots": f["roots"], "n_suras": f["n_suras"], "support": f["support"]})
+    return {"refs": refs, "vroots": vroots, "drop": drop, "npmi": npmi, "vt": dict(vt)}
+
+
 def ayah_bonds(corpus, min_co=5, top=150):
     """Within-āyah concept bonds ranked by NPMI (frequency-controlled), not raw count."""
     vroots, fr, suras, N = _prep(corpus)

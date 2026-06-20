@@ -18,6 +18,7 @@ import meaning as _MEAN
 import mobile as _MOB
 import surah_reader as _SR
 import audio_player as _AUD
+import structure_scales as _SS
 from analysis import COL_SURAH, COL_SURAH_NAME, COL_DIACRITIZED
 from state import get_corpus, hero, log_page
 
@@ -199,6 +200,49 @@ render();
 
 
 _read_tools(int(sel), cur_a, names.get(int(sel), ""))
+
+
+# ── per-āyah STRUCTURAL CONTEXT (lazy + cached; reuses the structure engines) ──
+@st.cache_data(show_spinner="Reading this āyah's structure…")
+def _struct_ctx(_cid):
+    return _SS.read_context(corpus)
+
+
+with st.expander("📐 What this āyah is part of — its place in the Qur'ān's structure"):
+    st.caption("A reading lens (optional): how this single āyah sits in the larger pattern — the "
+               "idea-pairs it links, and any repeated formula (mathānī) it shares with verses elsewhere. "
+               "All from the original roots, measured against the text's own shuffle.")
+    _CX = _struct_ctx(id(corpus))
+    _aysel = int(cur_a) if cur_a else 1
+    _i = _CX["refs"].get((int(sel), _aysel))
+    if _i is None:
+        st.caption("Use “Jump to āyah” above to pick a verse.")
+    else:
+        st.markdown(f"**Āyah {sel}:{_aysel}** · {names.get(int(sel), '')}")
+        _vr = _CX["vroots"][_i]; _np = _CX["npmi"]; _drop = _CX["drop"]
+        _cr = sorted(r for r in _vr if r not in _drop)
+        _bonds = []
+        for _x in range(len(_cr)):
+            for _y in range(_x + 1, len(_cr)):
+                _k = frozenset((_cr[_x], _cr[_y]))
+                if _k in _np:
+                    _bonds.append((_cr[_x], _cr[_y], _np[_k]))
+        _bonds.sort(key=lambda z: -z[2])
+        if _bonds:
+            st.markdown("**Concept-bonds it activates** — pairs of ideas the Qur'ān links far more than "
+                        "chance, like two notes that keep sounding together as a chord:")
+            st.markdown(" · ".join(f"`{a}·{b}` **{v}**" for a, b, v in _bonds[:10]))
+        else:
+            st.caption("· No strong concept-bonds (beyond plain word frequency) in this āyah.")
+        _fams = _CX["vt"].get(_i, [])
+        if _fams:
+            st.markdown("**Recurring template (mathānī) it belongs to** — a formula echoed across the "
+                        "book, like a chorus that returns through a song:")
+            for _f in _fams[:4]:
+                st.markdown(f"- `{' · '.join(_f['roots'])}` — recurs in **{_f['n_suras']} chapters** "
+                            f"({_f['support']} verses)")
+        else:
+            st.caption("· Not part of a book-wide recurring template — a mostly unique combination of ideas.")
 
 # ── the whole sūra, inline (page scrolls), highlighting the jumped-to āyah ──
 st.markdown(_SR.inline_html(corpus, sel, _MP, cur=(cur_a or None)), unsafe_allow_html=True)
