@@ -242,11 +242,41 @@ def _jump_btns(verses, keyp, cur=None, limit=8):
             st.rerun()
 
 
+# ── STRUCTURE FINGERPRINT chip — a one-glance summary shown WITHOUT expanding, so the reader
+#    sees there's structure worth opening. Costs nothing until the panel has been opened once
+#    (then it reuses the already-cached read_context — never a fresh compute). ──
+if st.session_state.get("_struct_ready"):
+    try:
+        _CXf = _struct_ctx(id(corpus))
+        _ayf = int(cur_a) if cur_a else 1
+        _if = _CXf["refs"].get((int(sel), _ayf))
+        if _if is not None:
+            _vrf = _CXf["vroots"][_if]; _drf = _CXf["drop"]; _npf = _CXf["npmi"]
+            _crf = sorted(r for r in _vrf if r not in _drf)
+            _nb = sum(1 for _a in range(len(_crf)) for _b in range(_a + 1, len(_crf))
+                      if frozenset((_crf[_a], _crf[_b])) in _npf)
+            _nt = len(_CXf["vt"].get(_if, []))
+            _dst = _CXf.get("dist", {})
+            _nc = sum(1 for r in _crf if _dst.get(r, {}).get("arch") == "Distributed core")
+            _npk = sum(1 for r in _crf if _dst.get(r, {}).get("arch") == "Concentrated pocket")
+            _lean = ("core-leaning" if _nc > _npk else "pocket-leaning" if _npk > _nc else "balanced")
+            _thf = _CXf.get("sura_theme", {}).get(int(sel))
+            _tht = f" · theme ‹{_thf['roots'][0]}›" if _thf else ""
+            st.markdown(
+                "<div style='display:inline-block;background:#EAF2FB;border:1px solid #CFE0F2;"
+                "border-radius:999px;padding:4px 13px;font-size:13px;color:#10243A;font-weight:600;'>"
+                f"📐 {_nb} concept-bond{'s' if _nb != 1 else ''} · in {_nt} "
+                f"template{'s' if _nt != 1 else ''} · {_lean}{_tht}</div>",
+                unsafe_allow_html=True)
+    except Exception:
+        pass
+
 with st.expander("📐 What this āyah is part of — its place in the Qur'ān's structure"):
     st.caption("A reading lens (optional): how this single āyah sits in the larger pattern — the "
                "idea-pairs it links, and any repeated formula (mathānī) it shares with verses elsewhere. "
                "All from the original roots, measured against the text's own shuffle.")
     _CX = _struct_ctx(id(corpus))
+    st.session_state["_struct_ready"] = True
     _aysel = int(cur_a) if cur_a else 1
     _i = _CX["refs"].get((int(sel), _aysel))
     if _i is None:
