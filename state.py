@@ -1962,8 +1962,10 @@ def render_start_over_button():
         st.markdown(
             "<span class='dl-so-marker' style='display:none'></span>"
             "<style>"
-            # Pull the row up a little so it isn't a wasted band, but keep the button readable.
-            "div[data-testid='stHorizontalBlock']:has(.dl-so-marker){margin-bottom:-6px}"
+            # Pull the row up + make the button content-width and flush RIGHT (a compact top-right
+            # control), so its row reads as a thin bar, not a wasted full-width band.
+            "div[data-testid='stHorizontalBlock']:has(.dl-so-marker){margin-bottom:-10px}"
+            "div[data-testid='stColumn']:has(.dl-so-marker) .stButton{display:flex!important;justify-content:flex-end!important}"
             "div[data-testid='stColumn']:has(.dl-so-marker) .stButton button,"
             "div[data-testid='column']:has(.dl-so-marker) .stButton button{"
             "color:#E63946!important;border:2px solid #E63946!important;"
@@ -1979,7 +1981,7 @@ def render_start_over_button():
             unsafe_allow_html=True)
         if st.button("↺ Start over",
                      key="__start_over__",
-                     width='stretch', type="secondary",
+                     type="secondary",
                      help="Clears your query, view state, and cache, then returns "
                           "to the home page. The most reliable way to begin fresh."):
             keys_to_clear = [
