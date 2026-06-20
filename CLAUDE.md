@@ -171,10 +171,13 @@ case-by-case is whack-a-mole; it has reappeared in every session. These rules ki
    plain whitespace, never a bordered empty field.
 5. **Tight vertical rhythm:** no empty `div`/`p`; chip rows gap ≤6px; don't stack a header + control with a
    blank line between. ≥12px everywhere still holds.
-6. **Content width is capped at ~960px** (`block-container max-width` in `inject_css`, centred). This is THE
-   primary, systemic defence against full-width sprawl — fix width HERE, globally, not element-by-element.
-   Do NOT raise it to "fill" a wide monitor; filling the monitor is exactly the bug. Per-element width work
-   is only for proportion WITHIN this 960px column, never to reclaim monitor width.
+6. **Use the width — generous container + disciplined elements (NOT a starved column).** The page must USE
+   the monitor (`block-container max-width ~1360px`, centred) — a narrow strip that leaves half the screen as
+   empty margin is its OWN bug ("not utilizing the width"). Sprawl is prevented NOT by shrinking the container
+   but by bounding the few SPARSE elements: the input/paste bar gets its own `max-width` (keyed container
+   `st-key-inputbar`), chip rows are content-sized (`chip_row`), buttons are equal, no spacer columns.
+   Two failure modes, both forbidden: (a) elements sprawling edge-to-edge inside a wide container, and
+   (b) a too-narrow container wasting the monitor. The fix is per-element discipline at full width.
 
 **PRE-DEPLOY DENSITY CHECKLIST (run before EVERY UI ship — part of the deliverable checklist):**
 - [ ] Walk each row top-to-bottom and ask: *is any element mostly empty? could it be narrower?*

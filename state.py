@@ -261,16 +261,17 @@ def inject_css():
     <style>
     /* ===== APP BACKGROUND ===== */
     .stApp { background: #FAFBFD; }
-    .main .block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 960px; }
+    .main .block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 1360px; }
 
     /* ===== v2.0 GLOBAL READABILITY + SPACE-EFFICIENCY SWEEP (user-mandated) =====
        Goals: no dead vertical space, nothing below 13px, higher contrast for
        secondary text, tighter rhythm — applies to EVERY page from this one file. */
     section[data-testid="stMain"] .block-container {
         padding-top: 1.0rem !important; padding-bottom: 1.6rem !important;
-        /* THE single lever against full-width sprawl: a readable centred column, not the whole
-           monitor. Everything inside is bounded by this — fix width here, not element-by-element. */
-        max-width: 960px !important; margin-left: auto !important; margin-right: auto !important;
+        /* Use the width: a generous centred column, NOT a narrow strip that wastes the monitor.
+           Sprawl is prevented by per-ELEMENT discipline (chip_row, bounded input, no spacers),
+           never by starving the container. */
+        max-width: 1360px !important; margin-left: auto !important; margin-right: auto !important;
     }
     section[data-testid="stMain"] div[data-testid="stVerticalBlock"] { gap: 0.55rem !important; }
     section[data-testid="stMain"] hr { margin: 0.5rem 0 !important; }
@@ -586,6 +587,8 @@ def inject_css():
     [class*="st-key-chiprow-"] [data-testid="stVerticalBlock"]{gap:3px !important}
     [class*="st-key-chiprow-"] .stButton{margin:0 !important}
     [class*="st-key-chiprow-"] .stButton button{padding:2px 10px !important;min-height:0 !important;height:auto !important;font-size:12.5px !important;line-height:1.5 !important;border-radius:8px !important;width:auto !important}
+    /* the search/paste bar is sized to need, left-aligned — it must NOT grow with the wide page */
+    [class*="st-key-inputbar"]{max-width:640px !important}
 
     /* ===== EXPANDERS / TABLES ===== */
     [data-testid="stExpander"] {
@@ -1607,21 +1610,22 @@ def render_top_input_bar(corpus, empty_samples=True):
     # vertical_alignment="bottom" makes the Analyze button line up with the input box
     # (no detached/offset look) since the input has no label to balance it.
     st.markdown("<div class='top-input-box'>", unsafe_allow_html=True)
-    # Within the 960px cap the column is already bounded, so input + Analyze share the row with
-    # NO empty spacer; Analyze keeps enough width to stay on one line.
-    c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
     def _on_input_change():
         # Force a fresh rerun so the suggestions panel reflects the new prefix.
         st.session_state.pop("_last_processed_top", None)
 
-    with c1:
-        st.text_input("input", key="prefix_top",
-                      placeholder="🔎 Type Arabic letters to find a root — or paste a list",
-                      label_visibility="collapsed",
-                      on_change=_on_input_change)
-    with c2:
-        run_top = st.button("🚀 Analyze", key="run_top", type="primary",
-                            width='stretch')
+    # LEFT-BOUNDED input bar (max-width capped in inject_css): the paste box + Analyze stay a
+    # sensible size even though the page now uses the full width — no empty spacer, no sprawl.
+    with st.container(key="inputbar"):
+        c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
+        with c1:
+            st.text_input("input", key="prefix_top",
+                          placeholder="🔎 Type Arabic letters to find a root — or paste a list",
+                          label_visibility="collapsed",
+                          on_change=_on_input_change)
+        with c2:
+            run_top = st.button("🚀 Analyze", key="run_top", type="primary",
+                                width='stretch')
     # (Redundant affordance hint removed — the placeholder already explains usage;
     #  keeping the area clean per UI feedback.)
 
