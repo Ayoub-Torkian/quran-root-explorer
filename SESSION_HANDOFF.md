@@ -1,7 +1,14 @@
 # SESSION HANDOFF — Quran Root Explorer
 
 **One file to resume from.** Read this, then `CLAUDE.md` (locked working rules), then the file map below.
-Last updated: 2026‑06‑19.
+Last updated: 2026‑06‑20.
+
+> **Latest session (2026‑06‑20) in one breath:** built the per‑āyah **structural‑context panel** on the
+> Read page (concept‑bonds · mathānī templates · chapter theme · core‑vs‑pocket distribution — all with
+> data + analogies), added **jump‑links** (tap to read related verses, hover to preview), an always‑visible
+> **structure‑fingerprint chip**, and did an **IA reaudit** (0 orphans / 0 broken links; removed 5 dead nav
+> path refs; regrouped Concept Deep‑Dive; made Discovery Map the single "start here" with a three‑maps
+> signpost). New engine: `structure_scales.read_context()`. See §3a + §5. _Not yet confirmed live by user._
 
 ---
 
@@ -82,6 +89,26 @@ It has **two faces**:
   6236 rows + a `جمع` footer row (filter it). 9 truncated display cells repaired (`BOOK6_TRUNCATION.md`);
   roots were NEVER truncated (verified).
 
+## 3a. Reader ↔ research bridge — structural‑context panel [2026‑06‑20]
+Connects the app's two faces inside the reading experience. All on `pages/40_Read.py`, powered by
+**`structure_scales.read_context(corpus)`** (pure‑python, deployable, NO sklearn).
+- **`read_context` return**: `{refs:{(s,a):i}, vroots:[set], drop:set, npmi:{frozenset(a,b):v},
+  vt:{i:[{roots,n_suras,support,verses}]}, dist:{root:{arch,n_suras,cov}}, sura_theme:{s:{roots,lo,hi}}}`.
+  Reuses `template_families`, `distribution_profiles`, `quran_themes`. **First call is heavy
+  (NPMI + templates + distribution + NMF, a few seconds) → ALWAYS cache** (`@st.cache_data` keyed `id(corpus)`).
+- **Panel** = expander "📐 What this āyah is part of" after `_read_tools(...)`. Lazy: computes only on first
+  open, instant after. Shows, with actual data + analogies + ink ≥12px: concept‑bonds (NPMI · "chord"),
+  recurring template/mathānī (roots·#chapters·#verses · "chorus"), chapter theme (NMF · "library section"),
+  distribution character (🏛️ Distributed core vs 📍 Concentrated pocket). Honest fallbacks, no overclaim.
+- **Jump‑links** (`_jump_btns`): each template row + the strongest bond render `s:a` buttons. Click stashes
+  `st.session_state["_jump_to"]` + `st.rerun()`; a handler at the TOP of `40_Read.py` applies it to
+  `read_s`/`read_a` BEFORE the nav widgets instantiate (you CANNOT mutate a widget‑bound key after its widget
+  is built — that's the whole reason for the top‑of‑page handler). Hover a button → verse Arabic preview
+  (cached `_vtext_map`).
+- **Fingerprint chip**: always‑visible one‑liner above the panel. Renders only after the panel has been
+  opened once (`st.session_state["_struct_ready"]`), then reuses the cached `read_context` — never a fresh
+  compute. This is the trick that keeps the reader fast while still giving an at‑a‑glance summary.
+
 ## 4. The audio system — `audio_player.py`
 - **Source [VERIFIED LIVE]**: `https://cdn.islamic.network/quran/audio/{bitrate}/{edition}/{N}.mp3`,
   **N = global āyah 1..6236** (standard Ḥafṣ). **Streamed → requires internet.**
@@ -128,6 +155,20 @@ It has **two faces**:
 6. **Tafsīr (parked)** — al‑Mizan, 4 languages; blocked on a clean per‑āyah Shia source (almizan.org not
    freely available as clean data). Translations already shipped.
 
+### Next moves after the structural panel (ranked, 2026‑06‑20)
+1. **Structure‑fingerprint chip on Search results** — same one‑liner next to each hit, so structure is
+   visible before reaching Read. Reuses the cached engine. _#1: highest insight‑per‑effort, reader‑facing._
+2. **Grade the template families** (clique filter + proper null) — from provisional ~60–65 toward the ≥90
+   ledger bar. _Research‑side, slower._
+3. **Perf pass on `read_context`** — precompute a small per‑verse fingerprint JSON shipped with the app so
+   the chip/panel load instantly cold. _Blocked this session by the stale mount; do in a clean checkout._
+
+### IA status [2026‑06‑20]
+4 areas (EXPLORE · DISCOVER · METHODS·LAB · TOOLS). **43 pages, 0 orphans, 0 broken links.** DISCOVER top =
+🧭 Discovery Map (start here) · 🗺️ Concept Atlas (concepts) · 🪜 Structure Map (scales), with a signpost on
+`37_Discovery_Map.py`. Residual (monitor): Motif (EXPLORE) vs Mathānī/Structure (DISCOVER) split across areas
+— mitigated by cross‑links.
+
 ## 6. Verification discipline
 - Validate corpus logic against Book6 before wiring; re‑check after. Tag **[MEASURED]** vs **[INFERRED]**.
 - A usability feature is usability, **not** a discovery — never present it as a new latent feature.
@@ -139,6 +180,9 @@ pages/40_Read.py        primary reader (nav, URL pos, audio, tools, inline reade
 pages/38_Search.py      root/phrase search + verse rows + peek reader
 surah_reader.py         reader engine (inline_html / build_html / peek)
 audio_player.py         recitation player (CDN, reciters+bitrate, speed, localStorage resume)
+structure_scales.py     structure engines + read_context() powering the Read structural-context panel
+pages/41_Structure_Map.py  multi-scale structure hub (āyah→Qur'ān + distribution + synthesis)
+pages/35_Mathani_Lab.py    recurrence hub (cross-verse template families = the real higher-order layer)
 meaning.py              4-lang translations + translation control
 mobile.py               mobile-first CSS + reading settings
 state.py                grouped nav (NAV_SECTIONS), corpus loader
