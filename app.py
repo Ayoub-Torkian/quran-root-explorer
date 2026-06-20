@@ -16,7 +16,7 @@ import analysis as A
 import plotly_charts as PC
 from state import (
     compute_all, get_corpus, hero, layer, need_results, query_controls,
-    render_top_input_bar, log_page, log_search,
+    render_top_input_bar, log_page, log_search, chip_row,
 )
 
 
@@ -53,14 +53,14 @@ def _render_module_bar():
 
 
 SAMPLE_QUERIES = {
-    "🤲 Mercy & faith":         ["رحم", "ءله", "ءمن"],
-    "📚 Knowledge cluster":     ["علم", "حکم", "ذکر"],
-    "⚖️ Justice & truth":       ["عدل", "حقق", "قسط"],
-    "🙏 Patience & gratitude":  ["صبر", "شکر"],
-    "🕋 Prayer & charity":      ["صلو", "زکو", "صوم"],
-    "👤 Human & soul":          ["نفس", "ءنس", "روح"],
-    "🌍 Creation & life":       ["خلق", "حیی", "ربب"],
-    "🔥 Punishment & reward":   ["عذب", "جزی", "جنن"],
+    "🤲 Mercy":     ["رحم", "ءله", "ءمن"],
+    "📚 Knowledge": ["علم", "حکم", "ذکر"],
+    "⚖️ Justice":   ["عدل", "حقق", "قسط"],
+    "🙏 Patience":  ["صبر", "شکر"],
+    "🕋 Prayer":    ["صلو", "زکو", "صوم"],
+    "👤 Soul":      ["نفس", "ءنس", "روح"],
+    "🌍 Creation":  ["خلق", "حیی", "ربب"],
+    "🔥 Reward":    ["عذب", "جزی", "جنن"],
 }
 
 
@@ -439,11 +439,14 @@ def main():
                 "</div>", unsafe_allow_html=True)
     run_top = render_top_input_bar(corpus, empty_samples=False)
     if not st.session_state.get("query_roots") and not st.session_state.get("prefix_top", "").strip():
-        _tc = st.columns(8)                                  # all 8 themes on one compact line
-        for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
-            if _tc[_i % 8].button(_lab, key=f"theme_{_i}", width='stretch',
+        # chip_row → small, content-sized, wrapping chips (compact on desktop, wraps on mobile
+        # instead of 8 full-width stacked rows). No width='stretch'.
+        with chip_row("themes"):
+            _tc = st.columns(len(SAMPLE_QUERIES))
+            for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
+                if _tc[_i].button(_lab, key=f"theme_{_i}",
                                   help="Load this root cluster: " + " · ".join(_rts)):
-                _set_query(_rts); st.rerun()
+                    _set_query(_rts); st.rerun()
 
     # About / help tucked BELOW the action so it never pushes empty space up top.
     with st.expander("ℹ️  About this tool · page guide · new here?", expanded=False):

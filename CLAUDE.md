@@ -139,13 +139,20 @@ the three standards below exist to pass, judged on the WHOLE composition, never 
    restrained enough to stay calm.
 5. **Harmony over parts** — change one element only after asking what it does to the whole face.
 
-**LOOK BEFORE YOU PUBLISH — LOCKED process (this is why issues recurred).** A UI change is NOT done from a
-mockup or from reading the code — those are my approximation, not the screen. Before declaring any UI change
-complete: **view the ACTUAL rendered result and inspect the whole composition** against the five tests above.
-Mechanism in this environment: after deploy, load the live Space in‑browser (Claude‑in‑Chrome) and inspect the
-real page; fix what the eye catches, then redeploy. (Sandbox self‑render is unavailable — a headless browser
-engine cannot be installed here — so the live‑page inspection loop is the standard, and "looks right in a
-mockup" is never sufficient.) Add to the deliverable checklist: *"Did I look at the real rendered screen?"*
+**LOOK BEFORE YOU PUBLISH — LOCKED, AUTOMATIC, NON-OPTIONAL (this is why issues recurred).** A UI change is
+NOT done from a mockup or from reading the code — those are my approximation, not the screen.
+- **For EVERY UI change, ALWAYS inspect the live rendered page myself — automatically, without asking
+  permission.** Do not say "want me to look?" — just do it. This is a self-initiated, mandatory step.
+- **Mechanism (standard loop):** after each deploy, load the live Space in-browser via Claude-in-Chrome
+  (`navigate` to `https://quranproject-quran-root-explorer.hf.space`, then `computer`/screenshot +
+  `read_page`/`get_page_text`), and inspect the WHOLE composition against the five north-star tests. Catch the
+  empty space / flat type / mis-proportion / colourlessness ON THE REAL SCREEN, fix, redeploy, and look AGAIN —
+  loop until the screen passes. (Sandbox self-render is unavailable — a browser engine can't be installed here —
+  so the live-page inspection loop IS the verification; "looks right in a mockup" is never sufficient.)
+- If the Chrome extension isn't connected, say so once and ask the user to connect it — that is the ONLY case
+  where I pause; otherwise inspection is automatic.
+- Deliverable checklist gains a hard gate: *"Did I open the real rendered screen and inspect the whole face?"*
+  A UI task is not complete until the answer is yes.
 
 ## LAYOUT DENSITY — LOCKED (added 2026-06-20, honor EVERY session) — the recurring "wasted space" bug
 **Why this keeps recurring (root cause, not symptom):** Streamlit runs `layout="wide"`, and **`st.columns(N)`
