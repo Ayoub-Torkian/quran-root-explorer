@@ -1567,9 +1567,11 @@ def render_top_input_bar(corpus, empty_samples=True):
     normalize_pre = st.session_state.get("normalize", False)
     all_roots = _all_roots_sorted(id(corpus), normalize_pre, corpus)
 
-    # No label row — the hint lives INSIDE the input (zero dead vertical space)
+    # No label row — the hint lives INSIDE the input (zero dead vertical space).
+    # vertical_alignment="bottom" makes the Analyze button line up with the input box
+    # (no detached/offset look) since the input has no label to balance it.
     st.markdown("<div class='top-input-box'>", unsafe_allow_html=True)
-    c1, c2 = st.columns([5, 1])
+    c1, c2 = st.columns([6, 1], vertical_alignment="bottom")
     def _on_input_change():
         # Force a fresh rerun so the suggestions panel reflects the new prefix.
         st.session_state.pop("_last_processed_top", None)
