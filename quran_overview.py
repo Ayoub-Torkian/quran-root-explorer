@@ -144,6 +144,13 @@ def render_overview(corpus, source="Book6"):
         ".ov-c{font-size:12.5px;color:#10243A;margin-top:6px}"
         ".ov-ins{display:flex;flex-wrap:wrap;gap:4px 18px;padding:8px 18px;border-bottom:1px solid #EEF2F7;"
         "font-size:12.5px;color:#10243A;background:#F4F9F7}.ov-ins b{color:#1D3557}"
+        ".ov-nov{padding:9px 18px;border-bottom:1px solid #EEF2F7;background:#EAF2FB}"
+        ".ov-nov-h{font-size:13px;font-weight:800;color:#1D3557;margin:0 0 6px}"
+        ".ov-nov-h span{font-weight:600;color:#10243A;font-size:12px}"
+        ".ov-nov-g{display:flex;gap:8px 18px;flex-wrap:wrap}"
+        ".ov-nov-i{flex:1;min-width:240px;font-size:12.5px;color:#10243A;line-height:1.5;"
+        "border-left:3px solid #1D9E75;padding-left:10px}"
+        ".ov-nov-i b{color:#1D3557}.ov-nov-i i{font-style:normal;color:#0F6E56;font-weight:700}"
         "</style>")
     insights = ("<div class='ov-ins'>"
                 "<span>📏 <b>Longest sūra</b> %s · %s āyāt</span>"
@@ -198,7 +205,21 @@ def render_overview(corpus, source="Book6"):
         _mm_box = ""
     _extra = ("<div style='display:flex;gap:26px;flex-wrap:wrap;padding:9px 18px;"
               "border-bottom:1px solid #EEF2F7'>" + _spark_box + _mm_box + "</div>")
+    # — "Only here" novelty strip: the genuinely market-unique layer (graph roles + audited
+    #   meaning-similarity + the navigable concept map). Computed from the text's own statistics,
+    #   every link shown WITH its number so the user can check it — not curated, not keyword. —
+    novel = ("<div class='ov-nov'>"
+             "<div class='ov-nov-h'>🧭 What only this tool does"
+             "<span> — measured from the text's own statistics; every link shows its number, so you can check it</span></div>"
+             "<div class='ov-nov-g'>"
+             "<div class='ov-nov-i'><b>Concept network roles.</b> Which roots are <i>bridges</i> linking "
+             "themes and which <i>anchor</i> a family — measured (e.g. ظلم is a bridge, betweenness z +4.65).</div>"
+             "<div class='ov-nov-i'><b>Meaning-linked verses, audited.</b> Verses related in meaning with "
+             "<i>no shared words</i> — each shown with a checkable similarity score and its bridging roots.</div>"
+             "<div class='ov-nov-i'><b>The whole text as one map.</b> " + f(d["n_roots"]) + " roots grouped into "
+             "themes, recoloured by revelation phase or network role — one click to any concept.</div>"
+             "</div></div>")
     html = (css + "<div class='ov-card'><div class='ov-head'>"
             "<b>📖 The Qur'an at a Glance</b><span style='margin-left:auto'>" + strip_line + "</span></div>"
-            + insights + _extra + "<div class='ov-row'>" + box_a + box_b + "</div></div>")
+            + insights + novel + _extra + "<div class='ov-row'>" + box_a + box_b + "</div></div>")
     st.markdown(html, unsafe_allow_html=True)
