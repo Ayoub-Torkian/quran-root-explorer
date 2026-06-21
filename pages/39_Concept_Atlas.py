@@ -10,7 +10,7 @@ import streamlit as st
 import networkx as nx
 from networkx.algorithms import community as nxcom
 import plotly.graph_objects as go
-from analysis import COL_SURAH
+from analysis import COL_SURAH, normalize_letters
 from state import get_corpus, hero, layer, log_page
 
 st.set_page_config(page_title="Concept Atlas", page_icon="🗺️", layout="wide")
@@ -19,6 +19,22 @@ corpus = get_corpus()
 INK = "#10243A"
 THEME_COLORS = ["#0F6E56", "#1D3557", "#E63946", "#EF9F27", "#7209B7", "#2A9D8F",
                 "#9C6644", "#3A86FF", "#D62828", "#588157", "#6D597A", "#B5179E"]
+
+@st.cache_data(show_spinner=False)
+def _graphfeat(_cid):
+    """Precomputed per-concept GRAPH features (role bridge/hub/member, family) — built offline
+    (research/intrinsic/scripts/precompute_concept_graph.py); the app only READS. Keyed by
+    normalized root. Powers the 'Network role' colouring (banked finding, not a runtime compute)."""
+    import json as _json, os as _os
+    try:
+        _p = _os.path.join(_os.path.dirname(__file__), "..", "concept_graph_features.json")
+        with open(_p, encoding="utf-8") as _f:
+            return _json.load(_f)["concepts"]
+    except Exception:
+        return {}
+
+ROLE_COLOR = {"connector / bridge": "#E63946", "family anchor (hub)": "#EF9F27"}  # member → muted below
+ROLE_TAG = {"connector / bridge": "🌉 bridge", "family anchor (hub)": "⭐ hub"}
 
 @st.cache_data(show_spinner="Building the concept atlas…")
 def build_atlas(_cid, n_nodes=150, drop_ubiq=10, topk=3):
@@ -83,18 +99,29 @@ def figure(d, color_by, focus=None):
     sizes = [6 + (docf[n] ** 0.5) * 0.9 for n in nodes]
     top40 = set(sorted(nodes, key=lambda r: -docf[r])[:40])
     texts = [n if n in top40 else "" for n in nodes]
+    gf = d.get("gf", {})
     if color_by == "Theme":
         colors = [THEME_COLORS[d["theme_of"][n] % len(THEME_COLORS)] for n in nodes]
         if focus is not None:                       # dim everything except the focused theme
             colors = [colors[i] if d["theme_of"][n] == focus else "#dce4e7" for i, n in enumerate(nodes)]
             texts = [n if (d["theme_of"][n] == focus and n in top40) else "" for n in nodes]
         marker = dict(size=sizes, color=colors, line=dict(width=0.5, color="#ffffff"))
+    elif color_by == "Network role":               # banked graph finding: bridge / hub / member
+        colors = [ROLE_COLOR.get((gf.get(normalize_letters(n)) or {}).get("role"), "#9FB3C8") for n in nodes]
+        marker = dict(size=sizes, color=colors, line=dict(width=0.5, color="#ffffff"))
     else:
         colors = [d["nuz"][n] for n in nodes]
         marker = dict(size=sizes, color=colors, colorscale="YlOrRd", showscale=True,
                       colorbar=dict(title="nuzūl<br>early→late", thickness=12),
                       line=dict(width=0.5, color="#ffffff"))
-    hov = [f"{n} · freq {docf[n]} · revelation {d['nuz'][n]:.0f}/114 · theme {d['theme_of'][n] + 1}" for n in nodes]
+    hov = []
+    for n in nodes:
+        f = gf.get(normalize_letters(n))
+        extra = ""
+        if f:
+            extra = " · " + ROLE_TAG.get(f.get("role"), "member")
+            if f.get("family_label"): extra += f" · family {f['family_label']}"
+        hov.append(f"{n} · freq {docf[n]} · revelation {d['nuz'][n]:.0f}/114 · theme {d['theme_of'][n] + 1}{extra}")
     node_tr = go.Scatter(x=xs, y=ys, mode="markers+text", text=texts, textposition="top center",
                          textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
     fig = go.Figure([edge_tr, node_tr])
@@ -108,16 +135,27 @@ hero("🗺️ Concept Atlas",
      "grouped into themes, sized by frequency. Click any concept to open it in Search.")
 
 d = build_atlas(id(corpus))
+d["gf"] = _graphfeat(id(corpus))                     # attach banked graph roles for the role colouring
 c1, c2, c3 = st.columns(3)
 c1.metric("Concepts mapped", len(d["nodes"]))
 c2.metric("Attraction links", len(d["edges"]))
 c3.metric("Themes", len(d["themes"]))
 cc1, cc2 = st.columns([1, 1.4])
-color_by = cc1.radio("Colour by", ["Theme", "Revelation phase"], horizontal=True, key="atlas_color")
+color_by = cc1.radio("Colour by", ["Theme", "Revelation phase", "Network role"], horizontal=True, key="atlas_color")
 _theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(top)}" for ti, _o, top in d["themes"]]
-_focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus")
+_focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
+                           disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
 _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
 st.plotly_chart(figure(d, color_by, _focus), use_container_width=True)
+if color_by == "Network role":
+    _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
+    _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
+    st.markdown("<div style='font-size:12px;color:#10243A;margin:2px 0 0'>"
+                f"<span style='color:#E63946'>●</span> bridge — connector across themes ({_nb}) &nbsp;&nbsp;"
+                f"<span style='color:#EF9F27'>●</span> family anchor — hub ({_nh}) &nbsp;&nbsp;"
+                "<span style='color:#9FB3C8'>●</span> member"
+                "<br>Roles are a <b>banked graph finding</b> (degree-normalised betweenness for bridges, "
+                "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
 st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
            "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
 
