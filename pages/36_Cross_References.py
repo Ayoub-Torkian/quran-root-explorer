@@ -135,25 +135,31 @@ st.caption("Roots: " + " · ".join(sorted(rootsets[qi])))
 _xs, _xa = refs[qi].split(":")                     # read the whole sūra from this āyah
 _SR.peek(corpus, int(_xs), int(_xa))
 
-layer(1, f"Layer {len(path)} · follow a parallel to walk deeper (each ‘follow’ adds a layer; "
-        f"your path is the breadcrumb above)")
+st.markdown(
+    f"<div style='display:inline-block;background:#1D3557;color:#FFFFFF;border-radius:7px;"
+    f"padding:5px 14px;margin:10px 0 3px;font-size:14px;font-weight:800'>"
+    f"Layer {len(path)} · follow a parallel to walk deeper</div>"
+    f"<div style='font-size:12px;color:#10243A;margin:0 0 4px 2px'>Each ‘follow’ adds a layer; "
+    f"your path is the breadcrumb above.</div>", unsafe_allow_html=True)
 rel = related(qi, k, excl, frozenset(path))
 if not rel:
     st.info("No further parallels (content roots exhausted on this walk). Step back in the breadcrumb.")
-st.markdown("<style>[class*='st-key-xrefcol']{max-width:840px !important}</style>", unsafe_allow_html=True)
-with st.container(key="xrefcol"):                       # bounded reading column — no full-width band
-    for score, j in rel:
-        shared = sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])
-        col = st.columns([5, 1], vertical_alignment="center")
-        col[0].markdown(
-            f"<div style='border:1px solid #cfe4dc;border-radius:8px;padding:10px 15px;margin:7px 0;background:#FFFFFF'>"
-            f"<div style='font-size:12.5px;color:#10243A'><b style='color:#1D3557'>{refs[j]}</b> · "
-            f"<b style='color:#1D3557'>{sname.get(sura[j],'')}</b> "
-            f"&nbsp;<span style='background:#1D9E75;color:#fff;border-radius:5px;padding:0 7px;font-weight:700'>{score*100:.0f}%</span>"
-            f"&nbsp; shared: <b>{' · '.join(shared)}</b></div>"
-            f"<div dir='rtl' style='font-size:18px;color:#10243A;line-height:1.8;margin-top:5px'>{hl_text(j, crootsets[qi] & crootsets[j])}</div></div>",
-            unsafe_allow_html=True)
-        if col[1].button("follow →", key=f"fl_{j}", type="secondary", use_container_width=True):
-            st.session_state.xref_act = ("follow", j); st.rerun()
+for score, j in rel:
+    shared = sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])
+    col = st.columns([6, 1], vertical_alignment="center")
+    col[0].markdown(
+        f"<div style='border:1px solid #cfe4dc;border-radius:8px;padding:8px 14px;margin:6px 0;"
+        f"background:#FFFFFF;display:flex;align-items:center;gap:14px;overflow:hidden'>"
+        f"<span style='font-size:12.5px;color:#10243A;white-space:nowrap;flex:0 0 auto'>"
+        f"<b style='color:#1D3557'>{refs[j]}</b> · "
+        f"<bdi style='color:#1D3557;font-weight:700'>{sname.get(sura[j],'')}</bdi>&nbsp;"
+        f"<span style='background:#1D9E75;color:#fff;border-radius:5px;padding:1px 7px;font-weight:700'>{score*100:.0f}%</span>"
+        f"&nbsp;shared <b>{' · '.join(shared)}</b></span>"
+        f"<span dir='rtl' style='font-size:17px;color:#10243A;flex:1 1 auto;overflow:hidden;"
+        f"text-overflow:ellipsis;white-space:nowrap'>{hl_text(j, crootsets[qi] & crootsets[j])}</span>"
+        f"</div>",
+        unsafe_allow_html=True)
+    if col[1].button("follow →", key=f"fl_{j}", type="secondary", use_container_width=True):
+        st.session_state.xref_act = ("follow", j); st.rerun()
 
 st.caption(f"Index: {N} āyāt · {len(idf)} distinct roots · cosine over IDF-weighted root vectors.")
