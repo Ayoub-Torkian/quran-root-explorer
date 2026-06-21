@@ -602,11 +602,10 @@ if kind in ("root", "word") and roots:
         st.markdown("<div style='font-size:13px;color:#10243A;margin:4px 0 2px'>"
                     "<b>Recurring phrases (mathānī)</b> — click to search the formula</div>",
                     unsafe_allow_html=True)
-        _PCP = 2
-        for _rp in range(0, len(_ph), _PCP):
-            _cols = st.columns(_PCP, gap="small")
-            for _k, (ph, cc) in enumerate(_ph[_rp:_rp + _PCP]):
-                if _cols[_k].button(f"{ph}  ×{cc}", key=f"ph_{_rp}_{_k}", use_container_width=True):
+        with _chip_row("phrases"):                   # density rule: content-sized wrapping chips (phrases vary in length)
+            _cph = st.columns(len(_ph), gap="small")
+            for _k, (ph, cc) in enumerate(_ph):
+                if _cph[_k].button(f"{ph}  ×{cc}", key=f"ph_{_k}"):
                     st.session_state._pending_q = ph
                     st.rerun()
 
