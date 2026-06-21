@@ -291,16 +291,10 @@ def tab_visualize(R):
         "over": lambda: PC.chart_overlap_heatmap(R["overlap"]),
         "morph": lambda: PC.chart_morphology(R["morphology"]),
     }
-    # cache each figure on the QUERY signature, so toggling a checkbox does NOT re-render the others
-    _sig = (tuple(R["input_roots"]), bool(R["normalize"]), int(R["top_partners"]), int(R["min_weight"]))
-
-    @st.cache_data(show_spinner=False)
-    def _fig(_key, _sig):
-        return renderers[_key]()
-
+    # Render directly from the (freshly recomputed) results, with a stable key per chart.
     for k in [k for _, k in catalogue if k in sel]:
         try:
-            st.plotly_chart(_fig(k, _sig), width='stretch', key=f"vizchart_{k}")
+            st.plotly_chart(renderers[k](), width='stretch', key=f"vizchart_{k}")
         except Exception as _e:
             st.caption(f"(“{k}” unavailable: {type(_e).__name__})")
 

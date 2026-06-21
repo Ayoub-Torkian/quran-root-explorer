@@ -1987,6 +1987,16 @@ def needs_recompute() -> bool:
         return True
     if st.session_state.pop("_force_rerun", False):
         return True
+    # SAFETY NET: if the live selection has drifted from the COMPUTED results, recompute.
+    # Prevents a stale gallery (e.g. one root selected in the sidebar but three still charted).
+    try:
+        cur = st.session_state.get("query_roots", [])
+        if cur:
+            parsed = set(A.parse_input_roots(" ".join(cur), st.session_state.get("normalize", True)))
+            if parsed and parsed != set(st.session_state.results.get("input_roots", [])):
+                return True
+    except Exception:
+        pass
     return False
 
 
