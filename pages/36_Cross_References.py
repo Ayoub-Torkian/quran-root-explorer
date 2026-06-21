@@ -7,7 +7,7 @@ import math
 from collections import Counter, defaultdict
 import streamlit as st
 from analysis import COL_SURAH, COL_AYAH, COL_SURAH_NAME, COL_DIACRITIZED, COL_ROOTS
-from state import get_corpus, hero, layer, log_page, copy_button
+from state import get_corpus, hero, layer, log_page, copy_table
 import surah_reader as _SR
 
 st.set_page_config(page_title="Cross-References", page_icon="🪢", layout="wide")
@@ -133,15 +133,17 @@ st.markdown(
     f"<span style='font-size:13px;color:#10243A'>{refs[qi]} · {sname.get(sura[qi],'')}</span><br>{hl_text(qi, crootsets[qi])}</div>",
     unsafe_allow_html=True)
 st.caption("Roots: " + " · ".join(sorted(rootsets[qi])))
-# copy the focus āyah AND every parallel in the current layer (the whole cluster you're looking at)
-copy_button(
-    "\n\n".join(
-        [f"{refs[qi]} · {sname.get(sura[qi],'')}\n{disp[qi]}\nRoots: " + " · ".join(sorted(rootsets[qi]))]
-        + ([f"— Layer {len(path)} · {len(rel)} parallels —"] if rel else [])
-        + [f"{refs[j]} · {sname.get(sura[j],'')}  {score*100:.0f}%  shared "
-           + " · ".join(sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])) + f"\n{disp[j]}"
-           for score, j in rel]),
-    label="📋 Copy āyah + its layer")
+# copy the focus āyah + every parallel in the current layer as an Excel-ready TSV table (one row each)
+_HDR = ["role", "layer", "linked_to", "ref", "sura", "ayah", "sura_name",
+        "similarity_pct", "shared_roots", "n_shared", "all_roots", "text"]
+_rows = [["focus", len(path), "", refs[qi], sura[qi], refs[qi].split(":")[1], sname.get(sura[qi], ""),
+          "", "", "", " ".join(sorted(rootsets[qi])), disp[qi]]]
+for score, j in rel:
+    _sh = sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])
+    _rows.append(["parallel", len(path), refs[qi], refs[j], sura[j], refs[j].split(":")[1],
+                  sname.get(sura[j], ""), f"{score * 100:.0f}", " ".join(_sh), len(_sh),
+                  " ".join(sorted(rootsets[j])), disp[j]])
+copy_table(_HDR, _rows, label="📋 Copy table (āyah + layer)")
 _xs, _xa = refs[qi].split(":")                     # read the whole sūra from this āyah
 _SR.peek(corpus, int(_xs), int(_xa))
 

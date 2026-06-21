@@ -1624,6 +1624,18 @@ def copy_button(text, label="📋 Copy this āyah", height=34):
         height=height)
 
 
+def copy_table(header, rows, label="📋 Copy as table (Excel-ready)", height=34):
+    """Copy `rows` as a TSV table (tab-separated, `header` first) — pastes STRAIGHT into Excel /
+    Sheets as clean columns, no preprocessing. Every cell is sanitized of tabs/newlines so the
+    grid never breaks. Use for any multi-row, analysis-ready export (researcher can sort/filter at once)."""
+    def _c(x):
+        return str(x).replace("\t", " ").replace("\r", " ").replace("\n", " ").strip()
+    lines = ["\t".join(_c(h) for h in header)]
+    for r in rows:
+        lines.append("\t".join(_c(c) for c in r))
+    copy_button("\n".join(lines), label=label, height=height)
+
+
 def render_top_input_bar(corpus, empty_samples=True):
     # No default-fill: a fresh session / post-reset starts EMPTY so the user is
     # never presented with a query they didn't ask for.
