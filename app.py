@@ -300,7 +300,7 @@ def tab_visualize(R):
 
     for k in [k for _, k in catalogue if k in sel]:
         try:
-            st.plotly_chart(_fig(k, _sig), width='stretch')
+            st.plotly_chart(_fig(k, _sig), width='stretch', key=f"vizchart_{k}")
         except Exception as _e:
             st.caption(f"(“{k}” unavailable: {type(_e).__name__})")
 
