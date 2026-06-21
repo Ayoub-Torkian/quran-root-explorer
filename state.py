@@ -1606,6 +1606,24 @@ def chip_row(key):
     return st.container(key=f"chiprow-{key}")
 
 
+def copy_button(text, label="📋 Copy this āyah", height=34):
+    """Small isolated clipboard button — copies `text` verbatim to the OS clipboard.
+    Rendered in its OWN component iframe (does NOT touch the surrounding page; element ids are
+    iframe-local so multiple buttons never collide). Same proven pattern as Search's
+    'Copy these verses'. Use to let the reader grab the āyah they're currently on, anywhere."""
+    import json as _json
+    payload = _json.dumps(str(text))
+    lab = _json.dumps(str(label))
+    st.components.v1.html(
+        "<button id='cpb' style='font-size:13px;border:1px solid #cfe4dc;background:#eef4f1;"
+        "color:#0F6E56;border-radius:7px;padding:4px 12px;cursor:pointer;font-weight:700;"
+        "font-family:sans-serif'>" + str(label) + "</button>"
+        "<script>const T=" + payload + ";const L=" + lab + ";"
+        "document.getElementById('cpb').onclick=function(){navigator.clipboard.writeText(T);"
+        "this.textContent='✓ copied';var b=this;setTimeout(function(){b.textContent=L},1200)};</script>",
+        height=height)
+
+
 def render_top_input_bar(corpus, empty_samples=True):
     # No default-fill: a fresh session / post-reset starts EMPTY so the user is
     # never presented with a query they didn't ask for.

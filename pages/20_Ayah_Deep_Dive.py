@@ -20,7 +20,7 @@ import plotly_charts as PC
 import meaning as _MEAN
 import mobile as _MOB
 import surah_reader as _SR
-from state import get_corpus, hero, log_page
+from state import get_corpus, hero, log_page, copy_button
 
 st.set_page_config(page_title="Ayah Deep-Dive", page_icon="🔭", layout="wide")
 log_page("ayah_deep_dive")
@@ -436,6 +436,7 @@ for sd in res["seed"]:
     st.markdown(f"### {sd['ref']}")
     st.markdown(f"<div class='qv-ar dd-hero' dir='rtl' style='font-size:29px;line-height:2.0;margin:6px 0 8px;"
                 f"color:#10243A'>{sd['text']}</div>", unsafe_allow_html=True)
+    copy_button(f"{sd['ref']}\n{sd['text']}\nRoots: " + " · ".join(sd['roots']))
     st.markdown("**concepts:**")
     _show_chips(sd["roots"])
     _mhtml = _MEAN.meaning_block_html(sd["ref"], langs=_MP, title="💬 Meaning")
