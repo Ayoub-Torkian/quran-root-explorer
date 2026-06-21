@@ -19,6 +19,7 @@ import mobile as _MOB
 import surah_reader as _SR
 import audio_player as _AUD
 import structure_scales as _SS
+import semantic_features as _SEMF
 from analysis import COL_SURAH, COL_SURAH_NAME, COL_DIACRITIZED, COL_AYAH
 from state import get_corpus, hero, log_page
 
@@ -220,6 +221,13 @@ def _struct_ctx(_cid):
     return _SS.read_context(corpus)
 
 
+# ── semantic design-feature engine (meaning-based cross-references). Heavy first build
+#    (PPMI→SVD, a few seconds) → cache as a resource; instant for every āyah after. ──
+@st.cache_resource(show_spinner="Building the meaning map (once per session)…")
+def _semf(_cid):
+    return _SEMF.build(corpus)
+
+
 @st.cache_data(show_spinner=False)
 def _vtext_map(_cid):
     """(sūra, āyah) → original Arabic, for previewing a jump-link before leaving your place."""
@@ -353,6 +361,20 @@ with st.expander("📐 What this āyah is part of — its place in the Qur'ān's
             if _pocket:
                 st.markdown("- 📍 **Concentrated pocket** (situational, a few chapters): "
                             + " · ".join(f"`{r}` — {d['n_suras']} chapters" for r, d in _pocket[:6]))
+
+# ── 📎 RELATED VERSES — by MEANING. Cross-references built from the text's own semantic
+#    structure: verses nearest THIS āyah in meaning, including links the words alone miss
+#    (e.g. Ikhlās → other "your God is One God" verses that share no wording). ──
+with st.expander("📎 Related verses — by meaning (connections the words alone would miss)"):
+    st.caption("The verses nearest this āyah in meaning — from the Qur'ān's own semantic structure, "
+               "not keyword overlap. Tap one to read it (hover to preview).")
+    _ra = int(cur_a) if cur_a else 1
+    _M = _semf(id(corpus))
+    _rel = _SEMF.related_verses(_M, int(sel), _ra, topn=8)
+    if _rel:
+        _jump_btns([(s, a) for s, a, _sim in _rel], "relv", cur=(int(sel), _ra))
+    else:
+        st.caption("· No meaning‑neighbours for this āyah (no indexed content roots).")
 
 # ── the whole sūra, inline (page scrolls), highlighting the jumped-to āyah ──
 st.markdown(_SR.inline_html(corpus, sel, _MP, cur=(cur_a or None)), unsafe_allow_html=True)
