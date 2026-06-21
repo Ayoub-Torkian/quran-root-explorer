@@ -133,6 +133,52 @@ def chart_revelation_profile(corpus, roots, normalize: bool = False) -> go.Figur
                    h=380 if not multi else max(380, 180 * rdf["root"].nunique()))
 
 
+def chart_meaning_neighbors(semf, root, top: int = 12) -> go.Figure:
+    """Top MEANING-relatives of a concept from the on-corpus semantic embedding (cosine) — the
+    'nearest in meaning' partners, distinct from co-occurrence (context) partners. Single-concept."""
+    import semantic_features as _SF
+    try:
+        nb = _SF.root_neighbors(semf, root, topn=top)
+    except Exception:
+        nb = []
+    if not nb:
+        return _layout(go.Figure(), "Nearest in meaning")
+    nb = nb[::-1]                                   # ascending → strongest at top of horizontal bar
+    ys = [r for r, _ in nb]
+    xs = [float(s) for _, s in nb]
+    fig = px.bar(x=xs, y=ys, orientation="h", text=[f"{s:.2f}" for s in xs],
+                 color=xs, color_continuous_scale="Teal")
+    fig.update_traces(textposition="outside", cliponaxis=False)
+    fig.update_layout(coloraxis_showscale=False, xaxis_title="cosine similarity", yaxis_title="")
+    return _layout(fig, f"Nearest in meaning — {root}", h=max(320, 60 + 28 * len(nb)))
+
+
+def chart_network_role(feat: dict, roots) -> go.Figure:
+    """Place each concept in ROLE-SPACE from the precomputed (degree-normalised) graph features:
+    x = within-family anchor (hub z), y = bridge / connector (betweenness z). Quadrants name the role."""
+    fold = lambda t: str(t).replace("ك", "ک").replace("ي", "ی")
+    pts = [(r, feat.get(fold(r))) for r in roots]
+    pts = [(r, g) for r, g in pts if g]
+    if not pts:
+        return _layout(go.Figure(), "Network role")
+    xs = [g["hub_z"] for _, g in pts]
+    ys = [g["bridge_z"] for _, g in pts]
+    labels = [f"{r}<br><span style='font-size:10px'>{g['family_label']}</span>" for r, g in pts]
+    fig = go.Figure(go.Scatter(
+        x=xs, y=ys, mode="markers+text", text=labels, textposition="top center",
+        marker=dict(size=15, color="#1D9E75", line=dict(width=1, color="#0F6E56")),
+        hovertext=[g["role"] for _, g in pts], hoverinfo="text"))
+    fig.add_hline(y=2, line_dash="dot", line_color="#8FA6BC")
+    fig.add_vline(x=2, line_dash="dot", line_color="#8FA6BC")
+    fig.add_annotation(x=2.05, y=max(ys + [2.2]), text="bridge / connector ▲", showarrow=False,
+                       xanchor="left", font=dict(size=11, color="#10243A"))
+    fig.add_annotation(y=2.05, x=max(xs + [2.2]), text="family anchor ▶", showarrow=False,
+                       yanchor="bottom", font=dict(size=11, color="#10243A"))
+    fig.update_layout(xaxis_title="within-family anchor  (hub z)",
+                      yaxis_title="bridge / connector  (betweenness z)")
+    return _layout(fig, "Network role — anchor vs bridge", h=440)
+
+
 # ---------------------------------------------------------------------------
 # Per-root deep dive
 # ---------------------------------------------------------------------------

@@ -41,6 +41,23 @@ hero("Export",
 per_root_hint(compact=True)
 
 
+@st.cache_resource(show_spinner=False)
+def _semf_export(_cid):
+    import semantic_features as _SF
+    return _SF.build(corpus)
+
+
+@st.cache_resource(show_spinner=False)
+def _graphfeat_export():
+    import json as _json, os as _os
+    try:
+        with open(_os.path.join(_os.path.dirname(__file__), "..", "concept_graph_features.json"),
+                  encoding="utf-8") as _f:
+            return _json.load(_f)["concepts"]
+    except Exception:
+        return {}
+
+
 # ─────────────────────────────────────────────────────────────────
 # Interpret narrative — generated once, embedded into every output
 # ─────────────────────────────────────────────────────────────────
@@ -188,6 +205,8 @@ def _build_catalog():
          lambda: PC.chart_distribution_across_surahs(R["occurrences"])),
         ("01_Home", "03_rarity_tier.png",
          lambda: PC.chart_rarity_tier(R["rarity"])),
+        ("01_Home", "04_network_role.png",
+         lambda: PC.chart_network_role(_graphfeat_export(), roots)),
     ]
 
     safe = lambda s: re.sub(r"[^\w\-]", "_", s)
@@ -206,6 +225,8 @@ def _build_catalog():
              lambda r=r: PC.chart_partner_motifs(R["pmotifs"], r)),
             (sub, "06_revelation_profile.png",
              lambda r=r: PC.chart_revelation_profile(corpus, [r], R["normalize"])),
+            (sub, "07_meaning_neighbors.png",
+             lambda r=r: PC.chart_meaning_neighbors(_semf_export(id(corpus)), r)),
         ]
 
     has_rev = R.get("has_rev_order", False)
