@@ -305,7 +305,7 @@ def tab_export(corpus, R):
     # (Streamlit renders all tab bodies each run) — a real perf drag and a duplicate surface.
     # It's now a lightweight pointer, so the home page stays fast and there is ONE export surface.
     layer(1, "Export & download")
-    with st.container(key="inputbar"):
+    with st.container(key="inputbar-export"):
         st.markdown(
             "<div class='t-body'>Full exports — every chart and table plus the Reading-Guide narrative, "
             "as <b>PDF</b> · interactive <b>HTML</b> · multi-sheet <b>Excel</b> — are built "
