@@ -245,6 +245,7 @@ def tab_process(corpus, R):
 
 def tab_visualize(R):
     layer(1, "Visualization catalogue — pick what to render")
+    _multi = len(R["input_roots"]) >= 2
     catalogue = [
         ("📊 Distribution across surahs",   "dist"),
         ("📈 Per-root summary",             "summ"),
@@ -258,6 +259,10 @@ def tab_visualize(R):
         ("🔀 Overlap matrix",               "over"),
         ("🧬 Morphology (all roots)",       "morph"),
     ]
+    if not _multi:        # pairwise charts are empty with a single root — hide rather than show a blank box
+        catalogue = [(l, k) for l, k in catalogue if k != "over"]
+        st.session_state.setdefault("show_charts", set()).discard("over")
+        st.caption("Single root selected — the pairwise **Overlap matrix** is hidden (it needs ≥2 roots to compare).")
     if "show_charts" not in st.session_state:
         st.session_state.show_charts = {"dist", "rare", "net"}
     cols = st.columns(3)
@@ -286,8 +291,18 @@ def tab_visualize(R):
         "over": lambda: PC.chart_overlap_heatmap(R["overlap"]),
         "morph": lambda: PC.chart_morphology(R["morphology"]),
     }
+    # cache each figure on the QUERY signature, so toggling a checkbox does NOT re-render the others
+    _sig = (tuple(R["input_roots"]), bool(R["normalize"]), int(R["top_partners"]), int(R["min_weight"]))
+
+    @st.cache_data(show_spinner=False)
+    def _fig(_key, _sig):
+        return renderers[_key]()
+
     for k in [k for _, k in catalogue if k in sel]:
-        st.plotly_chart(renderers[k](), width='stretch')
+        try:
+            st.plotly_chart(_fig(k, _sig), width='stretch')
+        except Exception as _e:
+            st.caption(f"(“{k}” unavailable: {type(_e).__name__})")
 
 
 def tab_export(corpus, R):

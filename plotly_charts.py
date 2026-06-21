@@ -81,17 +81,14 @@ def chart_rarity_tier(rarity: pd.DataFrame) -> go.Figure:
                  category_orders={"Tier": tier_order}, text="_lbl",
                  hover_data=["Percentile", "Z-score", "Corpus Median"])
     fig.update_traces(textposition="outside", cliponaxis=False)
-    # corpus baseline reference lines — turn a lone bar into "this root vs the typical root"
+    # ONE thin median reference + a single corner label (no overlapping inline text, no redundant mean line)
     try:
         _med = float(rr["Corpus Median"].iloc[0])
-        fig.add_hline(y=_med, line_dash="dash", line_color="#1D3557",
-                      annotation_text=f"corpus median {_med:g}", annotation_position="top left",
-                      annotation_font_color="#10243A")
-        if "Corpus Mean" in rr.columns:
-            _mean = float(rr["Corpus Mean"].iloc[0])
-            fig.add_hline(y=_mean, line_dash="dot", line_color="#8FA6BC",
-                          annotation_text=f"corpus mean {_mean:g}", annotation_position="bottom left",
-                          annotation_font_color="#10243A")
+        fig.add_hline(y=_med, line_dash="dash", line_width=1, line_color="#8FA6BC")
+        fig.add_annotation(xref="paper", yref="paper", x=0.99, y=0.98, xanchor="right", yanchor="top",
+                           text=f"– – corpus median ≈ {_med:g} (the typical root)", showarrow=False,
+                           font=dict(size=12, color="#10243A"),
+                           bgcolor="rgba(244,249,247,0.92)", bordercolor="#cfe4dc", borderwidth=1)
     except Exception:
         pass
     return _layout(fig, "Frequency vs corpus baseline", h=380)
