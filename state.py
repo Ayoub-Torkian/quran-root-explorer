@@ -96,7 +96,8 @@ NAV_SECTIONS = [
         (None, [
             ("pages/7_Statistics.py", "Statistics", "📈"),
             ("pages/8_Export.py", "Export", "⬇️"),
-            ("pages/9_Usage.py", "Usage", "📊"),
+            # 9_Usage.py is an ADMIN-only dashboard (anonymous visit counts) — intentionally NOT in
+            # the public nav; the admin reaches it by direct URL. Do NOT re-add it as a public link.
             ("pages/21_Feedback_and_Bugs.py", "Feedback & Bugs", "🐞"),
             ("pages/0_Help.py", "Help", "❓"),
         ]),
