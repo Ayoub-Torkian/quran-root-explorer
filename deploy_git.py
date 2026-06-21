@@ -233,6 +233,23 @@ def commit_and_push() -> int:
 
 
 def main() -> int:
+    # ── STALE-SCRIPT GUARD (added 2026-06-21) ──────────────────────────────────────────────
+    # This script's local→HF rename map (8e_Calibration→8_Calibration, 8_Export→12_Export,
+    # 9_Usage→13_Usage, 8a_Interpret→11_Interpret, 8f_Practical_Lens→10_Practical_Lens, …) is
+    # NO LONGER how the app is deployed. The current flow is a plain
+    #     git push origin main   &&   git push hf main
+    # which preserves local filenames — and the sidebar nav (NAV_SECTIONS in state.py) references
+    # those LOCAL names. Running this script would rename pages out from under the nav and BREAK
+    # the menu. It is kept for reference only.
+    if "--force-stale" not in sys.argv:
+        print("\n⛔  deploy_git.py is STALE and disabled.")
+        print("    Its rename map no longer matches how the Space is deployed; running it would")
+        print("    rename pages and break the sidebar nav (which uses the LOCAL filenames).")
+        print("    Deploy with the current flow instead:")
+        print("        git push origin main   &&   git push hf main")
+        print("    (or double-click deploy.bat). To override anyway: python deploy_git.py --force-stale\n")
+        return 2
+
     print()
     print("=" * 60)
     print(f"Deploying to {REPO_URL}  (git push, token-auth)")
