@@ -128,7 +128,7 @@ if len(path) > 1:
 # current focus āyah
 st.markdown(
     f"<div dir='rtl' style='background:#F1F6F4;border-right:4px solid #0F6E56;border-radius:6px;"
-    f"padding:14px 16px;margin:10px 0;font-size:22px;color:#10243A;line-height:1.9'>"
+    f"padding:14px 16px;margin:10px 0;max-width:900px;font-size:22px;color:#10243A;line-height:1.9'>"
     f"<span style='font-size:13px;color:#10243A'>{refs[qi]} · {sname.get(sura[qi],'')}</span><br>{hl_text(qi, crootsets[qi])}</div>",
     unsafe_allow_html=True)
 st.caption("Roots: " + " · ".join(sorted(rootsets[qi])))
@@ -139,17 +139,19 @@ layer(1, "Follow a parallel to keep walking")
 rel = related(qi, k, excl, frozenset(path))
 if not rel:
     st.info("No further parallels (content roots exhausted on this walk). Step back in the breadcrumb.")
-for score, j in rel:
-    shared = sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])
-    col = st.columns([6, 1])
-    col[0].markdown(
-        f"<div style='border:1px solid #cfe0d9;border-radius:7px;padding:10px 14px;margin:4px 0'>"
-        f"<div style='font-size:13px;color:#10243A'><b>{refs[j]}</b> · {sname.get(sura[j],'')} "
-        f"&nbsp;|&nbsp; similarity {score*100:.0f}% &nbsp;|&nbsp; shared roots: "
-        f"<b>{' · '.join(shared)}</b></div>"
-        f"<div dir='rtl' style='font-size:19px;color:#10243A;line-height:1.8;margin-top:4px'>{hl_text(j, crootsets[qi] & crootsets[j])}</div></div>",
-        unsafe_allow_html=True)
-    if col[1].button("follow →", key=f"fl_{j}", use_container_width=True):
-        st.session_state.xref_act = ("follow", j); st.rerun()
+st.markdown("<style>[class*='st-key-xrefcol']{max-width:840px !important}</style>", unsafe_allow_html=True)
+with st.container(key="xrefcol"):                       # bounded reading column — no full-width band
+    for score, j in rel:
+        shared = sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])
+        col = st.columns([5, 1], vertical_alignment="center")
+        col[0].markdown(
+            f"<div style='border:1px solid #cfe4dc;border-radius:8px;padding:6px 12px;margin:3px 0;background:#FFFFFF'>"
+            f"<div style='font-size:12px;color:#10243A'><b style='color:#1D3557'>{refs[j]}</b> · {sname.get(sura[j],'')} "
+            f"&nbsp;<span style='background:#1D9E75;color:#fff;border-radius:5px;padding:0 7px;font-weight:700'>{score*100:.0f}%</span>"
+            f"&nbsp; shared: <b>{' · '.join(shared)}</b></div>"
+            f"<div dir='rtl' style='font-size:18px;color:#10243A;line-height:1.7;margin-top:3px'>{hl_text(j, crootsets[qi] & crootsets[j])}</div></div>",
+            unsafe_allow_html=True)
+        if col[1].button("follow →", key=f"fl_{j}", type="primary", use_container_width=True):
+            st.session_state.xref_act = ("follow", j); st.rerun()
 
 st.caption(f"Index: {N} āyāt · {len(idf)} distinct roots · cosine over IDF-weighted root vectors.")
