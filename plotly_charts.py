@@ -73,11 +73,64 @@ def chart_rarity_tier(rarity: pd.DataFrame) -> go.Figure:
     tier_order = ["ultra-rare", "rare", "common", "very common", "ubiquitous"]
     tier_color = {"ultra-rare": "#7209B7", "rare": "#1D3557", "common": "#06AED5",
                   "very common": "#F77F00", "ubiquitous": "#E63946"}
-    fig = px.bar(rarity, x="Input Root", y="Ayah Frequency",
+    rr = rarity.copy()
+    # contextualise each bar so even ONE root is meaningful: count + where it sits vs the corpus
+    rr["_lbl"] = rr.apply(lambda r: f"{int(r['Ayah Frequency'])}× · {r['Percentile']:.0f}th pct · z {r['Z-score']:+.1f}", axis=1)
+    fig = px.bar(rr, x="Input Root", y="Ayah Frequency",
                  color="Tier", color_discrete_map=tier_color,
-                 category_orders={"Tier": tier_order},
+                 category_orders={"Tier": tier_order}, text="_lbl",
                  hover_data=["Percentile", "Z-score", "Corpus Median"])
-    return _layout(fig, "Frequency baseline", h=380)
+    fig.update_traces(textposition="outside", cliponaxis=False)
+    # corpus baseline reference lines — turn a lone bar into "this root vs the typical root"
+    try:
+        _med = float(rr["Corpus Median"].iloc[0])
+        fig.add_hline(y=_med, line_dash="dash", line_color="#1D3557",
+                      annotation_text=f"corpus median {_med:g}", annotation_position="top left",
+                      annotation_font_color="#10243A")
+        if "Corpus Mean" in rr.columns:
+            _mean = float(rr["Corpus Mean"].iloc[0])
+            fig.add_hline(y=_mean, line_dash="dot", line_color="#8FA6BC",
+                          annotation_text=f"corpus mean {_mean:g}", annotation_position="bottom left",
+                          annotation_font_color="#10243A")
+    except Exception:
+        pass
+    return _layout(fig, "Frequency vs corpus baseline", h=380)
+
+
+def chart_revelation_profile(corpus, roots, normalize: bool = False) -> go.Figure:
+    """When a concept enters the text: histogram of a root's occurrences across the nuzūl
+    (revelation) order, split Meccan vs Medinan. SINGLE-ROOT-meaningful — unlike the pairwise
+    comparison charts. Computed straight from the corpus (revelation column + root tokens)."""
+    df = corpus.df
+    NZ = "ترتیب نزول"
+    if NZ not in df.columns:
+        return _layout(go.Figure(), "Revelation profile")
+    nz = pd.to_numeric(df[NZ], errors="coerce")
+    fold = lambda t: str(t).replace("ك", "ک").replace("ي", "ی")
+    rootset = {fold(r) for r in roots}
+    rows = []
+    for i in range(len(df)):
+        v = nz.iloc[i]
+        if pd.isna(v):
+            continue
+        for r in {fold(t) for t in corpus.root_tokens[i]} & rootset:
+            rows.append({"root": r, "nuzūl": int(v),
+                         "era": "Meccan" if v <= 86 else "Medinan"})
+    if not rows:
+        return _layout(go.Figure(), "Revelation profile")
+    rdf = pd.DataFrame(rows)
+    multi = rdf["root"].nunique() > 1
+    fig = px.histogram(rdf, x="nuzūl", color="era", nbins=38,
+                       color_discrete_map={"Meccan": "#1D9E75", "Medinan": "#378ADD"},
+                       facet_row="root" if multi else None)
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.add_vline(x=86.5, line_dash="dash", line_color="#10243A",
+                  annotation_text="Meccan ◂ │ ▸ Medinan", annotation_position="top",
+                  annotation_font_color="#10243A")
+    fig.update_layout(xaxis_title="revelation order  (1 = first revealed … 114 = last)",
+                      yaxis_title="occurrences", bargap=0.04, legend_title_text="")
+    return _layout(fig, "Revelation profile — when this concept enters the text",
+                   h=380 if not multi else max(380, 180 * rdf["root"].nunique()))
 
 
 # ---------------------------------------------------------------------------

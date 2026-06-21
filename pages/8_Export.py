@@ -204,6 +204,8 @@ def _build_catalog():
              lambda r=r: PC.chart_ayah_length_hist(R["position"], r)),
             (sub, "05_partner_motifs.png",
              lambda r=r: PC.chart_partner_motifs(R["pmotifs"], r)),
+            (sub, "06_revelation_profile.png",
+             lambda r=r: PC.chart_revelation_profile(corpus, [r], R["normalize"])),
         ]
 
     has_rev = R.get("has_rev_order", False)
@@ -269,19 +271,21 @@ def _build_catalog():
                                                        top_n=6,
                                                        input_roots=roots)))
 
-    catalog += [
-        ("05_Compare", "01_surah_heatmap.png",
-         lambda: PC.chart_surah_heatmap(R["heatmap"])),
-        ("05_Compare", "02_overlap_heatmap.png",
-         lambda: PC.chart_overlap_heatmap(R["overlap"])),
-        ("05_Compare", "03_pair_overlap_grouped.png",
-         lambda: PC.chart_pair_overlap_grouped(R["overlap"],
-                                                R["overlap_surah"],
-                                                R["input_roots"])),
-    ]
+    catalog.append(("05_Compare", "01_surah_heatmap.png",
+                    lambda: PC.chart_surah_heatmap(R["heatmap"])))
+    if len(roots) >= 2:        # pair-overlap charts are meaningless with one root — skip them
+        catalog += [
+            ("05_Compare", "02_overlap_heatmap.png",
+             lambda: PC.chart_overlap_heatmap(R["overlap"])),
+            ("05_Compare", "03_pair_overlap_grouped.png",
+             lambda: PC.chart_pair_overlap_grouped(R["overlap"],
+                                                    R["overlap_surah"],
+                                                    R["input_roots"])),
+        ]
 
-    catalog.append(("06_Morphology", "01_morphology_global.png",
-                    lambda: PC.chart_morphology(R["morphology"])))
+    if len(roots) >= 2:        # the global multi-root facet duplicates the per-root one when there's a single root
+        catalog.append(("06_Morphology", "01_morphology_global.png",
+                        lambda: PC.chart_morphology(R["morphology"])))
     for r in roots:
         catalog.append(
             (f"06_Morphology/{safe(r)}", "01_particles.png",
@@ -310,13 +314,13 @@ def _build_catalog():
         ("07_Statistics", "03_position_tiles.png",
          lambda: SC.chart_position_tiles(pos_df)) if pos_df is not None else None,
         ("07_Statistics", "04_pmi.png",
-         lambda: SC.chart_pmi_heatmap(pmi_df)) if pmi_df is not None else None,
+         lambda: SC.chart_pmi_heatmap(pmi_df)) if (pmi_df is not None and len(roots) >= 2) else None,
         ("07_Statistics", "05_cond_prob.png",
-         lambda: SC.chart_cond_prob_heatmap(cond_df)) if cond_df is not None else None,
+         lambda: SC.chart_cond_prob_heatmap(cond_df)) if (cond_df is not None and len(roots) >= 2) else None,
         ("07_Statistics", "06_cond_prob_reverse.png",
-         lambda: SC.chart_cond_prob_reverse_heatmap(cond_df)) if cond_df is not None else None,
+         lambda: SC.chart_cond_prob_reverse_heatmap(cond_df)) if (cond_df is not None and len(roots) >= 2) else None,
         ("07_Statistics", "07_jaccard.png",
-         lambda: SC.chart_jaccard_heatmap(jac_df)) if jac_df is not None else None,
+         lambda: SC.chart_jaccard_heatmap(jac_df)) if (jac_df is not None and len(roots) >= 2) else None,
         ("07_Statistics", "08_surah_role.png",
          lambda: SC.chart_surah_role_bar(surah_role)) if surah_role is not None else None,
         ("07_Statistics", "09_tfidf.png",
@@ -330,10 +334,10 @@ def _build_catalog():
         ("07_Statistics", "13_exclusive_partners.png",
          lambda: SC.chart_exclusive_partners(excl)) if excl is not None else None,
         ("07_Statistics", "14_dendrogram.png",
-         lambda: SC.chart_dendrogram(jac_df)) if jac_df is not None else None,
+         lambda: SC.chart_dendrogram(jac_df)) if (jac_df is not None and len(roots) >= 2) else None,
         ("07_Statistics", "15_metric_cross_reference.png",
          lambda: SC.chart_metric_cross_reference(pmi_df, jac_df, roots))
-         if (pmi_df is not None and jac_df is not None) else None,
+         if (pmi_df is not None and jac_df is not None and len(roots) >= 2) else None,
     ]
 
     # PREPEND Reading Guide pages — one Plotly text-figure per ~28-line page.
