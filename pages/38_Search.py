@@ -522,6 +522,24 @@ if kind in ("root", "word") and roots:
     st.markdown("<div class='t-sub' style='margin:10px 0 3px'>📋 Design profile — this concept at a glance</div>"
                 "<table style='border-collapse:collapse'>" + _prow + "</table>", unsafe_allow_html=True)
     if _nb:
+        _cx, _cy, _R = 260, 150, 118       # 🕸️ concept map (radial): nearer node = more similar
+        _pts = []
+        for _i, (r, s) in enumerate(_nb[:10]):
+            _ang = 2 * math.pi * _i / min(len(_nb), 10)
+            _d = _R * (1.0 - (s - 0.5) / 0.5 * 0.5)
+            _pts.append((_cx + _d * math.cos(_ang), _cy + _d * math.sin(_ang), r))
+        _edges = "".join("<line x1='%d' y1='%d' x2='%.0f' y2='%.0f' stroke='#cfe4dc' stroke-width='1.4'/>"
+                         % (_cx, _cy, x, y) for x, y, _r in _pts)
+        _nodes = "".join("<circle cx='%.0f' cy='%.0f' r='5' fill='#1D9E75'/><text x='%.0f' y='%.0f' "
+                         "font-size='12' fill='#10243A' text-anchor='middle'>%s</text>"
+                         % (x, y, x, y - 9, _r) for x, y, _r in _pts)
+        _svg = ("<svg viewBox='0 0 520 300' width='100%%' style='max-width:520px;display:block'>%s%s"
+                "<circle cx='%d' cy='%d' r='8' fill='#1D3557'/><text x='%d' y='%d' font-size='13' "
+                "font-weight='800' fill='#1D3557' text-anchor='middle'>%s</text></svg>"
+                % (_edges, _nodes, _cx, _cy, _cx, _cy - 13, sorted(roots)[0]))
+        st.markdown("<div class='t-sub' style='margin:10px 0 2px'>🕸️ Concept map — meaning‑neighbourhood "
+                    "(nearer = more similar; from the corpus's own semantic space)</div>" + _svg,
+                    unsafe_allow_html=True)
         st.markdown("<div class='t-sub' style='margin:10px 0 2px'>🧭 Related by meaning — tap to walk the "
                     "concept space (meaning-relatives, not just shared words)</div>", unsafe_allow_html=True)
         with _chip_row("semnb"):

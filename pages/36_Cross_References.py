@@ -135,7 +135,8 @@ st.caption("Roots: " + " · ".join(sorted(rootsets[qi])))
 _xs, _xa = refs[qi].split(":")                     # read the whole sūra from this āyah
 _SR.peek(corpus, int(_xs), int(_xa))
 
-layer(1, "Follow a parallel to keep walking")
+layer(1, f"Layer {len(path)} · follow a parallel to walk deeper (each ‘follow’ adds a layer; "
+        f"your path is the breadcrumb above)")
 rel = related(qi, k, excl, frozenset(path))
 if not rel:
     st.info("No further parallels (content roots exhausted on this walk). Step back in the breadcrumb.")
@@ -145,13 +146,14 @@ with st.container(key="xrefcol"):                       # bounded reading column
         shared = sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])
         col = st.columns([5, 1], vertical_alignment="center")
         col[0].markdown(
-            f"<div style='border:1px solid #cfe4dc;border-radius:8px;padding:6px 12px;margin:3px 0;background:#FFFFFF'>"
-            f"<div style='font-size:12px;color:#10243A'><b style='color:#1D3557'>{refs[j]}</b> · {sname.get(sura[j],'')} "
+            f"<div style='border:1px solid #cfe4dc;border-radius:8px;padding:10px 15px;margin:7px 0;background:#FFFFFF'>"
+            f"<div style='font-size:12.5px;color:#10243A'><b style='color:#1D3557'>{refs[j]}</b> · "
+            f"<b style='color:#1D3557'>{sname.get(sura[j],'')}</b> "
             f"&nbsp;<span style='background:#1D9E75;color:#fff;border-radius:5px;padding:0 7px;font-weight:700'>{score*100:.0f}%</span>"
             f"&nbsp; shared: <b>{' · '.join(shared)}</b></div>"
-            f"<div dir='rtl' style='font-size:18px;color:#10243A;line-height:1.7;margin-top:3px'>{hl_text(j, crootsets[qi] & crootsets[j])}</div></div>",
+            f"<div dir='rtl' style='font-size:18px;color:#10243A;line-height:1.8;margin-top:5px'>{hl_text(j, crootsets[qi] & crootsets[j])}</div></div>",
             unsafe_allow_html=True)
-        if col[1].button("follow →", key=f"fl_{j}", type="primary", use_container_width=True):
+        if col[1].button("follow →", key=f"fl_{j}", type="secondary", use_container_width=True):
             st.session_state.xref_act = ("follow", j); st.rerun()
 
 st.caption(f"Index: {N} āyāt · {len(idf)} distinct roots · cosine over IDF-weighted root vectors.")
