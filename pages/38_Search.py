@@ -15,12 +15,19 @@ from state import get_corpus, hero, layer, log_page, reader_play_handoff
 import meaning as _MEAN
 import mobile as _MOB
 import structure_scales as _SS
+import semantic_features as _SEMF
+from state import chip_row as _chip_row
 
 st.set_page_config(page_title="Search", page_icon="🔎", layout="wide")
 log_page("search")
 _MOB.inject()                       # mobile-first reading CSS + Qur'an webfonts
 corpus = get_corpus()
 INK = "#10243A"
+
+
+@st.cache_resource(show_spinner="Building the meaning map…")
+def _semf(_cid):
+    return _SEMF.build(corpus)
 
 # a verse's ▶ links to ?play=S:A → open it in Read and recite there (shared hand-off helper)
 reader_play_handoff()
@@ -494,6 +501,46 @@ if kind in ("root", "word") and roots:
             for _k, (f, n) in enumerate(_forms[_rf:_rf + _PCF]):
                 if _cf[_k].button(f"{f}·{n}", key=f"fm_{_rf}_{_k}", use_container_width=True):
                     st.session_state._pending_q = f
+                    st.rerun()
+    # ── 📋 DESIGN PROFILE (summary table) + 🧭 RELATED BY MEANING (guided study path) ──
+    _Msem = _semf(id(corpus))
+    _nb = _SEMF.root_neighbors(_Msem, sorted(roots)[0], topn=12)
+    _prof = [("Occurrences", f"{sum(fcount.values())}×"),
+             ("Verses", f"{len(_vset)}"),
+             ("Surface forms", f"{len(fcount)}"),
+             ("Revelation", f"{_skew} ({_wm:.0f}/114)")]
+    if _rel:
+        _prof.append(("Strongest co-root (context)", f"{_rel[0][0]} · z {_rel[0][2]:g}"))
+    if _nb:
+        _prof.append(("Nearest in meaning", f"{_nb[0][0]} · {_nb[0][1]:.2f}"))
+    if _ph:
+        _prof.append(("Signature phrase (mathānī)", f"{_ph[0][0]}"))
+    _prow = "".join(
+        "<tr><td style='padding:2px 14px 2px 0;color:#10243A;font-size:13px'>%s</td>"
+        "<td style='padding:2px 0;color:#1D3557;font-weight:700;font-size:13px' dir='auto'>%s</td></tr>" % (k, v)
+        for k, v in _prof)
+    st.markdown("<div class='t-sub' style='margin:10px 0 3px'>📋 Design profile — this concept at a glance</div>"
+                "<table style='border-collapse:collapse'>" + _prow + "</table>", unsafe_allow_html=True)
+    if _nb:
+        st.markdown("<div class='t-sub' style='margin:10px 0 2px'>🧭 Related by meaning — tap to walk the "
+                    "concept space (meaning-relatives, not just shared words)</div>", unsafe_allow_html=True)
+        with _chip_row("semnb"):
+            _cn = st.columns(len(_nb))
+            for _i, (r, s) in enumerate(_nb):
+                if _cn[_i].button(f"{r} ·{s:.2f}", key=f"semnb_{r}_{_i}",
+                                  help="meaning-similarity — tap to search this concept"):
+                    st.session_state._pending_q = r
+                    st.rerun()
+    _mv = _SEMF.verses_for_concept(_Msem, roots, topn=8)
+    if _mv:
+        st.markdown("<div class='t-sub' style='margin:10px 0 2px'>📖 Verses closest in meaning to this "
+                    "concept — some may not contain the word (that's the point)</div>", unsafe_allow_html=True)
+        with _chip_row("semv"):
+            _vc = st.columns(len(_mv))
+            for _i, (vs, va, sm) in enumerate(_mv):
+                if _vc[_i].button(f"{vs}:{va}", key=f"semv_{vs}_{va}",
+                                  help=f"meaning {sm:.2f} — open this verse"):
+                    st.session_state._pending_q = f"{vs}:{va}"
                     st.rerun()
 
 if kind in ("root", "word") and roots:
