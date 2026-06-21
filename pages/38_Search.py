@@ -507,13 +507,15 @@ if kind in ("root", "word") and roots:
                     f"— click a form to search it</div>", unsafe_allow_html=True)
         _forms = [(f.replace(chr(1740), chr(1610)).replace(chr(1705), chr(1603)), n)
                   for f, n in fcount.most_common()]
-        _PCF = 8
-        for _rf in range(0, len(_forms), _PCF):
-            _cf = st.columns(_PCF, gap="small")
-            for _k, (f, n) in enumerate(_forms[_rf:_rf + _PCF]):
-                if _cf[_k].button(f"{f}·{n}", key=f"fm_{_rf}_{_k}", use_container_width=True):
-                    st.session_state._pending_q = f
-                    st.rerun()
+        with _chip_row("forms"):                     # density rule: wrapping content-sized chips, not full-width cells
+            _PCF = 12
+            for _rf in range(0, len(_forms), _PCF):
+                _chunk = _forms[_rf:_rf + _PCF]
+                _cf = st.columns(len(_chunk), gap="small")   # len(_chunk) → no trailing empty (spacer) cells
+                for _k, (f, n) in enumerate(_chunk):
+                    if _cf[_k].button(f"{f}·{n}", key=f"fm_{_rf}_{_k}"):
+                        st.session_state._pending_q = f
+                        st.rerun()
     # ── 📋 DESIGN PROFILE (summary table) + 🧭 RELATED BY MEANING (guided study path) ──
     _Msem = _semf(id(corpus))
     _nb = _SEMF.root_neighbors(_Msem, sorted(roots)[0], topn=12)
@@ -536,27 +538,35 @@ if kind in ("root", "word") and roots:
         _prof.append(("Network role", f"{_badge}{_zt}"))
         _prof.append(("Concept family", _gf["family_label"]))
     _prow = "".join(
-        "<tr><td style='padding:2px 14px 2px 0;color:#10243A;font-size:13px'>%s</td>"
-        "<td style='padding:2px 0;color:#1D3557;font-weight:700;font-size:13px' dir='auto'>%s</td></tr>" % (k, v)
+        "<tr><td style='padding:2px 14px 2px 0;color:#10243A;font-size:13px;vertical-align:top'>%s</td>"
+        "<td style='padding:2px 0;color:#1D3557;font-weight:700;font-size:13px;word-break:break-word' "
+        "dir='auto'>%s</td></tr>" % (k, v)
         for k, v in _prof)
     st.markdown("<div class='t-sub' style='margin:10px 0 3px'>📋 Design profile — this concept at a glance</div>"
-                "<table style='border-collapse:collapse'>" + _prow + "</table>", unsafe_allow_html=True)
+                "<table style='border-collapse:collapse;width:100%;max-width:520px;table-layout:auto'>"
+                + _prow + "</table>", unsafe_allow_html=True)
     if _nb:
-        _cx, _cy, _R = 260, 150, 118       # 🕸️ concept map (radial): nearer node = more similar
+        # 🕸️ concept map (radial): nearer node = more similar. SQUARE, tightly-bounded canvas
+        # (no dead margin) + larger SVG fonts so it stays legible (≥12px effective) when the
+        # phone scales it down — the >90% mobile case. Capped width keeps it compact on desktop.
+        _cx = _cy = 150; _R = 108          # 42px of margin all round leaves room for edge labels
         _pts = []
+        _kn = min(len(_nb), 10)
         for _i, (r, s) in enumerate(_nb[:10]):
-            _ang = 2 * math.pi * _i / min(len(_nb), 10)
-            _d = _R * (1.0 - (s - 0.5) / 0.5 * 0.5)
+            _ang = 2 * math.pi * _i / _kn
+            _t = max(0.0, min(1.0, (s - 0.5) / 0.5))   # similarity 0.5..1 → 0..1 (clamped: no overshoot)
+            _d = _R * (1.0 - 0.5 * _t)                  # bounded to _R so nodes never leave the frame
             _pts.append((_cx + _d * math.cos(_ang), _cy + _d * math.sin(_ang), r))
         _edges = "".join("<line x1='%d' y1='%d' x2='%.0f' y2='%.0f' stroke='#cfe4dc' stroke-width='1.4'/>"
                          % (_cx, _cy, x, y) for x, y, _r in _pts)
         _nodes = "".join("<circle cx='%.0f' cy='%.0f' r='5' fill='#1D9E75'/><text x='%.0f' y='%.0f' "
-                         "font-size='12' fill='#10243A' text-anchor='middle'>%s</text>"
-                         % (x, y, x, y - 9, _r) for x, y, _r in _pts)
-        _svg = ("<svg viewBox='0 0 520 300' width='100%%' style='max-width:520px;display:block'>%s%s"
-                "<circle cx='%d' cy='%d' r='8' fill='#1D3557'/><text x='%d' y='%d' font-size='13' "
+                         "font-size='14' fill='#10243A' text-anchor='middle'>%s</text>"
+                         % (x, y, x, y - 10, _r) for x, y, _r in _pts)
+        _svg = ("<svg viewBox='0 0 300 300' width='100%%' style='max-width:340px;display:block;"
+                "margin:2px auto 2px 0'>%s%s"
+                "<circle cx='%d' cy='%d' r='8' fill='#1D3557'/><text x='%d' y='%d' font-size='15' "
                 "font-weight='800' fill='#1D3557' text-anchor='middle'>%s</text></svg>"
-                % (_edges, _nodes, _cx, _cy, _cx, _cy - 13, sorted(roots)[0]))
+                % (_edges, _nodes, _cx, _cy, _cx, _cy - 14, sorted(roots)[0]))
         st.markdown("<div class='t-sub' style='margin:10px 0 2px'>🕸️ Concept map — meaning‑neighbourhood "
                     "(nearer = more similar; from the corpus's own semantic space)</div>" + _svg,
                     unsafe_allow_html=True)
@@ -720,10 +730,12 @@ if expand and kind in ("root", "word") and roots:
     if rel:
         layer(ln, "Related concepts / co-roots (click to explore)")
         st.caption("Roots that most distinctively PAIR with your query — attraction beyond chance (z).")
-        PC = 12
-        for rsx in range(0, len(rel), PC):
-            cols = st.columns(PC, gap="small")
-            for k, (r, cc, z) in enumerate(rel[rsx:rsx + PC]):
-                if cols[k].button(f"{r}·{z:g}", key=f"rel_{r}", use_container_width=True):
-                    st.session_state._pending_q = r
-                    st.rerun()
+        with _chip_row("coroots"):                   # density rule: wrapping content-sized chips, not full-width cells
+            PC = 12
+            for rsx in range(0, len(rel), PC):
+                _crk = rel[rsx:rsx + PC]
+                cols = st.columns(len(_crk), gap="small")   # len(chunk) → no trailing empty (spacer) cells
+                for k, (r, cc, z) in enumerate(_crk):
+                    if cols[k].button(f"{r}·{z:g}", key=f"rel_{r}"):
+                        st.session_state._pending_q = r
+                        st.rerun()
