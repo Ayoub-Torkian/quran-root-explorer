@@ -1,0 +1,3912 @@
+{
+"meta": {
+"n_concepts": 300,
+"n_families": 9,
+"backbone_nodes": 300,
+"backbone_edges": 2484,
+"null_R": 40,
+"note": "bridge_z=degree-normalised betweenness; family=dcSBM block; hub_z=within-family degree z"
+},
+"concepts": {
+"یوم": {
+"freq": 437,
+"bridge_z": -1.3,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 2.84,
+"role": "family anchor (hub)",
+"partners": [
+"ویل",
+"حشر",
+"عرش"
+]
+},
+"رسل": {
+"freq": 429,
+"bridge_z": 0.8,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 3.41,
+"role": "family anchor (hub)",
+"partners": [
+"روح",
+"هزء",
+"عصی"
+]
+},
+"کلل": {
+"freq": 355,
+"bridge_z": -1.18,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 2.25,
+"role": "family anchor (hub)",
+"partners": [
+"قدر",
+"شرب",
+"مرء"
+]
+},
+"ءیی": {
+"freq": 353,
+"bridge_z": -0.64,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 2.32,
+"role": "family anchor (hub)",
+"partners": [
+"تلو",
+"فصل",
+"صرف"
+]
+},
+"سمو": {
+"freq": 352,
+"bridge_z": -4.76,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 3.05,
+"role": "family anchor (hub)",
+"partners": [
+"ءجل",
+"موه",
+"سخر"
+]
+},
+"عذب": {
+"freq": 336,
+"bridge_z": -0.55,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 2.99,
+"role": "family anchor (hub)",
+"partners": [
+"ءلم",
+"ذوق",
+"شدد"
+]
+},
+"ءنس": {
+"freq": 321,
+"bridge_z": -0.78,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 1.26,
+"role": "member",
+"partners": [
+"کثر",
+"ضرب",
+"بطل"
+]
+},
+"رحم": {
+"freq": 313,
+"bridge_z": -3.87,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": 3.13,
+"role": "family anchor (hub)",
+"partners": [
+"غفر",
+"توب",
+"فضل"
+]
+},
+"عمل": {
+"freq": 313,
+"bridge_z": 0.7,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 2.74,
+"role": "family anchor (hub)",
+"partners": [
+"صلح",
+"خبر",
+"زین"
+]
+},
+"جعل": {
+"freq": 311,
+"bridge_z": -2.14,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 1.41,
+"role": "member",
+"partners": [
+"ذرر",
+"ءمم",
+"لیل"
+]
+},
+"رءی": {
+"freq": 297,
+"bridge_z": -0.94,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 1.47,
+"role": "member",
+"partners": [
+"شمس",
+"صرف",
+"سخر"
+]
+},
+"ظلم": {
+"freq": 290,
+"bridge_z": 4.65,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 1.67,
+"role": "connector / bridge",
+"partners": [
+"عجل",
+"نفس",
+"فری"
+]
+},
+"قبل": {
+"freq": 282,
+"bridge_z": -1.51,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 2.27,
+"role": "family anchor (hub)",
+"partners": [
+"خلو",
+"قرن",
+"هلک"
+]
+},
+"کتب": {
+"freq": 279,
+"bridge_z": -2.5,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 3.73,
+"role": "family anchor (hub)",
+"partners": [
+"ریب",
+"ءهل",
+"تلو"
+]
+},
+"نفس": {
+"freq": 270,
+"bridge_z": -1.03,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 0.81,
+"role": "member",
+"partners": [
+"جهد",
+"وسع",
+"کسب"
+]
+},
+"هدی": {
+"freq": 268,
+"bridge_z": -1.79,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 2.82,
+"role": "family anchor (hub)",
+"partners": [
+"صرط",
+"ضلل",
+"عمی"
+]
+},
+"ذکر": {
+"freq": 264,
+"bridge_z": -0.66,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 0.51,
+"role": "member",
+"partners": [
+"نسی",
+"عرض",
+"حدث"
+]
+},
+"حقق": {
+"freq": 263,
+"bridge_z": 1.17,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 1.97,
+"role": "member",
+"partners": [
+"بطل",
+"کره",
+"تلو"
+]
+},
+"جیء": {
+"freq": 262,
+"bridge_z": 0.15,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 2.38,
+"role": "family anchor (hub)",
+"partners": [
+"سحر",
+"هوی",
+"ءجل"
+]
+},
+"نزل": {
+"freq": 257,
+"bridge_z": -1.0,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 1.47,
+"role": "member",
+"partners": [
+"موه",
+"برک",
+"سلط"
+]
+},
+"کذب": {
+"freq": 257,
+"bridge_z": 0.31,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 1.77,
+"role": "member",
+"partners": [
+"ءلی",
+"فری",
+"ویل"
+]
+},
+"عبد": {
+"freq": 251,
+"bridge_z": 2.1,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 1.24,
+"role": "connector / bridge",
+"partners": [
+"خلص",
+"دون",
+"کفی"
+]
+},
+"ءخذ": {
+"freq": 244,
+"bridge_z": 0.58,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 1.25,
+"role": "member",
+"partners": [
+"وثق",
+"هزء",
+"نسی"
+]
+},
+"ءخر": {
+"freq": 242,
+"bridge_z": -1.69,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 0.98,
+"role": "member",
+"partners": [
+"دنو",
+"ءجل",
+"ترک"
+]
+},
+"وقی": {
+"freq": 237,
+"bridge_z": -1.17,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 3.7,
+"role": "family anchor (hub)",
+"partners": [
+"برر",
+"حلل",
+"فلح"
+]
+},
+"ءمر": {
+"freq": 226,
+"bridge_z": 0.51,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": 0.92,
+"role": "member",
+"partners": [
+"قضی",
+"نکر",
+"عصی"
+]
+},
+"بعد": {
+"freq": 223,
+"bridge_z": 0.87,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 1.25,
+"role": "member",
+"partners": [
+"ورث",
+"حدث",
+"عفو"
+]
+},
+"خلق": {
+"freq": 218,
+"bridge_z": -3.18,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 1.37,
+"role": "member",
+"partners": [
+"ءفک",
+"زوج",
+"مرر"
+]
+},
+"غفر": {
+"freq": 202,
+"bridge_z": -2.53,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": 3.07,
+"role": "family anchor (hub)",
+"partners": [
+"ذنب",
+"توب",
+"عفو"
+]
+},
+"ولی": {
+"freq": 202,
+"bridge_z": -0.35,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 1.55,
+"role": "member",
+"partners": [
+"دبر",
+"دون",
+"نصر"
+]
+},
+"جنن": {
+"freq": 196,
+"bridge_z": -1.4,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": 1.52,
+"role": "member",
+"partners": [
+"تحت",
+"جری",
+"نهر"
+]
+},
+"ملک": {
+"freq": 191,
+"bridge_z": -0.03,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 1.01,
+"role": "member",
+"partners": [
+"یمن",
+"نفع",
+"ثلث"
+]
+},
+"حکم": {
+"freq": 189,
+"bridge_z": -3.31,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 1.94,
+"role": "member",
+"partners": [
+"عزز",
+"وری",
+"رفع"
+]
+},
+"عند": {
+"freq": 189,
+"bridge_z": 0.64,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 0.15,
+"role": "member",
+"partners": [
+"عهد",
+"فتح",
+"ءجر"
+]
+},
+"دعو": {
+"freq": 182,
+"bridge_z": 0.4,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 0.77,
+"role": "member",
+"partners": [
+"جوب",
+"دون",
+"خلص"
+]
+},
+"خیر": {
+"freq": 178,
+"bridge_z": -2.73,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 2.3,
+"role": "family anchor (hub)",
+"partners": [
+"شرر",
+"عسی",
+"سبق"
+]
+},
+"حسن": {
+"freq": 177,
+"bridge_z": -0.81,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 0.89,
+"role": "member",
+"partners": [
+"ءجر",
+"جزی",
+"صوب"
+]
+},
+"نور": {
+"freq": 174,
+"bridge_z": -0.73,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 0.89,
+"role": "member",
+"partners": [
+"خلد",
+"صحب",
+"ءوی"
+]
+},
+"ضلل": {
+"freq": 170,
+"bridge_z": -0.6,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 2.02,
+"role": "family anchor (hub)",
+"partners": [
+"سبل",
+"فری",
+"هدی"
+]
+},
+"صلح": {
+"freq": 170,
+"bridge_z": -1.56,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 1.23,
+"role": "member",
+"partners": [
+"عمل",
+"تحت",
+"ءجر"
+]
+},
+"حیی": {
+"freq": 166,
+"bridge_z": -1.52,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 1.18,
+"role": "member",
+"partners": [
+"دنو",
+"موت",
+"زین"
+]
+},
+"سبل": {
+"freq": 164,
+"bridge_z": 0.69,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 2.28,
+"role": "family anchor (hub)",
+"partners": [
+"صدد",
+"جهد",
+"مول"
+]
+},
+"سمع": {
+"freq": 163,
+"bridge_z": -1.56,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 0.86,
+"role": "member",
+"partners": [
+"بصر",
+"عمی",
+"عقل"
+]
+},
+"کثر": {
+"freq": 162,
+"bridge_z": 0.87,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 0.52,
+"role": "member",
+"partners": [
+"فسق",
+"کره",
+"عفو"
+]
+},
+"ءول": {
+"freq": 160,
+"bridge_z": 0.17,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.54,
+"role": "member",
+"partners": [
+"مرر",
+"فرعن",
+"قرن"
+]
+},
+"تبع": {
+"freq": 158,
+"bridge_z": -0.28,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 1.27,
+"role": "member",
+"partners": [
+"هوی",
+"ظنن",
+"عصی"
+]
+},
+"خرج": {
+"freq": 157,
+"bridge_z": 0.85,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 0.28,
+"role": "member",
+"partners": [
+"دور",
+"موه",
+"حیث"
+]
+},
+"قلب": {
+"freq": 155,
+"bridge_z": 1.0,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 0.69,
+"role": "member",
+"partners": [
+"غفل",
+"رضو",
+"ءذن"
+]
+},
+"کبر": {
+"freq": 153,
+"bridge_z": 1.81,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 0.0,
+"role": "member",
+"partners": [
+"ضعف",
+"علو",
+"مرء"
+]
+},
+"سوء": {
+"freq": 150,
+"bridge_z": -1.16,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 0.25,
+"role": "member",
+"partners": [
+"بدو",
+"عفو",
+"صوب"
+]
+},
+"مثل": {
+"freq": 148,
+"bridge_z": 0.4,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 0.22,
+"role": "member",
+"partners": [
+"ضرب",
+"خلو",
+"ترک"
+]
+},
+"وحد": {
+"freq": 148,
+"bridge_z": -2.82,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 1.03,
+"role": "member",
+"partners": [
+"ثلث",
+"ودد",
+"ءبد"
+]
+},
+"غیر": {
+"freq": 146,
+"bridge_z": -2.96,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 0.52,
+"role": "member",
+"partners": [
+"جنح",
+"بدل",
+"جدل"
+]
+},
+"صدق": {
+"freq": 144,
+"bridge_z": 0.29,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.47,
+"role": "member",
+"partners": [
+"وری",
+"وعد",
+"ریم"
+]
+},
+"موت": {
+"freq": 143,
+"bridge_z": -2.01,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 0.05,
+"role": "member",
+"partners": [
+"حیی",
+"بعث",
+"عقل"
+]
+},
+"شرک": {
+"freq": 143,
+"bridge_z": 0.57,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 0.29,
+"role": "member",
+"partners": [
+"ءین",
+"علو",
+"حرم"
+]
+},
+"دون": {
+"freq": 142,
+"bridge_z": -0.24,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 1.14,
+"role": "member",
+"partners": [
+"دعو",
+"نفع",
+"ولی"
+]
+},
+"سلم": {
+"freq": 142,
+"bridge_z": 0.19,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.27,
+"role": "member",
+"partners": [
+"برهم",
+"دخل",
+"وثق"
+]
+},
+"بصر": {
+"freq": 139,
+"bridge_z": -0.61,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 0.88,
+"role": "member",
+"partners": [
+"عمی",
+"سمع",
+"غفل"
+]
+},
+"نصر": {
+"freq": 137,
+"bridge_z": 0.42,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 0.54,
+"role": "member",
+"partners": [
+"هود",
+"ءوی",
+"دون"
+]
+},
+"ذوی": {
+"freq": 136,
+"bridge_z": -0.33,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": 0.59,
+"role": "member",
+"partners": [
+"صدر",
+"سکن",
+"فضل"
+]
+},
+"لقی": {
+"freq": 135,
+"bridge_z": 1.54,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.02,
+"role": "member",
+"partners": [
+"سحر",
+"خلو",
+"وسی"
+]
+},
+"بنو": {
+"freq": 132,
+"bridge_z": -2.58,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 2.24,
+"role": "family anchor (hub)",
+"partners": [
+"ریم",
+"نسو",
+"سکن"
+]
+},
+"وسی": {
+"freq": 131,
+"bridge_z": -0.22,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.49,
+"role": "member",
+"partners": [
+"ملء",
+"فرعن",
+"عجل"
+]
+},
+"وعد": {
+"freq": 130,
+"bridge_z": 1.87,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.03,
+"role": "member",
+"partners": [
+"خلف",
+"سوع",
+"صدق"
+]
+},
+"نعم": {
+"freq": 128,
+"bridge_z": 0.39,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.67,
+"role": "member",
+"partners": [
+"جنب",
+"خشی",
+"مسس"
+]
+},
+"دنو": {
+"freq": 128,
+"bridge_z": -1.49,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 0.92,
+"role": "member",
+"partners": [
+"حیی",
+"زین",
+"متع"
+]
+},
+"عظم": {
+"freq": 127,
+"bridge_z": -0.83,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -0.11,
+"role": "member",
+"partners": [
+"ءجر",
+"تحت",
+"ءبد"
+]
+},
+"شهد": {
+"freq": 123,
+"bridge_z": -0.16,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.96,
+"role": "member",
+"partners": [
+"کفی",
+"غیب",
+"غفل"
+]
+},
+"جمع": {
+"freq": 123,
+"bridge_z": -1.08,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.13,
+"role": "member",
+"partners": [
+"ریب",
+"حشر",
+"جهنم"
+]
+},
+"قتل": {
+"freq": 122,
+"bridge_z": -1.5,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 1.84,
+"role": "member",
+"partners": [
+"وثق",
+"حرم",
+"سبل"
+]
+},
+"قدر": {
+"freq": 121,
+"bridge_z": -1.16,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 0.63,
+"role": "member",
+"partners": [
+"موه",
+"بدو",
+"خفی"
+]
+},
+"رود": {
+"freq": 120,
+"bridge_z": -0.91,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.44,
+"role": "member",
+"partners": [
+"کره",
+"دنو",
+"مرء"
+]
+},
+"ءهل": {
+"freq": 120,
+"bridge_z": -1.15,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.34,
+"role": "member",
+"partners": [
+"قری",
+"بیت",
+"مرء"
+]
+},
+"بشر": {
+"freq": 119,
+"bridge_z": 0.7,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.07,
+"role": "member",
+"partners": [
+"نذر",
+"روح",
+"مثل"
+]
+},
+"سءل": {
+"freq": 118,
+"bridge_z": -1.8,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.17,
+"role": "member",
+"partners": [
+"ءجر",
+"عفو",
+"عهد"
+]
+},
+"طوع": {
+"freq": 118,
+"bridge_z": -0.58,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.75,
+"role": "member",
+"partners": [
+"کره",
+"جهد",
+"نفق"
+]
+},
+"عزز": {
+"freq": 117,
+"bridge_z": 0.23,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.22,
+"role": "member",
+"partners": [
+"حکم",
+"قوی",
+"شمس"
+]
+},
+"خلف": {
+"freq": 116,
+"bridge_z": 0.04,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.32,
+"role": "member",
+"partners": [
+"یدی",
+"قطع",
+"وعد"
+]
+},
+"نذر": {
+"freq": 115,
+"bridge_z": 0.43,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.05,
+"role": "member",
+"partners": [
+"بشر",
+"قری",
+"وحی"
+]
+},
+"نظر": {
+"freq": 115,
+"bridge_z": 0.68,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.08,
+"role": "member",
+"partners": [
+"عقب",
+"قوی",
+"بعث"
+]
+},
+"خوف": {
+"freq": 112,
+"bridge_z": -1.37,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -0.49,
+"role": "member",
+"partners": [
+"حزن",
+"عصی",
+"جنح"
+]
+},
+"دخل": {
+"freq": 111,
+"bridge_z": -0.05,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": 0.08,
+"role": "member",
+"partners": [
+"تحت",
+"جری",
+"ءبد"
+]
+},
+"یدی": {
+"freq": 111,
+"bridge_z": -1.41,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.04,
+"role": "member",
+"partners": [
+"قدم",
+"قطع",
+"خلف"
+]
+},
+"رزق": {
+"freq": 109,
+"bridge_z": -0.15,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.08,
+"role": "member",
+"partners": [
+"طیب",
+"نفق",
+"کرم"
+]
+},
+"جزی": {
+"freq": 109,
+"bridge_z": 1.18,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -0.07,
+"role": "member",
+"partners": [
+"کسب",
+"حسن",
+"خلد"
+]
+},
+"ءمم": {
+"freq": 108,
+"bridge_z": 0.54,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.77,
+"role": "member",
+"partners": [
+"خلو",
+"ریم",
+"بلو"
+]
+},
+"ءبو": {
+"freq": 104,
+"bridge_z": -1.0,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.16,
+"role": "member",
+"partners": [
+"ءسف",
+"ءخو",
+"وجد"
+]
+},
+"رجع": {
+"freq": 103,
+"bridge_z": 1.45,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -0.67,
+"role": "member",
+"partners": [
+"نبء",
+"طوف",
+"ءسف"
+]
+},
+"فعل": {
+"freq": 102,
+"bridge_z": -1.78,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.46,
+"role": "member",
+"partners": [
+"بلغ",
+"جنح",
+"وذر"
+]
+},
+"نهر": {
+"freq": 102,
+"bridge_z": -1.89,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": 0.92,
+"role": "member",
+"partners": [
+"تحت",
+"جری",
+"لیل"
+]
+},
+"حسب": {
+"freq": 102,
+"bridge_z": -0.73,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.38,
+"role": "member",
+"partners": [
+"کفی",
+"بدو",
+"ءثم"
+]
+},
+"ءکل": {
+"freq": 101,
+"bridge_z": -1.34,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.94,
+"role": "member",
+"partners": [
+"شرب",
+"طیب",
+"حلل"
+]
+},
+"ءجر": {
+"freq": 99,
+"bridge_z": 0.64,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": 0.26,
+"role": "member",
+"partners": [
+"سءل",
+"عظم",
+"صلح"
+]
+},
+"شدد": {
+"freq": 99,
+"bridge_z": 0.99,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": 0.12,
+"role": "member",
+"partners": [
+"قوی",
+"عقب",
+"ذنب"
+]
+},
+"وجد": {
+"freq": 99,
+"bridge_z": 0.99,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": 0.15,
+"role": "member",
+"partners": [
+"ودد",
+"حیث",
+"ءبو"
+]
+},
+"صبر": {
+"freq": 93,
+"bridge_z": 1.37,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.21,
+"role": "member",
+"partners": [
+"بلو",
+"غلب",
+"حین"
+]
+},
+"عدو": {
+"freq": 92,
+"bridge_z": -2.41,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 1.0,
+"role": "member",
+"partners": [
+"ءثم",
+"عصی",
+"شطن"
+]
+},
+"فضل": {
+"freq": 92,
+"bridge_z": -0.91,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": 0.52,
+"role": "member",
+"partners": [
+"بغی",
+"شکر",
+"وسع"
+]
+},
+"قرب": {
+"freq": 91,
+"bridge_z": -0.86,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.88,
+"role": "member",
+"partners": [
+"سکن",
+"دری",
+"عفو"
+]
+},
+"صلو": {
+"freq": 90,
+"bridge_z": 0.07,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 1.01,
+"role": "member",
+"partners": [
+"زکو",
+"نفق",
+"طوف"
+]
+},
+"ءذن": {
+"freq": 90,
+"bridge_z": 0.31,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.21,
+"role": "member",
+"partners": [
+"حوط",
+"ءبد",
+"صوب"
+]
+},
+"بغی": {
+"freq": 90,
+"bridge_z": -2.55,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": 0.09,
+"role": "member",
+"partners": [
+"فضل",
+"رضو",
+"صدد"
+]
+},
+"عقب": {
+"freq": 90,
+"bridge_z": 0.14,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": 0.08,
+"role": "member",
+"partners": [
+"نظر",
+"شدد",
+"قوی"
+]
+},
+"صحب": {
+"freq": 89,
+"bridge_z": 3.38,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": -1.01,
+"role": "connector / bridge",
+"partners": [
+"خلد",
+"یمن",
+"ندو"
+]
+},
+"دین": {
+"freq": 87,
+"bridge_z": 0.6,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.09,
+"role": "member",
+"partners": [
+"خلص",
+"کره",
+"برر"
+]
+},
+"بعض": {
+"freq": 87,
+"bridge_z": 0.28,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.59,
+"role": "member",
+"partners": [
+"فوق",
+"رفع",
+"وثق"
+]
+},
+"سبح": {
+"freq": 87,
+"bridge_z": -1.48,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.2,
+"role": "member",
+"partners": [
+"حمد",
+"علو",
+"عرش"
+]
+},
+"نفق": {
+"freq": 86,
+"bridge_z": 0.33,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.23,
+"role": "member",
+"partners": [
+"رزق",
+"سرر",
+"مول"
+]
+},
+"خلد": {
+"freq": 86,
+"bridge_z": -5.74,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": 0.36,
+"role": "member",
+"partners": [
+"تحت",
+"ءبد",
+"جری"
+]
+},
+"لیس": {
+"freq": 85,
+"bridge_z": 0.61,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.32,
+"role": "member",
+"partners": [
+"جنح",
+"سلط",
+"کفی"
+]
+},
+"حبب": {
+"freq": 85,
+"bridge_z": -2.16,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.32,
+"role": "member",
+"partners": [
+"عفو",
+"برر",
+"عهد"
+]
+},
+"سجد": {
+"freq": 81,
+"bridge_z": -1.09,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.39,
+"role": "member",
+"partners": [
+"حرم",
+"حیث",
+"صدد"
+]
+},
+"لیل": {
+"freq": 81,
+"bridge_z": 0.94,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.05,
+"role": "member",
+"partners": [
+"نهر",
+"شمس",
+"سخر"
+]
+},
+"سوو": {
+"freq": 80,
+"bridge_z": 1.53,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.07,
+"role": "member",
+"partners": [
+"عرش",
+"عمی",
+"صرط"
+]
+},
+"ولد": {
+"freq": 80,
+"bridge_z": 0.59,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.73,
+"role": "member",
+"partners": [
+"مول",
+"ثلث",
+"ترک"
+]
+},
+"مول": {
+"freq": 80,
+"bridge_z": 1.21,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.55,
+"role": "member",
+"partners": [
+"جهد",
+"ولد",
+"مدد"
+]
+},
+"ءخو": {
+"freq": 80,
+"bridge_z": -2.16,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.4,
+"role": "member",
+"partners": [
+"ءسف",
+"ءبو",
+"ثلث"
+]
+},
+"قرء": {
+"freq": 79,
+"bridge_z": 0.09,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.72,
+"role": "member",
+"partners": [
+"صرف",
+"یسر",
+"وحی"
+]
+},
+"شطن": {
+"freq": 78,
+"bridge_z": 0.19,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.28,
+"role": "member",
+"partners": [
+"عدو",
+"زین",
+"نسی"
+]
+},
+"نبو": {
+"freq": 77,
+"bridge_z": 0.26,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": 0.4,
+"role": "member",
+"partners": [
+"برهم",
+"وثق",
+"زوج"
+]
+},
+"جهنم": {
+"freq": 77,
+"bridge_z": 1.17,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 0.03,
+"role": "member",
+"partners": [
+"صیر",
+"ءوی",
+"بءس"
+]
+},
+"نبء": {
+"freq": 75,
+"bridge_z": 2.12,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.53,
+"role": "connector / bridge",
+"partners": [
+"غیب",
+"رجع",
+"تلو"
+]
+},
+"نجو": {
+"freq": 75,
+"bridge_z": 1.56,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.44,
+"role": "member",
+"partners": [
+"برر",
+"مرء",
+"خلص"
+]
+},
+"قلل": {
+"freq": 74,
+"bridge_z": -0.67,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.27,
+"role": "member",
+"partners": [
+"متع",
+"وثق",
+"شکر"
+]
+},
+"ءلم": {
+"freq": 73,
+"bridge_z": 0.98,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 0.08,
+"role": "member",
+"partners": [
+"عذب",
+"مسس",
+"صدد"
+]
+},
+"بلغ": {
+"freq": 73,
+"bridge_z": 0.17,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.55,
+"role": "member",
+"partners": [
+"ءجل",
+"ثلث",
+"عرف"
+]
+},
+"زوج": {
+"freq": 72,
+"bridge_z": -3.13,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.28,
+"role": "member",
+"partners": [
+"مدد",
+"جنح",
+"ذرر"
+]
+},
+"عرض": {
+"freq": 72,
+"bridge_z": -2.2,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.51,
+"role": "member",
+"partners": [
+"مرر",
+"حدث",
+"خبر"
+]
+},
+"غنی": {
+"freq": 72,
+"bridge_z": 0.29,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.66,
+"role": "member",
+"partners": [
+"حمد",
+"کسب",
+"مول"
+]
+},
+"کلم": {
+"freq": 71,
+"bridge_z": -0.34,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.36,
+"role": "member",
+"partners": [
+"سبق",
+"ریم",
+"بدل"
+]
+},
+"حرم": {
+"freq": 71,
+"bridge_z": -0.13,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.78,
+"role": "member",
+"partners": [
+"حلل",
+"سجد",
+"حیث"
+]
+},
+"وجه": {
+"freq": 71,
+"bridge_z": 0.91,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.44,
+"role": "member",
+"partners": [
+"ءین",
+"حیث",
+"غفل"
+]
+},
+"بءس": {
+"freq": 70,
+"bridge_z": 0.49,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": 0.01,
+"role": "member",
+"partners": [
+"صیر",
+"ءوی",
+"جهنم"
+]
+},
+"ضرر": {
+"freq": 70,
+"bridge_z": 1.18,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.05,
+"role": "member",
+"partners": [
+"نفع",
+"مسس",
+"بءس"
+]
+},
+"وحی": {
+"freq": 70,
+"bridge_z": 1.91,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.25,
+"role": "member",
+"partners": [
+"غیب",
+"قرء",
+"ضرب"
+]
+},
+"توب": {
+"freq": 69,
+"bridge_z": 1.79,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": 0.52,
+"role": "member",
+"partners": [
+"عسی",
+"غفر",
+"ثلث"
+]
+},
+"شکر": {
+"freq": 69,
+"bridge_z": 0.75,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.33,
+"role": "member",
+"partners": [
+"طیب",
+"بحر",
+"فضل"
+]
+},
+"سکن": {
+"freq": 68,
+"bridge_z": 1.92,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.52,
+"role": "member",
+"partners": [
+"طعم",
+"قرب",
+"حیث"
+]
+},
+"علو": {
+"freq": 68,
+"bridge_z": 1.47,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.68,
+"role": "member",
+"partners": [
+"سبح",
+"ملء",
+"شرک"
+]
+},
+"فرعن": {
+"freq": 67,
+"bridge_z": -0.23,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.15,
+"role": "member",
+"partners": [
+"ملء",
+"وسی",
+"غلب"
+]
+},
+"حمد": {
+"freq": 66,
+"bridge_z": -0.52,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.49,
+"role": "member",
+"partners": [
+"سبح",
+"غنی",
+"صرط"
+]
+},
+"فرق": {
+"freq": 66,
+"bridge_z": 0.32,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.25,
+"role": "member",
+"partners": [
+"ءجل",
+"طوف",
+"ضرر"
+]
+},
+"رجل": {
+"freq": 66,
+"bridge_z": -1.35,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.04,
+"role": "member",
+"partners": [
+"نسو",
+"قطع",
+"سعی"
+]
+},
+"متع": {
+"freq": 65,
+"bridge_z": 0.18,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.23,
+"role": "member",
+"partners": [
+"حین",
+"جنح",
+"دنو"
+]
+},
+"جرم": {
+"freq": 65,
+"bridge_z": 2.01,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.54,
+"role": "connector / bridge",
+"partners": [
+"قرن",
+"کره",
+"طوف"
+]
+},
+"جری": {
+"freq": 64,
+"bridge_z": -2.27,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": 0.85,
+"role": "member",
+"partners": [
+"تحت",
+"نهر",
+"سخر"
+]
+},
+"وفی": {
+"freq": 64,
+"bridge_z": -0.38,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -0.69,
+"role": "member",
+"partners": [
+"عهد",
+"ءجل",
+"وسع"
+]
+},
+"بعث": {
+"freq": 64,
+"bridge_z": 1.83,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.33,
+"role": "member",
+"partners": [
+"زکو",
+"ریب",
+"موت"
+]
+},
+"رضو": {
+"freq": 64,
+"bridge_z": 1.22,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.09,
+"role": "member",
+"partners": [
+"ءبد",
+"تحت",
+"فسق"
+]
+},
+"عین": {
+"freq": 63,
+"bridge_z": 0.11,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.85,
+"role": "member",
+"partners": [
+"قرر",
+"شرب",
+"حزن"
+]
+},
+"عرف": {
+"freq": 63,
+"bridge_z": 0.18,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.82,
+"role": "member",
+"partners": [
+"نکر",
+"جنح",
+"نهی"
+]
+},
+"برهم": {
+"freq": 63,
+"bridge_z": -1.08,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.27,
+"role": "member",
+"partners": [
+"نوح",
+"نبو",
+"هود"
+]
+},
+"هلک": {
+"freq": 63,
+"bridge_z": -0.45,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.15,
+"role": "member",
+"partners": [
+"قرن",
+"قری",
+"ذنب"
+]
+},
+"یمن": {
+"freq": 63,
+"bridge_z": -0.33,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.23,
+"role": "member",
+"partners": [
+"قسم",
+"جهد",
+"ثلث"
+]
+},
+"تلو": {
+"freq": 61,
+"bridge_z": 3.82,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.24,
+"role": "connector / bridge",
+"partners": [
+"ءیی",
+"نبء",
+"زکو"
+]
+},
+"ذوق": {
+"freq": 61,
+"bridge_z": 1.57,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.25,
+"role": "member",
+"partners": [
+"عذب",
+"مسس",
+"ضرر"
+]
+},
+"وکل": {
+"freq": 61,
+"bridge_z": -0.5,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.58,
+"role": "member",
+"partners": [
+"کفی",
+"سلط",
+"غلب"
+]
+},
+"زید": {
+"freq": 60,
+"bridge_z": 1.63,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.56,
+"role": "member",
+"partners": [
+"طغی",
+"ثلث",
+"حیث"
+]
+},
+"موه": {
+"freq": 60,
+"bridge_z": -2.15,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": 0.24,
+"role": "member",
+"partners": [
+"شرب",
+"نزل",
+"روح"
+]
+},
+"خسر": {
+"freq": 60,
+"bridge_z": 1.32,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.95,
+"role": "member",
+"partners": [
+"خلو",
+"بطل",
+"صبح"
+]
+},
+"کسب": {
+"freq": 60,
+"bridge_z": 0.94,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.47,
+"role": "member",
+"partners": [
+"عفو",
+"ءثم",
+"جزی"
+]
+},
+"غیب": {
+"freq": 59,
+"bridge_z": -0.06,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.5,
+"role": "member",
+"partners": [
+"خشی",
+"نبء",
+"شهد"
+]
+},
+"سحر": {
+"freq": 59,
+"bridge_z": -1.39,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.32,
+"role": "member",
+"partners": [
+"غلب",
+"رجل",
+"فرعن"
+]
+},
+"قضی": {
+"freq": 59,
+"bridge_z": -1.43,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.49,
+"role": "member",
+"partners": [
+"ءجل",
+"سبق",
+"ءمر"
+]
+},
+"فتن": {
+"freq": 58,
+"bridge_z": -0.2,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.52,
+"role": "member",
+"partners": [
+"حیث",
+"حوط",
+"صوب"
+]
+},
+"عود": {
+"freq": 58,
+"bridge_z": 2.48,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.48,
+"role": "connector / bridge",
+"partners": [
+"نوح",
+"هود",
+"نهی"
+]
+},
+"ظنن": {
+"freq": 57,
+"bridge_z": 1.53,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.46,
+"role": "member",
+"partners": [
+"ملء",
+"یقن",
+"ءبد"
+]
+},
+"مسس": {
+"freq": 57,
+"bridge_z": 0.7,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.41,
+"role": "member",
+"partners": [
+"ضرر",
+"شرر",
+"نصب"
+]
+},
+"ظهر": {
+"freq": 57,
+"bridge_z": -1.77,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.46,
+"role": "member",
+"partners": [
+"وری",
+"حین",
+"کره"
+]
+},
+"ردد": {
+"freq": 57,
+"bridge_z": 2.89,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -0.99,
+"role": "connector / bridge",
+"partners": [
+"ریب",
+"قرر",
+"وسع"
+]
+},
+"ذهب": {
+"freq": 56,
+"bridge_z": 2.67,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.71,
+"role": "connector / bridge",
+"partners": [
+"طغی",
+"ءسف",
+"متع"
+]
+},
+"صوب": {
+"freq": 56,
+"bridge_z": 0.59,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.39,
+"role": "member",
+"partners": [
+"حیث",
+"قدم",
+"روح"
+]
+},
+"زکو": {
+"freq": 56,
+"bridge_z": 0.83,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.38,
+"role": "member",
+"partners": [
+"صلو",
+"نکر",
+"بعث"
+]
+},
+"ضرب": {
+"freq": 54,
+"bridge_z": 0.62,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.56,
+"role": "member",
+"partners": [
+"مثل",
+"بطل",
+"رجل"
+]
+},
+"فسق": {
+"freq": 54,
+"bridge_z": 1.05,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.46,
+"role": "member",
+"partners": [
+"رضو",
+"نسی",
+"بدل"
+]
+},
+"قری": {
+"freq": 54,
+"bridge_z": 2.32,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.54,
+"role": "connector / bridge",
+"partners": [
+"هلک",
+"ءهل",
+"برک"
+]
+},
+"بیت": {
+"freq": 54,
+"bridge_z": 0.66,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.46,
+"role": "member",
+"partners": [
+"طوف",
+"جبل",
+"جنح"
+]
+},
+"نهی": {
+"freq": 54,
+"bridge_z": 1.58,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.12,
+"role": "member",
+"partners": [
+"نکر",
+"عرف",
+"بدو"
+]
+},
+"فری": {
+"freq": 54,
+"bridge_z": 2.28,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.43,
+"role": "connector / bridge",
+"partners": [
+"ءفک",
+"فلح",
+"کذب"
+]
+},
+"نسو": {
+"freq": 53,
+"bridge_z": -3.36,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.94,
+"role": "member",
+"partners": [
+"جنح",
+"رجل",
+"ثلث"
+]
+},
+"دور": {
+"freq": 53,
+"bridge_z": 1.05,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.33,
+"role": "member",
+"partners": [
+"صبح",
+"وثق",
+"لعن"
+]
+},
+"روح": {
+"freq": 52,
+"bridge_z": 1.38,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.47,
+"role": "member",
+"partners": [
+"ریم",
+"جری",
+"موه"
+]
+},
+"خبر": {
+"freq": 51,
+"bridge_z": 1.93,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -0.93,
+"role": "member",
+"partners": [
+"کفی",
+"جهد",
+"ءجل"
+]
+},
+"عدد": {
+"freq": 50,
+"bridge_z": 0.83,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.71,
+"role": "member",
+"partners": [
+"لعن",
+"ثلث",
+"عجل"
+]
+},
+"تحت": {
+"freq": 50,
+"bridge_z": -1.76,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": 0.82,
+"role": "member",
+"partners": [
+"جری",
+"نهر",
+"ءبد"
+]
+},
+"حمل": {
+"freq": 50,
+"bridge_z": 0.38,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.49,
+"role": "member",
+"partners": [
+"ذرر",
+"ثلث",
+"وسع"
+]
+},
+"عقل": {
+"freq": 49,
+"bridge_z": -0.38,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.64,
+"role": "member",
+"partners": [
+"عمی",
+"صرف",
+"موه"
+]
+},
+"نفع": {
+"freq": 49,
+"bridge_z": -0.04,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.53,
+"role": "member",
+"partners": [
+"ضرر",
+"مرء",
+"عسی"
+]
+},
+"ندو": {
+"freq": 49,
+"bridge_z": 1.73,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": -1.27,
+"role": "member",
+"partners": [
+"جوب",
+"ءین",
+"نوح"
+]
+},
+"قدم": {
+"freq": 48,
+"bridge_z": 1.79,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -1.12,
+"role": "member",
+"partners": [
+"یدی",
+"ءبد",
+"سوع"
+]
+},
+"ءجل": {
+"freq": 48,
+"bridge_z": 1.8,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.42,
+"role": "member",
+"partners": [
+"ریب",
+"شمس",
+"بلغ"
+]
+},
+"فسد": {
+"freq": 47,
+"bridge_z": 2.41,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -1.12,
+"role": "connector / bridge",
+"partners": [
+"قطع",
+"سعی",
+"وثق"
+]
+},
+"وری": {
+"freq": 47,
+"bridge_z": -1.43,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.53,
+"role": "member",
+"partners": [
+"ظهر",
+"ریم",
+"حلل"
+]
+},
+"طیب": {
+"freq": 46,
+"bridge_z": -2.5,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.25,
+"role": "member",
+"partners": [
+"حلل",
+"ءکل",
+"رزق"
+]
+},
+"کرم": {
+"freq": 46,
+"bridge_z": -1.15,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.76,
+"role": "member",
+"partners": [
+"برر",
+"رزق",
+"مرر"
+]
+},
+"صرط": {
+"freq": 45,
+"bridge_z": 0.11,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.46,
+"role": "member",
+"partners": [
+"هدی",
+"سوو",
+"حمد"
+]
+},
+"ضعف": {
+"freq": 45,
+"bridge_z": 0.23,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.73,
+"role": "member",
+"partners": [
+"نسو",
+"ذرر",
+"وسع"
+]
+},
+"عجل": {
+"freq": 44,
+"bridge_z": 3.28,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.69,
+"role": "connector / bridge",
+"partners": [
+"شرر",
+"وسی",
+"عدد"
+]
+},
+"دبر": {
+"freq": 44,
+"bridge_z": 0.64,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.82,
+"role": "member",
+"partners": [
+"قطع",
+"ولی",
+"کید"
+]
+},
+"سوع": {
+"freq": 44,
+"bridge_z": 0.46,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.83,
+"role": "member",
+"partners": [
+"دری",
+"ریب",
+"قدم"
+]
+},
+"سرر": {
+"freq": 43,
+"bridge_z": 0.02,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.64,
+"role": "member",
+"partners": [
+"خفی",
+"صدر",
+"نفق"
+]
+},
+"حلل": {
+"freq": 43,
+"bridge_z": -1.78,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": 0.5,
+"role": "member",
+"partners": [
+"حرم",
+"طیب",
+"جنح"
+]
+},
+"حشر": {
+"freq": 43,
+"bridge_z": -0.72,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.8,
+"role": "member",
+"partners": [
+"عمی",
+"غلب",
+"برر"
+]
+},
+"زین": {
+"freq": 43,
+"bridge_z": 1.91,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.41,
+"role": "member",
+"partners": [
+"دنو",
+"صدد",
+"حیی"
+]
+},
+"وذر": {
+"freq": 43,
+"bridge_z": 1.35,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.94,
+"role": "member",
+"partners": [
+"طغی",
+"جنح",
+"بدل"
+]
+},
+"صدر": {
+"freq": 43,
+"bridge_z": -0.12,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.86,
+"role": "member",
+"partners": [
+"خفی",
+"بدو",
+"سرر"
+]
+},
+"نوح": {
+"freq": 43,
+"bridge_z": 1.88,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.51,
+"role": "member",
+"partners": [
+"ذرر",
+"برهم",
+"عود"
+]
+},
+"صبح": {
+"freq": 43,
+"bridge_z": 0.03,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.76,
+"role": "member",
+"partners": [
+"دور",
+"عسی",
+"موه"
+]
+},
+"حزن": {
+"freq": 42,
+"bridge_z": 1.16,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -0.92,
+"role": "member",
+"partners": [
+"خوف",
+"هود",
+"عین"
+]
+},
+"ءثم": {
+"freq": 42,
+"bridge_z": 0.04,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.41,
+"role": "member",
+"partners": [
+"ءفک",
+"عدو",
+"قسم"
+]
+},
+"فصل": {
+"freq": 42,
+"bridge_z": 1.05,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.73,
+"role": "member",
+"partners": [
+"شمس",
+"ولد",
+"زین"
+]
+},
+"حفظ": {
+"freq": 42,
+"bridge_z": -0.51,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.95,
+"role": "member",
+"partners": [
+"ءخو",
+"زین",
+"صلو"
+]
+},
+"فوق": {
+"freq": 41,
+"bridge_z": 0.56,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.72,
+"role": "member",
+"partners": [
+"رفع",
+"وثق",
+"تحت"
+]
+},
+"طعم": {
+"freq": 41,
+"bridge_z": 0.34,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.54,
+"role": "member",
+"partners": [
+"سکن",
+"شرب",
+"حرم"
+]
+},
+"جوب": {
+"freq": 41,
+"bridge_z": 1.06,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.71,
+"role": "member",
+"partners": [
+"ندو",
+"دعو",
+"نکر"
+]
+},
+"صدد": {
+"freq": 41,
+"bridge_z": 2.75,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.14,
+"role": "connector / bridge",
+"partners": [
+"سبل",
+"زین",
+"حرم"
+]
+},
+"فلح": {
+"freq": 40,
+"bridge_z": 0.63,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.75,
+"role": "member",
+"partners": [
+"فری",
+"کید",
+"دور"
+]
+},
+"شعر": {
+"freq": 40,
+"bridge_z": -0.11,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.98,
+"role": "member",
+"partners": [
+"حیث",
+"جنب",
+"جنح"
+]
+},
+"بحر": {
+"freq": 40,
+"bridge_z": 0.98,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.65,
+"role": "member",
+"partners": [
+"برر",
+"سخر",
+"جری"
+]
+},
+"بدل": {
+"freq": 40,
+"bridge_z": -0.85,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.68,
+"role": "member",
+"partners": [
+"عسی",
+"خلو",
+"کلم"
+]
+},
+"خشی": {
+"freq": 40,
+"bridge_z": 1.48,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.83,
+"role": "member",
+"partners": [
+"غیب",
+"عسی",
+"رضو"
+]
+},
+"یسر": {
+"freq": 40,
+"bridge_z": -3.01,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -1.19,
+"role": "member",
+"partners": [
+"ثلث",
+"قرء",
+"عدد"
+]
+},
+"ملء": {
+"freq": 40,
+"bridge_z": 1.0,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.66,
+"role": "member",
+"partners": [
+"فرعن",
+"وسی",
+"جهنم"
+]
+},
+"طغی": {
+"freq": 39,
+"bridge_z": 1.42,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.77,
+"role": "member",
+"partners": [
+"شرر",
+"لعن",
+"وذر"
+]
+},
+"قوی": {
+"freq": 39,
+"bridge_z": -1.58,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.58,
+"role": "member",
+"partners": [
+"شدد",
+"ذنب",
+"فوق"
+]
+},
+"جبل": {
+"freq": 39,
+"bridge_z": 0.06,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.71,
+"role": "member",
+"partners": [
+"بیت",
+"ظلل",
+"سخر"
+]
+},
+"سلط": {
+"freq": 39,
+"bridge_z": 3.76,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.86,
+"role": "connector / bridge",
+"partners": [
+"جدل",
+"وکل",
+"لیس"
+]
+},
+"ویل": {
+"freq": 38,
+"bridge_z": 3.01,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.83,
+"role": "connector / bridge",
+"partners": [
+"بطل",
+"کذب",
+"یوم"
+]
+},
+"قرن": {
+"freq": 38,
+"bridge_z": 0.62,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.5,
+"role": "member",
+"partners": [
+"هلک",
+"ذنب",
+"خلو"
+]
+},
+"ترک": {
+"freq": 37,
+"bridge_z": -2.1,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.95,
+"role": "member",
+"partners": [
+"ثلث",
+"ورث",
+"ولد"
+]
+},
+"قرر": {
+"freq": 37,
+"bridge_z": 0.76,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -1.1,
+"role": "member",
+"partners": [
+"عین",
+"حزن",
+"وثق"
+]
+},
+"نسی": {
+"freq": 37,
+"bridge_z": 2.93,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.8,
+"role": "connector / bridge",
+"partners": [
+"عفو",
+"وثق",
+"فسق"
+]
+},
+"هوی": {
+"freq": 37,
+"bridge_z": 3.02,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.23,
+"role": "connector / bridge",
+"partners": [
+"تبع",
+"زین",
+"حرم"
+]
+},
+"مرء": {
+"freq": 37,
+"bridge_z": -1.54,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.83,
+"role": "member",
+"partners": [
+"عسی",
+"ثلث",
+"نجو"
+]
+},
+"ذنب": {
+"freq": 37,
+"bridge_z": 1.66,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.43,
+"role": "member",
+"partners": [
+"غفر",
+"قرن",
+"قوی"
+]
+},
+"نکر": {
+"freq": 37,
+"bridge_z": -0.73,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.75,
+"role": "member",
+"partners": [
+"نهی",
+"عرف",
+"زکو"
+]
+},
+"قطع": {
+"freq": 36,
+"bridge_z": 0.19,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.76,
+"role": "member",
+"partners": [
+"دبر",
+"فسد",
+"رجل"
+]
+},
+"عهد": {
+"freq": 36,
+"bridge_z": -2.36,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.73,
+"role": "member",
+"partners": [
+"وفی",
+"وثق",
+"قطع"
+]
+},
+"حدث": {
+"freq": 36,
+"bridge_z": 0.45,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.79,
+"role": "member",
+"partners": [
+"عسی",
+"ءسف",
+"هزء"
+]
+},
+"لعن": {
+"freq": 36,
+"bridge_z": 0.99,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.74,
+"role": "member",
+"partners": [
+"هود",
+"عدد",
+"طغی"
+]
+},
+"ذرر": {
+"freq": 36,
+"bridge_z": -0.2,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.81,
+"role": "member",
+"partners": [
+"نوح",
+"حمل",
+"ضعف"
+]
+},
+"جهد": {
+"freq": 36,
+"bridge_z": 1.06,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.72,
+"role": "member",
+"partners": [
+"قسم",
+"مول",
+"ءوی"
+]
+},
+"ءوی": {
+"freq": 36,
+"bridge_z": 0.36,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.55,
+"role": "member",
+"partners": [
+"صیر",
+"بءس",
+"جهنم"
+]
+},
+"ریب": {
+"freq": 35,
+"bridge_z": 1.71,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.76,
+"role": "member",
+"partners": [
+"ءجل",
+"سوع",
+"سبق"
+]
+},
+"غفل": {
+"freq": 35,
+"bridge_z": 1.75,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.82,
+"role": "member",
+"partners": [
+"حیث",
+"طوف",
+"ظهر"
+]
+},
+"طوف": {
+"freq": 35,
+"bridge_z": -0.34,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.9,
+"role": "member",
+"partners": [
+"بیت",
+"ودد",
+"جنح"
+]
+},
+"سبق": {
+"freq": 35,
+"bridge_z": 0.04,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.83,
+"role": "member",
+"partners": [
+"ریب",
+"کلم",
+"ءجل"
+]
+},
+"سخر": {
+"freq": 35,
+"bridge_z": -1.41,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.38,
+"role": "member",
+"partners": [
+"شمس",
+"جری",
+"بحر"
+]
+},
+"کره": {
+"freq": 35,
+"bridge_z": 0.63,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -1.0,
+"role": "member",
+"partners": [
+"عسی",
+"دین",
+"ظهر"
+]
+},
+"بطل": {
+"freq": 34,
+"bridge_z": 1.65,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.77,
+"role": "member",
+"partners": [
+"جدل",
+"مول",
+"حقق"
+]
+},
+"بلو": {
+"freq": 34,
+"bridge_z": 2.95,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -1.09,
+"role": "connector / bridge",
+"partners": [
+"نسو",
+"فرعن",
+"کرم"
+]
+},
+"شرب": {
+"freq": 34,
+"bridge_z": 0.78,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.76,
+"role": "member",
+"partners": [
+"ءکل",
+"موه",
+"عین"
+]
+},
+"ورث": {
+"freq": 34,
+"bridge_z": 1.52,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.89,
+"role": "member",
+"partners": [
+"ثلث",
+"ترک",
+"سبق"
+]
+},
+"ءلی": {
+"freq": 34,
+"bridge_z": -0.17,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.79,
+"role": "member",
+"partners": [
+"کذب",
+"جبل",
+"فلح"
+]
+},
+"حین": {
+"freq": 33,
+"bridge_z": 1.23,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.94,
+"role": "member",
+"partners": [
+"متع",
+"بدو",
+"قرر"
+]
+},
+"فتح": {
+"freq": 33,
+"bridge_z": 1.36,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.79,
+"role": "member",
+"partners": [
+"برک",
+"طیب",
+"عقل"
+]
+},
+"هزء": {
+"freq": 32,
+"bridge_z": 1.04,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.79,
+"role": "member",
+"partners": [
+"بدو",
+"سخر",
+"حدث"
+]
+},
+"عصی": {
+"freq": 32,
+"bridge_z": 1.68,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -1.06,
+"role": "member",
+"partners": [
+"ءین",
+"برر",
+"عدو"
+]
+},
+"کفی": {
+"freq": 32,
+"bridge_z": 0.17,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.8,
+"role": "member",
+"partners": [
+"وکل",
+"شهد",
+"ثلث"
+]
+},
+"جنح": {
+"freq": 32,
+"bridge_z": -1.29,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.14,
+"role": "member",
+"partners": [
+"حلل",
+"نسو",
+"عرف"
+]
+},
+"مرر": {
+"freq": 32,
+"bridge_z": 1.6,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.83,
+"role": "member",
+"partners": [
+"جنح",
+"طوف",
+"ءول"
+]
+},
+"شمس": {
+"freq": 32,
+"bridge_z": -1.17,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.51,
+"role": "member",
+"partners": [
+"سخر",
+"لیل",
+"نهر"
+]
+},
+"عرش": {
+"freq": 32,
+"bridge_z": -0.15,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.65,
+"role": "member",
+"partners": [
+"رفع",
+"سوو",
+"شمس"
+]
+},
+"برک": {
+"freq": 32,
+"bridge_z": 1.47,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.68,
+"role": "member",
+"partners": [
+"عرش",
+"فتح",
+"قری"
+]
+},
+"عفو": {
+"freq": 31,
+"bridge_z": -0.86,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.33,
+"role": "member",
+"partners": [
+"نسی",
+"حبب",
+"وسع"
+]
+},
+"ظلل": {
+"freq": 31,
+"bridge_z": 0.32,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": -1.38,
+"role": "member",
+"partners": [
+"مدد",
+"تحت",
+"جبل"
+]
+},
+"ریم": {
+"freq": 31,
+"bridge_z": 1.78,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.83,
+"role": "member",
+"partners": [
+"بنو",
+"روح",
+"کلم"
+]
+},
+"خفی": {
+"freq": 31,
+"bridge_z": -0.29,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.89,
+"role": "member",
+"partners": [
+"بدو",
+"صدر",
+"سرر"
+]
+},
+"جنب": {
+"freq": 31,
+"bridge_z": 2.14,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.85,
+"role": "connector / bridge",
+"partners": [
+"ءثم",
+"شرر",
+"سخر"
+]
+},
+"قسم": {
+"freq": 31,
+"bridge_z": 0.65,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -1.31,
+"role": "member",
+"partners": [
+"جهد",
+"یمن",
+"ءثم"
+]
+},
+"عمی": {
+"freq": 30,
+"bridge_z": 1.79,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.57,
+"role": "member",
+"partners": [
+"بصر",
+"حشر",
+"سوو"
+]
+},
+"برر": {
+"freq": 30,
+"bridge_z": -0.99,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.85,
+"role": "member",
+"partners": [
+"بحر",
+"خلص",
+"نجو"
+]
+},
+"خلص": {
+"freq": 30,
+"bridge_z": -1.05,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -0.86,
+"role": "member",
+"partners": [
+"دین",
+"برر",
+"عبد"
+]
+},
+"شرر": {
+"freq": 30,
+"bridge_z": 0.62,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -1.0,
+"role": "member",
+"partners": [
+"طغی",
+"مسس",
+"جنب"
+]
+},
+"ءسف": {
+"freq": 30,
+"bridge_z": 2.29,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -1.17,
+"role": "connector / bridge",
+"partners": [
+"ءخو",
+"ءبو",
+"حدث"
+]
+},
+"مدد": {
+"freq": 29,
+"bridge_z": 1.17,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -1.37,
+"role": "member",
+"partners": [
+"ظلل",
+"مول",
+"زوج"
+]
+},
+"وثق": {
+"freq": 29,
+"bridge_z": 1.56,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.94,
+"role": "member",
+"partners": [
+"رفع",
+"عهد",
+"فوق"
+]
+},
+"بدو": {
+"freq": 29,
+"bridge_z": 0.88,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.83,
+"role": "member",
+"partners": [
+"خفی",
+"ودد",
+"صدر"
+]
+},
+"حیث": {
+"freq": 29,
+"bridge_z": 2.0,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.51,
+"role": "connector / bridge",
+"partners": [
+"شعر",
+"سجد",
+"حرم"
+]
+},
+"هود": {
+"freq": 29,
+"bridge_z": 1.38,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.85,
+"role": "member",
+"partners": [
+"نصر",
+"لعن",
+"حزن"
+]
+},
+"رفع": {
+"freq": 29,
+"bridge_z": -0.12,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.81,
+"role": "member",
+"partners": [
+"فوق",
+"وثق",
+"عرش"
+]
+},
+"وسع": {
+"freq": 29,
+"bridge_z": -0.29,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.53,
+"role": "member",
+"partners": [
+"عفو",
+"جنح",
+"فضل"
+]
+},
+"صیر": {
+"freq": 29,
+"bridge_z": 2.51,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.64,
+"role": "connector / bridge",
+"partners": [
+"ءوی",
+"بءس",
+"جهنم"
+]
+},
+"صرف": {
+"freq": 29,
+"bridge_z": 1.26,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.7,
+"role": "member",
+"partners": [
+"جدل",
+"کید",
+"قرء"
+]
+},
+"نصب": {
+"freq": 29,
+"bridge_z": 1.32,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.96,
+"role": "member",
+"partners": [
+"ترک",
+"مسس",
+"نسو"
+]
+},
+"کید": {
+"freq": 29,
+"bridge_z": 0.75,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.98,
+"role": "member",
+"partners": [
+"صرف",
+"قطع",
+"فلح"
+]
+},
+"ءفک": {
+"freq": 29,
+"bridge_z": 0.85,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.84,
+"role": "member",
+"partners": [
+"ءثم",
+"فری",
+"خلو"
+]
+},
+"یقن": {
+"freq": 28,
+"bridge_z": -0.44,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.89,
+"role": "member",
+"partners": [
+"ریب",
+"حوط",
+"زکو"
+]
+},
+"خلو": {
+"freq": 28,
+"bridge_z": 4.2,
+"family": 3,
+"family_label": "رسل · ءیی · قبل",
+"hub_z": -0.65,
+"role": "connector / bridge",
+"partners": [
+"ءمم",
+"قبل",
+"قرن"
+]
+},
+"ءبد": {
+"freq": 28,
+"bridge_z": 2.4,
+"family": 7,
+"family_label": "جنن · دخل · نهر",
+"hub_z": -0.88,
+"role": "connector / bridge",
+"partners": [
+"تحت",
+"خلد",
+"جری"
+]
+},
+"ودد": {
+"freq": 28,
+"bridge_z": -0.51,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.56,
+"role": "member",
+"partners": [
+"طوف",
+"بدو",
+"خفی"
+]
+},
+"سعی": {
+"freq": 28,
+"bridge_z": 1.2,
+"family": 8,
+"family_label": "عمل · نفس · ءخر",
+"hub_z": -1.26,
+"role": "member",
+"partners": [
+"فسد",
+"رجل",
+"تحت"
+]
+},
+"ثلث": {
+"freq": 28,
+"bridge_z": -0.23,
+"family": 1,
+"family_label": "وقی · خیر · بنو",
+"hub_z": -0.67,
+"role": "member",
+"partners": [
+"ورث",
+"ترک",
+"نسو"
+]
+},
+"عسی": {
+"freq": 28,
+"bridge_z": 0.68,
+"family": 2,
+"family_label": "رحم · ءمر · غفر",
+"hub_z": -0.63,
+"role": "member",
+"partners": [
+"توب",
+"کره",
+"حدث"
+]
+},
+"غلب": {
+"freq": 28,
+"bridge_z": 2.33,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -1.01,
+"role": "connector / bridge",
+"partners": [
+"سحر",
+"حشر",
+"فرعن"
+]
+},
+"دری": {
+"freq": 28,
+"bridge_z": 0.37,
+"family": 4,
+"family_label": "کتب · حقق · عبد",
+"hub_z": -1.18,
+"role": "member",
+"partners": [
+"سوع",
+"قرب",
+"نسو"
+]
+},
+"حوط": {
+"freq": 27,
+"bridge_z": 1.54,
+"family": 0,
+"family_label": "کلل · سمو · ءنس",
+"hub_z": -0.85,
+"role": "member",
+"partners": [
+"وری",
+"خبر",
+"یقن"
+]
+},
+"ءین": {
+"freq": 27,
+"bridge_z": 2.48,
+"family": 5,
+"family_label": "یوم · عذب · ظلم",
+"hub_z": -0.99,
+"role": "connector / bridge",
+"partners": [
+"عصی",
+"ندو",
+"وجه"
+]
+},
+"جدل": {
+"freq": 27,
+"bridge_z": 2.39,
+"family": 6,
+"family_label": "هدی · ضلل · سبل",
+"hub_z": -0.83,
+"role": "connector / bridge",
+"partners": [
+"سلط",
+"صرف",
+"بطل"
+]
+}
+}
+}

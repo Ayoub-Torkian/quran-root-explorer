@@ -29,6 +29,18 @@ INK = "#10243A"
 def _semf(_cid):
     return _SEMF.build(corpus)
 
+@st.cache_resource(show_spinner=False)
+def _graphfeat():
+    """Precomputed per-concept GRAPH features (bridge_z, dcSBM family, hub_z, partners).
+    Built offline by research/intrinsic/scripts/precompute_concept_graph.py — the app only READS."""
+    import json as _json, os as _os
+    try:
+        _p = _os.path.join(_os.path.dirname(__file__), "..", "concept_graph_features.json")
+        with open(_p, encoding="utf-8") as _f:
+            return _json.load(_f)["concepts"]
+    except Exception:
+        return {}
+
 # a verse's ▶ links to ?play=S:A → open it in Read and recite there (shared hand-off helper)
 reader_play_handoff()
 _MP = ()                            # translation language(s); Off by default, set from the selector each run
@@ -515,6 +527,14 @@ if kind in ("root", "word") and roots:
         _prof.append(("Nearest in meaning", f"{_nb[0][0]} · {_nb[0][1]:.2f}"))
     if _ph:
         _prof.append(("Signature phrase (mathānī)", f"{_ph[0][0]}"))
+    _gf = _graphfeat().get(normalize_letters(str(sorted(roots)[0])))
+    if _gf:
+        _badge = {"connector / bridge": "🌉 connector / bridge",
+                  "family anchor (hub)": "⭐ family anchor (hub)"}.get(_gf["role"], "member")
+        _zt = (f" · betweenness z {_gf['bridge_z']:+g}" if _gf["bridge_z"] >= 2
+               else (f" · within-family z {_gf['hub_z']:+g}" if _gf["hub_z"] >= 2 else ""))
+        _prof.append(("Network role", f"{_badge}{_zt}"))
+        _prof.append(("Concept family", _gf["family_label"]))
     _prow = "".join(
         "<tr><td style='padding:2px 14px 2px 0;color:#10243A;font-size:13px'>%s</td>"
         "<td style='padding:2px 0;color:#1D3557;font-weight:700;font-size:13px' dir='auto'>%s</td></tr>" % (k, v)
