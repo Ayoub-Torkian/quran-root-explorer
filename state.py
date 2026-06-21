@@ -42,8 +42,8 @@ NAV_SECTIONS = [
             ("pages/36_Cross_References.py", "Cross-References", "🔗"),
         ]),
         ("Roots & relations", [
-            ("pages/1_Per_Root_Profile.py", "Per-Root Profile", "🔍"),
-            ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive", "🔬"),
+            ("pages/1_Per_Root_Profile.py", "Per-Root Profile · stats", "🔍"),
+            ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive · fusion", "🔬"),
             ("pages/2_Network.py", "Network", "🌐"),
             ("pages/3_Motifs.py", "Motifs", "🔺"),
             ("pages/5_Compare_Heatmaps.py", "Compare & Heatmaps", "📊"),

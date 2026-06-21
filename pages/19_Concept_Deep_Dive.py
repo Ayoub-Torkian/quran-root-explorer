@@ -524,37 +524,21 @@ st.markdown(f"**Beyond-chance null** (areal evenness vs frequency-matched scramb
 if dist["hotspot_surahs"]:
     st.markdown("**top surahs by occurrence:** " +
                 ", ".join(f"s{su}×{n}" for su, n in dist["hotspot_surahs"][:8]))
-_prof = _surah_profile(id(corpus), target)
-if _prof:
-    cs1, cs2 = st.columns([2, 1])
-    with cs1:
-        _xs = list(range(1, 115))
-        _figp = _go.Figure(_go.Bar(
-            x=_xs, y=[_prof.get(s, 0) for s in _xs],
-            marker_color=["#E63946" if s in _MEDC else "#1D9E75" for s in _xs],
-            hovertemplate="sūra %{x}: %{y}×<extra></extra>"))
-        _figp.update_layout(height=270, margin=dict(l=10, r=10, t=40, b=10),
-                            title="occurrences across all 114 sūras "
-                                  "(🟩 Meccan · 🟥 Medinan — control-only)",
-                            xaxis_title="sūra (muṣḥaf order)", yaxis_title="count")
-        st.plotly_chart(_figp, use_container_width=True)
-        st.caption("❓ the full positional profile behind the hotspot list. Read with the order "
-                   "lenses: adjacent sūras cohere beyond length (#57); some features ride "
-                   "revelation-time waves (#70). The Meccan/Medinan cut is a human frame — "
-                   "control, never a claim.")
-    with cs2:
-        _figz = _go.Figure()
-        _figz.add_trace(_go.Bar(x=["real"], y=[null["real"]], marker_color="#1D3557",
-                                showlegend=False))
-        _figz.add_trace(_go.Bar(x=["scramble"], y=[null["null_mean"]],
-                                error_y=dict(type="data", array=[2 * null["null_sd"]]),
-                                marker_color="#B4B2A9", showlegend=False))
-        _figz.update_layout(height=270, margin=dict(l=10, r=10, t=40, b=10),
-                            title=f"areal evenness vs null (z={null['z']})")
-        st.plotly_chart(_figz, use_container_width=True)
-        st.caption("❓ dark = real statistic; grey = frequency-matched scramble ±2σ. Inside the "
-                   "grey band = chance-level — most concepts are, and that honest null is the "
-                   "design stance.")
+# The full 114-sūra positional bar + multi-root comparison live in 🔍 Per-Root Profile (stats &
+# comparison) — not duplicated here. This page keeps only its OWN contribution: the beyond-chance
+# areal NULL test (de-dup 2026-06-21).
+st.caption("Full positional distribution & multi-root comparison → see 🔍 **Per-Root Profile**. "
+           "Below is this page's unique contribution — the beyond-chance areal test.")
+_figz = _go.Figure()
+_figz.add_trace(_go.Bar(x=["real"], y=[null["real"]], marker_color="#1D3557", showlegend=False))
+_figz.add_trace(_go.Bar(x=["scramble"], y=[null["null_mean"]],
+                        error_y=dict(type="data", array=[2 * null["null_sd"]]),
+                        marker_color="#B4B2A9", showlegend=False))
+_figz.update_layout(height=270, margin=dict(l=10, r=10, t=40, b=10),
+                    title=f"areal evenness vs null (z={null['z']})")
+st.plotly_chart(_figz, use_container_width=True)
+st.caption("❓ dark = real statistic; grey = frequency-matched scramble ±2σ. Inside the grey band "
+           "= chance-level — most concepts are, and that honest null is the design stance.")
 
 if res["senses"]:
     layer(5, "SURFACE-FORM SENSES  (the sense geography)")
@@ -588,11 +572,8 @@ if res["senses"]:
             st.markdown("**co-locators:**")
             _show_chips([r for r, a, p in s["share"]], n=6)
 
-mrows = res["morphology"]
-if mrows and isinstance(mrows[0], dict) and "error" not in mrows[0]:
-    layer(6, "MORPHOLOGY  (attached particles)")
-    import pandas as pd
-    st.dataframe(pd.DataFrame(mrows), use_container_width=True, hide_index=True)
+# Morphology (attached particles) lives on the dedicated 🧬 Morphology page and in Per-Root Profile —
+# removed here to de-duplicate (2026-06-21). This page keeps only its UNIQUE multimodal analysis.
 
 st.divider()
 layer(7, "REPORT  (Word · three registers)")
