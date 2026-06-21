@@ -66,10 +66,48 @@ def build(corpus, min_freq=5, k=100):
     vvn = vv / (np.linalg.norm(vv, axis=1, keepdims=True) + 1e-9)
     return {
         "vocab": vocab, "vi": vi, "En": En, "k": kk,
-        "refs": refs, "vvn": vvn,
+        "refs": refs, "vvn": vvn, "vroots": vroots,
         "ref2i": {refs[i]: i for i in range(len(refs))},
         "freq": dict(fr),
     }
+
+
+def relate(M, s, a, topn=8):
+    """Verses nearest (s, a) in meaning, EACH with its DATA-DRIVEN reason so the claim is
+    transparent and criticisable:
+      (sura, ayah, similarity, shared_roots, bridge)
+    where similarity = cosine of the two verses' embedding vectors (the ranking criterion),
+    shared_roots = roots literally common to both, and bridge = the single most semantically
+    aligned cross-pair (root_in_A, root_in_B, their cosine) — i.e. WHY they're linked even
+    when no word is shared. Nothing arbitrary: every field is a measured number the user can check."""
+    En, vi = M["En"], M["vi"]
+    i = M["ref2i"].get((int(s), int(a)))
+    if i is None or not M["vvn"][i].any():
+        return []
+    sims = M["vvn"] @ M["vvn"][i]
+    order = np.argsort(-sims)
+    ri = [r for r in M["vroots"][i] if r in vi]
+    out = []
+    for j in order:
+        if j == i:
+            continue
+        rjset = M["vroots"][j]
+        rj = [r for r in rjset if r in vi]
+        shared = sorted(set(ri) & rjset)
+        bridge = None
+        best = -1.0
+        for x in ri:
+            vx = En[vi[x]]
+            for y in rj:
+                if y == x:
+                    continue
+                sc = float(vx @ En[vi[y]])
+                if sc > best:
+                    best, bridge = sc, (x, y, sc)
+        out.append((M["refs"][j][0], M["refs"][j][1], float(sims[j]), shared, bridge))
+        if len(out) >= topn:
+            break
+    return out
 
 
 def root_neighbors(M, root, topn=12):

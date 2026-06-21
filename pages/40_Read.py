@@ -366,13 +366,32 @@ with st.expander("📐 What this āyah is part of — its place in the Qur'ān's
 #    structure: verses nearest THIS āyah in meaning, including links the words alone miss
 #    (e.g. Ikhlās → other "your God is One God" verses that share no wording). ──
 with st.expander("📎 Related verses — by meaning (connections the words alone would miss)"):
-    st.caption("The verses nearest this āyah in meaning — from the Qur'ān's own semantic structure, "
-               "not keyword overlap. Tap one to read it (hover to preview).")
     _ra = int(cur_a) if cur_a else 1
     _M = _semf(id(corpus))
-    _rel = _SEMF.related_verses(_M, int(sel), _ra, topn=8)
+    _rel = _SEMF.relate(_M, int(sel), _ra, topn=8)
     if _rel:
-        _jump_btns([(s, a) for s, a, _sim in _rel], "relv", cur=(int(sel), _ra))
+        with st.container(key="readcol"):
+            for _rs, _raj, _sim, _sh, _br in _rel:
+                _why = []
+                if _sh:
+                    _why.append("shared root <b>" + "·".join(_sh[:3]) + "</b>")
+                if _br:
+                    _why.append("concept‑bridge <b>%s↔%s</b> (%.2f)" % (_br[0], _br[1], _br[2]))
+                _c = st.columns([5, 1], vertical_alignment="center")
+                _c[0].markdown(
+                    "<div style='font-size:13px;color:#10243A;padding:3px 0'>"
+                    "<b style='color:#1D3557'>%d:%d</b> "
+                    "<span style='background:#1D9E75;color:#fff;border-radius:5px;padding:0 6px;"
+                    "font-weight:700'>%.0f%%</span> &nbsp;<span style='color:#10243A'>why: %s</span></div>"
+                    % (_rs, _raj, _sim * 100, " · ".join(_why) if _why else "semantic proximity only"),
+                    unsafe_allow_html=True)
+                if _c[1].button("read →", key=f"relv_{_rs}_{_raj}", use_container_width=True):
+                    st.session_state["_jump_to"] = (_rs, _raj)
+                    st.rerun()
+        st.caption("Why these: ranked by cosine similarity over the Qur'ān's OWN semantic embedding "
+                   "(PPMI co‑occurrence → SVD; frequency‑normalised). The “why” is the measured reason — "
+                   "a shared root, or the strongest concept‑bridge when no word is shared. No editorial "
+                   "choice: every number is checkable, so you can judge or reject each link yourself.")
     else:
         st.caption("· No meaning‑neighbours for this āyah (no indexed content roots).")
 

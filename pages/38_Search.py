@@ -542,6 +542,10 @@ if kind in ("root", "word") and roots:
                                   help=f"meaning {sm:.2f} — open this verse"):
                     st.session_state._pending_q = f"{vs}:{va}"
                     st.rerun()
+    if _nb or _mv:
+        st.caption("Criterion for ‘related by meaning’: cosine over the corpus's OWN semantic embedding "
+                   "(PPMI co‑occurrence → SVD, frequency‑normalised). The ·score is the measured reason — "
+                   "data‑driven, not editorial. Each link is checkable, so you can critique or reject it.")
 
 if kind in ("root", "word") and roots:
     _tl = nuzul_timeline(roots)
