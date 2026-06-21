@@ -330,6 +330,9 @@ with st.expander("📐 What this āyah is part of — its place in the Qur'ān's
                 st.markdown(f"- `{' · '.join(_f['roots'])}` — recurs in **{_f['n_suras']} chapters** "
                             f"({_f['support']} verses)")
                 _jump_btns(_f.get("verses", []), f"tmpl{_fi}", cur=(int(sel), _aysel))
+            st.caption("Measured: these root-combinations really do recur. But when tested (2026-06), "
+                       "their 3-way co-occurrence reduces to chapter topic — a topical recurrence, "
+                       "not a designed higher-order code. Read it as a topic signal, not a hidden pattern.")
         else:
             st.caption("· Not part of a book-wide recurring template — a mostly unique combination of ideas.")
         _th = _CX.get("sura_theme", {}).get(int(sel))
