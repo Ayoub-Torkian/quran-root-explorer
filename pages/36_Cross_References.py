@@ -132,6 +132,19 @@ st.markdown(
     f"<span style='font-size:13px;color:#10243A'>{refs[qi]} · {sname.get(sura[qi],'')}</span><br>{hl_text(qi, crootsets[qi])}</div>",
     unsafe_allow_html=True)
 st.caption("Roots: " + " · ".join(sorted(rootsets[qi])))
+# copy the CURRENT focus āyah (re-rendered every step, so it always copies wherever you are in the
+# walk) — isolated component iframe, same proven pattern as Search's "Copy these verses".
+import json as _json
+_focus_payload = _json.dumps(
+    f"{refs[qi]} · {sname.get(sura[qi],'')}\n{disp[qi]}\nRoots: " + " · ".join(sorted(rootsets[qi])))
+st.components.v1.html(
+    "<button id='cpf' style='font-size:13px;border:1px solid #cfe4dc;background:#eef4f1;"
+    "color:#0F6E56;border-radius:7px;padding:4px 12px;cursor:pointer;font-weight:700;"
+    "font-family:sans-serif'>📋 Copy this āyah</button>"
+    "<script>const F=" + _focus_payload + ";document.getElementById('cpf').onclick=function(){"
+    "navigator.clipboard.writeText(F);this.textContent='✓ copied';"
+    "setTimeout(function(){document.getElementById('cpf').textContent='📋 Copy this āyah'},1200)};</script>",
+    height=36)
 _xs, _xa = refs[qi].split(":")                     # read the whole sūra from this āyah
 _SR.peek(corpus, int(_xs), int(_xa))
 
