@@ -114,6 +114,7 @@ if "xref_act" in st.session_state:
         st.session_state.xref_path = p[:p.index(idx) + 1]
 path = st.session_state.get("xref_path", [qi_start])
 qi = path[-1]
+rel = related(qi, k, excl, frozenset(path))     # current layer's parallels — computed up-front so Copy can bundle them
 
 # breadcrumb (click to walk back)
 if len(path) > 1:
@@ -132,9 +133,15 @@ st.markdown(
     f"<span style='font-size:13px;color:#10243A'>{refs[qi]} · {sname.get(sura[qi],'')}</span><br>{hl_text(qi, crootsets[qi])}</div>",
     unsafe_allow_html=True)
 st.caption("Roots: " + " · ".join(sorted(rootsets[qi])))
-# copy the CURRENT focus āyah (re-rendered every step, so it always copies wherever you are in the walk)
-copy_button(f"{refs[qi]} · {sname.get(sura[qi],'')}\n{disp[qi]}\nRoots: "
-            + " · ".join(sorted(rootsets[qi])))
+# copy the focus āyah AND every parallel in the current layer (the whole cluster you're looking at)
+copy_button(
+    "\n\n".join(
+        [f"{refs[qi]} · {sname.get(sura[qi],'')}\n{disp[qi]}\nRoots: " + " · ".join(sorted(rootsets[qi]))]
+        + ([f"— Layer {len(path)} · {len(rel)} parallels —"] if rel else [])
+        + [f"{refs[j]} · {sname.get(sura[j],'')}  {score*100:.0f}%  shared "
+           + " · ".join(sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])) + f"\n{disp[j]}"
+           for score, j in rel]),
+    label="📋 Copy āyah + its layer")
 _xs, _xa = refs[qi].split(":")                     # read the whole sūra from this āyah
 _SR.peek(corpus, int(_xs), int(_xa))
 
@@ -144,7 +151,6 @@ st.markdown(
     f"Layer {len(path)} · follow a parallel to walk deeper</div>"
     f"<div style='font-size:12px;color:#10243A;margin:0 0 4px 2px'>Each ‘follow’ adds a layer; "
     f"your path is the breadcrumb above.</div>", unsafe_allow_html=True)
-rel = related(qi, k, excl, frozenset(path))
 if not rel:
     st.info("No further parallels (content roots exhausted on this walk). Step back in the breadcrumb.")
 for score, j in rel:
