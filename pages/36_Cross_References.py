@@ -146,7 +146,7 @@ if not rel:
     st.info("No further parallels (content roots exhausted on this walk). Step back in the breadcrumb.")
 for score, j in rel:
     shared = sorted(crootsets[qi] & crootsets[j], key=lambda x: -idf[x])
-    col = st.columns([6, 1], vertical_alignment="center")
+    col = st.columns([9, 1], vertical_alignment="center")
     col[0].markdown(
         f"<div style='border:1px solid #cfe4dc;border-radius:8px;padding:8px 14px;margin:6px 0;"
         f"background:#FFFFFF;display:flex;align-items:center;gap:14px;overflow:hidden'>"
