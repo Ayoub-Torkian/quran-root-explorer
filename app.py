@@ -300,60 +300,23 @@ def tab_visualize(R):
 
 
 def tab_export(corpus, R):
-    layer(1, "What an export contains")
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Excel sheets", "13")
-    c2.metric("Charts", "4")
-    c3.metric("PDF pages", "4")
-    total = (len(R["occurrences"]) + len(R["cooc_tbl"]) + len(R["sforms"])
-             + len(R["pmotifs"]) + len(R["triangles"]))
-    c4.metric("Data rows", total)
-
-    st.divider()
-    layer(2, "One-click downloads")
-    meta = {
-        "Input roots": " ".join(R["input_roots"]),
-        "Normalization": "ON" if R["normalize"] else "OFF (exact)",
-        "Co-occurrence scope": "same ayah",
-        "Top partners": R["top_partners"],
-        "Min edge weight": R["min_weight"],
-        "Ayahs in corpus": corpus.n_ayahs,
-        "Ayahs matched": len(R["match_ayahs"]),
-    }
-    figures = [
-        ("01_summary_distribution.png", A.plot_surah_distribution(R["occurrences"])),
-        ("02_top_partners.png", A.plot_top_partners(R["partners"], top=20)),
-        ("03_network.png", A.plot_network(R["graph"], set(R["input_roots"]))),
-        ("04_motif_summary.png", A.plot_triad_summary(R["triad"])),
-    ]
-    c1, c2, c3 = st.columns(3)
-    with tempfile.TemporaryDirectory() as td:
-        xlsx_out = Path(td) / "quran_root_analysis.xlsx"
-        A.export_excel(xlsx_out, summary=R["summary"], occurrences=R["occurrences"],
-            cooccurrence_tbl=R["cooc_tbl"], surface_forms=R["sforms"],
-            partner_motifs_tbl=R["pmotifs"], triangles_tbl=R["triangles"],
-            triad_summary=R["triad"], meta=meta, centrality=R["centrality"],
-            heatmap=R["heatmap"], overlap=R["overlap"], morphology=R["morphology"],
-            position=R["position"], rarity=R["rarity"], first_last=R["first_last"])
-        xlsx_bytes = xlsx_out.read_bytes()
-    c1.download_button("⬇️ Multi-sheet Excel", data=xlsx_bytes,
-                       file_name="quran_root_analysis.xlsx",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                       width='stretch')
-    zip_buf = io.BytesIO()
-    with zipfile.ZipFile(zip_buf, "w") as zf:
-        for name, fig in figures:
-            zf.writestr(name, A.figure_to_png_bytes(fig))
-    c2.download_button("⬇️ Charts (PNG zip)", data=zip_buf.getvalue(),
-                       file_name="quran_root_charts.zip", mime="application/zip",
-                       width='stretch')
-    with tempfile.TemporaryDirectory() as td:
-        pdf_out = Path(td) / "quran_root_charts.pdf"
-        A.figures_to_pdf([f for _, f in figures], pdf_out)
-        pdf_bytes = pdf_out.read_bytes()
-    c3.download_button("⬇️ Combined PDF", data=pdf_bytes,
-                       file_name="quran_root_charts.pdf", mime="application/pdf",
-                       width='stretch')
+    # The full export logic lives on the dedicated Export page (8_Export.py), built ON DEMAND.
+    # This tab used to eagerly rebuild an Excel workbook + PNG zip + PDF on EVERY home-page rerun
+    # (Streamlit renders all tab bodies each run) — a real perf drag and a duplicate surface.
+    # It's now a lightweight pointer, so the home page stays fast and there is ONE export surface.
+    layer(1, "Export & download")
+    with st.container(key="inputbar"):
+        st.markdown(
+            "<div class='t-body'>Full exports — every chart and table plus the Reading-Guide narrative, "
+            "as <b>PDF</b> · interactive <b>HTML</b> · multi-sheet <b>Excel</b> — are built "
+            "<b>on demand</b> on the dedicated Export page (kept off the home page so it stays fast).</div>",
+            unsafe_allow_html=True)
+        try:
+            st.page_link("pages/8_Export.py", label="Open the full Export page", icon="⬇️")
+        except Exception:
+            if st.button("⬇️  Open the full Export page", key="go_export"):
+                st.switch_page("pages/8_Export.py")
+    st.caption(f"It bundles everything for your current roots ({' · '.join(R['input_roots']) or '—'}).")
 
 
 def tab_display(R):
