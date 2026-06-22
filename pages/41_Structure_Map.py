@@ -8,7 +8,9 @@ research/intrinsic/MULTISCALE_STRUCTURE.md.
 import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
 
+import analysis as A
 import structure_scales as SS
 import surah_reader as _SR
 import meaning as _MEAN
@@ -46,6 +48,58 @@ def _compute(_cid):
         "themes": SS.quran_themes(corpus),
         "dist": SS.distribution_profiles(corpus),
     }
+
+
+@st.cache_data(show_spinner="Mapping the unit boundaries…")
+def _delineation(_cid):
+    """Sūra delineation. The Basmala is the DIVINE verse-initial delimiter that opens 113/114 sūras
+    (only Tawba/9 lacks it) → it marks 112 of the 113 internal boundaries deterministically. We pair
+    that marker with a CONTENT check: lexical cohesion across each seam vs the chapter interior; a seam
+    is 'content-confirmed' when cohesion also dips below the interior median. Pure-numpy, deployable."""
+    from collections import Counter
+    df = corpus.df; N = len(df)
+    su = [int(x) for x in df[A.COL_SURAH]]
+    names = {}
+    for i in range(N):
+        s = su[i]
+        if s not in names and A.COL_SURAH_NAME in df.columns:
+            names[s] = str(df.iloc[i][A.COL_SURAH_NAME])
+    norm = A.normalize_letters
+    vroots = [set(norm(t) for t in toks if t and t != "-") for toks in corpus.root_tokens]
+    fr = Counter(r for s in vroots for r in s)
+    drop = {r for r, _ in fr.most_common(10)}                 # drop ubiquitous (ءله، قول، کون…)
+    vocab = [r for r, k in fr.items() if k >= 5 and r not in drop]
+    vi = {r: j for j, r in enumerate(vocab)}
+    M = np.zeros((N, len(vocab)), np.float32)
+    for i, s in enumerate(vroots):
+        for r in s:
+            if r in vi: M[i, vi[r]] = 1.0
+    cs = np.vstack([np.zeros((1, M.shape[1])), np.cumsum(M, 0)]); w = 6
+    def coh(g):                                                # block cohesion across gap g | g+1
+        L = cs[g + 1] - cs[max(0, g - w + 1)]; R = cs[min(N, g + 1 + w)] - cs[g + 1]
+        a = np.linalg.norm(L); b = np.linalg.norm(R)
+        return float(L @ R / (a * b)) if a > 0 and b > 0 else 1.0
+    interior = [coh(g) for g in range(N - 1) if su[g] == su[g + 1]]
+    thr = float(np.median(interior))
+    starts = {}
+    for i in range(N):
+        if su[i] not in starts: starts[su[i]] = i
+    rows = []
+    for s in range(1, 115):
+        i = starts.get(s)
+        if i is None: continue
+        bas = (s != 9)                                        # Basmala opens every sūra except Tawba
+        cv = coh(i - 1) if i > 0 else 1.0                     # cohesion across the seam before this sūra
+        hard = bas and i > 0 and cv < thr                     # content also dips → content-confirmed
+        rows.append(dict(sura=s, name=names.get(s, ""), basmala=bas, cohesion=round(cv, 3),
+                         kind=("tawba" if not bas else ("hard" if hard else "soft"))))
+    bnd = rows[1:]                                            # the 113 internal boundaries (drop sūra-1 start)
+    return dict(rows=rows, bnd=bnd, thr=round(thr, 3),
+                basmala_total=sum(r["basmala"] for r in rows),
+                basmala_marked=sum(r["basmala"] for r in bnd),
+                hard=sum(1 for r in bnd if r["kind"] == "hard"),
+                bnd_mean=round(float(np.mean([r["cohesion"] for r in bnd])), 3),
+                interior_mean=round(float(np.mean(interior)), 3))
 
 
 D = _compute(id(corpus))

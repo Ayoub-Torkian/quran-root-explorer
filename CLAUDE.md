@@ -77,6 +77,57 @@
 - North star: define what a **Sūra** and an **Āyah** are (necessary AND sufficient), and show why the units
   must have the **current arrangement/configuration**.
 
+## SEMANTIC METHOD — MEANING FROM THE WHOLE DATASET (LOCKED 2026-06-21, honor EVERY session — do not forget)
+- **A concept's meaning MUST be read from its WHOLE dataset** (every occurrence) — never one verse or the
+  lexicon alone. **Consider ALL cases.**
+- **NEW, NON-TRADITIONAL senses can and do emerge** from the data and must not be excluded (measured: غفر =
+  cosmic-cover · grace/elevation · juridical-pardon; طغي = moral-straying vs tyrant-transgression).
+- **SENSE COUNT IS A LOWER BOUND, never complete.** Senses are a soft continuum (no hard count); the number
+  found is resolution-dependent — MORE emerge at finer resolution. Auto k-selection UNDER-counts because
+  (1) a frequency-dominant sense masks rarer ones (وقي's taqwā blob hides protection/shield/saved),
+  (2) the continuum has no clean valleys, (3) content-context clustering misses MORPHOLOGICALLY-distinct senses
+  (قلب-organ vs قلب-to-turn). Treat discovered senses as a floor; resolve more via frequency-balanced
+  clustering · morphological awareness · per-occurrence contextual (FM) senses. (قلب≥3: sound/trembling/sealed
+  heart + the turning sense; وقي ≫ 2.)
+  - **EXEMPLAR — the ANATOMY OF THE HEART: قلب·صدر·فؤاد (co-reference-merged) carry ~27 graded states (not 3),
+    OPEN/growing, measured (lift to 40×):** CLOSED/afflicted = sealed طبع·ختم · locked قفل · wrapped غلف ·
+    covered كنن · rusted رين · hardened قسو · diseased مرض · constricted ضيق · straitened حرج · deviating زيغ ·
+    terror رعب · startled فزع · steeped شرب · turned-away صرف · restricted حصر · bigoted حمي; OPEN/living =
+    trembling وجل · throbbing وجف · throat-reaching بلغ · strengthened ربط · humbled خشع · yielding خضع ·
+    softened لين · tender رءف · tranquil طمن · inclined هوي · sound سليم. PROVES at once: (a) sense count is a
+    deep LOWER BOUND (~27, not 3); (b) CO-REFERENCE is necessary — ضيق·حرج occur 0× with قلب, only with صدر;
+    (c) القرآن يفسر بعضه بعضا — the state-word interprets the heart's condition. Flagship app candidate ("Anatomy
+    of the Heart" navigator). Auto-k missed these (each rare; dominant organ-sense masks).
+- **Method = القرآن يفسر بعضه بعضا as METHOD:** gather all occurrences → describe each by its neighbours →
+  cluster contexts → senses emerge → **SENSE-RESOLVE before any semantic/thematic claim** (work with root-SENSES,
+  not blurred whole-root averages, which mush distinct senses together).
+- **DYNAMIC/ADAPTIVE stance:** graph/topology/semantic nulls are **PROVISIONAL, never definitive** — the
+  instrument is the limit (BASE-TRUTH). Re-test as senses / revelation-order / reading-order / weighting are
+  woven in. The web is a **dynamic landscape** (like a food web shifting with season), not one frozen graph.
+  (Proof it matters: "small-world" read null on the dense graph but REVIVED σ=11.5 on the sparse backbone.)
+- **SENSE-CHANGE IS A WEB-ALTERING EDIT (LOCKED).** Re-assigning one root's SENSE (polysemy) redistributes that
+  node's edges and can cascade through communities/bridges/paths — the SAME family of operation as adding /
+  deleting / moving a verse (which is proven to cascade: two-wounds move-cost t=22). It is high-leverage, never a
+  mere relabel. Measure such sensitivity with a STABLE/DETERMINISTIC instrument (spectral, or specific
+  betweenness change) — stochastic Louvain (run-to-run ARI ~0.5) is too unstable to detect it.
+- **SYNONYMY/CO-REFERENCE needs REFERENT grounding, not distribution.** Different roots can denote ONE referent
+  with one role-set (رسول · نبي · محمد · أحمد → the Prophet; roots رسل/نبأ/حمد). Co-occurrence similarity does
+  NOT capture this (it conflates synonym vs associate vs antonym: شمس~قمر, شرق~غرب score high). True
+  synonyms/co-referents are SUBSTITUTABLE (similar context + LOW co-occurrence); full merge needs referent
+  knowledge. The semantic node is ultimately a CONCEPT/REFERENT = (polysemy-split) AND (co-reference-merged).
+
+## WEB / GRAPH-THEORETIC LENS — UNIVERSAL MASTER FRAME (LOCKED 2026-06-21, never forget)
+- Graph theory / the WEB is the UNIVERSAL structure of complex designed systems — biological & food webs,
+  gene-regulatory networks, language, matter (atoms→molecules→lattices). **The Qur'ān is an INSTANCE of it,
+  not an exception.** ALWAYS analyse it as a web: nodes (concept-SENSES · verses · sūras) + edges (co-occurrence ·
+  attraction · echo · explanation/disambiguation), measured with graph tools — communities, motifs, centrality /
+  bridges, small-world, cycles, trophic/role structure, DYNAMICS — never as a flat list or a tree.
+- Established here: WEB-not-tree (309 cycles); self-interpreting web = القرآن يفسر بعضه بعضا; small-world σ=11.5;
+  modular z+39; feed-forward self-interpretation z+8–21 (sequential & within-verse, de-risked); verse-echo z+105;
+  node = CONCEPT/REFERENT = (polysemy-split) AND (co-reference-merged); web is DYNAMIC like a food web.
+- Corollary (with CORRESPONDENCE/TELESCOPE): any property of universal webs is a CANDIDATE to test on the Qur'ān;
+  nulls are provisional (instrument limit), re-test as aspects / senses / order / dynamics are woven in.
+
 ## Movement tracking (keep current)
 - Log EVERY research move in `research/intrinsic/JOURNEY_LOG.md` with a **date+time stamp** and its BEARING
   (→ toward goal · ↑ method · ✓ consolidation · ↻ drift), so we can see how much time each position cost.

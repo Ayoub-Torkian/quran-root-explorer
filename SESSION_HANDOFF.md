@@ -1,14 +1,49 @@
 # SESSION HANDOFF — Quran Root Explorer
 
 **One file to resume from.** Read this, then `CLAUDE.md` (locked working rules), then the file map below.
-Last updated: 2026‑06‑20.
+Last updated: 2026‑06‑21.
 
-> **Latest session (2026‑06‑20) in one breath:** built the per‑āyah **structural‑context panel** on the
-> Read page (concept‑bonds · mathānī templates · chapter theme · core‑vs‑pocket distribution — all with
-> data + analogies), added **jump‑links** (tap to read related verses, hover to preview), an always‑visible
-> **structure‑fingerprint chip**, and did an **IA reaudit** (0 orphans / 0 broken links; removed 5 dead nav
-> path refs; regrouped Concept Deep‑Dive; made Discovery Map the single "start here" with a three‑maps
-> signpost). New engine: `structure_scales.read_context()`. See §3a + §5. _Not yet confirmed live by user._
+> **Latest session (2026‑06‑21) in one breath:** (1) Built an **on‑corpus semantic engine**
+> (`semantic_features.py`: PPMI co‑occurrence → truncated SVD, pure‑numpy, cached) powering **meaning‑based
+> related‑verses + concept navigation** — wired into Search (design‑profile table, radial concept‑map,
+> meaning chips, all with a stated data‑driven criterion), Read (📎 related verses), Cross‑References.
+> (2) **Graph‑theoretic program** (verses/roots → concept network): **#1 bridges** (degree‑NORMALISED
+> betweenness vs degree‑preserving null — e.g. ظلم is a true connector) and **#2 dcSBM families + within‑family
+> hubs** are **banked into the product** via a precomputed `concept_graph_features.json` (built offline by
+> `research/intrinsic/scripts/precompute_concept_graph.py`; the app only READS it — no graph deps at runtime)
+> → two new rows on the Search profile ("Network role", "Concept family"). **#3 higher‑order (3‑way) — REFUTED**
+> (curveball null gave 6.6×/z+25.8 but the **Kirkwood** test shows it reduces to pairwise; grade ~25). **#4
+> temporal/multiplex — modest real residual** (finer‑than‑Meccan/Medinan timing‑homophily survives the
+> attribution control, z+4.1; multiplex degenerate in‑sandbox — semantic layer is PPMI‑derived; grade ~52).
+> All recorded in `GRADED_FINDINGS_LEDGER.md` + `JOURNEY_LOG.md`. (3) **Excel‑ready copy:** `copy_table()` TSV
+> helper in `state.py` → Cross‑refs copies *āyah + its whole layer* as columns; Deep‑Dive seed too.
+> (4) **Export catalogue reaudit:** new single‑root charts (revelation profile, network‑role scatter,
+> meaning‑neighbors), pairwise charts gated on single‑root, frequency‑baseline decluttered. (5) **IA reaudit:**
+> admin **Usage gated** out of public nav; **Concept Deep‑Dive de‑duplicated** (dropped morphology +
+> distribution‑bar, kept its unique fusion/null/senses/report); **Home Export tab slimmed to a pointer**
+> (kills an eager Excel/PDF/zip rebuild that ran every rerun); nav labels differentiated; **`deploy_git.py`
+> guarded** as stale. Calibration + `9_`/`8x` filename numbering checked and **left alone** (harmless).
+> **Bug fixes:** Visualize‑tab staleness (safety‑net recompute in `needs_recompute()` when selection drifts
+> from results), removed a figure‑cache that caused DuplicateElementId + stale gallery, restored a truncated
+> `36_Cross_References.py`, key‑collision hotfix. Staleness + de‑dup + gallery fixes **confirmed live**;
+> Export‑tab pointer deployed (deterministically fixed, live eyeball pending the Space's slow cold‑boot).
+
+> **⚙️ OPERATIONAL GOTCHAS (cost real time — read before deploying/verifying):**
+> - **Deploy = direct `git push origin main && git push hf main`** (the USER runs it; the sandbox is proxy‑blocked
+>   from huggingface.co and has no GitHub creds). **`deploy_git.py` is STALE/guarded — do NOT use it** (its
+>   rename map would break the nav).
+> - **HF Space sleeps → every push = a slow cold‑boot (~1‑2 min)**; live verification is flaky during boot
+>   (tabs die, theme‑chips register as hover). **BATCH several changes into one push** to cut rebuilds.
+> - **The bash mount serves STALE/truncated content for recently‑edited files.** The **Read tool is the source
+>   of truth.** Validate edits by reconstructing from a fresh `git clone` in `/tmp` (`/tmp/dep`) + `compile()`,
+>   NOT by reading the mount. (A truncated mount view once got committed → broke a page.)
+> - **`state.py` and `app.py` have a leading BOM** → `compile()` falsely errors unless you read with
+>   `encoding="utf-8-sig"`. Python's importer handles the BOM fine; it's a false alarm.
+> - **Streamlit `st.tabs` renders ALL tab bodies every run** (hidden too) — never put expensive work in a tab
+>   body (the old Home Export tab rebuilt Excel/PDF/zip on every rerun). **Widget keys must be globally unique**
+>   (a reused `key="inputbar"` crashed the whole home page).
+> - **Per‑concept graph features** live in `concept_graph_features.json` (top‑300 concepts). To refresh:
+>   `python research/intrinsic/scripts/precompute_concept_graph.py` (needs networkx + sklearn, offline).
 
 ---
 

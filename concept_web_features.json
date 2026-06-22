@@ -1,0 +1,30 @@
+{
+  "_doc": "Web-level (graph-theoretic) characterization of the Qur'an concept network + the locked necessity principle, tied into the backend so engines/app read ONE source. Companion to concept_graph_features.json (per-node) — this is the WHOLE-WEB layer. Built /tmp/nest.py + /tmp/mod.py (curveball/margin-preserving nulls). 2026-06-21.",
+  "principle": {
+    "exegetical_name": "القرآن يفسر بعضه بعضا — the Qur'an explains itself, part by part (tafsīr al-Qur'ān bi'l-Qur'ān)",
+    "exegetical_mapping": "this classical principle IS the web construct: nodes interpreted by connected nodes; tafsīr-by-Qur'an = graph traversal; mutual (بعضه بعضا) ⇒ WEB with cycles, not a tree (no privileged root). Edges='illuminates'; feed-forward motifs (z+8.3)=explained directly+via intermediate; cycles (z+3.8)=reciprocal interpretation; communities (z+39)=interpretive fields; single connected component=every part reachable=self-interpreting whole. Necessity: a part's meaning is conferred by the parts that interpret it; relocation severs those edges ⇒ meaning lost.",
+    "name": "context constitutes meaning (holism)",
+    "intra": "a part's meaning is fixed by its own whole (sūra) — like an electron's state set by its atom",
+    "inter": "a unit's meaning/role is fixed by its bonds to other units — like inter-atomic bonding/valence",
+    "topology": "directed WEB (food-web), NOT a hierarchy/tree — graph theory is the native instrument",
+    "necessity": "a unit can't move because its meaning IS its position-in-the-whole + its bonds; relocation = a different object (cf. Ca²⁺ / Cr²⁻)",
+    "analog": "electron configuration (intra) + chemical bonding/valence (inter); Qur'an = molecule/lattice"
+  },
+  "web_type": "dense, significantly MODULAR (themed compartments), NOT nested, NOT small-world",
+  "metrics": {
+    "object": "concept co-occurrence graph (top-120 content roots, top-10 ubiquitous dropped)",
+    "connectance": 0.45,
+    "modularity": {"Q": 0.090, "null_mean": 0.030, "null_sd": 0.002, "z": 39.0, "null": "curveball (verse-length + root-freq preserved)", "communities": 5, "verdict": "MODULAR beyond chance [MEASURED]"},
+    "nestedness": {"NODF": 70.72, "null_mean": 71.52, "null_sd": 0.22, "z": -3.7, "null": "curveball (sūra-richness + root-freq)", "verdict": "ANTI-nested [MEASURED] (refutes nested-food-web hypothesis)"},
+    "small_world": {"sigma": 1.01, "clustering": 0.942, "path_len": 1.06, "verdict": "NOT small-world (graph too dense at top-120) [MEASURED]"},
+    "degree": {"mean": 111, "max": 119, "min": 86, "heterogeneity_cv": 0.06}
+  },
+  "inter_surah_web": {
+    "object": "sūra-sūra shared-concept backbone (top-4 partners each)",
+    "edges": 422, "tree_edges_would_be": 113, "independent_cycles": 309, "avg_clustering": 0.331,
+    "keystone_cascade": {"remove_top20pct_betweenness_giant": 0.70, "remove_random20pct_giant": 0.81, "verdict": "load-bearing keystones [MEASURED]"},
+    "verdict": "WEB not tree, decisively [MEASURED]"
+  },
+  "grade": "~60-70 (MEASURED, rigorous curveball null; modularity confirms+quantifies banked communities; web-type characterized)",
+  "consumes_into": ["pages/39_Concept_Atlas.py (colour-by-community already exists; can surface web-type + modularity z)", "research/intrinsic/NECESSITY_PROGRAM.md"]
+}

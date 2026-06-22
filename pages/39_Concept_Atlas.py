@@ -10,7 +10,7 @@ import streamlit as st
 import networkx as nx
 from networkx.algorithms import community as nxcom
 import plotly.graph_objects as go
-from analysis import COL_SURAH, normalize_letters
+from analysis import COL_SURAH, COL_SURAH_NAME, COL_AYAH, normalize_letters
 from state import get_corpus, hero, layer, log_page
 
 st.set_page_config(page_title="Concept Atlas", page_icon="🗺️", layout="wide")
@@ -33,16 +33,41 @@ def _graphfeat(_cid):
     except Exception:
         return {}
 
+@st.cache_data(show_spinner=False)
+def _sura_names(_cid):
+    g = corpus.df.groupby(COL_SURAH)[COL_SURAH_NAME].first()
+    return {int(k): str(v) for k, v in g.items()}
+
 ROLE_COLOR = {"connector / bridge": "#E63946", "family anchor (hub)": "#EF9F27"}  # member → muted below
 ROLE_TAG = {"connector / bridge": "🌉 bridge", "family anchor (hub)": "⭐ hub"}
 
-@st.cache_data(show_spinner="Building the concept atlas…")
-def build_atlas(_cid, n_nodes=150, drop_ubiq=10, topk=3):
+@st.cache_data(show_spinner="Building the concept map…")
+def build_atlas(_cid, scope="all", sel=None, n_nodes=150, drop_ubiq=10, topk=3):
     N = len(corpus.df)
-    rootset = [set(r for r in corpus.root_tokens[i] if r and r != "-") for i in range(N)]
+    su = [int(x) for x in corpus.df[COL_SURAH]]
+    if scope == "sura":
+        idxs = [i for i in range(N) if su[i] == sel]; drop_ubiq, n_nodes = 6, 90
+    elif scope == "band":                              # relative-position band (DIVINE-ALT re-index)
+        ay = [int(float(x)) for x in corpus.df[COL_AYAH]]
+        order = {}
+        for i in range(N): order.setdefault(su[i], []).append(i)
+        for s in order: order[s].sort(key=lambda i: ay[i])
+        idxs = []
+        for s, rws in order.items():
+            L = len(rws)
+            if L < 5: continue                         # too short to band cleanly
+            for k, i in enumerate(rws):
+                if min(4, int(k / L * 5)) == sel: idxs.append(i)
+        drop_ubiq, n_nodes = 8, 120
+    else:
+        idxs = list(range(N))
+    rootset = [set(r for r in corpus.root_tokens[i] if r and r != "-") for i in idxs]
     docf = Counter()
     for s in rootset:
         for r in s: docf[r] += 1
+    if not docf:
+        return dict(nodes=[], docf={}, edges=[], theme_of={}, themes=[], nuz={}, pos={})
+    M = max(1, len(idxs))                              # probability base = āyāt in scope
     drop = {r for r, _ in docf.most_common(drop_ubiq)}
     nodes = [r for r, _ in docf.most_common() if r not in drop][:n_nodes]
     nodeset = set(nodes)
@@ -52,7 +77,7 @@ def build_atlas(_cid, n_nodes=150, drop_ubiq=10, topk=3):
         for a in range(len(rs)):
             for b in range(a + 1, len(rs)): co[(rs[a], rs[b])] += 1
     def ppmi(a, b, w):
-        pa = docf[a] / N; pb = docf[b] / N; pab = w / N
+        pa = docf[a] / M; pb = docf[b] / M; pab = w / M
         return max(0.0, math.log(pab / (pa * pb))) if pa * pb * pab > 0 else 0.0
     adj = {n: [] for n in nodes}
     for (a, b), w in co.items():
@@ -72,14 +97,14 @@ def build_atlas(_cid, n_nodes=150, drop_ubiq=10, topk=3):
         for r in cm: theme_of[r] = i
     snz = {}
     for i in range(N):
-        ss = int(corpus.df.iloc[i][COL_SURAH])
+        ss = su[i]
         if ss not in snz:
             try: snz[ss] = int(corpus.df.iloc[i]["ترتیب نزول"])
             except Exception: pass
     occ = {r: Counter() for r in nodes}
-    for i in range(N):
-        ss = int(corpus.df.iloc[i][COL_SURAH])
-        for r in rootset[i]:
+    for li, i in enumerate(idxs):
+        ss = su[i]
+        for r in rootset[li]:
             if r in nodeset: occ[r][ss] += 1
     nuz = {}
     for r in nodes:
@@ -131,11 +156,32 @@ def figure(d, color_by, focus=None):
     return fig
 
 hero("🗺️ Concept Atlas",
-     "The whole Qur'ān's conceptual territory in one map — every major root, linked by attraction, "
-     "grouped into themes, sized by frequency. Click any concept to open it in Search.")
+     "The conceptual territory as a map — roots linked by attraction, grouped into communities, sized by "
+     "frequency. Scope it to the whole Qur'ān, a single sūra, or a relative-position band. "
+     "Click any concept to open it in Search.")
 
-d = build_atlas(id(corpus))
-d["gf"] = _graphfeat(id(corpus))                     # attach banked graph roles for the role colouring
+SNAME = _sura_names(id(corpus))
+BANDS = ["Opening", "Early", "Middle", "Late", "Closing"]
+_sc1, _sc2 = st.columns([1, 1.7])
+_scope = _sc1.radio("Scope", ["Whole Qur'ān", "A sūra", "Position band"], horizontal=True, key="atlas_scope")
+if _scope == "A sūra":
+    _sel = _sc2.selectbox("Sūra", sorted(SNAME), format_func=lambda s: f"{s} · {SNAME[s]}", key="atlas_sura")
+    d = build_atlas(id(corpus), "sura", _sel)
+    _note = f"<b>Sūra {_sel} · {SNAME[_sel]}</b> — its <b>internal</b> concept communities (how this sūra is built)."
+elif _scope == "Position band":
+    _b = _sc2.selectbox("Relative band (pooled across all sūras)", list(range(5)),
+                        format_func=lambda b: BANDS[b], key="atlas_band")
+    d = build_atlas(id(corpus), "band", _b)
+    _note = (f"<b>{BANDS[_b]} band</b> — verses at this relative position, pooled across all sūras. "
+             "⚠️ <b>[DIVINE-ALT]</b> — an alternative re-indexing, not the muṣḥaf's primary order.")
+else:
+    d = build_atlas(id(corpus), "all")
+    _note = "The <b>whole Qur'ān</b>'s conceptual territory."
+if len(d.get("nodes", [])) < 4:
+    st.info("Not enough concepts at this scope to draw a map — pick a longer sūra or another band.")
+    st.stop()
+d["gf"] = _graphfeat(id(corpus))
+st.markdown(f"<div style='font-size:13px;color:#10243A;margin:2px 0 6px'>{_note}</div>", unsafe_allow_html=True)                     # attach banked graph roles for the role colouring
 c1, c2, c3 = st.columns(3)
 c1.metric("Concepts mapped", len(d["nodes"]))
 c2.metric("Attraction links", len(d["edges"]))
