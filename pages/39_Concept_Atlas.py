@@ -385,34 +385,50 @@ def _ego_view(F, concept, kg=16, kr=5):
     if _frtxt:
         st.markdown(f"<div style='font-size:12px;color:#10243A;background:#EAF2FB;border:1px solid #CFE0F2;"
                     f"border-radius:8px;padding:6px 10px;margin:2px 0 8px'>{_frtxt}</div>", unsafe_allow_html=True)
+    near_t = [j for j in np.argsort(-COS[i]) if j != i][:22]
+    far_t = [j for j in np.argsort(COS[i]) if j != i][:8]
+    cmaxn = max((COS[i, j] for j in near_t), default=1.0) or 1.0
+    cminf = min((COS[i, j] for j in far_t), default=-1.0) or -1.0
+    fc = max(int(f[i]), 1)
     rows = []
-    for rel, js in [("near", near), ("opposite", far)]:
+    for rel, js in [("near", near_t), ("opposite", far_t)]:
         for j in js:
             lift = (co[i, j] / E[i, j]) if E[i, j] > 0 else 0.0
-            rows.append((F["nodes"][j], rel, float(COS[i, j]), float(PMI[i, j]), int(co[i, j]),
-                         float(E[i, j]), float(lift), float(defz[i, j]), int(f[j])))
-    cols = ["concept", "relation", "cosine ↓", "PMI", "together (obs)", "expected", "lift", "z (co-occur)", "freq"]
-    th = "".join(f"<th style='padding:6px 10px;font-size:12px;color:#1D3557;font-weight:700;"
-                 f"border-bottom:2px solid #C9D6E8;text-align:{'left' if k < 2 else 'right'}'>{c}</th>"
-                 for k, c in enumerate(cols))
+            share = 100.0 * co[i, j] / fc
+            rows.append((F["nodes"][j], rel, float(COS[i, j]), float(PMI[i, j]), float(lift),
+                         int(co[i, j]), float(E[i, j]), float(defz[i, j]), share, int(f[j])))
+    heads = ["#", "concept", "rel.", "cosine ↓", "PMI", "lift", "together", "exp.", "z", "share", "freq"]
+    al = ["right", "left", "left", "left", "right", "right", "right", "right", "right", "right", "right"]
+    cw = [3, 9, 6, 23, 7, 7, 9, 7, 7, 8, 7]
+    colg = "".join(f"<col style='width:{w}%'>" for w in cw)
+    th = "".join(f"<th style='padding:5px 8px;font-size:12px;color:#1D3557;font-weight:700;"
+                 f"border-bottom:2px solid #C9D6E8;text-align:{al[k]}'>{c}</th>" for k, c in enumerate(heads))
     trs = ""
-    for n, (name, rel, cos, pmi, obs, exp, lift, z, frq) in enumerate(rows):
+    for n, (name, rel, cos, pmi, lift, obs, exp, z, share, frq) in enumerate(rows):
         bg = "#FFFFFF" if n % 2 == 0 else "#FAFBFD"
-        rc = "#1D9E75" if rel == "near" else "#E63946"
-        num = "padding:5px 10px;text-align:right;font-size:12px;color:#10243A"
+        isn = rel == "near"
+        rc = "#1D9E75" if isn else "#E63946"
+        barw = max(3, int(100 * (cos / cmaxn if isn else (cos / cminf if cminf < 0 else 0))))
+        num = "padding:4px 8px;text-align:right;font-size:12px;color:#10243A"
+        bar = (f"<div style='display:flex;align-items:center;gap:8px'>"
+               f"<span style='min-width:36px;font-size:12px;font-weight:700;color:#10243A'>{cos:+.2f}</span>"
+               f"<div style='flex:1;background:#EEF2F6;border-radius:5px'>"
+               f"<div style='background:{rc};height:9px;width:{barw}%;border-radius:5px'></div></div></div>")
         trs += (f"<tr style='background:{bg}'>"
-                f"<td style='padding:5px 10px;font-family:Amiri,serif;font-size:15px;color:#10243A'>{name}</td>"
-                f"<td style='padding:5px 10px;font-size:12px;font-weight:600;color:{rc}'>{rel}</td>"
-                f"<td style='{num};font-weight:700'>{cos:+.2f}</td>"
-                f"<td style='{num}'>{pmi:+.2f}</td><td style='{num}'>{obs}</td>"
-                f"<td style='{num}'>{exp:.1f}</td><td style='{num}'>{lift:.2f}×</td>"
-                f"<td style='{num}'>{z:+.1f}</td><td style='{num}'>{frq}</td></tr>")
+                f"<td style='padding:4px 8px;font-size:12px;color:#10243A;text-align:right'>{n + 1}</td>"
+                f"<td style='padding:4px 8px;font-family:Amiri,serif;font-size:15px;color:#10243A'>{name}</td>"
+                f"<td style='padding:4px 8px;font-size:12px;font-weight:600;color:{rc}'>{rel}</td>"
+                f"<td style='padding:4px 8px'>{bar}</td>"
+                f"<td style='{num}'>{pmi:+.2f}</td><td style='{num}'>{lift:.2f}×</td>"
+                f"<td style='{num}'>{obs}</td><td style='{num}'>{exp:.1f}</td>"
+                f"<td style='{num}'>{z:+.1f}</td><td style='{num}'>{share:.0f}%</td>"
+                f"<td style='{num}'>{frq}</td></tr>")
     st.markdown(f"<div style='border:1px solid #E2E8F1;border-radius:8px;overflow:hidden'>"
-                f"<table style='width:100%;border-collapse:collapse'>"
+                f"<table style='width:100%;table-layout:fixed;border-collapse:collapse'><colgroup>{colg}</colgroup>"
                 f"<thead><tr style='background:#F4F9F7'>{th}</tr></thead><tbody>{trs}</tbody></table></div>",
                 unsafe_allow_html=True)
-    _csv = "concept,relation,cosine,PMI,together_obs,expected,lift,z_cooccur,freq\n" + "\n".join(
-        f"{r[0]},{r[1]},{r[2]:.3f},{r[3]:.3f},{r[4]},{r[5]:.2f},{r[6]:.3f},{r[7]:.2f},{r[8]}" for r in rows)
+    _csv = "concept,relation,cosine,PMI,lift,together_obs,expected,z_cooccur,share_pct,freq\n" + "\n".join(
+        f"{r[0]},{r[1]},{r[2]:.3f},{r[3]:.3f},{r[4]:.3f},{r[5]},{r[6]:.2f},{r[7]:.2f},{r[8]:.1f},{r[9]}" for r in rows)
     st.download_button("⬇️ Download neighbours (CSV)", _csv.encode("utf-8-sig"),
                        file_name=f"{concept}_embedding_neighbours.csv", mime="text/csv", key="atlas_egocsv")
 
@@ -557,9 +573,10 @@ if color_by == "Around a concept":
     _F = _field_space(id(corpus))
     _here = {normalize_letters(n) for n in d["nodes"]}
     _vocab = [n for n in _F["nodes"] if normalize_letters(n) in _here] or _F["nodes"]
-    _vocab = sorted(_vocab, key=lambda r: -_F["f"][_F["ni"][r]])
+    _vocab = sorted(_vocab, key=lambda r: normalize_letters(r))     # alphabetical — easy to browse/scan
     _dft = next((w for w in ("قلب", "رحم", "کفر") if w in _vocab), _vocab[0])
-    _csel = cc2.selectbox("Pick a concept — see its embedding neighbourhood (concepts used in similar contexts)",
+    st.markdown("<style>.st-key-atlas_concept{max-width:520px}</style>", unsafe_allow_html=True)
+    _csel = cc2.selectbox("Pick a concept (its embedding neighbourhood — concepts used in similar contexts)",
                           _vocab, index=_vocab.index(_dft), key="atlas_concept")
     _ego_view(_F, _csel)
 else:
