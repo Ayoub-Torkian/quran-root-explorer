@@ -19,9 +19,9 @@ log_page("concept_atlas")
 corpus = get_corpus()
 INK = "#10243A"
 # This is a dense analytical page (wide chart + many-column data table) — let it use the monitor.
-st.markdown("<style>.block-container,[data-testid='stMainBlockContainer'],"
-            "[data-testid='stAppViewBlockContainer']{max-width:min(1800px,96vw)!important;}</style>",
-            unsafe_allow_html=True)
+# Must match the global selector's specificity (section[data-testid=stMain] .block-container) to win.
+st.markdown("<style>section[data-testid='stMain'] .block-container{"
+            "max-width:min(1850px,97vw)!important;}</style>", unsafe_allow_html=True)
 THEME_COLORS = ["#0F6E56", "#1D3557", "#E63946", "#EF9F27", "#7209B7", "#2A9D8F",
                 "#9C6644", "#3A86FF", "#D62828", "#588157", "#6D597A", "#B5179E"]
 
@@ -259,8 +259,16 @@ for n in d["nodes"]:
                   "top partners": " · ".join(_partners[n])})
 _df = pd.DataFrame(_rows).sort_values(["community #", "frequency"], ascending=[True, False])
 layer(1, "📋 Data behind the map — sortable, scrollable, copyable")
-st.dataframe(_df, use_container_width=True, height=380, hide_index=True)
-st.download_button("⬇️ Download table (CSV)", _df.to_csv(index=False).encode("utf-8"),
+try:
+    _cfg = {"community": st.column_config.TextColumn("community", width="large"),
+            "top partners": st.column_config.TextColumn("top partners", width="large"),
+            "concept": st.column_config.TextColumn("concept", width="medium"),
+            "role": st.column_config.TextColumn("role", width="small")}
+    st.dataframe(_df, use_container_width=True, height=460, hide_index=True, column_config=_cfg)
+except Exception:
+    st.dataframe(_df, use_container_width=True, height=460, hide_index=True)
+st.download_button("⬇️ Download table (CSV — Arabic-safe for Excel)",
+                   _df.to_csv(index=False).encode("utf-8-sig"),  # BOM so Excel detects UTF-8 (Arabic shows correctly)
                    file_name="concept_atlas_data.csv", mime="text/csv", key="atlas_csv")
 with st.expander("ℹ️ What the columns mean — and why each matters"):
     st.markdown(
