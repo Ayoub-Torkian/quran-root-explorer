@@ -423,26 +423,19 @@ if _scope == "Whole Qur'ān":
                     line=dict(width=0.5, color="#ffffff")),
         hovertext=[f"Sūra {s} · {SNAME.get(s, '')}" for s in _qs], hoverinfo="text"))
     _fig3.update_layout(showlegend=False, height=600, margin=dict(l=0, r=0, t=0, b=0),
-                        clickmode="event+select", dragmode=False,
+                        dragmode=False,
                         xaxis=dict(visible=False), yaxis=dict(visible=False),
                         plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
-    _ev3 = st.plotly_chart(_fig3, use_container_width=True, key="atlas_suramap",
-                           on_select="rerun", selection_mode="points")
-    _pc, _ = _clicked(_ev3)
-    if _pc is not None and _pc < len(_qs):
-        _tgt = int(_qs[_pc])
-        if _tgt != st.session_state.get("_atlas_lastjump"):
-            st.session_state["_atlas_lastjump"] = _tgt
-            st.session_state["_atlas_goto_sura"] = _tgt; st.rerun()
+    st.plotly_chart(_fig3, use_container_width=True, key="atlas_suramap")
     _jc1, _jc2 = st.columns([2, 3])
-    _jump = _jc1.selectbox("🔎 …or open a sūra from this dropdown →", [0] + _qs,
+    _jump = _jc1.selectbox("🔎 Open a sūra from the map →", [0] + _qs,
                            format_func=lambda s: "— pick a sūra —" if s == 0 else f"{s} · {SNAME.get(s, '')}",
                            key="atlas_mapjump")
     if _jump and _jump != st.session_state.get("_atlas_lastjump"):
         st.session_state["_atlas_lastjump"] = _jump
         st.session_state["_atlas_goto_sura"] = int(_jump); st.rerun()
     st.caption("Each point is a sūra; distance ≈ vocabulary similarity (MDS on tf-idf cosine). "
-               "Colour = family (legend above). **Click a sūra on the map** (or use the dropdown) to open its internal map + footprint. A navigation map, not a claim.")
+               "Colour = family (legend above). Hover a point to see its name; use the dropdown to open a sūra's internal map + footprint. A navigation map, not a claim.")
     # ---- cluster (family) metrics table ----
     _F = _Q["families"]
     layer(1, "📊 Cluster metrics — the sūra families")
