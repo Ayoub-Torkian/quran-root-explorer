@@ -186,7 +186,7 @@ if len(d.get("nodes", [])) < 4:
     st.info("Not enough concepts at this scope to draw a map — pick a longer sūra or another band.")
     st.stop()
 d["gf"] = _graphfeat(id(corpus))
-st.markdown(f"<div style='font-size:13px;color:#10243A;margin:2px 0 6px'>{_note}</div>", unsafe_allow_html=True)                     # attach banked graph roles for the role colouring
+st.markdown(f"<div style='font-size:16px;color:#10243A;margin:2px 0 6px'>{_note}</div>", unsafe_allow_html=True)                     # attach banked graph roles for the role colouring
 with st.expander("ℹ️ What this map is — the three scales (one-page synthesis)"):
     st.markdown(
 """**The map, and why three scales.** Concepts (grammatical roots) are **nodes**; an **edge** joins two concepts that co-occur more than chance (PPMI); **colour** groups them into communities (Louvain). The *same* engine is read at three scales — the whole Qur'ān, one sūra, and a relative-position band — because structure lives at every scale and each scale answers a different question.
@@ -262,10 +262,9 @@ layer(1, "📋 Data behind the map — scrollable · copyable (use the CSV below
 # Full-width HTML table — st.dataframe won't stretch on this Streamlit build, so we control width directly.
 _cols = list(_df.columns)
 _arab = {"concept", "community", "top partners"}
-_wide = {"community": "22%", "top partners": "20%"}            # give text columns the room
 _head = "".join(
     f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
-    f'text-align:right;font-size:12px;white-space:nowrap;{("width:"+_wide[c]+";") if c in _wide else ""}">{c}</th>'
+    f'text-align:right;font-size:12px;white-space:nowrap">{c}</th>'
     for c in _cols)
 _body = []
 for _i, (_, _row) in enumerate(_df.iterrows()):
