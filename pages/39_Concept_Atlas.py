@@ -244,6 +244,39 @@ def _sura_space(_cid):
                          "concepts": topc})
     return dict(suras=suras, xy=np.asarray(xy, float), comm=comm, families=families)
 
+@st.cache_data(show_spinner="Computing elaboration links…")
+def _elab_engine(_cid):
+    """Validated, length-controlled elaboration metric: which long sūra most develops a (short) sūra's
+    distinctive concepts. spec(S,L) = idf-weighted, depth-aware match of S's distinctive concepts in L,
+    normalised by how much L elaborates a TYPICAL short sūra (so length can't win)."""
+    Nn = len(corpus.df); su = [int(x) for x in corpus.df[COL_SURAH]]
+    rows = {}
+    for i in range(Nn): rows.setdefault(su[i], []).append(i)
+    rootcnt = {}; vcount = {}; present = {}; length = {}
+    for s, idxs in rows.items():
+        length[s] = len(idxs); rc = Counter(); vc = Counter()
+        for i in idxs:
+            seen = set()
+            for r in corpus.root_tokens[i]:
+                if r and r != "-": rc[r] += 1; seen.add(r)
+            for r in seen: vc[r] += 1
+        rootcnt[s] = rc; vcount[s] = vc; present[s] = set(rc)
+    suras = sorted(rows); NS = len(suras)
+    dfr = Counter()
+    for s in suras:
+        for r in present[s]: dfr[r] += 1
+    idf = {r: float(np.log(NS / dfr[r])) for r in dfr}
+    DIST = {}
+    for s in suras:
+        tot = sum(rootcnt[s].values()) or 1
+        sc = {r: (rootcnt[s][r] / tot) * idf[r] for r in rootcnt[s]}
+        DIST[s] = [r for r in sorted(sc, key=lambda r: -sc[r])[:8]]
+    def elab(S, L):
+        return sum(idf[r] * np.log(1 + vcount[L].get(r, 0)) for r in DIST[S] if r in present[L])
+    shortS = [s for s in suras if length[s] <= 10]
+    Lbase = {L: (float(np.mean([elab(s, L) for s in shortS if s != L])) + 1e-9) for L in suras}
+    return dict(suras=suras, length=length, idf=idf, DIST=DIST, vcount=vcount, present=present, Lbase=Lbase)
+
 def figure(d, color_by, focus=None):
     pos, nodes, docf = d["pos"], d["nodes"], d["docf"]
     ex, ey = [], []
@@ -336,6 +369,7 @@ with st.expander("ℹ️ What this page shows — scales, maps & metrics (one-pa
 **Companion views (same data, a different question):**
 - **The 114 sūras as a semantic map** (Whole scope) — each sūra is a **point**, distance ≈ vocabulary similarity; auto-**families** emerge (one ≈ 88% Medinan, found with no labels). The **cluster-metrics table** gives each family's cohesion, separation, silhouette (tight vs loose), revelation tilt and defining concepts.
 - **A sūra's semantic footprint** (A-sūra scope) — *where* that sūra's distinctive concepts sit in the whole meaning-space, with a **concentration score** (legal sūras tight, narrative/hymn scattered).
+- **Elaboration finder** (A-sūra scope) — for a sūra, the **long sūras that most develop its distinctive concepts**, *length-controlled* so it's not just "long sūras elaborate everything."
 - **The data table** — every concept with frequency and the full **centrality suite** (degree, betweenness, closeness, eigenvector, PageRank, clustering) plus community, revelation and top partners — sortable, copyable, Arabic-safe CSV.
 
 **How to read it together.** Move **outward → inward**: the whole territory → one chapter's build → its opening-to-closing shape; and **macro → micro**: which sūras are alike (the 114-map) → where one sūra's concepts live (footprint) → the exact numbers (table).
@@ -411,6 +445,39 @@ if _scope == "A sūra":
                    "Semantic distance is from corpus-wide co-occurrence (validated z+3.6); the 2-D projection is approximate.")
     else:
         st.caption("Too few distinctive concepts in the semantic space to map this sūra's footprint.")
+
+# ---- elaboration finder: which LONG sūras develop THIS sūra's distinctive concepts (length-controlled) ----
+if _scope == "A sūra":
+    _E = _elab_engine(id(corpus))
+    if _sel in _E["DIST"] and _E["DIST"][_sel]:
+        def _elab(S, L):
+            return sum(_E["idf"][r] * np.log(1 + _E["vcount"][L].get(r, 0)) for r in _E["DIST"][S] if r in _E["present"][L])
+        _cands = sorted(((L, _elab(_sel, L) / _E["Lbase"][L]) for L in _E["suras"]
+                         if L != _sel and _E["length"][L] >= 40), key=lambda kv: -kv[1])
+        layer(1, "🌱→🌳 Long sūras that elaborate this one")
+        if _cands:
+            _eh = "".join(
+                f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
+                f'text-align:right;font-size:12px;white-space:nowrap">{h}</th>'
+                for h in ["rank", "long sūra", "length", "specificity", "shared distinctive concepts"])
+            _er = []
+            for _rk, (L, _sp) in enumerate(_cands[:6], 1):
+                _sh = " · ".join(r for r in _E["DIST"][_sel] if r in _E["present"][L])
+                _er.append(
+                    f'<tr><td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_rk}</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{SNAME.get(L, L)} ({L})</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_E["length"][L]}</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_sp:.1f}×</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{_sh}</td></tr>')
+            st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
+                        '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
+                        f'<thead><tr>{_eh}</tr></thead><tbody>{"".join(_er)}</tbody></table></div>',
+                        unsafe_allow_html=True)
+            st.caption("Specificity = how much more a long sūra develops THIS sūra's distinctive concepts than it develops a *typical* short sūra "
+                       "(length-controlled; >1× = specific, not just \"long sūras elaborate everything\"). Most informative for short sūras; "
+                       "the rare shared concepts are the real bridges. Validated, generalisable metric.")
+        else:
+            st.caption("No longer sūras to compare against.")
 
 # ---- the 114 sūras as a semantic map (which sūras are alike) — whole-Qur'ān companion view ----
 if _scope == "Whole Qur'ān":
