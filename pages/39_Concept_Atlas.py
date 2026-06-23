@@ -12,7 +12,7 @@ from networkx.algorithms import community as nxcom
 import plotly.graph_objects as go
 import pandas as pd
 from analysis import COL_SURAH, COL_SURAH_NAME, COL_AYAH, normalize_letters
-from state import get_corpus, hero, layer, log_page
+from state import get_corpus, hero, layer, log_page, chip_row
 
 st.set_page_config(page_title="Concept Atlas", page_icon="🗺️", layout="wide")
 log_page("concept_atlas")
@@ -258,15 +258,27 @@ for n in d["nodes"]:
                   "clustering": round(_clu.get(n, 0.0), 3), "revelation 1–114": round(d["nuz"][n]),
                   "top partners": " · ".join(_partners[n])})
 _df = pd.DataFrame(_rows).sort_values(["community #", "frequency"], ascending=[True, False])
-layer(1, "📋 Data behind the map — sortable, scrollable, copyable")
-try:
-    _cfg = {"community": st.column_config.TextColumn("community", width="large"),
-            "top partners": st.column_config.TextColumn("top partners", width="large"),
-            "concept": st.column_config.TextColumn("concept", width="medium"),
-            "role": st.column_config.TextColumn("role", width="small")}
-    st.dataframe(_df, use_container_width=True, height=460, hide_index=True, column_config=_cfg)
-except Exception:
-    st.dataframe(_df, use_container_width=True, height=460, hide_index=True)
+layer(1, "📋 Data behind the map — scrollable · copyable (use the CSV below to sort)")
+# Full-width HTML table — st.dataframe won't stretch on this Streamlit build, so we control width directly.
+_cols = list(_df.columns)
+_arab = {"concept", "community", "top partners"}
+_wide = {"community": "22%", "top partners": "20%"}            # give text columns the room
+_head = "".join(
+    f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
+    f'text-align:right;font-size:12px;white-space:nowrap;{("width:"+_wide[c]+";") if c in _wide else ""}">{c}</th>'
+    for c in _cols)
+_body = []
+for _i, (_, _row) in enumerate(_df.iterrows()):
+    _bg = "#FFFFFF" if _i % 2 == 0 else "#F7F9FC"
+    _tds = "".join(
+        f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;'
+        f'{"font-family:Amiri,serif;font-size:15px;" if c in _arab else ""}">{_row[c]}</td>'
+        for c in _cols)
+    _body.append(f'<tr style="background:{_bg}">{_tds}</tr>')
+_table = (f'<div style="max-height:480px;overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
+          f'<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
+          f'<thead><tr>{_head}</tr></thead><tbody>{"".join(_body)}</tbody></table></div>')
+st.markdown(_table, unsafe_allow_html=True)
 st.download_button("⬇️ Download table (CSV — Arabic-safe for Excel)",
                    _df.to_csv(index=False).encode("utf-8-sig"),  # BOM so Excel detects UTF-8 (Arabic shows correctly)
                    file_name="concept_atlas_data.csv", mime="text/csv", key="atlas_csv")
@@ -321,9 +333,10 @@ for ti, ordered, top in d["themes"]:
                 f"<span style='display:inline-block;width:11px;height:11px;border-radius:3px;"
                 f"background:{col};margin-left:4px'></span> <b>Theme {ti + 1}</b> · {' · '.join(top)}</div>",
                 unsafe_allow_html=True)
-    rr = ordered[:12]
-    cols = st.columns(12, gap="small")
-    for k, r in enumerate(rr):
-        if cols[k].button(r, key=f"atlas_{ti}_{k}", use_container_width=True):
-            st.session_state._pending_q = r
-            st.switch_page("pages/38_Search.py")
+    rr = ordered[:18]
+    with chip_row(f"atlas-{ti}"):                          # content-sized wrapping chips (density rule), not full-width
+        cols = st.columns(len(rr))
+        for k, r in enumerate(rr):
+            if cols[k].button(r, key=f"atlas_{ti}_{k}"):    # NO use_container_width → small chip
+                st.session_state._pending_q = r
+                st.switch_page("pages/38_Search.py")
