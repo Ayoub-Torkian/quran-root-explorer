@@ -44,6 +44,19 @@ def _sura_names(_cid):
     g = corpus.df.groupby(COL_SURAH)[COL_SURAH_NAME].first()
     return {int(k): str(v) for k, v in g.items()}
 
+def _clicked(ev):
+    """(point_index, curve_number) of the first clicked point from a plotly on_select event, or (None, None)."""
+    try:
+        sel = ev["selection"] if isinstance(ev, dict) else ev.selection
+        pts = sel["points"] if isinstance(sel, dict) else sel.points
+    except Exception:
+        return None, None
+    if not pts:
+        return None, None
+    p = pts[0]
+    g = (p.get if isinstance(p, dict) else (lambda k, d=None: getattr(p, k, d)))
+    return g("point_index", g("point_number")), g("curve_number")
+
 ROLE_COLOR = {"connector / bridge": "#E63946", "family anchor (hub)": "#EF9F27"}  # member → muted below
 ROLE_TAG = {"connector / bridge": "🌉 bridge", "family anchor (hub)": "⭐ hub"}
 
@@ -243,6 +256,10 @@ hero("🗺️ Concept Atlas",
 
 SNAME = _sura_names(id(corpus))
 BANDS = ["Opening", "Early", "Middle", "Late", "Closing"]
+_goto = st.session_state.pop("_atlas_goto_sura", None)        # set by a click on the 114-sūra map
+if _goto is not None:
+    st.session_state["atlas_scope"] = "A sūra"
+    st.session_state["atlas_sura"] = int(_goto)
 _sc1, _sc2 = st.columns([1, 1.7])
 _scope = _sc1.radio("Scope", ["Whole Qur'ān", "A sūra", "Position band"], horizontal=True, key="atlas_scope")
 if _scope == "A sūra":
@@ -337,7 +354,11 @@ if _scope == "A sūra":
         _fig2.update_layout(showlegend=False, height=560, margin=dict(l=0, r=0, t=0, b=0),
                             xaxis=dict(visible=False), yaxis=dict(visible=False),
                             plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
-        st.plotly_chart(_fig2, use_container_width=True)
+        _ev2 = st.plotly_chart(_fig2, use_container_width=True, key="atlas_footprint", on_select="rerun")
+        _pi2, _cv2 = _clicked(_ev2)
+        if _pi2 is not None and _cv2 == 1 and _pi2 < len(_idx):     # curve 1 = the highlighted concepts
+            st.session_state._pending_q = _S["nodes"][_idx[_pi2]]
+            st.switch_page("pages/38_Search.py")
         _verdict = ("tightly unified — its distinctive vocabulary clusters in one region (typical of legal / thematic sūras)"
                     if _z > 3 else
                     "scattered — its distinctive words span several regions (typical of narrative / imagery sūras)"
@@ -363,10 +384,13 @@ if _scope == "Whole Qur'ān":
     _fig3.update_layout(showlegend=False, height=600, margin=dict(l=0, r=0, t=0, b=0),
                         xaxis=dict(visible=False), yaxis=dict(visible=False),
                         plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
-    st.plotly_chart(_fig3, use_container_width=True)
+    _ev3 = st.plotly_chart(_fig3, use_container_width=True, key="atlas_suramap", on_select="rerun")
+    _pi3, _ = _clicked(_ev3)
+    if _pi3 is not None and _pi3 < len(_qs):
+        st.session_state["_atlas_goto_sura"] = int(_qs[_pi3]); st.rerun()
     st.caption("Each point is a sūra; distance ≈ how alike their vocabulary is (MDS on tf-idf cosine). "
                "Colour = auto-detected family — the Medinan/legislative sūras cluster on their own "
-               "(one community is ~88% Medinan, found unsupervised). A navigation map, not a claim.")
+               "(one community is ~88% Medinan, found unsupervised). **Click a sūra to open it.** A navigation map, not a claim.")
 
 # ---- data table behind the map (sortable · scrollable · copyable) ----
 _tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])
