@@ -557,7 +557,7 @@ PAGE_TOUR = [
          "The 'telescope' view: properties proven for designed systems, tested for a Qur'ān correspondence."),
     ]),
     ("🔎 CLOSE-UP", [
-        ("🗺️ Map · start here", "The index of deep-dive investigations — three pillars (Āyah · Sūra · "
+        ("🗺️ Map · close-ups (start here)", "The index of deep-dive investigations — three pillars (Āyah · Sūra · "
          "Arrangement) plus 🔢 Claims reviewed — each badged with an honest verdict. Every close-up follows "
          "ONE 8-section standard: Problem → Hypothesis → Method → Results → Gating → Interpretation → "
          "Caveats → Verdict, plus Reflection · Summary · Lessons · and full Persian + Arabic abstracts.",
@@ -571,6 +571,9 @@ PAGE_TOUR = [
          "refuting the over-reach. Each ends with a probability-ranked, evidence-grounded 'Path forward'.",
          "مقبول for the general reader (a clear scorecard) · مطلوب for the specialist (every count, its null, "
          "its tolerance). A statistical & methodological verdict, never a theological one."),
+        ("🕸️ Importance as roles · 🔁 Mathānī · refrains · ♊ Structural Twins", "Concept-importance as graph "
+         "roles (keystone · bridge · hub), the refrain/mathānī lab, and verse-pairs sharing ≥50% of their roots.",
+         "To see which concepts are load-bearing, how refrains recur, and which verses are structural twins."),
     ]),
     ("📖 READER", [
         ("📖 Ayah Browser", "Every matched ayah with diacritized text.",

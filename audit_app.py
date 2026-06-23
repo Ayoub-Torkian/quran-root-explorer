@@ -9,6 +9,7 @@ per-change tweaks. Cross-cutting surfaces must move together with every tab.
 import glob
 import os
 import re
+import subprocess
 import sys
 
 NAV = open("state.py", encoding="utf-8").read()
@@ -23,6 +24,13 @@ OBSOLETE = set(re.findall(r'"(pages/[^"]+\.py)"', MANI_SRC[MANI_SRC.find("OBSOLE
 MAP = dict(re.findall(r'"(pages/[^"]+\.py)":\s*"(pages/[^"]+\.py)"', MANI_SRC))
 # admin-only page: reachable by direct URL, intentionally NOT in the public nav (see state.py note)
 INTENTIONAL_NO_NAV = {"pages/9_Usage.py"}
+# Deployment is `git push hf main` — it ships every TRACKED file, not the legacy UPLOADS dict.
+# So "deployed" = git-tracked. (Fall back to the manifest text only if git is unavailable.)
+try:
+    _ls = subprocess.run(["git", "ls-files"], capture_output=True, text=True)
+    TRACKED = set(x.replace("\\", "/") for x in _ls.stdout.splitlines()) if _ls.returncode == 0 else None
+except Exception:
+    TRACKED = None
 
 
 def title_of(p):
@@ -46,7 +54,7 @@ def main():
             continue
         hf = MAP.get(p, p)
         in_nav = (p in NAV) or (hf in NAV)
-        in_dep = (p in MAP) or (p in MANI_SRC)
+        in_dep = (p in TRACKED) if TRACKED is not None else ((p in MAP) or (p in MANI_SRC))
         t = title_of(p)
         tok = t.split()[0].lower()
         label = nav_label(p)
@@ -61,7 +69,7 @@ def main():
             if not in_nav:
                 hard.append(f"{os.path.basename(p)} missing from NAV_SECTIONS (state.py)")
             if not in_dep:
-                hard.append(f"{os.path.basename(p)} missing from deploy manifest (deploy_git.py)")
+                hard.append(f"{os.path.basename(p)} not git-tracked (won't ship in `git push`)")
             if not in_help:
                 soft.append(f"{os.path.basename(p)} not mentioned in Help (0_Help.py)")
             if not in_about:
