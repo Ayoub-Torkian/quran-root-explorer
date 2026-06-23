@@ -305,15 +305,21 @@ def _field_space(_cid, n=700):
     Vv = TruncatedSVD(n_components=min(100, M - 1), random_state=0).fit_transform(PP)
     Vv = Vv - Vv.mean(axis=0); Vv = Vv / (np.linalg.norm(Vv, axis=1, keepdims=True) + 1e-9)
     COS = Vv @ Vv.T
+    mc = (COS.sum(1) - 1.0) / max(M - 1, 1)        # each concept's mean cosine to all others
+    try:
+        from scipy.stats import spearmanr
+        frho = float(spearmanr(mc, np.log(f)).correlation)   # ≈0 ⇒ similarity is NOT frequency-anchored
+    except Exception:
+        frho = float("nan")
     nmix = {}
     for r in nodes: nmix.setdefault(normalize_letters(r), r)
-    return dict(nodes=nodes, ni=ni, f=f, co=co, E=E, defz=defz, PMI=PMI, COS=COS, norm_index=nmix)
+    return dict(nodes=nodes, ni=ni, f=f, co=co, E=E, defz=defz, PMI=PMI, COS=COS, norm_index=nmix, freq_rho=frho)
 
 def _ego_view(F, concept, kg=16, kr=5):
     """Embedding-space neighbourhood: concepts placed AND linked by vector cosine (used-in-similar-contexts)."""
     import pandas as pd
     from sklearn.manifold import MDS
-    i = F["ni"][concept]; f, co, E, defz, COS = F["f"], F["co"], F["E"], F["defz"], F["COS"]
+    i = F["ni"][concept]; f, co, E, defz, COS, PMI = F["f"], F["co"], F["E"], F["defz"], F["COS"], F["PMI"]
     near = [j for j in np.argsort(-COS[i]) if j != i][:kg]
     far = [j for j in np.argsort(COS[i]) if j != i][:kr]
     S = [i] + near + far
@@ -367,18 +373,47 @@ def _ego_view(F, concept, kg=16, kr=5):
         "<span style='color:#1D9E75'>●</span> near (greener &amp; closer = more alike; <b>edge thickness = cosine</b>) "
         "&nbsp;&nbsp; <span style='color:#E63946'>●</span> opposite (negative cosine, dotted)</div>",
         unsafe_allow_html=True)
+    _fr = F.get("freq_rho", float("nan"))
+    _frtxt = (f"<b>Frequency check:</b> across the whole embedding, similarity↔frequency Spearman ρ = "
+              f"{_fr:+.2f} — ≈0 means the cosine is <b>not</b> frequency-anchored (raw SVD would be ρ≈+0.87; "
+              f"mean-centring removes it). The <i>together</i> & <i>freq</i> columns are frequency-driven by nature, "
+              f"so sorting by them floats common roots up — sort by <i>cosine</i> for the embedding signal."
+              if _fr == _fr else "")
     st.caption("Embedding = SVD-of-PPMI (the count-based word2vec; Levy & Goldberg 2014) — apt for a corpus this size, "
-        "where neural word2vec is unstable. Relation **strength = cosine**, shown three ways: distance, node colour, "
+        "where neural word2vec is unstable. Relation strength = cosine, shown three ways: distance, node colour, "
         "edge thickness. ‘Together’ in the table is literal co-occurrence — corroboration, a different signal.")
+    if _frtxt:
+        st.markdown(f"<div style='font-size:12px;color:#10243A;background:#EAF2FB;border:1px solid #CFE0F2;"
+                    f"border-radius:8px;padding:6px 10px;margin:2px 0 8px'>{_frtxt}</div>", unsafe_allow_html=True)
     rows = []
     for rel, js in [("near", near), ("opposite", far)]:
         for j in js:
-            rows.append({"concept": F["nodes"][j], "relation": rel, "cosine": round(float(COS[i, j]), 2),
-                         "together (obs)": int(co[i, j]), "expected": round(float(E[i, j]), 1),
-                         "z (co-occur)": round(float(defz[i, j]), 1), "freq": int(f[j])})
-    df = pd.DataFrame(rows)
-    st.dataframe(df, use_container_width=True, height=400, hide_index=True)
-    st.download_button("⬇️ Download neighbours (CSV)", df.to_csv(index=False).encode("utf-8-sig"),
+            lift = (co[i, j] / E[i, j]) if E[i, j] > 0 else 0.0
+            rows.append((F["nodes"][j], rel, float(COS[i, j]), float(PMI[i, j]), int(co[i, j]),
+                         float(E[i, j]), float(lift), float(defz[i, j]), int(f[j])))
+    cols = ["concept", "relation", "cosine ↓", "PMI", "together (obs)", "expected", "lift", "z (co-occur)", "freq"]
+    th = "".join(f"<th style='padding:6px 10px;font-size:12px;color:#1D3557;font-weight:700;"
+                 f"border-bottom:2px solid #C9D6E8;text-align:{'left' if k < 2 else 'right'}'>{c}</th>"
+                 for k, c in enumerate(cols))
+    trs = ""
+    for n, (name, rel, cos, pmi, obs, exp, lift, z, frq) in enumerate(rows):
+        bg = "#FFFFFF" if n % 2 == 0 else "#FAFBFD"
+        rc = "#1D9E75" if rel == "near" else "#E63946"
+        num = "padding:5px 10px;text-align:right;font-size:12px;color:#10243A"
+        trs += (f"<tr style='background:{bg}'>"
+                f"<td style='padding:5px 10px;font-family:Amiri,serif;font-size:15px;color:#10243A'>{name}</td>"
+                f"<td style='padding:5px 10px;font-size:12px;font-weight:600;color:{rc}'>{rel}</td>"
+                f"<td style='{num};font-weight:700'>{cos:+.2f}</td>"
+                f"<td style='{num}'>{pmi:+.2f}</td><td style='{num}'>{obs}</td>"
+                f"<td style='{num}'>{exp:.1f}</td><td style='{num}'>{lift:.2f}×</td>"
+                f"<td style='{num}'>{z:+.1f}</td><td style='{num}'>{frq}</td></tr>")
+    st.markdown(f"<div style='border:1px solid #E2E8F1;border-radius:8px;overflow:hidden'>"
+                f"<table style='width:100%;border-collapse:collapse'>"
+                f"<thead><tr style='background:#F4F9F7'>{th}</tr></thead><tbody>{trs}</tbody></table></div>",
+                unsafe_allow_html=True)
+    _csv = "concept,relation,cosine,PMI,together_obs,expected,lift,z_cooccur,freq\n" + "\n".join(
+        f"{r[0]},{r[1]},{r[2]:.3f},{r[3]:.3f},{r[4]},{r[5]:.2f},{r[6]:.3f},{r[7]:.2f},{r[8]}" for r in rows)
+    st.download_button("⬇️ Download neighbours (CSV)", _csv.encode("utf-8-sig"),
                        file_name=f"{concept}_embedding_neighbours.csv", mime="text/csv", key="atlas_egocsv")
 
 # preset semantic axes — anchor pairs (negative side, positive side); resolved against the vocab.
