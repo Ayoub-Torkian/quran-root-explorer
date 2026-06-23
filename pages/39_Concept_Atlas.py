@@ -45,17 +45,24 @@ def _sura_names(_cid):
     return {int(k): str(v) for k, v in g.items()}
 
 def _clicked(ev):
-    """(point_index, curve_number) of the first clicked point from a plotly on_select event, or (None, None)."""
+    """(point_index, curve_number) of the first clicked point from a plotly on_select event, or (None, None).
+    Handles both dict and attribute access, and both 'points' and flat 'point_indices'."""
     try:
-        sel = ev["selection"] if isinstance(ev, dict) else ev.selection
-        pts = sel["points"] if isinstance(sel, dict) else sel.points
+        sel = ev["selection"] if isinstance(ev, dict) else getattr(ev, "selection", None)
     except Exception:
+        sel = None
+    if not sel:
         return None, None
-    if not pts:
-        return None, None
-    p = pts[0]
-    g = (p.get if isinstance(p, dict) else (lambda k, d=None: getattr(p, k, d)))
-    return g("point_index", g("point_number")), g("curve_number")
+    getf = (sel.get if isinstance(sel, dict) else (lambda k, d=None: getattr(sel, k, d)))
+    pts = getf("points") or []
+    if pts:
+        p = pts[0]
+        g = (p.get if isinstance(p, dict) else (lambda k, d=None: getattr(p, k, d)))
+        return g("point_index", g("point_number")), g("curve_number")
+    pidx = getf("point_indices") or getf("point_index") or []
+    if pidx:
+        return (pidx[0] if isinstance(pidx, (list, tuple)) else pidx), None
+    return None, None
 
 ROLE_COLOR = {"connector / bridge": "#E63946", "family anchor (hub)": "#EF9F27"}  # member → muted below
 ROLE_TAG = {"connector / bridge": "🌉 bridge", "family anchor (hub)": "⭐ hub"}
@@ -416,18 +423,26 @@ if _scope == "Whole Qur'ān":
                     line=dict(width=0.5, color="#ffffff")),
         hovertext=[f"Sūra {s} · {SNAME.get(s, '')}" for s in _qs], hoverinfo="text"))
     _fig3.update_layout(showlegend=False, height=600, margin=dict(l=0, r=0, t=0, b=0),
+                        clickmode="event+select", dragmode=False,
                         xaxis=dict(visible=False), yaxis=dict(visible=False),
                         plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
-    st.plotly_chart(_fig3, use_container_width=True, key="atlas_suramap")
+    _ev3 = st.plotly_chart(_fig3, use_container_width=True, key="atlas_suramap",
+                           on_select="rerun", selection_mode="points")
+    _pc, _ = _clicked(_ev3)
+    if _pc is not None and _pc < len(_qs):
+        _tgt = int(_qs[_pc])
+        if _tgt != st.session_state.get("_atlas_lastjump"):
+            st.session_state["_atlas_lastjump"] = _tgt
+            st.session_state["_atlas_goto_sura"] = _tgt; st.rerun()
     _jc1, _jc2 = st.columns([2, 3])
-    _jump = _jc1.selectbox("🔎 Open a sūra from the map →", [0] + _qs,
+    _jump = _jc1.selectbox("🔎 …or open a sūra from this dropdown →", [0] + _qs,
                            format_func=lambda s: "— pick a sūra —" if s == 0 else f"{s} · {SNAME.get(s, '')}",
                            key="atlas_mapjump")
     if _jump and _jump != st.session_state.get("_atlas_lastjump"):
         st.session_state["_atlas_lastjump"] = _jump
         st.session_state["_atlas_goto_sura"] = int(_jump); st.rerun()
     st.caption("Each point is a sūra; distance ≈ vocabulary similarity (MDS on tf-idf cosine). "
-               "Colour = family (legend above). Pick a sūra in the dropdown to open its internal map + footprint. A navigation map, not a claim.")
+               "Colour = family (legend above). **Click a sūra on the map** (or use the dropdown) to open its internal map + footprint. A navigation map, not a claim.")
     # ---- cluster (family) metrics table ----
     _F = _Q["families"]
     layer(1, "📊 Cluster metrics — the sūra families")
