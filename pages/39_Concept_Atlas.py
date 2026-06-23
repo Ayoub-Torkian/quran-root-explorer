@@ -156,6 +156,45 @@ def _semantic_space(_cid, n=750):
         xy = U[:, :2]
     return dict(nodes=nodes, ni=ni, xy=np.asarray(xy, float), SIM=SIM, idf=idf)
 
+@st.cache_data(show_spinner="Mapping the sūras…")
+def _sura_space(_cid):
+    """The 114 sūras as a semantic map: each sūra = tf-idf vector over its roots; distance = cosine
+    dissimilarity; xy = 2-D MDS; comm = auto families (validated: one community ~88% Medinan)."""
+    Nn = len(corpus.df); su = [int(x) for x in corpus.df[COL_SURAH]]
+    rootcnt = {}
+    for i in range(Nn):
+        dd = rootcnt.setdefault(su[i], Counter())
+        for r in corpus.root_tokens[i]:
+            if r and r != "-": dd[r] += 1
+    suras = sorted(rootcnt); NS = len(suras)
+    vocab = sorted({r for s in suras for r in rootcnt[s]}); vi = {r: j for j, r in enumerate(vocab)}
+    dfr = Counter()
+    for s in suras:
+        for r in rootcnt[s]: dfr[r] += 1
+    idf = {r: np.log(NS / dfr[r]) for r in vocab}
+    V = np.zeros((NS, len(vocab)))
+    for a, s in enumerate(suras):
+        tot = sum(rootcnt[s].values()) or 1
+        for r, k in rootcnt[s].items(): V[a, vi[r]] = (k / tot) * idf[r]
+    U = V / (np.linalg.norm(V, axis=1, keepdims=True) + 1e-9)
+    SIM = U @ U.T; np.fill_diagonal(SIM, 0)
+    try:
+        from sklearn.manifold import MDS
+        Dm = 1 - SIM; np.fill_diagonal(Dm, 0)
+        xy = MDS(n_components=2, dissimilarity="precomputed", random_state=0,
+                 normalized_stress="auto", n_init=1).fit_transform(Dm)
+    except Exception:
+        from sklearn.decomposition import PCA
+        xy = PCA(n_components=2, random_state=0).fit_transform(U)
+    G = nx.Graph(); G.add_nodes_from(range(NS))
+    for a in range(NS):
+        for b in np.argsort(-SIM[a])[:6]:
+            if a != int(b): G.add_edge(a, int(b), weight=float(SIM[a, int(b)]))
+    comm = {}
+    for k, cc in enumerate(sorted(nxcom.greedy_modularity_communities(G, weight="weight"), key=len, reverse=True)):
+        for a in cc: comm[a] = k
+    return dict(suras=suras, xy=np.asarray(xy, float), comm=comm)
+
 def figure(d, color_by, focus=None):
     pos, nodes, docf = d["pos"], d["nodes"], d["docf"]
     ex, ey = [], []
@@ -308,6 +347,26 @@ if _scope == "A sūra":
                    "Semantic distance is from corpus-wide co-occurrence (validated z+3.6); the 2-D projection is approximate.")
     else:
         st.caption("Too few distinctive concepts in the semantic space to map this sūra's footprint.")
+
+# ---- the 114 sūras as a semantic map (which sūras are alike) — whole-Qur'ān companion view ----
+if _scope == "Whole Qur'ān":
+    _Q = _sura_space(id(corpus))
+    layer(1, "🗺️ The 114 sūras as a semantic map — which sūras are alike")
+    _qx, _qs, _qc = _Q["xy"], _Q["suras"], _Q["comm"]
+    _fig3 = go.Figure()
+    _fig3.add_trace(go.Scatter(
+        x=_qx[:, 0], y=_qx[:, 1], mode="markers+text",
+        text=[str(s) for s in _qs], textposition="top center", textfont=dict(size=10, color=INK),
+        marker=dict(size=12, color=[THEME_COLORS[_qc.get(a, 0) % len(THEME_COLORS)] for a in range(len(_qs))],
+                    line=dict(width=0.5, color="#ffffff")),
+        hovertext=[f"Sūra {s} · {SNAME.get(s, '')}" for s in _qs], hoverinfo="text"))
+    _fig3.update_layout(showlegend=False, height=600, margin=dict(l=0, r=0, t=0, b=0),
+                        xaxis=dict(visible=False), yaxis=dict(visible=False),
+                        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
+    st.plotly_chart(_fig3, use_container_width=True)
+    st.caption("Each point is a sūra; distance ≈ how alike their vocabulary is (MDS on tf-idf cosine). "
+               "Colour = auto-detected family — the Medinan/legislative sūras cluster on their own "
+               "(one community is ~88% Medinan, found unsupervised). A navigation map, not a claim.")
 
 # ---- data table behind the map (sortable · scrollable · copyable) ----
 _tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])
