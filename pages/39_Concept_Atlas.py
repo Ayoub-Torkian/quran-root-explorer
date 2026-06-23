@@ -257,6 +257,50 @@ def _elab_engine(_cid):
     Lbase = {L: (float(np.mean([elab(s, L) for s in shortS if s != L])) + 1e-9) for L in suras}
     return dict(suras=suras, length=length, idf=idf, DIST=DIST, vcount=vcount, present=present, Lbase=Lbase)
 
+@st.cache_data(show_spinner="Building semantic vectors…")
+def _axis_space(_cid, n=600):
+    """Dense SVD-of-PPMI embedding (count-based word2vec) for semantic-axis projection."""
+    from sklearn.decomposition import TruncatedSVD
+    Nn = len(corpus.df)
+    vr = [set(r for r in corpus.root_tokens[i] if r and r != "-") for i in range(Nn)]
+    fr = Counter(r for s in vr for r in s); drop = {r for r, _ in fr.most_common(8)}
+    nodes = [r for r, k in fr.most_common() if k >= 8 and r not in drop][:n]
+    ni = {r: i for i, r in enumerate(nodes)}; M = len(nodes)
+    co = np.zeros((M, M))
+    for s in vr:
+        ix = sorted(ni[r] for r in s if r in ni)
+        for a in range(len(ix)):
+            for b in range(a + 1, len(ix)): co[ix[a], ix[b]] += 1; co[ix[b], ix[a]] += 1
+    f = np.array([fr[r] for r in nodes], float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        P = co / (f[:, None] * f[None, :] / Nn); PP = np.log(np.where(P > 0, P, 1.0)); PP[PP < 0] = 0
+    Vv = TruncatedSVD(n_components=min(100, M - 1), random_state=0).fit_transform(PP)
+    Vv = Vv - Vv.mean(axis=0)          # mean-centre: removes the common component so valence separates cleanly
+    Vv = Vv / (np.linalg.norm(Vv, axis=1, keepdims=True) + 1e-9)
+    nmix = {}
+    for r in nodes: nmix.setdefault(normalize_letters(r), r)   # normalized form -> raw node key
+    return dict(nodes=nodes, ni=ni, V=Vv, norm_index=nmix)
+
+# preset semantic axes — anchor pairs (negative side, positive side); resolved against the vocab.
+# NB root-level: roots like کثر (→ worldly تكاثر vs divine كوثر) are blurred; axes are directional, not exact.
+AXES = {
+    "Good ↔ Evil": [("هدی", "ضلل"), ("نور", "ظلم"), ("رحم", "عذب"), ("صلح", "سوء"), ("جنن", "جهنم"), ("صدق", "کذب")],
+    "World ↔ Hereafter": [("دنو", "ءخر"), ("حيی", "موت")],
+}
+
+def _resolve(S, w):
+    return S["norm_index"].get(normalize_letters(w))
+
+def _axis_vec(S, pairs):
+    offs = []
+    for g, b in pairs:
+        gk, bk = _resolve(S, g), _resolve(S, b)
+        if gk and bk: offs.append(S["V"][S["ni"][bk]] - S["V"][S["ni"][gk]])
+    if not offs:
+        return None, 0
+    ax = np.mean(offs, 0); ax /= np.linalg.norm(ax) + 1e-9
+    return ax, len(offs)
+
 def figure(d, color_by, focus=None):
     pos, nodes, docf = d["pos"], d["nodes"], d["docf"]
     ex, ey = [], []
@@ -277,6 +321,15 @@ def figure(d, color_by, focus=None):
     elif color_by == "Network role":               # banked graph finding: bridge / hub / member
         colors = [ROLE_COLOR.get((gf.get(normalize_letters(n)) or {}).get("role"), "#9FB3C8") for n in nodes]
         marker = dict(size=sizes, color=colors, line=dict(width=0.5, color="#ffffff"))
+    elif color_by == "Semantic axis":              # project concepts onto an anchor-pair direction
+        _sc = d.get("axisscore", {})
+        vals = [_sc.get(n, 0.0) for n in nodes]
+        _m = max((abs(v) for v in vals), default=1.0) or 1.0
+        marker = dict(size=sizes, color=vals,
+                      colorscale=[[0, "#1D9E75"], [0.5, "#EEEEEE"], [1, "#E63946"]],
+                      cmin=-_m, cmax=_m, showscale=True,
+                      colorbar=dict(title=d.get("axisname", ""), thickness=12),
+                      line=dict(width=0.5, color="#ffffff"))
     else:
         colors = [d["nuz"][n] for n in nodes]
         marker = dict(size=sizes, color=colors, colorscale="YlOrRd", showscale=True,
@@ -361,12 +414,33 @@ c1.metric("Concepts mapped", len(d["nodes"]))
 c2.metric("Attraction links", len(d["edges"]))
 c3.metric("Themes", len(d["themes"]))
 cc1, cc2 = st.columns([1, 1.4])
-color_by = cc1.radio("Colour by", ["Theme", "Revelation phase", "Network role"], horizontal=True, key="atlas_color")
-_theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(top)}" for ti, _o, top in d["themes"]]
-_focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
-                           disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
-_focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
+color_by = cc1.radio("Colour by", ["Theme", "Revelation phase", "Network role", "Semantic axis"],
+                     horizontal=True, key="atlas_color")
+_focus = None
+if color_by == "Semantic axis":
+    _axname = cc2.selectbox("Axis (anchor-pair direction)", list(AXES), key="atlas_axis")
+    _AX = _axis_space(id(corpus)); _ax, _nused = _axis_vec(_AX, AXES[_axname])
+    if _ax is not None:
+        _sc_all = {r: float(_AX["V"][_AX["ni"][r]] @ _ax) for r in _AX["nodes"]}
+        d["axisscore"] = {n: _sc_all.get(n, 0.0) for n in d["nodes"]}
+        d["axisname"] = _axname
+        _ordered = sorted(_sc_all, key=lambda r: _sc_all[r])
+        d["axispoles"] = (_ordered[:12], _ordered[::-1][:12], _nused, len(AXES[_axname]))
+else:
+    _theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(top)}" for ti, _o, top in d["themes"]]
+    _focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
+                               disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
+    _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
 st.plotly_chart(figure(d, color_by, _focus), use_container_width=True)
+if color_by == "Semantic axis" and d.get("axispoles"):
+    _lo, _hi, _nu, _nt = d["axispoles"]
+    _negL, _posL = [x.strip() for x in d.get("axisname", "− ↔ +").split("↔")]
+    st.markdown("<div style='font-size:14px;color:#10243A;margin:4px 0;font-family:Amiri,serif'>"
+                f"<b>{_negL} pole →</b> {' · '.join(_lo)}<br>"
+                f"<b>{_posL} pole →</b> {' · '.join(_hi)}</div>", unsafe_allow_html=True)
+    st.caption(f"Concepts coloured by projection onto the {d.get('axisname','')} axis — a dense SVD embedding; "
+               f"axis = mean of {_nu}/{_nt} anchor-pair offsets (validated directional semantics, robust where single "
+               "analogies are not). A navigation map, not a claim.")
 if color_by == "Network role":
     _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
     _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
