@@ -292,10 +292,12 @@ hero("🗺️ Concept Atlas",
 
 SNAME = _sura_names(id(corpus))
 BANDS = ["Opening", "Early", "Middle", "Late", "Closing"]
-_goto = st.session_state.pop("_atlas_goto_sura", None)        # set by a click on the 114-sūra map
+_goto = st.session_state.pop("_atlas_goto_sura", None)        # set by the sūra-map dropdown
 if _goto is not None:
     st.session_state["atlas_scope"] = "A sūra"
     st.session_state["atlas_sura"] = int(_goto)
+if st.session_state.pop("_atlas_goto_whole", None):          # set by the "back" button
+    st.session_state["atlas_scope"] = "Whole Qur'ān"
 _sc1, _sc2 = st.columns([1, 1.7])
 _scope = _sc1.radio("Scope", ["Whole Qur'ān", "A sūra", "Position band"], horizontal=True, key="atlas_scope")
 if _scope == "A sūra":
@@ -316,6 +318,12 @@ if len(d.get("nodes", [])) < 4:
     st.stop()
 d["gf"] = _graphfeat(id(corpus))
 st.markdown(f"<div style='font-size:16px;color:#10243A;margin:2px 0 6px'>{_note}</div>", unsafe_allow_html=True)                     # attach banked graph roles for the role colouring
+if _scope != "Whole Qur'ān":
+    if st.button("← Back to the 114-sūra map", key="atlas_back"):
+        st.session_state["_atlas_goto_whole"] = True
+        st.session_state["atlas_mapjump"] = 0
+        st.session_state["_atlas_lastjump"] = 0
+        st.rerun()
 with st.expander("ℹ️ What this map is — the three scales (one-page synthesis)"):
     st.markdown(
 """**The map, and why three scales.** Concepts (grammatical roots) are **nodes**; an **edge** joins two concepts that co-occur more than chance (PPMI); **colour** groups them into communities (Louvain). The *same* engine is read at three scales — the whole Qur'ān, one sūra, and a relative-position band — because structure lives at every scale and each scale answers a different question.
