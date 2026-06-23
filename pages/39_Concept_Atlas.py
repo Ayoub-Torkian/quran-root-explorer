@@ -281,6 +281,95 @@ def _axis_space(_cid, n=600):
     for r in nodes: nmix.setdefault(normalize_letters(r), r)   # normalized form -> raw node key
     return dict(nodes=nodes, ni=ni, V=Vv, norm_index=nmix)
 
+@st.cache_data(show_spinner="Building the attraction–repulsion field…")
+def _field_space(_cid, n=700):
+    """Per-concept field: āyah co-occurrence vs a chance baseline (signed z) + same-context embedding cosine."""
+    from sklearn.decomposition import TruncatedSVD
+    Nn = len(corpus.df)
+    vr = [set(r for r in corpus.root_tokens[i] if r and r != "-") for i in range(Nn)]
+    fr = Counter(r for s in vr for r in s); drop = {r for r, _ in fr.most_common(8)}
+    nodes = [r for r, k in fr.most_common() if k >= 10 and r not in drop][:n]
+    ni = {r: i for i, r in enumerate(nodes)}; M = len(nodes)
+    co = np.zeros((M, M))
+    for s in vr:
+        ix = sorted(ni[r] for r in s if r in ni)
+        for a in range(len(ix)):
+            for b in range(a + 1, len(ix)): co[ix[a], ix[b]] += 1; co[ix[b], ix[a]] += 1
+    f = np.array([fr[r] for r in nodes], float)
+    E = np.outer(f, f) / Nn                       # expected joint āyāt under independence
+    defz = (co - E) / np.sqrt(E + 1e-9)           # signed deviation: + = gather, − = refrain
+    with np.errstate(divide="ignore", invalid="ignore"):
+        ratio = co * Nn / np.outer(f, f)
+        PMI = np.log(np.where(co > 0, ratio, 1.0))
+        PP = np.where(PMI > 0, PMI, 0.0)
+    Vv = TruncatedSVD(n_components=min(100, M - 1), random_state=0).fit_transform(PP)
+    Vv = Vv - Vv.mean(axis=0); Vv = Vv / (np.linalg.norm(Vv, axis=1, keepdims=True) + 1e-9)
+    COS = Vv @ Vv.T
+    nmix = {}
+    for r in nodes: nmix.setdefault(normalize_letters(r), r)
+    return dict(nodes=nodes, ni=ni, f=f, co=co, E=E, defz=defz, PMI=PMI, COS=COS, norm_index=nmix)
+
+def _ego_view(F, concept, k=10):
+    """Ego attraction–repulsion graph + table for one concept."""
+    import pandas as pd
+    i = F["ni"][concept]; f, co, E, defz, PMI, COS = F["f"], F["co"], F["E"], F["defz"], F["PMI"], F["COS"]
+    gather = [j for j in np.argsort(-defz[i]) if j != i and co[i, j] >= 4 and defz[i, j] > 0][:k]
+    refrain = [j for j in np.argsort(defz[i]) if j != i and E[i, j] >= 3 and co[i, j] < E[i, j]][:k]
+    zmax = max((defz[i, j] for j in gather), default=1.0) or 1.0
+    rzmax = max((abs(defz[i, j]) for j in refrain), default=1.0) or 1.0
+    placed = []                                   # (j, x, y, rel)
+    for t, j in enumerate(gather):
+        ang = 2 * np.pi * t / max(len(gather), 1)
+        rad = 1.5 - 0.65 * (defz[i, j] / zmax)    # stronger pull → closer in
+        placed.append((j, rad * np.cos(ang), rad * np.sin(ang), "gather"))
+    for t, j in enumerate(refrain):
+        ang = 2 * np.pi * t / max(len(refrain), 1) + 0.31
+        rad = 2.05 + 0.75 * (abs(defz[i, j]) / rzmax)   # stronger refrain → farther out
+        placed.append((j, rad * np.cos(ang), rad * np.sin(ang), "refrain"))
+    fig = go.Figure()
+    for j, x, y, rel in placed:
+        col = "#1D9E75" if rel == "gather" else "#E63946"
+        w = 1 + 4 * abs(defz[i, j]) / max(zmax, rzmax)
+        fig.add_trace(go.Scatter(x=[0, x], y=[0, y], mode="lines", opacity=0.45,
+                      line=dict(width=w, color=col, dash=None if rel == "gather" else "dot"), hoverinfo="none"))
+    def _hov(j):
+        return f"{F['nodes'][j]} · together {int(co[i, j])}× vs ~{E[i, j]:.0f} by chance · z {defz[i, j]:+.1f} · cos {COS[i, j]:+.2f}"
+    for rel, fill, edge, tcol in [("gather", "#D7F0E6", "#1D9E75", "#0b3b2e"), ("refrain", "#FBE0E3", "#E63946", "#7a1620")]:
+        P = [p for p in placed if p[3] == rel]
+        if not P: continue
+        fig.add_trace(go.Scatter(x=[p[1] for p in P], y=[p[2] for p in P], mode="markers+text",
+            text=[F["nodes"][p[0]] for p in P], textposition="top center",
+            textfont=dict(size=13, color=tcol, family="Amiri,serif"),
+            marker=dict(size=[12 + (f[p[0]] ** 0.5) * 0.7 for p in P], color=fill, line=dict(width=1.5, color=edge)),
+            hovertext=[_hov(p[0]) for p in P], hoverinfo="text"))
+    fig.add_trace(go.Scatter(x=[0], y=[0], mode="markers+text", text=[concept], textposition="middle center",
+        textfont=dict(size=18, color="#ffffff", family="Amiri,serif"),
+        marker=dict(size=44, color="#1D3557", line=dict(width=2, color="#ffffff")),
+        hovertext=[f"{concept} · appears in {int(f[i])} āyāt"], hoverinfo="text"))
+    fig.update_layout(height=560, showlegend=False, margin=dict(l=0, r=0, t=10, b=0),
+        xaxis=dict(visible=False, range=[-3.1, 3.1]),
+        yaxis=dict(visible=False, range=[-3.1, 3.1], scaleanchor="x"),
+        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
+    st.plotly_chart(fig, use_container_width=True)
+    st.markdown("<div style='font-size:13px;color:#10243A;margin:2px 0'>"
+        "<span style='color:#1D9E75'>●</span> <b>gathers</b> — shares an āyah far more than chance (inner ring, solid) "
+        "&nbsp;&nbsp; <span style='color:#E63946'>●</span> <b>refrains</b> — expected together by frequency, yet rarely "
+        "co-occurs (outer ring, dotted)</div>", unsafe_allow_html=True)
+    st.caption("Pull = āyah-level co-occurrence vs a chance baseline · z = (observed − expected)/√expected. "
+        "**Gather is strongly MEASURED** (z up to +25); **refrain is real but low-power** on this sparse corpus "
+        "(z ≈ −2) — treat repulsion as suggestive. Same-context embedding cosine is in the table.")
+    rows = []
+    for rel, js in [("gather", gather), ("refrain", refrain)]:
+        for j in js:
+            rows.append({"concept": F["nodes"][j], "relation": rel, "together (obs)": int(co[i, j]),
+                         "expected": round(float(E[i, j]), 1), "z (pull)": round(float(defz[i, j]), 1),
+                         "PMI": round(float(PMI[i, j]), 2), "embed cos": round(float(COS[i, j]), 2),
+                         "freq": int(f[j])})
+    df = pd.DataFrame(rows)
+    st.dataframe(df, use_container_width=True, height=400, hide_index=True)
+    st.download_button("⬇️ Download neighbours (CSV)", df.to_csv(index=False).encode("utf-8-sig"),
+                       file_name=f"{concept}_field.csv", mime="text/csv", key="atlas_egocsv")
+
 # preset semantic axes — anchor pairs (negative side, positive side); resolved against the vocab.
 # NB root-level: roots like کثر (→ worldly تكاثر vs divine كوثر) are blurred; axes are directional, not exact.
 AXES = {
@@ -414,44 +503,36 @@ c1.metric("Concepts mapped", len(d["nodes"]))
 c2.metric("Attraction links", len(d["edges"]))
 c3.metric("Themes", len(d["themes"]))
 cc1, cc2 = st.columns([1, 1.4])
-color_by = cc1.radio("Colour by", ["Theme", "Revelation phase", "Network role", "Semantic axis"],
-                     horizontal=True, key="atlas_color")
+color_by = cc1.radio("Map mode", ["Theme", "Revelation phase", "Network role", "Around a concept"],
+                     horizontal=True, key="atlas_color",
+                     help="The first three colour the whole territory. 'Around a concept' zooms to one concept's field.")
 _focus = None
-if color_by == "Semantic axis":
-    _axname = cc2.selectbox("Axis (anchor-pair direction)", list(AXES), key="atlas_axis")
-    _AX = _axis_space(id(corpus)); _ax, _nused = _axis_vec(_AX, AXES[_axname])
-    if _ax is not None:
-        _sc_all = {r: float(_AX["V"][_AX["ni"][r]] @ _ax) for r in _AX["nodes"]}
-        d["axisscore"] = {n: _sc_all.get(n, 0.0) for n in d["nodes"]}
-        d["axisname"] = _axname
-        _ordered = sorted(_sc_all, key=lambda r: _sc_all[r])
-        d["axispoles"] = (_ordered[:12], _ordered[::-1][:12], _nused, len(AXES[_axname]))
+if color_by == "Around a concept":
+    _F = _field_space(id(corpus))
+    _here = {normalize_letters(n) for n in d["nodes"]}
+    _vocab = [n for n in _F["nodes"] if normalize_letters(n) in _here] or _F["nodes"]
+    _vocab = sorted(_vocab, key=lambda r: -_F["f"][_F["ni"][r]])
+    _dft = next((w for w in ("قلب", "رحم", "کفر") if w in _vocab), _vocab[0])
+    _csel = cc2.selectbox("Pick a concept — see what gathers around it and what refrains from it",
+                          _vocab, index=_vocab.index(_dft), key="atlas_concept")
+    _ego_view(_F, _csel)
 else:
     _theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(top)}" for ti, _o, top in d["themes"]]
     _focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
                                disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
     _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
-st.plotly_chart(figure(d, color_by, _focus), use_container_width=True)
-if color_by == "Semantic axis" and d.get("axispoles"):
-    _lo, _hi, _nu, _nt = d["axispoles"]
-    _negL, _posL = [x.strip() for x in d.get("axisname", "− ↔ +").split("↔")]
-    st.markdown("<div style='font-size:14px;color:#10243A;margin:4px 0;font-family:Amiri,serif'>"
-                f"<b>{_negL} pole →</b> {' · '.join(_lo)}<br>"
-                f"<b>{_posL} pole →</b> {' · '.join(_hi)}</div>", unsafe_allow_html=True)
-    st.caption(f"Concepts coloured by projection onto the {d.get('axisname','')} axis — a dense SVD embedding; "
-               f"axis = mean of {_nu}/{_nt} anchor-pair offsets (validated directional semantics, robust where single "
-               "analogies are not). A navigation map, not a claim.")
-if color_by == "Network role":
-    _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
-    _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
-    st.markdown("<div style='font-size:12px;color:#10243A;margin:2px 0 0'>"
-                f"<span style='color:#E63946'>●</span> bridge — connector across themes ({_nb}) &nbsp;&nbsp;"
-                f"<span style='color:#EF9F27'>●</span> family anchor — hub ({_nh}) &nbsp;&nbsp;"
-                "<span style='color:#9FB3C8'>●</span> member"
-                "<br>Roles are a <b>banked graph finding</b> (degree-normalised betweenness for bridges, "
-                "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
-st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
-           "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
+    st.plotly_chart(figure(d, color_by, _focus), use_container_width=True)
+    if color_by == "Network role":
+        _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
+        _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
+        st.markdown("<div style='font-size:12px;color:#10243A;margin:2px 0 0'>"
+                    f"<span style='color:#E63946'>●</span> bridge — connector across themes ({_nb}) &nbsp;&nbsp;"
+                    f"<span style='color:#EF9F27'>●</span> family anchor — hub ({_nh}) &nbsp;&nbsp;"
+                    "<span style='color:#9FB3C8'>●</span> member"
+                    "<br>Roles are a <b>banked graph finding</b> (degree-normalised betweenness for bridges, "
+                    "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
+    st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
+               "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
 
 # ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
 if _scope == "A sūra":
