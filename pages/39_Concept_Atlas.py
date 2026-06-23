@@ -258,6 +258,33 @@ layer(1, "📋 Data behind the map — sortable, scrollable, copyable")
 st.dataframe(_df, use_container_width=True, height=380, hide_index=True)
 st.download_button("⬇️ Download table (CSV)", _df.to_csv(index=False).encode("utf-8"),
                    file_name="concept_atlas_data.csv", mime="text/csv", key="atlas_csv")
+with st.expander("ℹ️ What the columns mean — and why each matters"):
+    st.markdown(
+"""Each row is one **concept** (a grammatical root = a node). The columns answer different questions about its place in the web.
+
+**Prominence**
+- **frequency** — in how many āyāt (at the current scope) the concept appears. *Why:* raw weight — how much of the text it touches.
+
+**Grouping**
+- **community # / community** — the auto-detected cluster it belongs to (Louvain), labelled by that cluster's lead concepts. *Why:* its **thematic neighbourhood** — which family of ideas it lives in.
+- **role** — a banked graph role: **bridge** (connects different themes), **hub** (anchor of its family), or **member**. *Why:* its structural job in the map.
+
+**Centrality — different senses of "important"**
+- **degree** — how many strong (above-chance) partners it links to. *Why:* direct reach — a high-degree concept attracts many others.
+- **degree_cent** — the same, normalised 0–1 by network size. *Why:* lets you compare across scopes (a sūra vs the whole Qur'ān).
+- **betweenness** — how often it lies on the shortest path between other concepts. *Why:* a **broker/bridge** — high betweenness means removing it would fragment the map; it links otherwise-separate themes.
+- **closeness** — how short its average path is to *every* other concept. *Why:* **reach** — a high-closeness concept is "near everything," touching the whole web quickly.
+- **eigenvector** — importance by the *company it keeps* (connected to other well-connected concepts). *Why:* **prestige** — embedded among the central, not just busy.
+- **pagerank** — a random-walk version of the same idea, robust to quirks. *Why:* where "attention" flows in the web; a stable importance ranking.
+- **clustering** — how tightly its own neighbours interlink (0–1). *Why:* **cohesion vs brokerage** — high = sits inside a tight, self-contained theme; low = spans loosely-linked groups (more bridge-like).
+
+**Context**
+- **revelation 1–114** — the mean revelation order (nuzūl) of the sūras it appears in, early (Meccan) → late (Medinan). *Why:* *when* in the revelation the concept concentrates.
+- **top partners** — its strongest co-occurring concepts. *Why:* what it "goes with" — its immediate meaning-company.
+
+**Reading them together:** *degree / eigenvector / pagerank* tell you **how central** a concept is; *betweenness* tells you whether it's a **bridge**; *closeness* tells you its **reach**; *clustering* tells you whether it sits in a **tight theme or brokers between themes**. A concept high in betweenness but low in clustering is a connector across the Qur'ān's themes; one high in eigenvector and clustering is a core anchor of its own theme.
+
+**Takeaway.** This table turns the map into numbers you can rank, sort, and export: find the concept that most **bridges** the Qur'ān's themes (top *betweenness*), the **anchor** of each theme (top *eigenvector* within a community), the most far-reaching ideas (top *closeness*), and how a concept's weight tilts **Meccan → Medinan** (*revelation*) — at whichever scale you choose (whole Qur'ān, one sūra, or a position band). It makes the picture **measurable and checkable**, not just visual.""")
 
 # inline concept peek — quick profile without leaving the map
 _pick = st.selectbox("🔍 Inspect a concept", [""] + d["nodes"],
