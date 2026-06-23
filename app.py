@@ -488,11 +488,18 @@ def main():
     with tabs[4]: tab_explore(corpus, R)
 
     st.divider()
-    st.caption(
-        "📚 Use the **left navigation** for the eight deep-dive pages: "
-        "Per-Root Profile · Network · Motifs · Ayah Browser · Compare & Heatmaps · "
-        "Morphology · Statistics · Export."
-    )
+    st.markdown(
+        "<div style='font-size:13.5px;color:#10243A;line-height:1.7'>"
+        "📚 Use the <b>left navigation</b>, grouped into four areas:<br>"
+        "<b>🔭 Explore</b> — Read · Search · Per-Root Profile · Concept Deep-Dive · Network · Motifs · "
+        "Compare &amp; Heatmaps · Topic Modeling · Morphology · Interpret.<br>"
+        "<b>💡 Discover</b> — Discovery Map · <b>Concept Atlas</b> · <b>Structure Map</b> · Latent Features · "
+        "Correspondence; the close-up essays (Closeup Index · the Āyah · the Sūra · Inter-Sūra · "
+        "Importance as roles · Mathani · Structural Twins); and Claims Reviewed (Code 19 · Word-count miracle · "
+        "Revelation order).<br>"
+        "<b>🧪 Methods · Lab</b> — Lens Lab · Two Books · Disjoint Letters · Spatial Patterns · Signal · Biology.<br>"
+        "<b>🛠️ Tools</b> — Statistics · Export · Feedback · Help."
+        "</div>", unsafe_allow_html=True)
 
 
 if __name__ == "__main__":

@@ -537,6 +537,18 @@ PAGE_TOUR = [
          "mapping) — press 🚀 Analyze, click per-root cards to drill in."),
     ]),
     ("📜 DISCOVERIES", [
+        ("🧭 Discovery Map · start here", "The orientation map for the Discover area — how the discoveries, "
+         "the concept map and the scales connect.",
+         "Start here to see how the Discover surfaces fit together."),
+        ("🗺️ Concept Atlas", "The conceptual territory as one map: every major root linked by attraction, "
+         "auto-grouped into themes — scoped to the whole Qur'ān, a single sūra (internal communities + semantic "
+         "footprint + elaboration finder), or a relative-position band; plus the 114-sūra similarity map with "
+         "cluster metrics and a full centrality table.",
+         "To navigate concepts and their relations — a concept's theme and neighbours, or how one sūra is built "
+         "and where it sits in the meaning-space."),
+        ("🪜 Structure Map", "Structure at every scale — āyah · passage · sūra · whole Qur'ān — each measured "
+         "against the text's own shuffle.",
+         "To see which scale carries structure and how strongly."),
         ("🧬 Determinacy", "The latent-feature ledger — intrinsic, self-referential discoveries, each "
          "scored against the text's own shuffle and carrying a status badge.",
          "The scoreboard: what the program has found, and what collapsed under control."),

@@ -44,26 +44,6 @@ def _sura_names(_cid):
     g = corpus.df.groupby(COL_SURAH)[COL_SURAH_NAME].first()
     return {int(k): str(v) for k, v in g.items()}
 
-def _clicked(ev):
-    """(point_index, curve_number) of the first clicked point from a plotly on_select event, or (None, None).
-    Handles both dict and attribute access, and both 'points' and flat 'point_indices'."""
-    try:
-        sel = ev["selection"] if isinstance(ev, dict) else getattr(ev, "selection", None)
-    except Exception:
-        sel = None
-    if not sel:
-        return None, None
-    getf = (sel.get if isinstance(sel, dict) else (lambda k, d=None: getattr(sel, k, d)))
-    pts = getf("points") or []
-    if pts:
-        p = pts[0]
-        g = (p.get if isinstance(p, dict) else (lambda k, d=None: getattr(p, k, d)))
-        return g("point_index", g("point_number")), g("curve_number")
-    pidx = getf("point_indices") or getf("point_index") or []
-    if pidx:
-        return (pidx[0] if isinstance(pidx, (list, tuple)) else pidx), None
-    return None, None
-
 ROLE_COLOR = {"connector / bridge": "#E63946", "family anchor (hub)": "#EF9F27"}  # member → muted below
 ROLE_TAG = {"connector / bridge": "🌉 bridge", "family anchor (hub)": "⭐ hub"}
 
