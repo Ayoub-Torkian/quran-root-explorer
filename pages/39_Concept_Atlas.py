@@ -10,6 +10,7 @@ import streamlit as st
 import networkx as nx
 from networkx.algorithms import community as nxcom
 import plotly.graph_objects as go
+import pandas as pd
 from analysis import COL_SURAH, COL_SURAH_NAME, COL_AYAH, normalize_letters
 from state import get_corpus, hero, layer, log_page
 
@@ -182,6 +183,21 @@ if len(d.get("nodes", [])) < 4:
     st.stop()
 d["gf"] = _graphfeat(id(corpus))
 st.markdown(f"<div style='font-size:13px;color:#10243A;margin:2px 0 6px'>{_note}</div>", unsafe_allow_html=True)                     # attach banked graph roles for the role colouring
+with st.expander("ℹ️ What this map is — the three scales (one-page synthesis)"):
+    st.markdown(
+"""**The map, and why three scales.** Concepts (grammatical roots) are **nodes**; an **edge** joins two concepts that co-occur more than chance (PPMI); **colour** groups them into communities (Louvain). The *same* engine is read at three scales — the whole Qur'ān, one sūra, and a relative-position band — because structure lives at every scale and each scale answers a different question.
+
+**1 · Whole Qur'ān — the territory.**
+&nbsp;&nbsp;*Foundation:* every major concept, linked by attraction, across all 6,236 āyāt. &nbsp;*Significance:* the global conceptual **themes** and the concepts that **bridge** them. &nbsp;*Why:* to see the Book as one connected system, not a list of topics. &nbsp;*Fits:* the master map — the sūra and band views are zoom-ins of it. &nbsp;*Real-world:* a navigation atlas for study/teaching — find a concept, its theme, its neighbours. &nbsp;*Takeaway:* the vocabulary self-organises into a few coherent themes.
+
+**2 · A Sūra — the architecture of one chapter.**
+&nbsp;&nbsp;*Foundation:* the same graph built from one sūra's verses only. &nbsp;*Significance:* recovers a sūra's **internal communities** — for narrative sūras these track the **episodes** (e.g. Yūsuf: plot · temptation · prison · reunion). &nbsp;*Why:* to read *how* a chapter is built, not just which words it uses. &nbsp;*Fits:* a zoom-in (a **row**) of the whole map. &nbsp;*Real-world:* a study aid — a chapter's structure at a glance; lesson/sermon planning. &nbsp;*Takeaway:* a sūra's narrative/argument skeleton is latent in its concept co-occurrence.
+
+**3 · Relative-position band — the shape of a sūra. ⚠️ [DIVINE-ALT]**
+&nbsp;&nbsp;*Foundation:* verses pooled by *where* they fall in their sūra (opening→closing), across all sūras. &nbsp;*Significance:* positional structure — **doxology (سبّح/حمد) frames the edges**, narrative/warning fills the body, **exhortation (صبر/غفر/وقي) closes**. &nbsp;*Why:* to test whether position carries meaning (it does — strongest at the edges). &nbsp;*Fits:* an alternative re-indexing (a **column**), tagged **DIVINE-ALT** — explorable, never the muṣḥaf's primary order. &nbsp;*Real-world:* the rhetorical/homiletic shape of a sūra. &nbsp;*Takeaway:* sūras open and close with glorification and exhortation and narrate in between — a measurable homiletic form.
+
+**Synthesis.** Row (sūra) and column (band) are two cuts of the *same* concept matrix the whole-Qur'ān map summarises; together they let you move from the entire territory → to one chapter's build → to the universal shape of a chapter, all from one measured, attraction-based web — presented as a **navigation map, not a claim.**""")
+
 c1, c2, c3 = st.columns(3)
 c1.metric("Concepts mapped", len(d["nodes"]))
 c2.metric("Attraction links", len(d["edges"]))
@@ -204,6 +220,35 @@ if color_by == "Network role":
                 "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
 st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
            "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
+
+# ---- data table behind the map (sortable · scrollable · copyable) ----
+_tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])
+for _a, _b, _w in d["edges"]:
+    _tG.add_edge(_a, _b, weight=_w, dist=1.0 / max(_w, 1e-6))
+_deg = dict(_tG.degree())
+try:
+    _bet = nx.betweenness_centrality(_tG, weight="dist")
+except Exception:
+    _bet = {n: 0.0 for n in d["nodes"]}
+_partners = {n: [] for n in d["nodes"]}
+for _a, _b, _w in sorted(d["edges"], key=lambda e: -e[2]):
+    if len(_partners[_a]) < 3: _partners[_a].append(_b)
+    if len(_partners[_b]) < 3: _partners[_b].append(_a)
+_clab = {ti: " · ".join(top) for ti, _o, top in d["themes"]}
+_rolemap = {"connector / bridge": "bridge", "family anchor (hub)": "hub"}
+_rows = []
+for n in d["nodes"]:
+    _ti = d["theme_of"][n]
+    _role = _rolemap.get((d["gf"].get(normalize_letters(n)) or {}).get("role"), "member")
+    _rows.append({"concept": n, "frequency": d["docf"][n], "degree": _deg.get(n, 0),
+                  "betweenness": round(_bet.get(n, 0.0), 3), "community #": _ti + 1,
+                  "community": _clab.get(_ti, ""), "revelation 1–114": round(d["nuz"][n]),
+                  "role": _role, "top partners": " · ".join(_partners[n])})
+_df = pd.DataFrame(_rows).sort_values(["community #", "frequency"], ascending=[True, False])
+layer(1, "📋 Data behind the map — sortable, scrollable, copyable")
+st.dataframe(_df, use_container_width=True, height=380, hide_index=True)
+st.download_button("⬇️ Download table (CSV)", _df.to_csv(index=False).encode("utf-8"),
+                   file_name="concept_atlas_data.csv", mime="text/csv", key="atlas_csv")
 
 # inline concept peek — quick profile without leaving the map
 _pick = st.selectbox("🔍 Inspect a concept", [""] + d["nodes"],
