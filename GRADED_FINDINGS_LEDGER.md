@@ -15,3 +15,8 @@
 - **Instrument:** signed S=cos(tf-idf sūra)-mean; E=ΣS·dist; spectral+anneal optimum; length-bin null. Substrate=sūra(lexical). Arrangement=DIVINE-DEFAULT.
 - **Revise-up trigger:** add non-lexical bonds (echo/explanation/phonetic) as terms of the SAME energy; if g→0 the order becomes the field ground state = major upgrade.
 - **Unified pinning map:** pinned S1, block S18-23; loose oath/rhyme 75-85+55 (concept-metric blind spot, not free).
+
+### Lexical density vs depth across sura length (CORRECTED)
+- **RETIRED (overclaimed):** 'short suras are specially dense in new concepts.' The density-length relation (TTR rho-0.80) is **Heaps law** (beta=0.76), universal to all text. Controlling length (same-size token-shuffle null), short suras are **z=-2.4, slightly BELOW** random density => not specially dense.
+- **MEASURED (stands):** **long suras develop their concepts beyond what length predicts** — z=-6.2 vs same-size shuffle (more repetition/coherence than a random bag), graded with length (rho=-0.41). Substrate=rasm roots; arrangement=within-sura DIVINE-DEFAULT; null=corpus token-shuffle.
+- **Flip condition:** a control corpus showing Quran short suras EXCEED the universal Heaps curve would revive a short-density finding (none so far).

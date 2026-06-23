@@ -206,7 +206,36 @@ def _sura_space(_cid):
     comm = {}
     for k, cc in enumerate(sorted(nxcom.greedy_modularity_communities(G, weight="weight"), key=len, reverse=True)):
         for a in cc: comm[a] = k
-    return dict(suras=suras, xy=np.asarray(xy, float), comm=comm)
+    # per-family (cluster) metrics
+    length = Counter(su)
+    firstrow = {}
+    for i in range(Nn):
+        if su[i] not in firstrow: firstrow[su[i]] = i
+    nuz = {}
+    for s, i in firstrow.items():
+        try: nuz[s] = int(corpus.df.iloc[i]["ترتیب نزول"])
+        except Exception: nuz[s] = None
+    families = []
+    for fid in sorted(set(comm.values())):
+        mem = [a for a in range(NS) if comm[a] == fid]
+        coh = float(SIM[np.ix_(mem, mem)][np.triu_indices(len(mem), 1)].mean()) if len(mem) > 1 else 0.0
+        others = [a for a in range(NS) if comm[a] != fid]
+        sep = float(SIM[np.ix_(mem, others)].mean()) if (others and mem) else 0.0
+        agg = Counter()
+        for a in mem:
+            for r, k in rootcnt[suras[a]].items(): agg[r] += k
+        tot = sum(agg.values()) or 1
+        sc = {r: (agg[r] / tot) * idf.get(r, 0.0) for r in agg}
+        topc = [r for r in sorted(sc, key=lambda r: -sc[r])[:8]]
+        msur = [suras[a] for a in mem]
+        mn = [nuz[s] for s in msur if nuz.get(s)]
+        families.append({"id": fid, "n": len(mem), "members": msur,
+                         "cohesion": round(coh, 3), "separation": round(sep, 3),
+                         "silhouette": round(coh - sep, 3),
+                         "mean_nuz": (round(float(np.mean(mn))) if mn else None),
+                         "mean_len": round(float(np.mean([length[s] for s in msur]))),
+                         "concepts": topc})
+    return dict(suras=suras, xy=np.asarray(xy, float), comm=comm, families=families)
 
 def figure(d, color_by, focus=None):
     pos, nodes, docf = d["pos"], d["nodes"], d["docf"]
@@ -354,11 +383,7 @@ if _scope == "A sūra":
         _fig2.update_layout(showlegend=False, height=560, margin=dict(l=0, r=0, t=0, b=0),
                             xaxis=dict(visible=False), yaxis=dict(visible=False),
                             plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
-        _ev2 = st.plotly_chart(_fig2, use_container_width=True, key="atlas_footprint", on_select="rerun")
-        _pi2, _cv2 = _clicked(_ev2)
-        if _pi2 is not None and _cv2 == 1 and _pi2 < len(_idx):     # curve 1 = the highlighted concepts
-            st.session_state._pending_q = _S["nodes"][_idx[_pi2]]
-            st.switch_page("pages/38_Search.py")
+        st.plotly_chart(_fig2, use_container_width=True, key="atlas_footprint")
         _verdict = ("tightly unified — its distinctive vocabulary clusters in one region (typical of legal / thematic sūras)"
                     if _z > 3 else
                     "scattered — its distinctive words span several regions (typical of narrative / imagery sūras)"
@@ -393,24 +418,44 @@ if _scope == "Whole Qur'ān":
     _fig3.update_layout(showlegend=False, height=600, margin=dict(l=0, r=0, t=0, b=0),
                         xaxis=dict(visible=False), yaxis=dict(visible=False),
                         plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
-    _ev3 = st.plotly_chart(_fig3, use_container_width=True, key="atlas_suramap", on_select="rerun")
-    _pi3, _ = _clicked(_ev3)
-    if _pi3 is not None and _pi3 < len(_qs):
-        st.session_state["_atlas_mappick"] = int(_qs[_pi3])     # preview, don't navigate away
-    _pick = st.session_state.get("_atlas_mappick")
-    if _pick is not None and _pick in _qs:
-        _fk = _qc.get(_qs.index(_pick), 0)
-        st.markdown(f"<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
-                    f"padding:8px 14px;margin:6px 0;font-size:13.5px;color:#10243A'>"
-                    f"📜 <b>Sūra {_pick} · {SNAME.get(_pick, '')}</b> &nbsp;·&nbsp; family {_fk + 1} "
-                    "&nbsp;·&nbsp; click other sūras to compare, or open this one →</div>", unsafe_allow_html=True)
-        if st.button(f"Open Sūra {_pick} · {SNAME.get(_pick, '')} →", key="atlas_openmap"):
-            st.session_state["_atlas_goto_sura"] = int(_pick)
-            st.session_state.pop("_atlas_mappick", None)
-            st.rerun()
-    st.caption("Each point is a sūra; distance ≈ how alike their vocabulary is (MDS on tf-idf cosine). "
-               "Colour = family (legend above). **Click a sūra to preview it here; press Open to drill in — the map stays put.** "
-               "A navigation map, not a claim.")
+    st.plotly_chart(_fig3, use_container_width=True, key="atlas_suramap")
+    _jc1, _jc2 = st.columns([2, 3])
+    _jump = _jc1.selectbox("🔎 Open a sūra from the map →", [0] + _qs,
+                           format_func=lambda s: "— pick a sūra —" if s == 0 else f"{s} · {SNAME.get(s, '')}",
+                           key="atlas_mapjump")
+    if _jump and _jump != st.session_state.get("_atlas_lastjump"):
+        st.session_state["_atlas_lastjump"] = _jump
+        st.session_state["_atlas_goto_sura"] = int(_jump); st.rerun()
+    st.caption("Each point is a sūra; distance ≈ vocabulary similarity (MDS on tf-idf cosine). "
+               "Colour = family (legend above). Pick a sūra in the dropdown to open its internal map + footprint. A navigation map, not a claim.")
+    # ---- cluster (family) metrics table ----
+    _F = _Q["families"]
+    layer(1, "📊 Cluster metrics — the sūra families")
+    _hdr = "".join(
+        f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
+        f'text-align:right;font-size:12px;white-space:nowrap">{h}</th>'
+        for h in ["family", "# sūras", "cohesion", "separation", "silhouette",
+                  "mean revelation", "mean length", "defining concepts", "members"])
+    _trs = []
+    for _f in _F:
+        _col = THEME_COLORS[_f["id"] % len(THEME_COLORS)]
+        _mem = " · ".join(SNAME.get(s, str(s)) for s in _f["members"][:14]) + (f" …(+{_f['n'] - 14})" if _f["n"] > 14 else "")
+        _cells = [f'<span style="display:inline-block;width:11px;height:11px;border-radius:3px;'
+                  f'background:{_col};margin-left:5px"></span> family {_f["id"] + 1}',
+                  _f["n"], _f["cohesion"], _f["separation"], _f["silhouette"],
+                  (_f["mean_nuz"] if _f["mean_nuz"] is not None else "—"), _f["mean_len"],
+                  " · ".join(_f["concepts"]), _mem]
+        _tds = "".join(
+            f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;'
+            f'{"font-family:Amiri,serif;" if _k in (7, 8) else ""}">{_c}</td>'
+            for _k, _c in enumerate(_cells))
+        _trs.append(f"<tr>{_tds}</tr>")
+    st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
+                '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
+                f'<thead><tr>{_hdr}</tr></thead><tbody>{"".join(_trs)}</tbody></table></div>',
+                unsafe_allow_html=True)
+    st.caption("Cohesion = mean within-family vocabulary similarity; separation = mean similarity to other families; "
+               "silhouette = cohesion − separation (higher = tighter & more distinct). Mean revelation = nuzūl order (early→late).")
 
 # ---- data table behind the map (sortable · scrollable · copyable) ----
 _tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])

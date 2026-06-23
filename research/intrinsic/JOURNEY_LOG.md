@@ -368,3 +368,8 @@ Last 3 **discovery** moves: **~85 · null · null** (āyah, per-sūra necessity,
 - E*=-10639, RELAXATION GAP g=0.36 => muscaf ~64% relaxed but NOT ground state (lower arrangement exists under concept-sim alone). => NECESSARY not NECESSITY; 36% gap = incomplete force law (add echo/explanation/phonetic as TERMS of same energy, watch g->0).
 - Field recovers groups w/o labels: Zahrawan(2,3) SAME, Muawwidhatan(113,114) SAME, Hawamim 6/7 SAME.
 - Pinning (restoring force, one energy): PINNED S1 + block S18-23 (Kahf/Maryam/Taha/Anbiya/Hajj/Muminun). LOOSE short oath/rhyme 75-85+55 = concept-metric blind to rhyme (instrument, not finding). corr(pin,length)=+0.30. Script /tmp/field.py.
+
+## 2026-06-23 15:33  CORRECTED (Heaps): 'short suras specially dense' RETIRED; 'long suras deep beyond length' stands
+- Density/length is Heaps law (beta=0.76, universal to ALL text): TTR rho-0.80, repetition rho+0.80, development rho+0.84 vs length = expected of any corpus, NOT a Quran-specific feature.
+- DEVIATION test (own-substrate token-shuffle, same #tokens/sura): SHORT z=-2.4 (slightly BELOW random density => NOT specially dense; high TTR was pure length). LONG z=-6.2 (well below random => more concept-development/coherence than length predicts). corr(z,length) rho=-0.41.
+- VERDICT: short=dense RETIRED (length artifact). long-suras-develop-concepts-beyond-length = MEASURED. Scripts /tmp/density.py,/tmp/heaps.py.
