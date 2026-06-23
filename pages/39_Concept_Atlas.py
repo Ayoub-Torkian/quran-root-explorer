@@ -324,20 +324,23 @@ if _scope != "Whole Qur'ān":
         st.session_state["atlas_mapjump"] = 0
         st.session_state["_atlas_lastjump"] = 0
         st.rerun()
-with st.expander("ℹ️ What this map is — the three scales (one-page synthesis)"):
+with st.expander("ℹ️ What this page shows — scales, maps & metrics (one-page guide)"):
     st.markdown(
-"""**The map, and why three scales.** Concepts (grammatical roots) are **nodes**; an **edge** joins two concepts that co-occur more than chance (PPMI); **colour** groups them into communities (Louvain). The *same* engine is read at three scales — the whole Qur'ān, one sūra, and a relative-position band — because structure lives at every scale and each scale answers a different question.
+"""**The core idea.** Concepts (grammatical roots) are **nodes**; an **edge** joins two that co-occur more than chance (PPMI); **colour** = auto-found communities (Louvain). The *same* engine drives every view below.
 
-**1 · Whole Qur'ān — the territory.**
-&nbsp;&nbsp;*Foundation:* every major concept, linked by attraction, across all 6,236 āyāt. &nbsp;*Significance:* the global conceptual **themes** and the concepts that **bridge** them. &nbsp;*Why:* to see the Book as one connected system, not a list of topics. &nbsp;*Fits:* the master map — the sūra and band views are zoom-ins of it. &nbsp;*Real-world:* a navigation atlas for study/teaching — find a concept, its theme, its neighbours. &nbsp;*Takeaway:* the vocabulary self-organises into a few coherent themes.
+**Scope — three lenses on the concept web (the radio at the top):**
+- **1 · Whole Qur'ān — the territory.** Every major concept across all 6,236 āyāt, grouped into **themes**, with the concepts that **bridge** them. The master map; everything else is a zoom or a companion. *Takeaway: the vocabulary self-organises into a few coherent themes.*
+- **2 · A sūra — how one chapter is built.** The same graph from one sūra's verses → its **internal communities**; for narratives these track the **episodes** (Yūsuf: plot · temptation · prison · reunion). *Takeaway: a chapter's skeleton is latent in its own concept co-occurrence.*
+- **3 · Position band — the shape of a sūra. ⚠️ [DIVINE-ALT].** Verses pooled by *where* they fall (opening→closing) across all sūras: **doxology frames the edges, exhortation closes, narrative fills the body.** An alternative re-indexing, never the muṣḥaf's primary order.
 
-**2 · A Sūra — the architecture of one chapter.**
-&nbsp;&nbsp;*Foundation:* the same graph built from one sūra's verses only. &nbsp;*Significance:* recovers a sūra's **internal communities** — for narrative sūras these track the **episodes** (e.g. Yūsuf: plot · temptation · prison · reunion). &nbsp;*Why:* to read *how* a chapter is built, not just which words it uses. &nbsp;*Fits:* a zoom-in (a **row**) of the whole map. &nbsp;*Real-world:* a study aid — a chapter's structure at a glance; lesson/sermon planning. &nbsp;*Takeaway:* a sūra's narrative/argument skeleton is latent in its concept co-occurrence.
+**Companion views (same data, a different question):**
+- **The 114 sūras as a semantic map** (Whole scope) — each sūra is a **point**, distance ≈ vocabulary similarity; auto-**families** emerge (one ≈ 88% Medinan, found with no labels). The **cluster-metrics table** gives each family's cohesion, separation, silhouette (tight vs loose), revelation tilt and defining concepts.
+- **A sūra's semantic footprint** (A-sūra scope) — *where* that sūra's distinctive concepts sit in the whole meaning-space, with a **concentration score** (legal sūras tight, narrative/hymn scattered).
+- **The data table** — every concept with frequency and the full **centrality suite** (degree, betweenness, closeness, eigenvector, PageRank, clustering) plus community, revelation and top partners — sortable, copyable, Arabic-safe CSV.
 
-**3 · Relative-position band — the shape of a sūra. ⚠️ [DIVINE-ALT]**
-&nbsp;&nbsp;*Foundation:* verses pooled by *where* they fall in their sūra (opening→closing), across all sūras. &nbsp;*Significance:* positional structure — **doxology (سبّح/حمد) frames the edges**, narrative/warning fills the body, **exhortation (صبر/غفر/وقي) closes**. &nbsp;*Why:* to test whether position carries meaning (it does — strongest at the edges). &nbsp;*Fits:* an alternative re-indexing (a **column**), tagged **DIVINE-ALT** — explorable, never the muṣḥaf's primary order. &nbsp;*Real-world:* the rhetorical/homiletic shape of a sūra. &nbsp;*Takeaway:* sūras open and close with glorification and exhortation and narrate in between — a measurable homiletic form.
+**How to read it together.** Move **outward → inward**: the whole territory → one chapter's build → its opening-to-closing shape; and **macro → micro**: which sūras are alike (the 114-map) → where one sūra's concepts live (footprint) → the exact numbers (table).
 
-**Synthesis.** Row (sūra) and column (band) are two cuts of the *same* concept matrix the whole-Qur'ān map summarises; together they let you move from the entire territory → to one chapter's build → to the universal shape of a chapter, all from one measured, attraction-based web — presented as a **navigation map, not a claim.**""")
+**Honest scope.** Everything is **measured** (attraction, communities, centralities, MDS) and presented as a **navigation map, not a claim**. Bands and footprints are *exploratory* (DIVINE-ALT / approximate 2-D); necessity is never asserted.""")
 
 c1, c2, c3 = st.columns(3)
 c1.metric("Concepts mapped", len(d["nodes"]))
