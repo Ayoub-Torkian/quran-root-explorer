@@ -21,10 +21,18 @@ OBSOLETE = set(re.findall(r'"(pages/[^"]+\.py)"', MANI_SRC[MANI_SRC.find("OBSOLE
                           if "OBSOLETE" in MANI_SRC else ""))
 # local -> deployed(HF) path map from the UPLOADS manifest
 MAP = dict(re.findall(r'"(pages/[^"]+\.py)":\s*"(pages/[^"]+\.py)"', MANI_SRC))
+# admin-only page: reachable by direct URL, intentionally NOT in the public nav (see state.py note)
+INTENTIONAL_NO_NAV = {"pages/9_Usage.py"}
 
 
 def title_of(p):
     return re.sub(r"^\d+[a-z]?_", "", os.path.basename(p)[:-3]).replace("_", " ")
+
+
+def nav_label(p):
+    """The human-facing nav title for a page, e.g. 'The Sūra' — matched against Help/About."""
+    m = re.search(r'"' + re.escape(p) + r'"\s*,\s*"([^"]+)"', NAV)
+    return m.group(1) if m else ""
 
 
 def main():
@@ -33,6 +41,7 @@ def main():
     print(f"{'page':36} {'NAV':4} {'DEPLOY':6} {'HELP':5} {'ABOUT':5}")
     print("-" * 62)
     for p in sorted(glob.glob("pages/*.py")):
+        p = p.replace("\\", "/")           # normalise Windows separators to match state.py / manifest
         if p.endswith(".bak"):
             continue
         hf = MAP.get(p, p)
@@ -40,13 +49,15 @@ def main():
         in_dep = (p in MAP) or (p in MANI_SRC)
         t = title_of(p)
         tok = t.split()[0].lower()
-        in_help = tok in HELP or t.lower() in HELP
-        in_about = tok in APP or t.lower() in APP
+        label = nav_label(p)
+        hits = [tok, t.lower()] + ([label.lower()] if label else [])
+        in_help = any(h and h in HELP for h in hits)
+        in_about = any(h and h in APP for h in hits)
         obs = p in OBSOLETE
         print(f"{os.path.basename(p):36} {('✔' if in_nav else '✘'):^4}"
               f"{('✔' if in_dep else '✘'):^6} {('✔' if in_help else '·'):^5}"
               f"{('✔' if in_about else '·'):^5}")
-        if not obs:
+        if not obs and p not in INTENTIONAL_NO_NAV:
             if not in_nav:
                 hard.append(f"{os.path.basename(p)} missing from NAV_SECTIONS (state.py)")
             if not in_dep:
