@@ -374,6 +374,15 @@ if _scope == "Whole Qur'ān":
     _Q = _sura_space(id(corpus))
     layer(1, "🗺️ The 114 sūras as a semantic map — which sūras are alike")
     _qx, _qs, _qc = _Q["xy"], _Q["suras"], _Q["comm"]
+    _fam = {}
+    for a, s in enumerate(_qs): _fam.setdefault(_qc.get(a, 0), []).append(s)
+    _leg = "".join(
+        "<span style='display:inline-block;margin:0 14px 4px 0;font-size:12px;color:#10243A'>"
+        f"<span style='display:inline-block;width:11px;height:11px;border-radius:3px;"
+        f"background:{THEME_COLORS[k % len(THEME_COLORS)]};margin-left:5px;vertical-align:-1px'></span> "
+        f"family {k + 1}: {' · '.join(SNAME.get(s, str(s)) for s in _fam[k][:3])}…</span>"
+        for k in sorted(_fam))
+    st.markdown(f"<div style='margin:2px 0 6px'>{_leg}</div>", unsafe_allow_html=True)
     _fig3 = go.Figure()
     _fig3.add_trace(go.Scatter(
         x=_qx[:, 0], y=_qx[:, 1], mode="markers+text",
@@ -387,10 +396,21 @@ if _scope == "Whole Qur'ān":
     _ev3 = st.plotly_chart(_fig3, use_container_width=True, key="atlas_suramap", on_select="rerun")
     _pi3, _ = _clicked(_ev3)
     if _pi3 is not None and _pi3 < len(_qs):
-        st.session_state["_atlas_goto_sura"] = int(_qs[_pi3]); st.rerun()
+        st.session_state["_atlas_mappick"] = int(_qs[_pi3])     # preview, don't navigate away
+    _pick = st.session_state.get("_atlas_mappick")
+    if _pick is not None and _pick in _qs:
+        _fk = _qc.get(_qs.index(_pick), 0)
+        st.markdown(f"<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
+                    f"padding:8px 14px;margin:6px 0;font-size:13.5px;color:#10243A'>"
+                    f"📜 <b>Sūra {_pick} · {SNAME.get(_pick, '')}</b> &nbsp;·&nbsp; family {_fk + 1} "
+                    "&nbsp;·&nbsp; click other sūras to compare, or open this one →</div>", unsafe_allow_html=True)
+        if st.button(f"Open Sūra {_pick} · {SNAME.get(_pick, '')} →", key="atlas_openmap"):
+            st.session_state["_atlas_goto_sura"] = int(_pick)
+            st.session_state.pop("_atlas_mappick", None)
+            st.rerun()
     st.caption("Each point is a sūra; distance ≈ how alike their vocabulary is (MDS on tf-idf cosine). "
-               "Colour = auto-detected family — the Medinan/legislative sūras cluster on their own "
-               "(one community is ~88% Medinan, found unsupervised). **Click a sūra to open it.** A navigation map, not a claim.")
+               "Colour = family (legend above). **Click a sūra to preview it here; press Open to drill in — the map stays put.** "
+               "A navigation map, not a claim.")
 
 # ---- data table behind the map (sortable · scrollable · copyable) ----
 _tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])
