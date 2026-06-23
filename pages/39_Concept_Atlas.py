@@ -18,6 +18,10 @@ st.set_page_config(page_title="Concept Atlas", page_icon="🗺️", layout="wide
 log_page("concept_atlas")
 corpus = get_corpus()
 INK = "#10243A"
+# This is a dense analytical page (wide chart + many-column data table) — let it use the monitor.
+st.markdown("<style>.block-container,[data-testid='stMainBlockContainer'],"
+            "[data-testid='stAppViewBlockContainer']{max-width:min(1800px,96vw)!important;}</style>",
+            unsafe_allow_html=True)
 THEME_COLORS = ["#0F6E56", "#1D3557", "#E63946", "#EF9F27", "#7209B7", "#2A9D8F",
                 "#9C6644", "#3A86FF", "#D62828", "#588157", "#6D597A", "#B5179E"]
 
