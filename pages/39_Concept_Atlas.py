@@ -11,6 +11,7 @@ import networkx as nx
 from networkx.algorithms import community as nxcom
 import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
 from analysis import COL_SURAH, COL_SURAH_NAME, COL_AYAH, normalize_letters
 from state import get_corpus, hero, layer, log_page, chip_row
 
@@ -119,6 +120,42 @@ def build_atlas(_cid, scope="all", sel=None, n_nodes=150, drop_ubiq=10, topk=3):
     return dict(nodes=nodes, docf={r: docf[r] for r in nodes}, edges=[(a, b, G[a][b]["weight"]) for a, b in G.edges()],
                 theme_of=theme_of, themes=themes, nuz=nuz, pos={n: [float(p[0]), float(p[1])] for n, p in pos.items()})
 
+@st.cache_data(show_spinner="Building the semantic space…")
+def _semantic_space(_cid, n=750):
+    """Corpus-scale semantic embedding (validated): nodes = top roots, SIM = PPMI-context cosine,
+    xy = 2-D PCA for display, idf = per-sūra distinctiveness. Used by the per-sūra semantic footprint."""
+    Nn = len(corpus.df)
+    su = [int(x) for x in corpus.df[COL_SURAH]]
+    vr = [set(r for r in corpus.root_tokens[i] if r and r != "-") for i in range(Nn)]
+    fr = Counter(r for s in vr for r in s)
+    drop = {r for r, _ in fr.most_common(8)}
+    nodes = [r for r, k in fr.most_common() if k >= 6 and r not in drop][:n]
+    ni = {r: i for i, r in enumerate(nodes)}; M = len(nodes)
+    co = np.zeros((M, M))
+    for s in vr:
+        ix = sorted(ni[r] for r in s if r in ni)
+        for a in range(len(ix)):
+            for b in range(a + 1, len(ix)): co[ix[a], ix[b]] += 1; co[ix[b], ix[a]] += 1
+    f = np.array([fr[r] for r in nodes], dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        P = co / (f[:, None] * f[None, :] / Nn)
+        PP = np.log(np.where(P > 0, P, 1.0)); PP[PP < 0] = 0
+    U = PP / (np.linalg.norm(PP, axis=1, keepdims=True) + 1e-9)
+    SIM = U @ U.T; np.fill_diagonal(SIM, 0)
+    sset = {}
+    for i in range(Nn): sset.setdefault(su[i], set()).update(vr[i])
+    NS = len(sset); sdf = Counter()
+    for s, rs in sset.items():
+        for r in rs:
+            if r in ni: sdf[r] += 1
+    idf = {r: float(np.log(NS / sdf[r])) for r in nodes if sdf.get(r)}
+    try:
+        from sklearn.decomposition import PCA
+        xy = PCA(n_components=2, random_state=0).fit_transform(U)
+    except Exception:
+        xy = U[:, :2]
+    return dict(nodes=nodes, ni=ni, xy=np.asarray(xy, float), SIM=SIM, idf=idf)
+
 def figure(d, color_by, focus=None):
     pos, nodes, docf = d["pos"], d["nodes"], d["docf"]
     ex, ey = [], []
@@ -224,6 +261,53 @@ if color_by == "Network role":
                 "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
 st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
            "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
+
+# ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
+if _scope == "A sūra":
+    _S = _semantic_space(id(corpus))
+    _su = [int(x) for x in corpus.df[COL_SURAH]]
+    _rc = Counter()
+    for _i in range(len(corpus.df)):
+        if _su[_i] == _sel:
+            for _r in corpus.root_tokens[_i]:
+                if _r and _r != "-" and _r in _S["ni"]: _rc[_r] += 1
+    _tot = sum(_rc.values()) or 1
+    _scd = {r: (_rc[r] / _tot) * _S["idf"].get(r, 0.0) for r in _rc}
+    _top = sorted(_scd, key=lambda r: -_scd[r])[:25]
+    _idx = [_S["ni"][r] for r in _top]
+    layer(1, "🧭 Where this sūra sits in the Qur'ān's meaning-space (semantic footprint)")
+    if len(_idx) >= 6:
+        _iu = np.triu_indices(len(_idx), 1)
+        _obs = float(_S["SIM"][np.ix_(_idx, _idx)][_iu].mean())
+        _rng = np.random.default_rng(0); _MM = len(_S["nodes"]); _null = []
+        for _ in range(800):
+            _rr = _rng.choice(_MM, len(_idx), replace=False)
+            _null.append(_S["SIM"][np.ix_(_rr, _rr)][_iu].mean())
+        _nm = float(np.mean(_null)); _nsd = float(np.std(_null)) + 1e-9
+        _z = (_obs - _nm) / _nsd
+        _xy = _S["xy"]; _hot = set(_idx)
+        _fig2 = go.Figure()
+        _fig2.add_trace(go.Scatter(x=[_xy[i, 0] for i in range(_MM) if i not in _hot],
+                                   y=[_xy[i, 1] for i in range(_MM) if i not in _hot],
+                                   mode="markers", marker=dict(size=4, color="#DCE4EA"), hoverinfo="none"))
+        _fig2.add_trace(go.Scatter(x=[_xy[i, 0] for i in _idx], y=[_xy[i, 1] for i in _idx],
+                                   mode="markers+text", text=[_S["nodes"][i] for i in _idx],
+                                   textposition="top center", textfont=dict(size=13, color=INK),
+                                   marker=dict(size=11, color="#1D9E75", line=dict(width=1, color="#ffffff")),
+                                   hoverinfo="text"))
+        _fig2.update_layout(showlegend=False, height=560, margin=dict(l=0, r=0, t=0, b=0),
+                            xaxis=dict(visible=False), yaxis=dict(visible=False),
+                            plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
+        st.plotly_chart(_fig2, use_container_width=True)
+        _verdict = ("tightly unified — its distinctive vocabulary clusters in one region (typical of legal / thematic sūras)"
+                    if _z > 3 else
+                    "scattered — its distinctive words span several regions (typical of narrative / imagery sūras)"
+                    if _z < 0.8 else "moderately focused")
+        st.caption(f"Grey = the whole Qur'ān's concepts (faint backdrop); green = this sūra's distinctive concepts. "
+                   f"**Concentration z = {_z:+.1f}** → the footprint is {_verdict}. "
+                   "Semantic distance is from corpus-wide co-occurrence (validated z+3.6); the 2-D projection is approximate.")
+    else:
+        st.caption("Too few distinctive concepts in the semantic space to map this sūra's footprint.")
 
 # ---- data table behind the map (sortable · scrollable · copyable) ----
 _tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])
