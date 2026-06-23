@@ -309,66 +309,77 @@ def _field_space(_cid, n=700):
     for r in nodes: nmix.setdefault(normalize_letters(r), r)
     return dict(nodes=nodes, ni=ni, f=f, co=co, E=E, defz=defz, PMI=PMI, COS=COS, norm_index=nmix)
 
-def _ego_view(F, concept, k=10):
-    """Ego attraction–repulsion graph + table for one concept."""
+def _ego_view(F, concept, kg=16, kr=5):
+    """Embedding-space neighbourhood: concepts placed AND linked by vector cosine (used-in-similar-contexts)."""
     import pandas as pd
-    i = F["ni"][concept]; f, co, E, defz, PMI, COS = F["f"], F["co"], F["E"], F["defz"], F["PMI"], F["COS"]
-    gather = [j for j in np.argsort(-defz[i]) if j != i and co[i, j] >= 4 and defz[i, j] > 0][:k]
-    refrain = [j for j in np.argsort(defz[i]) if j != i and E[i, j] >= 3 and co[i, j] < E[i, j]][:k]
-    zmax = max((defz[i, j] for j in gather), default=1.0) or 1.0
-    rzmax = max((abs(defz[i, j]) for j in refrain), default=1.0) or 1.0
-    placed = []                                   # (j, x, y, rel)
-    for t, j in enumerate(gather):
-        ang = 2 * np.pi * t / max(len(gather), 1)
-        rad = 1.5 - 0.65 * (defz[i, j] / zmax)    # stronger pull → closer in
-        placed.append((j, rad * np.cos(ang), rad * np.sin(ang), "gather"))
-    for t, j in enumerate(refrain):
-        ang = 2 * np.pi * t / max(len(refrain), 1) + 0.31
-        rad = 2.05 + 0.75 * (abs(defz[i, j]) / rzmax)   # stronger refrain → farther out
-        placed.append((j, rad * np.cos(ang), rad * np.sin(ang), "refrain"))
+    from sklearn.manifold import MDS
+    i = F["ni"][concept]; f, co, E, defz, COS = F["f"], F["co"], F["E"], F["defz"], F["COS"]
+    near = [j for j in np.argsort(-COS[i]) if j != i][:kg]
+    far = [j for j in np.argsort(COS[i]) if j != i][:kr]
+    S = [i] + near + far
+    D = 1.0 - COS[np.ix_(S, S)]; np.fill_diagonal(D, 0.0); D = (D + D.T) / 2; D[D < 0] = 0
+    xy = MDS(n_components=2, dissimilarity="precomputed", random_state=1, n_init=4,
+             normalized_stress="auto").fit_transform(D)
+    xy = xy - xy[0]                                   # place the chosen concept at the origin
+    pos = {S[t]: (float(xy[t, 0]), float(xy[t, 1])) for t in range(len(S))}
+    # edges: any pair (incl. neighbour–neighbour) alike in the embedding; width & opacity ∝ cosine
+    cand = [(a, b, COS[a, b]) for ai, a in enumerate(near) for b in near[ai + 1:] if COS[a, b] >= 0.30]
+    cand += [(i, j, COS[i, j]) for j in near if COS[i, j] >= 0.30]
+    cand.sort(key=lambda t: -t[2]); cand = cand[:26]
     fig = go.Figure()
-    for j, x, y, rel in placed:
-        col = "#1D9E75" if rel == "gather" else "#E63946"
-        w = 1 + 4 * abs(defz[i, j]) / max(zmax, rzmax)
-        fig.add_trace(go.Scatter(x=[0, x], y=[0, y], mode="lines", opacity=0.45,
-                      line=dict(width=w, color=col, dash=None if rel == "gather" else "dot"), hoverinfo="none"))
+    if cand:
+        cmn = min(c for _, _, c in cand); cmx = max(c for _, _, c in cand); rng = (cmx - cmn) or 1.0
+        for a, b, cv in cand:
+            frac = (cv - cmn) / rng
+            fig.add_trace(go.Scatter(x=[pos[a][0], pos[b][0]], y=[pos[a][1], pos[b][1]], mode="lines",
+                          line=dict(width=1.2 + 6.0 * frac, color="#1D9E75"), opacity=0.22 + 0.5 * frac,
+                          hoverinfo="none"))
+    for j in far:                                     # faint spokes to embedding-opposites
+        fig.add_trace(go.Scatter(x=[0, pos[j][0]], y=[0, pos[j][1]], mode="lines",
+                      line=dict(width=1, color="#E63946", dash="dot"), opacity=0.32, hoverinfo="none"))
     def _hov(j):
-        return f"{F['nodes'][j]} · together {int(co[i, j])}× vs ~{E[i, j]:.0f} by chance · z {defz[i, j]:+.1f} · cos {COS[i, j]:+.2f}"
-    for rel, fill, edge, tcol in [("gather", "#D7F0E6", "#1D9E75", "#0b3b2e"), ("refrain", "#FBE0E3", "#E63946", "#7a1620")]:
-        P = [p for p in placed if p[3] == rel]
-        if not P: continue
-        fig.add_trace(go.Scatter(x=[p[1] for p in P], y=[p[2] for p in P], mode="markers+text",
-            text=[F["nodes"][p[0]] for p in P], textposition="top center",
-            textfont=dict(size=13, color=tcol, family="Amiri,serif"),
-            marker=dict(size=[12 + (f[p[0]] ** 0.5) * 0.7 for p in P], color=fill, line=dict(width=1.5, color=edge)),
-            hovertext=[_hov(p[0]) for p in P], hoverinfo="text"))
+        return (f"{F['nodes'][j]} · cosine {COS[i, j]:+.2f} (used in similar contexts) · "
+                f"together {int(co[i, j])}× vs ~{E[i, j]:.0f} by chance")
+    fig.add_trace(go.Scatter(x=[pos[j][0] for j in near], y=[pos[j][1] for j in near], mode="markers+text",
+        text=[F["nodes"][j] for j in near], textposition="top center",
+        textfont=dict(size=13, color="#0b3b2e", family="Amiri,serif"),
+        marker=dict(size=[13 + (f[j] ** 0.5) * 0.6 for j in near],
+                    color=[COS[i, j] for j in near], colorscale=[[0, "#EAF7F1"], [1, "#1D9E75"]],
+                    cmin=0.0, cmax=max(COS[i, j] for j in near), line=dict(width=1.4, color="#1D9E75")),
+        hovertext=[_hov(j) for j in near], hoverinfo="text"))
+    if far:
+        fig.add_trace(go.Scatter(x=[pos[j][0] for j in far], y=[pos[j][1] for j in far], mode="markers+text",
+            text=[F["nodes"][j] for j in far], textposition="top center",
+            textfont=dict(size=12, color="#7a1620", family="Amiri,serif"),
+            marker=dict(size=[11 + (f[j] ** 0.5) * 0.5 for j in far], color="#FBE0E3",
+                        line=dict(width=1.2, color="#E63946")),
+            hovertext=[_hov(j) for j in far], hoverinfo="text"))
     fig.add_trace(go.Scatter(x=[0], y=[0], mode="markers+text", text=[concept], textposition="middle center",
         textfont=dict(size=18, color="#ffffff", family="Amiri,serif"),
-        marker=dict(size=44, color="#1D3557", line=dict(width=2, color="#ffffff")),
+        marker=dict(size=46, color="#1D3557", line=dict(width=2, color="#ffffff")),
         hovertext=[f"{concept} · appears in {int(f[i])} āyāt"], hoverinfo="text"))
-    fig.update_layout(height=560, showlegend=False, margin=dict(l=0, r=0, t=10, b=0),
-        xaxis=dict(visible=False, range=[-3.1, 3.1]),
-        yaxis=dict(visible=False, range=[-3.1, 3.1], scaleanchor="x"),
+    fig.update_layout(height=600, showlegend=False, margin=dict(l=0, r=0, t=10, b=0),
+        xaxis=dict(visible=False), yaxis=dict(visible=False, scaleanchor="x"),
         plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
     st.plotly_chart(fig, use_container_width=True)
     st.markdown("<div style='font-size:13px;color:#10243A;margin:2px 0'>"
-        "<span style='color:#1D9E75'>●</span> <b>gathers</b> — shares an āyah far more than chance (inner ring, solid) "
-        "&nbsp;&nbsp; <span style='color:#E63946'>●</span> <b>refrains</b> — expected together by frequency, yet rarely "
-        "co-occurs (outer ring, dotted)</div>", unsafe_allow_html=True)
-    st.caption("Pull = āyah-level co-occurrence vs a chance baseline · z = (observed − expected)/√expected. "
-        "**Gather is strongly MEASURED** (z up to +25); **refrain is real but low-power** on this sparse corpus "
-        "(z ≈ −2) — treat repulsion as suggestive. Same-context embedding cosine is in the table.")
+        "Placed and linked by <b>embedding cosine</b> — nearness = used in similar contexts. "
+        "<span style='color:#1D9E75'>●</span> near (greener &amp; closer = more alike; <b>edge thickness = cosine</b>) "
+        "&nbsp;&nbsp; <span style='color:#E63946'>●</span> opposite (negative cosine, dotted)</div>",
+        unsafe_allow_html=True)
+    st.caption("Embedding = SVD-of-PPMI (the count-based word2vec; Levy & Goldberg 2014) — apt for a corpus this size, "
+        "where neural word2vec is unstable. Relation **strength = cosine**, shown three ways: distance, node colour, "
+        "edge thickness. ‘Together’ in the table is literal co-occurrence — corroboration, a different signal.")
     rows = []
-    for rel, js in [("gather", gather), ("refrain", refrain)]:
+    for rel, js in [("near", near), ("opposite", far)]:
         for j in js:
-            rows.append({"concept": F["nodes"][j], "relation": rel, "together (obs)": int(co[i, j]),
-                         "expected": round(float(E[i, j]), 1), "z (pull)": round(float(defz[i, j]), 1),
-                         "PMI": round(float(PMI[i, j]), 2), "embed cos": round(float(COS[i, j]), 2),
-                         "freq": int(f[j])})
+            rows.append({"concept": F["nodes"][j], "relation": rel, "cosine": round(float(COS[i, j]), 2),
+                         "together (obs)": int(co[i, j]), "expected": round(float(E[i, j]), 1),
+                         "z (co-occur)": round(float(defz[i, j]), 1), "freq": int(f[j])})
     df = pd.DataFrame(rows)
     st.dataframe(df, use_container_width=True, height=400, hide_index=True)
     st.download_button("⬇️ Download neighbours (CSV)", df.to_csv(index=False).encode("utf-8-sig"),
-                       file_name=f"{concept}_field.csv", mime="text/csv", key="atlas_egocsv")
+                       file_name=f"{concept}_embedding_neighbours.csv", mime="text/csv", key="atlas_egocsv")
 
 # preset semantic axes — anchor pairs (negative side, positive side); resolved against the vocab.
 # NB root-level: roots like کثر (→ worldly تكاثر vs divine كوثر) are blurred; axes are directional, not exact.
@@ -513,7 +524,7 @@ if color_by == "Around a concept":
     _vocab = [n for n in _F["nodes"] if normalize_letters(n) in _here] or _F["nodes"]
     _vocab = sorted(_vocab, key=lambda r: -_F["f"][_F["ni"][r]])
     _dft = next((w for w in ("قلب", "رحم", "کفر") if w in _vocab), _vocab[0])
-    _csel = cc2.selectbox("Pick a concept — see what gathers around it and what refrains from it",
+    _csel = cc2.selectbox("Pick a concept — see its embedding neighbourhood (concepts used in similar contexts)",
                           _vocab, index=_vocab.index(_dft), key="atlas_concept")
     _ego_view(_F, _csel)
 else:
