@@ -473,6 +473,13 @@ if _scope == "Whole Qur'ān":
     st.caption("Cohesion = mean within-family vocabulary similarity; separation = mean similarity to other families; "
                "silhouette = cohesion − separation (higher = tighter & more distinct). Mean revelation = nuzūl order (early→late).")
 
+if _scope != "Whole Qur'ān":
+    if st.button("← Back to the 114-sūra map", key="atlas_back2"):
+        st.session_state["_atlas_goto_whole"] = True
+        st.session_state["atlas_mapjump"] = 0
+        st.session_state["_atlas_lastjump"] = 0
+        st.rerun()
+
 # ---- data table behind the map (sortable · scrollable · copyable) ----
 _tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])
 for _a, _b, _w in d["edges"]:
