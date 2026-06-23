@@ -226,10 +226,16 @@ _tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])
 for _a, _b, _w in d["edges"]:
     _tG.add_edge(_a, _b, weight=_w, dist=1.0 / max(_w, 1e-6))
 _deg = dict(_tG.degree())
-try:
-    _bet = nx.betweenness_centrality(_tG, weight="dist")
-except Exception:
-    _bet = {n: 0.0 for n in d["nodes"]}
+_NA = {n: 0.0 for n in d["nodes"]}
+def _safe(fn, **kw):
+    try: return fn(_tG, **kw)
+    except Exception: return dict(_NA)
+_degc = _safe(nx.degree_centrality)
+_bet  = _safe(nx.betweenness_centrality, weight="dist")
+_clo  = _safe(nx.closeness_centrality, distance="dist")
+_eig  = _safe(nx.eigenvector_centrality_numpy, weight="weight")
+_pr   = _safe(nx.pagerank, weight="weight")
+_clu  = _safe(nx.clustering, weight="weight")
 _partners = {n: [] for n in d["nodes"]}
 for _a, _b, _w in sorted(d["edges"], key=lambda e: -e[2]):
     if len(_partners[_a]) < 3: _partners[_a].append(_b)
@@ -240,10 +246,13 @@ _rows = []
 for n in d["nodes"]:
     _ti = d["theme_of"][n]
     _role = _rolemap.get((d["gf"].get(normalize_letters(n)) or {}).get("role"), "member")
-    _rows.append({"concept": n, "frequency": d["docf"][n], "degree": _deg.get(n, 0),
-                  "betweenness": round(_bet.get(n, 0.0), 3), "community #": _ti + 1,
-                  "community": _clab.get(_ti, ""), "revelation 1–114": round(d["nuz"][n]),
-                  "role": _role, "top partners": " · ".join(_partners[n])})
+    _rows.append({"concept": n, "frequency": d["docf"][n], "community #": _ti + 1,
+                  "community": _clab.get(_ti, ""), "role": _role,
+                  "degree": _deg.get(n, 0), "degree_cent": round(_degc.get(n, 0.0), 3),
+                  "betweenness": round(_bet.get(n, 0.0), 3), "closeness": round(_clo.get(n, 0.0), 3),
+                  "eigenvector": round(_eig.get(n, 0.0), 3), "pagerank": round(_pr.get(n, 0.0), 4),
+                  "clustering": round(_clu.get(n, 0.0), 3), "revelation 1–114": round(d["nuz"][n]),
+                  "top partners": " · ".join(_partners[n])})
 _df = pd.DataFrame(_rows).sort_values(["community #", "frequency"], ascending=[True, False])
 layer(1, "📋 Data behind the map — sortable, scrollable, copyable")
 st.dataframe(_df, use_container_width=True, height=380, hide_index=True)
