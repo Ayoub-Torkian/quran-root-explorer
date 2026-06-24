@@ -814,6 +814,8 @@ if _scope != "Whole Qur'ān":
         st.rerun()
 
 # ---- data table behind the map (sortable · scrollable · copyable) ----
+if not _map_ok:
+    st.stop()   # short sūra: graph-derived data table & themes below need a real map; companions above already shown
 _tG = nx.Graph(); _tG.add_nodes_from(d["nodes"])
 for _a, _b, _w in d["edges"]:
     _tG.add_edge(_a, _b, weight=_w, dist=1.0 / max(_w, 1e-6))
