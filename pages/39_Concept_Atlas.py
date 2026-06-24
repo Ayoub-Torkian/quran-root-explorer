@@ -801,7 +801,7 @@ if _scope == "Whole Qur'ān":
         _col = THEME_COLORS[_f["id"] % len(THEME_COLORS)]
         _mem = " · ".join(SNAME.get(s, str(s)) for s in _f["members"][:14]) + (f" …(+{_f['n'] - 14})" if _f["n"] > 14 else "")
         _cells = [f'<span style="display:inline-block;width:11px;height:11px;border-radius:3px;'
-                  f'background:{_col};margin-left:5px"></span> family {_f["id"] + 1}',
+                  f'background:{_col};margin-left:5px"></span> {_f["id"] + 1}',
                   _f["n"], _f["cohesion"], _f["separation"], _f["silhouette"],
                   (_f["mean_nuz"] if _f["mean_nuz"] is not None else "—"), _f["mean_len"],
                   " · ".join(_f["concepts"]), _mem]
@@ -816,6 +816,16 @@ if _scope == "Whole Qur'ān":
                 unsafe_allow_html=True)
     st.caption("Cohesion = mean within-family vocabulary similarity; separation = mean similarity to other families; "
                "silhouette = cohesion − separation (higher = tighter & more distinct). Mean revelation = nuzūl order (early→late).")
+    st.markdown(
+        "<div style='font-size:13px;color:#10243A;background:#F4F9F7;border:1px solid #cfe4dc;border-radius:8px;"
+        "padding:8px 11px;margin-top:6px'><b>How the families were found (plain English):</b> every sūra is turned "
+        "into a list of the word-roots it uses, weighted so common roots count less and distinctive ones count more "
+        "(roots appearing in only one sūra are dropped). Two sūras are called <i>similar</i> when those lists overlap "
+        "(cosine similarity). Each sūra is then linked to its handful of most-similar sūras, and a standard "
+        "community-detection step (greedy modularity) keeps the groups whose members link to each other more than to "
+        "everyone else. Those groups are the families — numbered 1–5 here. <b>No labels were used</b> (not Meccan/"
+        "Medinan, not topic, not length): the grouping emerges only from shared vocabulary, which is why it's notable "
+        "that one family turns out ≈88% Medinan on its own.</div>", unsafe_allow_html=True)
 
 if _scope != "Whole Qur'ān":
     if st.button("← Back to the 114-sūra map", key="atlas_back2"):
