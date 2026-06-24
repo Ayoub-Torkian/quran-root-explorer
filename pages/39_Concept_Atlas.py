@@ -694,30 +694,37 @@ if _scope == "A sūra":
         _ord = [(_Qs["suras"][b], float(_row[b]), _tlen.get(_Qs["suras"][b], 0))
                 for b in np.argsort(-_row) if _Qs["suras"][b] != _sel]
         _topc = _ord[0][1] if _ord else 0.0
-        layer(1, "🧭 Sūras that elaborate this one — by whole-vocabulary similarity")
-        st.caption("⤷ Sūra-level companion — the maps above are the *concept (root)* territory; this question is about "
-                   "which **sūras** develop the one you scoped.")
-        _near = _ord[:12]
-        _elab = sorted(_near, key=lambda t: -t[2])[:5]               # similar AND substantial = elaborators
+        layer(1, "🧭 Most related sūras (mutual) — by whole-vocabulary similarity")
+        st.caption("⤷ Sūra-level companion (the maps above are the *concept/root* territory). Similarity is "
+                   "**symmetric** — these sūras and the one you picked elaborate *each other*; the relation arrow only "
+                   "marks which side has more room to develop the shared theme.")
+        _self_len = _tlen.get(_sel, 0) or 1
+        _top = _ord[:8]
+        def _rel(ln):
+            r = ln / _self_len
+            if r >= 1.5: return "→ more room", "#0F6E56"
+            if r <= 0.67: return "← you elaborate it", "#1D3557"
+            return "↔ peer", "#10243A"
         _eh = "".join(f'<th style="background:#1D3557;color:#fff;padding:7px 9px;text-align:right;'
                       f'font-size:12px;white-space:nowrap">{h}</th>'
-                      for h in ["rank", "sūra", "similarity", "length (roots)"])
+                      for h in ["rank", "sūra", "similarity", "length (roots)", "relation"])
         _er = ""
-        for _rk, (L, _co, _ln) in enumerate(_elab, 1):
+        for _rk, (L, _co, _ln) in enumerate(_top, 1):
+            _rl, _rcol = _rel(_ln)
             _er += (f'<tr><td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_rk}</td>'
                     f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{SNAME.get(L, L)} ({L})</td>'
                     f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-weight:700">{_co:.2f}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_ln}</td></tr>')
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_ln}</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;color:{_rcol};font-weight:600">{_rl}</td></tr>')
         st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
                     '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
                     f'<thead><tr>{_eh}</tr></thead><tbody>{_er}</tbody></table></div>', unsafe_allow_html=True)
-        _tw = " · ".join(f"{SNAME.get(L, L)} ({L}) {_co:.2f}" for L, _co, _ln in _ord[:5])
         _conf = ("⚠️ Weak signal — this sūra's vocabulary barely overlaps any other; treat as low-confidence. "
                  if _topc < 0.10 else "")
-        st.caption(f"{_conf}Similarity = cosine of the two sūras' tf-idf vocabulary profiles, on roots occurring in "
-                   "**≥2 sūras** (single-sūra roots can't be shared, so they're excluded — they only dilute). "
-                   "Elaborators = among the 12 most-similar sūras, the longest — similar in theme AND substantial enough "
-                   f"to develop it (length-aware, not length-driven). Closest overall, any length: {_tw}.")
+        st.caption(f"{_conf}Similarity = cosine of the two sūras' tf-idf vocabulary profiles (roots in ≥2 sūras only; "
+                   "single-sūra roots can't be shared). It is **symmetric**, so the relationship is mutual — every pair "
+                   "shares some vocabulary, making this a continuum of degree, not a one-way claim. The ‘relation’ "
+                   "column compares lengths: a much longer partner simply has more room to develop the shared theme.")
         with st.expander("🔬 Substantiate it — raw root-count vs similarity, side by side (exportable)"):
             _Rin = _Qs["rootsets"].get(_sel, set())
             _raw = sorted(((L, len(_Rin & _Qs["rootsets"][L]), _tlen.get(L, 0))
