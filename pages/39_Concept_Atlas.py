@@ -535,9 +535,7 @@ elif _scope == "Position band":
 else:
     d = build_atlas(id(corpus), "all")
     _note = "The <b>whole Qur'ān</b>'s conceptual territory."
-if len(d.get("nodes", [])) < 4:
-    st.info("Not enough concepts at this scope to draw a map — pick a longer sūra or another band.")
-    st.stop()
+_map_ok = len(d.get("nodes", [])) >= 4   # very short sūras can't form a graph — skip the MAP, keep the companions
 d["gf"] = _graphfeat(id(corpus))
 st.markdown(f"<div style='font-size:16px;color:#10243A;margin:2px 0 6px'>{_note}</div>", unsafe_allow_html=True)                     # attach banked graph roles for the role colouring
 if _scope != "Whole Qur'ān":
@@ -565,42 +563,46 @@ with st.expander("ℹ️ What this page shows — scales, maps & metrics (one-pa
 
 **Honest scope.** Everything is **measured** (attraction, communities, centralities, MDS) and presented as a **navigation map, not a claim**. Bands and footprints are *exploratory* (DIVINE-ALT / approximate 2-D); necessity is never asserted.""")
 
-c1, c2, c3 = st.columns(3)
-c1.metric("Concepts mapped", len(d["nodes"]))
-c2.metric("Attraction links", len(d["edges"]))
-c3.metric("Themes", len(d["themes"]))
-cc1, cc2 = st.columns([1, 1.4])
-color_by = cc1.radio("Map mode", ["Theme", "Revelation phase", "Network role", "Around a concept"],
-                     horizontal=True, key="atlas_color",
-                     help="The first three colour the whole territory. 'Around a concept' zooms to one concept's field.")
-_focus = None
-if color_by == "Around a concept":
-    _F = _field_space(id(corpus))
-    _here = {normalize_letters(n) for n in d["nodes"]}
-    _vocab = [n for n in _F["nodes"] if normalize_letters(n) in _here] or _F["nodes"]
-    _vocab = sorted(_vocab, key=lambda r: normalize_letters(r))     # alphabetical — easy to browse/scan
-    _dft = next((w for w in ("قلب", "رحم", "کفر") if w in _vocab), _vocab[0])
-    st.markdown("<style>.st-key-atlas_concept{max-width:520px}</style>", unsafe_allow_html=True)
-    _csel = cc2.selectbox("Pick a concept (its embedding neighbourhood — concepts used in similar contexts)",
-                          _vocab, index=_vocab.index(_dft), key="atlas_concept")
-    _ego_view(_F, _csel)
+if not _map_ok:
+    st.info("This sūra is too short to draw its own concept map — but its sūra-level views below "
+            "(semantic footprint and the sūras that elaborate it) still work. Pick a longer sūra for the map.")
 else:
-    _theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(top)}" for ti, _o, top in d["themes"]]
-    _focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
-                               disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
-    _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
-    st.plotly_chart(figure(d, color_by, _focus), use_container_width=True)
-    if color_by == "Network role":
-        _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
-        _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
-        st.markdown("<div style='font-size:12px;color:#10243A;margin:2px 0 0'>"
-                    f"<span style='color:#E63946'>●</span> bridge — connector across themes ({_nb}) &nbsp;&nbsp;"
-                    f"<span style='color:#EF9F27'>●</span> family anchor — hub ({_nh}) &nbsp;&nbsp;"
-                    "<span style='color:#9FB3C8'>●</span> member"
-                    "<br>Roles are a <b>banked graph finding</b> (degree-normalised betweenness for bridges, "
-                    "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
-    st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
-               "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Concepts mapped", len(d["nodes"]))
+    c2.metric("Attraction links", len(d["edges"]))
+    c3.metric("Themes", len(d["themes"]))
+    cc1, cc2 = st.columns([1, 1.4])
+    color_by = cc1.radio("Map mode", ["Theme", "Revelation phase", "Network role", "Around a concept"],
+                         horizontal=True, key="atlas_color",
+                         help="The first three colour the whole territory. 'Around a concept' zooms to one concept's field.")
+    _focus = None
+    if color_by == "Around a concept":
+        _F = _field_space(id(corpus))
+        _here = {normalize_letters(n) for n in d["nodes"]}
+        _vocab = [n for n in _F["nodes"] if normalize_letters(n) in _here] or _F["nodes"]
+        _vocab = sorted(_vocab, key=lambda r: normalize_letters(r))     # alphabetical — easy to browse/scan
+        _dft = next((w for w in ("قلب", "رحم", "کفر") if w in _vocab), _vocab[0])
+        st.markdown("<style>.st-key-atlas_concept{max-width:520px}</style>", unsafe_allow_html=True)
+        _csel = cc2.selectbox("Pick a concept (its embedding neighbourhood — concepts used in similar contexts)",
+                              _vocab, index=_vocab.index(_dft), key="atlas_concept")
+        _ego_view(_F, _csel)
+    else:
+        _theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(top)}" for ti, _o, top in d["themes"]]
+        _focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
+                                   disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
+        _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
+        st.plotly_chart(figure(d, color_by, _focus), use_container_width=True)
+        if color_by == "Network role":
+            _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
+            _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
+            st.markdown("<div style='font-size:12px;color:#10243A;margin:2px 0 0'>"
+                        f"<span style='color:#E63946'>●</span> bridge — connector across themes ({_nb}) &nbsp;&nbsp;"
+                        f"<span style='color:#EF9F27'>●</span> family anchor — hub ({_nh}) &nbsp;&nbsp;"
+                        "<span style='color:#9FB3C8'>●</span> member"
+                        "<br>Roles are a <b>banked graph finding</b> (degree-normalised betweenness for bridges, "
+                        "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
+        st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
+                   "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
 
 # ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
 if _scope == "A sūra":
