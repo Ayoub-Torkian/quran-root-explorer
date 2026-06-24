@@ -22,7 +22,7 @@ INK = "#10243A"
 # This is a dense analytical page (wide chart + many-column data table) — let it use the monitor.
 # Must match the global selector's specificity (section[data-testid=stMain] .block-container) to win.
 st.markdown("<style>section[data-testid='stMain'] .block-container{"
-            "max-width:1080px!important;}</style>", unsafe_allow_html=True)
+            "max-width:1850px!important;}</style>", unsafe_allow_html=True)
 THEME_COLORS = ["#0F6E56", "#1D3557", "#E63946", "#EF9F27", "#7209B7", "#2A9D8F",
                 "#9C6644", "#3A86FF", "#D62828", "#588157", "#6D597A", "#B5179E"]
 

@@ -268,7 +268,7 @@ def inject_css():
     <style>
     /* ===== APP BACKGROUND ===== */
     .stApp { background: #FAFBFD; }
-    .main .block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 1080px; }
+    .main .block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 1850px; }
 
     /* ===== v2.0 GLOBAL READABILITY + SPACE-EFFICIENCY SWEEP (user-mandated) =====
        Goals: no dead vertical space, nothing below 13px, higher contrast for
@@ -278,7 +278,7 @@ def inject_css():
         /* Use the width: a generous centred column, NOT a narrow strip that wastes the monitor.
            Sprawl is prevented by per-ELEMENT discipline (chip_row, bounded input, no spacers),
            never by starving the container. */
-        max-width: 1080px !important; margin-left: auto !important; margin-right: auto !important;
+        max-width: 1850px !important; margin-left: auto !important; margin-right: auto !important;
     }
     section[data-testid="stMain"] div[data-testid="stVerticalBlock"] { gap: 0.55rem !important; }
     section[data-testid="stMain"] hr { margin: 0.5rem 0 !important; }
@@ -303,6 +303,9 @@ def inject_css():
     section[data-testid="stMain"] [data-testid="stTable"] table { width: auto !important; min-width: 0 !important; }
     /* LOCKED: inputs sized to need, not full-bleed — cap selectboxes so short values don't sprawl. */
     section[data-testid="stMain"] [data-testid="stSelectbox"] { max-width: 460px; }
+    /* default = content width: expanders hug their content (compact when collapsed). Charts stay full-width
+       because they live OUTSIDE expanders and use use_container_width. */
+    section[data-testid="stMain"] [data-testid="stExpander"] { width: fit-content !important; min-width: 0 !important; max-width: 100% !important; }
     section[data-testid="stMain"] [data-testid="stExpander"] details {
         border-radius: 10px !important;
     }
