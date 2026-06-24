@@ -556,7 +556,7 @@ with st.expander("ℹ️ What this page shows — scales, maps & metrics (one-pa
 **Companion views (same data, a different question):**
 - **The 114 sūras as a semantic map** (Whole scope) — each sūra is a **point**, distance ≈ vocabulary similarity; auto-**families** emerge (one ≈ 88% Medinan, found with no labels). The **cluster-metrics table** gives each family's cohesion, separation, silhouette (tight vs loose), revelation tilt and defining concepts.
 - **A sūra's semantic footprint** (A-sūra scope) — *where* that sūra's distinctive concepts sit in the whole meaning-space, with a **concentration score** (legal sūras tight, narrative/hymn scattered).
-- **Elaboration finder** (A-sūra scope) — for a sūra, the **long sūras that most develop its distinctive concepts**, *length-controlled* so it's not just "long sūras elaborate everything."
+- **Most related sūras / mutual elaboration** (A-sūra scope) — for a sūra, the sūras most alike in **whole-vocabulary** profile (symmetric cosine, so the relation is mutual), with each pair's **shared distinctive concepts** and a marker for which side has more room to develop the theme.
 - **The data table** — every concept with frequency and the full **centrality suite** (degree, betweenness, closeness, eigenvector, PageRank, clustering) plus community, revelation and top partners — sortable, copyable, Arabic-safe CSV.
 
 **How to read it together.** Move **outward → inward**: the whole territory → one chapter's build → its opening-to-closing shape; and **macro → micro**: which sūras are alike (the 114-map) → where one sūra's concepts live (footprint) → the exact numbers (table).
@@ -651,39 +651,6 @@ if _scope == "A sūra":
     else:
         st.caption("Too few distinctive concepts in the semantic space to map this sūra's footprint.")
 
-# ---- elaboration finder: which LONG sūras develop THIS sūra's distinctive concepts (length-controlled) ----
-if _scope == "A sūra":
-    _E = _elab_engine(id(corpus))
-    if _sel in _E["DIST"] and _E["DIST"][_sel]:
-        def _elab(S, L):
-            return sum(_E["idf"][r] * np.log(1 + _E["vcount"][L].get(r, 0)) for r in _E["DIST"][S] if r in _E["present"][L])
-        _cands = sorted(((L, _elab(_sel, L) / _E["Lbase"][L]) for L in _E["suras"]
-                         if L != _sel and _E["length"][L] >= 40), key=lambda kv: -kv[1])
-        layer(1, "🌱→🌳 Long sūras that elaborate this one")
-        if _cands:
-            _eh = "".join(
-                f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
-                f'text-align:right;font-size:12px;white-space:nowrap">{h}</th>'
-                for h in ["rank", "long sūra", "length", "specificity", "shared distinctive concepts"])
-            _er = []
-            for _rk, (L, _sp) in enumerate(_cands[:6], 1):
-                _sh = " · ".join(r for r in _E["DIST"][_sel] if r in _E["present"][L])
-                _er.append(
-                    f'<tr><td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_rk}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{SNAME.get(L, L)} ({L})</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_E["length"][L]}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_sp:.1f}×</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{_sh}</td></tr>')
-            st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
-                        '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
-                        f'<thead><tr>{_eh}</tr></thead><tbody>{"".join(_er)}</tbody></table></div>',
-                        unsafe_allow_html=True)
-            st.caption("Specificity = how much more a long sūra develops THIS sūra's distinctive concepts than it develops a *typical* short sūra "
-                       "(length-controlled; >1× = specific, not just \"long sūras elaborate everything\"). Most informative for short sūras; "
-                       "the rare shared concepts are the real bridges. Validated, generalisable metric.")
-        else:
-            st.caption("No longer sūras to compare against.")
-
 # ---- thematic elaborators: which sūras most resemble THIS one by whole-vocabulary profile (df≥2 roots) ----
 if _scope == "A sūra":
     _Qs = _sura_space(id(corpus))
@@ -699,6 +666,7 @@ if _scope == "A sūra":
                    "**symmetric** — these sūras and the one you picked elaborate *each other*; the relation arrow only "
                    "marks which side has more room to develop the shared theme.")
         _self_len = _tlen.get(_sel, 0) or 1
+        _E = _elab_engine(id(corpus)); _dist = _E["DIST"].get(_sel, [])
         _top = _ord[:8]
         def _rel(ln):
             r = ln / _self_len
@@ -707,15 +675,17 @@ if _scope == "A sūra":
             return "↔ peer", "#10243A"
         _eh = "".join(f'<th style="background:#1D3557;color:#fff;padding:7px 9px;text-align:right;'
                       f'font-size:12px;white-space:nowrap">{h}</th>'
-                      for h in ["rank", "sūra", "similarity", "length (roots)", "relation"])
+                      for h in ["rank", "sūra", "similarity", "length (roots)", "relation", "shared distinctive concepts"])
         _er = ""
         for _rk, (L, _co, _ln) in enumerate(_top, 1):
             _rl, _rcol = _rel(_ln)
+            _sh = " · ".join(r for r in _dist if r in _E["present"].get(L, set())) or "—"
             _er += (f'<tr><td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_rk}</td>'
                     f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{SNAME.get(L, L)} ({L})</td>'
                     f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-weight:700">{_co:.2f}</td>'
                     f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_ln}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;color:{_rcol};font-weight:600">{_rl}</td></tr>')
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;color:{_rcol};font-weight:600">{_rl}</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{_sh}</td></tr>')
         st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
                     '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
                     f'<thead><tr>{_eh}</tr></thead><tbody>{_er}</tbody></table></div>', unsafe_allow_html=True)
