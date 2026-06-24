@@ -371,28 +371,9 @@ figt.add_vline(x=50, line=dict(color="#10243A", width=1, dash="dash"))
 figt.update_layout(xaxis_title="Meccan share of the theme (%)  ·  left = Medinan, right = Meccan")
 st.plotly_chart(_lay(figt, "Each theme's Meccan vs Medinan tilt (revelation arrangement)", h=420),
                 use_container_width=True)
-# content-rich, width-filling table: roots (readable) + span/center + a Meccan-share BAR that uses the width
-_thh = "".join(f"<th style='background:#1D3557;color:#fff;padding:7px 10px;font-size:12px;white-space:nowrap;"
-               f"text-align:{a}'>{h}</th>" for h, a in
-               [("#", "right"), ("theme (top roots)", "right"), ("span", "right"),
-                ("center", "right"), ("Meccan share (bar) ◄ Medinan · Meccan ►", "left")])
-_thr = ""
-for _ti, t in enumerate(sorted(themes, key=lambda x: -x["meccan_frac"]), 1):
-    _pc = round(t["meccan_frac"] * 100)
-    _fill = "#E0584F" if t["meccan_frac"] >= 0.5 else "#3F8FD0"      # warm = Meccan, cool = Medinan
-    _bar = (f"<div style='display:flex;align-items:center;gap:9px'>"
-            f"<div style='flex:1;min-width:140px;background:#EAF2FB;border-radius:6px;height:13px'>"
-            f"<div style='width:{_pc}%;height:13px;background:{_fill};border-radius:6px'></div></div>"
-            f"<span style='min-width:36px;font-weight:700;font-size:12px;color:#10243A'>{_pc}%</span></div>")
-    _b = "border-top:1px solid #EEF2F7"
-    _thr += (f"<tr><td style='padding:6px 10px;{_b};text-align:right;font-size:13px;color:#10243A'>{_ti}</td>"
-             f"<td style='padding:6px 10px;{_b};text-align:right;font-family:Amiri,serif;font-size:15px;color:#10243A'>"
-             f"{' · '.join(A.disp_root(r) for r in t['roots'])}</td>"
-             f"<td style='padding:6px 10px;{_b};text-align:right;font-size:13px;white-space:nowrap;color:#10243A'>S{t['lo']}–{t['hi']}</td>"
-             f"<td style='padding:6px 10px;{_b};text-align:right;font-size:13px;white-space:nowrap;color:#10243A'>S{round(t['meanpos'])}</td>"
-             f"<td style='padding:6px 10px;{_b};width:100%'>{_bar}</td></tr>")
-st.markdown(f"<table style='width:100%;border-collapse:collapse'>"
-            f"<thead><tr>{_thh}</tr></thead><tbody>{_thr}</tbody></table>", unsafe_allow_html=True)
+st.table(pd.DataFrame([{"theme (top roots)": " · ".join(A.disp_root(r) for r in t["roots"]),
+                        "span": f"S{t['lo']}–{t['hi']}", "center": f"S{round(t['meanpos'])}",
+                        "Meccan %": f"{t['meccan_frac']:.0%}"} for t in themes]).set_index("theme (top roots)"))
 try:                       # cross-link: this is corpus-wide NMF; Topic Modeling is per-root (Louvain)
     st.page_link("pages/9_Topic_Modeling.py",
                  label="→ Topic Modeling — query-driven, per-root themes (the complementary lens)", icon="🧩")
