@@ -167,15 +167,17 @@ def _sura_space(_cid):
         for r in corpus.root_tokens[i]:
             if r and r != "-": dd[r] += 1
     suras = sorted(rootcnt); NS = len(suras)
-    vocab = sorted({r for s in suras for r in rootcnt[s]}); vi = {r: j for j, r in enumerate(vocab)}
     dfr = Counter()
     for s in suras:
         for r in rootcnt[s]: dfr[r] += 1
+    # similarity uses only roots in ≥2 sūras: a single-sūra root can never be shared, it only dilutes the norm
+    vocab = sorted({r for r in dfr if dfr[r] >= 2}); vi = {r: j for j, r in enumerate(vocab)}
     idf = {r: np.log(NS / dfr[r]) for r in vocab}
     V = np.zeros((NS, len(vocab)))
     for a, s in enumerate(suras):
         tot = sum(rootcnt[s].values()) or 1
-        for r, k in rootcnt[s].items(): V[a, vi[r]] = (k / tot) * idf[r]
+        for r, k in rootcnt[s].items():
+            if r in vi: V[a, vi[r]] = (k / tot) * idf[r]
     U = V / (np.linalg.norm(V, axis=1, keepdims=True) + 1e-9)
     SIM = U @ U.T; np.fill_diagonal(SIM, 0)
     try:
@@ -222,7 +224,8 @@ def _sura_space(_cid):
                          "mean_nuz": (round(float(np.mean(mn))) if mn else None),
                          "mean_len": round(float(np.mean([length[s] for s in msur]))),
                          "concepts": topc})
-    return dict(suras=suras, xy=np.asarray(xy, float), comm=comm, families=families)
+    tlen = {s: int(sum(rootcnt[s].values())) for s in suras}
+    return dict(suras=suras, xy=np.asarray(xy, float), comm=comm, families=families, SIM=SIM, tlen=tlen)
 
 @st.cache_data(show_spinner="Computing elaboration links…")
 def _elab_engine(_cid):
@@ -676,6 +679,39 @@ if _scope == "A sūra":
                        "the rare shared concepts are the real bridges. Validated, generalisable metric.")
         else:
             st.caption("No longer sūras to compare against.")
+
+# ---- thematic elaborators: which sūras most resemble THIS one by whole-vocabulary profile (df≥2 roots) ----
+if _scope == "A sūra":
+    _Qs = _sura_space(id(corpus))
+    _SIM = _Qs.get("SIM"); _tlen = _Qs.get("tlen", {})
+    if _SIM is not None and _sel in _Qs["suras"]:
+        _si = _Qs["suras"].index(_sel)
+        _row = _SIM[_si]
+        _ord = [(_Qs["suras"][b], float(_row[b]), _tlen.get(_Qs["suras"][b], 0))
+                for b in np.argsort(-_row) if _Qs["suras"][b] != _sel]
+        _topc = _ord[0][1] if _ord else 0.0
+        layer(1, "🧭 Sūras that elaborate this one — by whole-vocabulary similarity")
+        _near = _ord[:12]
+        _elab = sorted(_near, key=lambda t: -t[2])[:5]               # similar AND substantial = elaborators
+        _eh = "".join(f'<th style="background:#1D3557;color:#fff;padding:7px 9px;text-align:right;'
+                      f'font-size:12px;white-space:nowrap">{h}</th>'
+                      for h in ["rank", "sūra", "similarity", "length (roots)"])
+        _er = ""
+        for _rk, (L, _co, _ln) in enumerate(_elab, 1):
+            _er += (f'<tr><td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_rk}</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{SNAME.get(L, L)} ({L})</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-weight:700">{_co:.2f}</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_ln}</td></tr>')
+        st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
+                    '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
+                    f'<thead><tr>{_eh}</tr></thead><tbody>{_er}</tbody></table></div>', unsafe_allow_html=True)
+        _tw = " · ".join(f"{SNAME.get(L, L)} ({L}) {_co:.2f}" for L, _co, _ln in _ord[:5])
+        _conf = ("⚠️ Weak signal — this sūra's vocabulary barely overlaps any other; treat as low-confidence. "
+                 if _topc < 0.10 else "")
+        st.caption(f"{_conf}Similarity = cosine of the two sūras' tf-idf vocabulary profiles, on roots occurring in "
+                   "**≥2 sūras** (single-sūra roots can't be shared, so they're excluded — they only dilute). "
+                   "Elaborators = among the 12 most-similar sūras, the longest — similar in theme AND substantial enough "
+                   f"to develop it (length-aware, not length-driven). Closest overall, any length: {_tw}.")
 
 # ---- the 114 sūras as a semantic map (which sūras are alike) — whole-Qur'ān companion view ----
 if _scope == "Whole Qur'ān":
