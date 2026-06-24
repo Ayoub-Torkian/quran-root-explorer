@@ -225,7 +225,9 @@ def _sura_space(_cid):
                          "mean_len": round(float(np.mean([length[s] for s in msur]))),
                          "concepts": topc})
     tlen = {s: int(sum(rootcnt[s].values())) for s in suras}
-    return dict(suras=suras, xy=np.asarray(xy, float), comm=comm, families=families, SIM=SIM, tlen=tlen)
+    rootsets = {s: set(rootcnt[s]) for s in suras}
+    return dict(suras=suras, xy=np.asarray(xy, float), comm=comm, families=families,
+                SIM=SIM, tlen=tlen, rootsets=rootsets)
 
 @st.cache_data(show_spinner="Computing elaboration links…")
 def _elab_engine(_cid):
@@ -691,6 +693,8 @@ if _scope == "A sūra":
                 for b in np.argsort(-_row) if _Qs["suras"][b] != _sel]
         _topc = _ord[0][1] if _ord else 0.0
         layer(1, "🧭 Sūras that elaborate this one — by whole-vocabulary similarity")
+        st.caption("⤷ Sūra-level companion — the maps above are the *concept (root)* territory; this question is about "
+                   "which **sūras** develop the one you scoped.")
         _near = _ord[:12]
         _elab = sorted(_near, key=lambda t: -t[2])[:5]               # similar AND substantial = elaborators
         _eh = "".join(f'<th style="background:#1D3557;color:#fff;padding:7px 9px;text-align:right;'
@@ -712,6 +716,42 @@ if _scope == "A sūra":
                    "**≥2 sūras** (single-sūra roots can't be shared, so they're excluded — they only dilute). "
                    "Elaborators = among the 12 most-similar sūras, the longest — similar in theme AND substantial enough "
                    f"to develop it (length-aware, not length-driven). Closest overall, any length: {_tw}.")
+        with st.expander("🔬 Substantiate it — raw root-count vs similarity, side by side (exportable)"):
+            _Rin = _Qs["rootsets"].get(_sel, set())
+            _raw = sorted(((L, len(_Rin & _Qs["rootsets"][L]), _tlen.get(L, 0))
+                           for L in _Qs["suras"] if L != _sel), key=lambda t: (-t[1], -t[2]))
+            _ovv = np.array([t[1] for t in _raw], float); _lnn = np.array([t[2] for t in _raw], float)
+            _simc = np.array([t[1] for t in _ord], float); _siml = np.array([t[2] for t in _ord], float)
+            _rr = float(np.corrcoef(_ovv, _lnn)[0, 1]) if _ovv.std() and _lnn.std() else 0.0
+            _rs = float(np.corrcoef(_simc, _siml)[0, 1]) if _simc.std() and _siml.std() else 0.0
+            _hd = "".join(f'<th style="background:#1D3557;color:#fff;padding:6px 9px;font-size:12px;text-align:{a}">{h}</th>'
+                          for h, a in [("rank", "right"), ("RAW count → sūra", "left"), ("len", "right"), ("shared", "right"),
+                                       ("SIMILARITY → sūra", "left"), ("cos", "right"), ("len", "right")])
+            _bd = ""
+            for _k in range(min(5, len(_raw), len(_ord))):
+                L1, sh1, ln1 = _raw[_k]; L2, c2, ln2 = _ord[_k]
+                bt = "border-top:1px solid #EEF2F7"
+                _bd += (f'<tr><td style="padding:5px 9px;{bt};text-align:right">{_k+1}</td>'
+                        f'<td style="padding:5px 9px;{bt};font-family:Amiri,serif">{SNAME.get(L1,L1)} ({L1})</td>'
+                        f'<td style="padding:5px 9px;{bt};text-align:right">{ln1}</td>'
+                        f'<td style="padding:5px 9px;{bt};text-align:right">{sh1}</td>'
+                        f'<td style="padding:5px 9px;{bt};border-left:2px solid #C9D6E8;font-family:Amiri,serif">{SNAME.get(L2,L2)} ({L2})</td>'
+                        f'<td style="padding:5px 9px;{bt};text-align:right;font-weight:700">{c2:.2f}</td>'
+                        f'<td style="padding:5px 9px;{bt};text-align:right">{ln2}</td></tr>')
+            st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
+                        '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
+                        f'<thead><tr>{_hd}</tr></thead><tbody>{_bd}</tbody></table></div>', unsafe_allow_html=True)
+            st.markdown(f"<div style='font-size:13px;color:#10243A;margin:6px 0'>For <b>{SNAME.get(_sel,_sel)} ({_sel})</b>: "
+                        f"the RAW root-count ranking tracks sūra length at <b>r = {_rr:+.2f}</b> — it returns the longest "
+                        f"sūras, and nearly the same list whatever sūra you pick. The SIMILARITY ranking's tie to length "
+                        f"is only <b>r = {_rs:+.2f}</b>, and it changes with the input. Same corpus, two methods.</div>",
+                        unsafe_allow_html=True)
+            _ccsv = "rank,raw_sura,raw_len,raw_shared,similarity_sura,sim_cosine,sim_len\n" + "\n".join(
+                f"{k+1},{SNAME.get(_raw[k][0],_raw[k][0])}({_raw[k][0]}),{_raw[k][2]},{_raw[k][1]},"
+                f"{SNAME.get(_ord[k][0],_ord[k][0])}({_ord[k][0]}),{_ord[k][1]:.3f},{_ord[k][2]}"
+                for k in range(min(5, len(_raw), len(_ord))))
+            st.download_button("⬇️ Download comparison (CSV)", _ccsv.encode("utf-8-sig"),
+                               file_name=f"elaborator_compare_s{_sel}.csv", mime="text/csv", key="atlas_cmpcsv")
 
 # ---- the 114 sūras as a semantic map (which sūras are alike) — whole-Qur'ān companion view ----
 if _scope == "Whole Qur'ān":
