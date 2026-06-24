@@ -268,7 +268,7 @@ def inject_css():
     <style>
     /* ===== APP BACKGROUND ===== */
     .stApp { background: #FAFBFD; }
-    .main .block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 1360px; }
+    .main .block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 1080px; }
 
     /* ===== v2.0 GLOBAL READABILITY + SPACE-EFFICIENCY SWEEP (user-mandated) =====
        Goals: no dead vertical space, nothing below 13px, higher contrast for
@@ -278,7 +278,7 @@ def inject_css():
         /* Use the width: a generous centred column, NOT a narrow strip that wastes the monitor.
            Sprawl is prevented by per-ELEMENT discipline (chip_row, bounded input, no spacers),
            never by starving the container. */
-        max-width: 1360px !important; margin-left: auto !important; margin-right: auto !important;
+        max-width: 1080px !important; margin-left: auto !important; margin-right: auto !important;
     }
     section[data-testid="stMain"] div[data-testid="stVerticalBlock"] { gap: 0.55rem !important; }
     section[data-testid="stMain"] hr { margin: 0.5rem 0 !important; }
