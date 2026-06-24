@@ -46,29 +46,36 @@ NAV_SECTIONS = [
             ("pages/19_Concept_Deep_Dive.py", "Concept Deep-Dive · fusion", "🔬"),
             ("pages/2_Network.py", "Network", "🌐"),
             ("pages/3_Motifs.py", "Motifs", "🔺"),
+        ]),
+        ("Topics & comparison", [
             ("pages/5_Compare_Heatmaps.py", "Compare & Heatmaps", "📊"),
             ("pages/9_Topic_Modeling.py", "Topic Modeling", "🧩"),
             ("pages/8c_My_Topics.py", "My Topics", "📌"),
             ("pages/8e_Calibration.py", "Calibration", "🎚️"),
         ]),
-        ("Morphology & interpret", [
-            ("pages/6_Morphology.py", "Morphology", "🧬"),
+        ("Morphology & forms", [
+            ("pages/6_Morphology.py", "Morphology", "🔤"),
             ("pages/8d_Surface_Divergence.py", "Surface Divergence", "🔀"),
-            ("pages/8a_Interpret.py", "Interpret", "🧠"),
+        ]),
+        ("Your session", [
+            ("pages/8a_Interpret.py", "Reading Guide", "🧠"),
             ("pages/8f_Practical_Lens.py", "Practical Lens", "🔭"),
+            ("pages/7_Statistics.py", "Statistics", "📈"),
         ]),
     ]),
     ("💡 DISCOVER", [
         (None, [("pages/37_Discovery_Map.py", "Discovery Map · start here", "🧭"),
                 ("pages/39_Concept_Atlas.py", "Concept Atlas · the concepts", "🗺️"),
                 ("pages/41_Structure_Map.py", "Structure Map · the scales", "🪜"),
-                ("pages/25_Latent_Features.py", "Latent Features", "🧬"),
+                ("pages/25_Latent_Features.py", "Latent Features", "💎"),
                 ("pages/26_Correspondence.py", "Correspondence", "🫀")]),
-        ("Close-up essays", [
-            ("pages/27_Closeup_Index.py", "Map · close-ups", "🗺️"),
+        ("Structural units", [
+            ("pages/27_Closeup_Index.py", "Map · close-ups", "🗂️"),
             ("pages/28_Closeup_Ayah.py", "The Āyah", "📐"),
             ("pages/30_Closeup_Sura.py", "The Sūra", "📜"),
             ("pages/29_Closeup_InterSura.py", "Inter-Sūra", "⚠️"),
+        ]),
+        ("Patterns & roles", [
             ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️"),
             ("pages/35_Mathani_Lab.py", "Mathānī · refrains", "🔁"),
             ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
@@ -85,16 +92,15 @@ NAV_SECTIONS = [
             ("pages/24_Two_Books_Genome.py", "Two Books · Genome", "🧬"),
             ("pages/17_Two_Books_Summary.py", "Two Books · FDR Summary", "📋"),
         ]),
-        ("Scale lenses", [
+        ("Computational lenses", [
             ("pages/14_Disjoint_Letters.py", "Disjoint Letters", "🔠"),
             ("pages/18_Spatial_Patterns.py", "Spatial Patterns", "🗺️"),
             ("pages/15_Signal.py", "Signal", "📡"),
-            ("pages/16_Biology.py", "Biology", "🧬"),
+            ("pages/16_Biology.py", "Biology", "🧫"),
         ]),
     ]),
     ("🛠️ TOOLS", [
         (None, [
-            ("pages/7_Statistics.py", "Statistics", "📈"),
             ("pages/8_Export.py", "Export", "⬇️"),
             # 9_Usage.py is an ADMIN-only dashboard (anonymous visit counts) — intentionally NOT in
             # the public nav; the admin reaches it by direct URL. Do NOT re-add it as a public link.

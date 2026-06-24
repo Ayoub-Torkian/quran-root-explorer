@@ -641,7 +641,7 @@ PAGE_TOUR = [
          "The genome metaphor — letters≈bases, roots≈codons, words≈proteins: base "
          "composition, codon-usage Zipf, di-codon bias, sequence complexity.",
          "Use to borrow sequence-biology statistics; every test has a permutation null."),
-        ("🧠 Interpret", "Reading-level synthesis of your analyzed roots: headline metrics + "
+        ("🧠 Reading Guide", "Reading-level synthesis of your analyzed roots: headline metrics + "
          "per-root āyah-footprint bar.",
          "After an analysis, for the prose-style summary."),
         ("🔭 Practical Lens", "Pair-level lift classifier: stipulative / embedded / independent "
@@ -721,19 +721,19 @@ with TABS[0]:
 
     st.markdown("""
     <div class="help-card">
-      <h4>🧭 The sidebar — six groups, organized by the QUESTION you ask</h4>
+      <h4>🧭 The sidebar — four areas, organized by the QUESTION you ask</h4>
       <div class="what">
-        📖 <b>READER</b> — read the text itself: Ayah Browser · Āyah Deep-Dive (hero) · Concept Deep-Dive.<br>
-        🧪 <b>LENS LAB</b> — all 18 lenses, one honest verdict card each.<br>
-        🧭 <b>POSITION scale</b> — where things sit: Disjoint Letters · Spatial Patterns · FDR Summary.<br>
-        🔤 <b>SEQUENCE scale</b> — the letter/character stream: Signal · Morphology.<br>
-        🧩 <b>SEMANTIC scale</b> — roots, meaning, themes: Per-Root Profile · Network · Motifs ·
-        Compare &amp; Heatmaps · Topic Modeling · Biology · Interpret · Practical Lens · Calibration.<br>
-        🛠️ <b>TOOLS &amp; FEEDBACK</b> — Statistics · Feedback &amp; Bugs · Export · Usage · Help.
+        🔭 <b>EXPLORE</b> — work with the text: Read · Search; Study an āyah (Matched Āyāt · Deep-Dive ·
+        Cross-References); Roots &amp; relations; Topics &amp; comparison; Morphology &amp; forms;
+        Your session (Reading Guide · Practical Lens · Statistics).<br>
+        💡 <b>DISCOVER</b> — the findings: Discovery Map · Concept Atlas · Structure Map · Latent Features ·
+        Correspondence; Structural units; Patterns &amp; roles; Claims reviewed.<br>
+        🧪 <b>METHODS · LAB</b> — how it's tested: 18 Lenses · Two Books; Computational lenses
+        (Disjoint Letters · Spatial Patterns · Signal · Biology).<br>
+        🛠️ <b>TOOLS</b> — Export · Feedback &amp; Bugs · Help.
       </div>
-      <div class="how"><b>🔍 Note:</b> v2.0 regrouped the sidebar by question — the former
-      “Two Books” group became the three scales (🧭 Position · 🔤 Sequence · 🧩 Semantic).
-      No page was renamed, so everything you knew is still there.</div>
+      <div class="how"><b>🔍 Note:</b> grouped by intent — Explore (use the text) → Discover (what we found)
+      → Methods·Lab (how we tested) → Tools. No page was removed; a few were regrouped for clarity.</div>
     </div>
     """, unsafe_allow_html=True)
 
