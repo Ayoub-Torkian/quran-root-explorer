@@ -673,12 +673,11 @@ if _scope == "A sūra":
             if r >= 1.5: return "→ more room", "#0F6E56"
             if r <= 0.67: return "← you elaborate it", "#1D3557"
             return "↔ peer", "#10243A"
-        _hcols = [("rank", ""), ("sūra", ""), ("similarity", ""), ("length (roots)", ""),
-                  ("relation", ""), ("shared distinctive concepts", "width:100%")]   # last col absorbs slack
-        _eh = "".join(f'<th style="background:#1D3557;color:#fff;padding:7px 9px;text-align:right;'
-                      f'font-size:12px;white-space:nowrap;{w}">{h}</th>' for h, w in _hcols)
+        _heads = ["rank", "sūra", "similarity", "length (roots)", "relation", "shared distinctive concepts"]
+        _eh = "".join(f'<th style="background:#1D3557;color:#fff;padding:7px 12px;text-align:right;'
+                      f'font-size:12px;white-space:nowrap">{h}</th>' for h in _heads)
         _er = ""
-        _td = "padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;white-space:nowrap"
+        _td = "padding:5px 12px;border-top:1px solid #EEF2F7;text-align:right;white-space:nowrap"
         for _rk, (L, _co, _ln) in enumerate(_top, 1):
             _rl, _rcol = _rel(_ln)
             _sh = " · ".join(r for r in _dist if r in _E["present"].get(L, set())) or "—"
@@ -687,9 +686,11 @@ if _scope == "A sūra":
                     f'<td style="{_td};font-weight:700">{_co:.2f}</td>'
                     f'<td style="{_td}">{_ln}</td>'
                     f'<td style="{_td};color:{_rcol};font-weight:600">{_rl}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;width:100%;font-family:Amiri,serif">{_sh}</td></tr>')
-        st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
-                    '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
+                    f'<td style="{_td};font-family:Amiri,serif">{_sh}</td></tr>')
+        # content-sized table (no width:100%) → columns hug their content, zero internal gaps; box hugs the table
+        st.markdown('<div style="overflow:auto;max-width:100%;display:inline-block;vertical-align:top;'
+                    'border:1px solid #E2E8F1;border-radius:10px">'
+                    '<table style="border-collapse:collapse;font-size:13px;color:#10243A">'
                     f'<thead><tr>{_eh}</tr></thead><tbody>{_er}</tbody></table></div>', unsafe_allow_html=True)
         _conf = ("⚠️ Weak signal — this sūra's vocabulary barely overlaps any other; treat as low-confidence. "
                  if _topc < 0.10 else "")
@@ -719,8 +720,9 @@ if _scope == "A sūra":
                         f'<td style="padding:5px 9px;{bt};border-left:2px solid #C9D6E8;font-family:Amiri,serif">{SNAME.get(L2,L2)} ({L2})</td>'
                         f'<td style="padding:5px 9px;{bt};text-align:right;font-weight:700">{c2:.2f}</td>'
                         f'<td style="padding:5px 9px;{bt};text-align:right">{ln2}</td></tr>')
-            st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
-                        '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
+            st.markdown('<div style="overflow:auto;max-width:100%;display:inline-block;vertical-align:top;'
+                        'border:1px solid #E2E8F1;border-radius:10px">'
+                        '<table style="border-collapse:collapse;font-size:13px;color:#10243A">'
                         f'<thead><tr>{_hd}</tr></thead><tbody>{_bd}</tbody></table></div>', unsafe_allow_html=True)
             st.markdown(f"<div style='font-size:13px;color:#10243A;margin:6px 0'>For <b>{SNAME.get(_sel,_sel)} ({_sel})</b>: "
                         f"the RAW root-count ranking tracks sūra length at <b>r = {_rr:+.2f}</b> — it returns the longest "
@@ -791,8 +793,9 @@ if _scope == "Whole Qur'ān":
             f'{"font-family:Amiri,serif;" if _k in (7, 8) else ""}">{_c}</td>'
             for _k, _c in enumerate(_cells))
         _trs.append(f"<tr>{_tds}</tr>")
-    st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
-                '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
+    st.markdown('<div style="overflow:auto;max-width:100%;display:inline-block;vertical-align:top;'
+                'border:1px solid #E2E8F1;border-radius:10px">'
+                '<table style="border-collapse:collapse;font-size:13px;color:#10243A">'
                 f'<thead><tr>{_hdr}</tr></thead><tbody>{"".join(_trs)}</tbody></table></div>',
                 unsafe_allow_html=True)
     st.caption("Cohesion = mean within-family vocabulary similarity; separation = mean similarity to other families; "

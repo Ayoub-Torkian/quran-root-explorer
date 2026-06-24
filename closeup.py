@@ -49,7 +49,7 @@ def inject():
       .cu-note{{font-size:14.5px;color:{MUTE};line-height:1.5;margin:1px 0 5px}}
       .cu-lede{{font-size:16px;line-height:1.62;color:#243b53}}
       .cu-eye{{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}}
-      table.cu-tbl{{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px;table-layout:auto;
+      table.cu-tbl{{border-collapse:separate;border-spacing:0;width:auto;max-width:100%;font-size:12.5px;
                    border:1px solid #E7EEF5;border-radius:10px;overflow:hidden}}
       table.cu-tbl td,table.cu-tbl th{{padding:4px 8px;text-align:left;border-bottom:1px solid #EDF3F8;
                    vertical-align:top;line-height:1.3}}
