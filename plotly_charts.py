@@ -160,7 +160,7 @@ def chart_network_role(feat: dict, roots) -> go.Figure:
         return _layout(go.Figure(), "Network role")
     xs = [g["hub_z"] for _, g in pts]
     ys = [g["bridge_z"] for _, g in pts]
-    labels = [f"{r}<br><span style='font-size:10px'>{g['family_label']}</span>" for r, g in pts]
+    labels = [f"{r}<br><span style='font-size:12px'>{g['family_label']}</span>" for r, g in pts]
     fig = go.Figure(go.Scatter(
         x=xs, y=ys, mode="markers+text", text=labels, textposition="top center",
         marker=dict(size=15, color="#1D9E75", line=dict(width=1, color="#0F6E56")),
@@ -2484,7 +2484,7 @@ def chart_dependency(dep: dict, root: str, max_each: int = 7) -> go.Figure:
         fig.add_annotation(ax=-1, ay=y, x=-0.10, y=0, xref="x", yref="y",
                            axref="x", ayref="y", showarrow=True, arrowhead=3,
                            arrowsize=1, arrowwidth=_ew(lift), arrowcolor=TEAL, opacity=0.85,
-                           text=f"<span style='font-size:11px;color:#10243A'> {conf:.2f}·{lift:.0f}× </span>",
+                           text=f"<span style='font-size:12px;color:#10243A'> {conf:.2f}·{lift:.0f}× </span>",
                            font=dict(size=11))
     # outgoing (right): arrow root -> X
     for (x, w, conf, lift), y in zip(outs, _ys(len(outs))):

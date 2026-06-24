@@ -41,7 +41,7 @@ hero("🧬 " + m["title"], m["subtitle"])
 def chip(lab, val, tip):
     return (f"<div title=\"{tip}\" style='flex:1 1 120px;min-width:115px;padding:5px 10px;cursor:help;"
             f"border:1px solid #e6e6e6;border-radius:7px;background:#fafbfc'>"
-            f"<div style='font-size:0.72rem;color:#000;font-weight:600;text-transform:uppercase;"
+            f"<div style='font-size:12px;color:#000;font-weight:600;text-transform:uppercase;"
             f"letter-spacing:.3px;border-bottom:1px dotted #9ec3b6;display:inline-block'>{lab}</div>"
             f"<div style='font-size:1.3rem;font-weight:800;color:{NAVY}'>{val}</div></div>")
 chips = [

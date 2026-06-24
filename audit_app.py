@@ -74,6 +74,30 @@ def main():
                 soft.append(f"{os.path.basename(p)} not mentioned in Help (0_Help.py)")
             if not in_about:
                 soft.append(f"{os.path.basename(p)} not mentioned in Home/About (app.py)")
+
+    # ---- LOCKED UI RULE: no font smaller than 12px anywhere (px or root-relative rem). ----
+    # em units are parent-relative (a 0.6em verse number inside a 26px Arabic line ≈ 16px) so they are NOT
+    # flagged; matplotlib `fontsize=` is in points on offline exports and is also excluded (we match `font-size:`).
+    for fp in sorted(glob.glob("*.py") + glob.glob("pages/*.py")):
+        fp = fp.replace("\\", "/")
+        try:
+            src = open(fp, encoding="utf-8", errors="replace").read()
+        except Exception:
+            continue
+        for ln, line in enumerate(src.splitlines(), 1):
+            if " in s" in line or " in src" in line:
+                continue                                   # skip detection strings (e.g. apply_ledgers checks)
+            for m in re.finditer(r'font-size\s*:\s*["\']?(\d+(?:\.\d+)?)\s*(px|rem|em|%)', line):
+                val = float(m.group(1)); unit = m.group(2)
+                if unit in ("em", "%"):
+                    continue                               # parent-relative — indeterminate, not flagged
+                px = val if unit == "px" else val * 16     # rem → root-relative (16px base)
+                if px < 12 - 1e-9:
+                    hard.append(f"{fp}:{ln} font-size {m.group(0).strip()} (~{px:.0f}px) — below the 12px floor")
+            if ("<table" in line and "width:100%" in line
+                    and "table-layout:fixed" not in line and "max-width" not in line):
+                soft.append(f"{fp}:{ln} unbounded <table width:100%> without table-layout:fixed — add a colgroup, "
+                            "a max-width, or a width:100% 'fill' column so it doesn't sprawl with gaps")
     print()
     if hard:
         print("HARD DRIFT (breaks the app — fix before release):")

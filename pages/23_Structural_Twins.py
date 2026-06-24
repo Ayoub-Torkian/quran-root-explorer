@@ -197,9 +197,9 @@ chips = [
 def _chip(lab, val, tip):
     return (f"<div title=\"{tip}\" style='position:relative;flex:1 1 110px;min-width:105px;padding:4px 9px;"
             f"cursor:help;border:1px solid #e6e6e6;border-radius:7px;background:#fafbfc'>"
-            f"<span style='position:absolute;top:3px;right:5px;font-size:0.72rem;color:{TEAL};"
+            f"<span style='position:absolute;top:3px;right:5px;font-size:12px;color:{TEAL};"
             f"font-weight:700'>&#9432;</span>"
-            f"<div style='font-size:0.74rem;color:#000;font-weight:600;text-transform:uppercase;letter-spacing:.3px;"
+            f"<div style='font-size:12px;color:#000;font-weight:600;text-transform:uppercase;letter-spacing:.3px;"
             f"white-space:nowrap;border-bottom:1px dotted #9ec3b6;display:inline-block'>{lab}</div>"
             f"<div style='font-size:1.3rem;font-weight:800;color:{NAVY}'>{val}</div></div>")
 st.markdown("<div style='font-size:0.8rem;color:#1d9e75;font-weight:600;margin:0 0 4px'>"

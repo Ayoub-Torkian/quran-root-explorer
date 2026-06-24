@@ -673,19 +673,21 @@ if _scope == "A sūra":
             if r >= 1.5: return "→ more room", "#0F6E56"
             if r <= 0.67: return "← you elaborate it", "#1D3557"
             return "↔ peer", "#10243A"
+        _hcols = [("rank", ""), ("sūra", ""), ("similarity", ""), ("length (roots)", ""),
+                  ("relation", ""), ("shared distinctive concepts", "width:100%")]   # last col absorbs slack
         _eh = "".join(f'<th style="background:#1D3557;color:#fff;padding:7px 9px;text-align:right;'
-                      f'font-size:12px;white-space:nowrap">{h}</th>'
-                      for h in ["rank", "sūra", "similarity", "length (roots)", "relation", "shared distinctive concepts"])
+                      f'font-size:12px;white-space:nowrap;{w}">{h}</th>' for h, w in _hcols)
         _er = ""
+        _td = "padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;white-space:nowrap"
         for _rk, (L, _co, _ln) in enumerate(_top, 1):
             _rl, _rcol = _rel(_ln)
             _sh = " · ".join(r for r in _dist if r in _E["present"].get(L, set())) or "—"
-            _er += (f'<tr><td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_rk}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{SNAME.get(L, L)} ({L})</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-weight:700">{_co:.2f}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right">{_ln}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;color:{_rcol};font-weight:600">{_rl}</td>'
-                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;font-family:Amiri,serif">{_sh}</td></tr>')
+            _er += (f'<tr><td style="{_td}">{_rk}</td>'
+                    f'<td style="{_td};font-family:Amiri,serif">{SNAME.get(L, L)} ({L})</td>'
+                    f'<td style="{_td};font-weight:700">{_co:.2f}</td>'
+                    f'<td style="{_td}">{_ln}</td>'
+                    f'<td style="{_td};color:{_rcol};font-weight:600">{_rl}</td>'
+                    f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;width:100%;font-family:Amiri,serif">{_sh}</td></tr>')
         st.markdown('<div style="overflow:auto;border:1px solid #E2E8F1;border-radius:10px">'
                     '<table style="width:100%;border-collapse:collapse;font-size:13px;color:#10243A">'
                     f'<thead><tr>{_eh}</tr></thead><tbody>{_er}</tbody></table></div>', unsafe_allow_html=True)
