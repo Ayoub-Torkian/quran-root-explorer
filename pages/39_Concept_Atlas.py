@@ -12,7 +12,7 @@ from networkx.algorithms import community as nxcom
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-from analysis import COL_SURAH, COL_SURAH_NAME, COL_AYAH, normalize_letters
+from analysis import COL_SURAH, COL_SURAH_NAME, COL_AYAH, normalize_letters, disp_root
 from state import get_corpus, hero, layer, log_page, chip_row
 
 st.set_page_config(page_title="Concept Atlas", page_icon="🗺️", layout="wide")
@@ -352,7 +352,7 @@ def _ego_view(F, concept, kg=16, kr=5):
         return (f"{F['nodes'][j]} · cosine {COS[i, j]:+.2f} (used in similar contexts) · "
                 f"together {int(co[i, j])}× vs ~{E[i, j]:.0f} by chance")
     fig.add_trace(go.Scatter(x=[pos[j][0] for j in near], y=[pos[j][1] for j in near], mode="markers+text",
-        text=[F["nodes"][j] for j in near], textposition="top center",
+        text=[disp_root(F["nodes"][j]) for j in near], textposition="top center",
         textfont=dict(size=13, color="#0b3b2e", family="Amiri,serif"),
         marker=dict(size=[13 + (f[j] ** 0.5) * 0.6 for j in near],
                     color=[COS[i, j] for j in near], colorscale=[[0, "#EAF7F1"], [1, "#1D9E75"]],
@@ -360,12 +360,12 @@ def _ego_view(F, concept, kg=16, kr=5):
         hovertext=[_hov(j) for j in near], hoverinfo="text"))
     if far:
         fig.add_trace(go.Scatter(x=[pos[j][0] for j in far], y=[pos[j][1] for j in far], mode="markers+text",
-            text=[F["nodes"][j] for j in far], textposition="top center",
+            text=[disp_root(F["nodes"][j]) for j in far], textposition="top center",
             textfont=dict(size=12, color="#7a1620", family="Amiri,serif"),
             marker=dict(size=[11 + (f[j] ** 0.5) * 0.5 for j in far], color="#FBE0E3",
                         line=dict(width=1.2, color="#E63946")),
             hovertext=[_hov(j) for j in far], hoverinfo="text"))
-    fig.add_trace(go.Scatter(x=[0], y=[0], mode="markers+text", text=[concept], textposition="middle center",
+    fig.add_trace(go.Scatter(x=[0], y=[0], mode="markers+text", text=[disp_root(concept)], textposition="middle center",
         textfont=dict(size=18, color="#ffffff", family="Amiri,serif"),
         marker=dict(size=46, color="#1D3557", line=dict(width=2, color="#ffffff")),
         hovertext=[f"{concept} · appears in {int(f[i])} āyāt"], hoverinfo="text"))
@@ -466,13 +466,13 @@ def figure(d, color_by, focus=None):
     xs = [pos[n][0] for n in nodes]; ys = [pos[n][1] for n in nodes]
     sizes = [6 + (docf[n] ** 0.5) * 0.9 for n in nodes]
     top40 = set(sorted(nodes, key=lambda r: -docf[r])[:40])
-    texts = [n if n in top40 else "" for n in nodes]
+    texts = [disp_root(n) if n in top40 else "" for n in nodes]
     gf = d.get("gf", {})
     if color_by == "Theme":
         colors = [THEME_COLORS[d["theme_of"][n] % len(THEME_COLORS)] for n in nodes]
         if focus is not None:                       # dim everything except the focused theme
             colors = [colors[i] if d["theme_of"][n] == focus else "#dce4e7" for i, n in enumerate(nodes)]
-            texts = [n if (d["theme_of"][n] == focus and n in top40) else "" for n in nodes]
+            texts = [disp_root(n) if (d["theme_of"][n] == focus and n in top40) else "" for n in nodes]
         marker = dict(size=sizes, color=colors, line=dict(width=0.5, color="#ffffff"))
     elif color_by == "Network role":               # banked graph finding: bridge / hub / member
         colors = [ROLE_COLOR.get((gf.get(normalize_letters(n)) or {}).get("role"), "#9FB3C8") for n in nodes]
@@ -584,10 +584,10 @@ else:
         _dft = next((w for w in ("قلب", "رحم", "کفر") if w in _vocab), _vocab[0])
         st.markdown("<style>.st-key-atlas_concept{max-width:520px}</style>", unsafe_allow_html=True)
         _csel = cc2.selectbox("Pick a concept (its embedding neighbourhood — concepts used in similar contexts)",
-                              _vocab, index=_vocab.index(_dft), key="atlas_concept")
+                              _vocab, index=_vocab.index(_dft), key="atlas_concept", format_func=disp_root)
         _ego_view(_F, _csel)
     else:
-        _theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(top)}" for ti, _o, top in d["themes"]]
+        _theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(disp_root(t) for t in top)}" for ti, _o, top in d["themes"]]
         _focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
                                    disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
         _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
@@ -633,7 +633,7 @@ if _scope == "A sūra":
                                    y=[_xy[i, 1] for i in range(_MM) if i not in _hot],
                                    mode="markers", marker=dict(size=4, color="#DCE4EA"), hoverinfo="none"))
         _fig2.add_trace(go.Scatter(x=[_xy[i, 0] for i in _idx], y=[_xy[i, 1] for i in _idx],
-                                   mode="markers+text", text=[_S["nodes"][i] for i in _idx],
+                                   mode="markers+text", text=[disp_root(_S["nodes"][i]) for i in _idx],
                                    textposition="top center", textfont=dict(size=13, color=INK),
                                    marker=dict(size=11, color="#1D9E75", line=dict(width=1, color="#ffffff")),
                                    hoverinfo="text"))
@@ -680,7 +680,7 @@ if _scope == "A sūra":
         _td = "padding:5px 12px;border-top:1px solid #EEF2F7;text-align:right;white-space:nowrap"
         for _rk, (L, _co, _ln) in enumerate(_top, 1):
             _rl, _rcol = _rel(_ln)
-            _sh = " · ".join(r for r in _dist if r in _E["present"].get(L, set())) or "—"
+            _sh = " · ".join(disp_root(r) for r in _dist if r in _E["present"].get(L, set())) or "—"
             _er += (f'<tr><td style="{_td}">{_rk}</td>'
                     f'<td style="{_td};font-family:Amiri,serif">{SNAME.get(L, L)} ({L})</td>'
                     f'<td style="{_td};font-weight:700">{_co:.2f}</td>'
@@ -787,7 +787,7 @@ if _scope == "Whole Qur'ān":
                   f'background:{_col};margin-left:5px"></span> {_f["id"] + 1}',
                   _f["n"], _f["cohesion"], _f["separation"], _f["silhouette"],
                   (_f["mean_nuz"] if _f["mean_nuz"] is not None else "—"), _f["mean_len"],
-                  " · ".join(_f["concepts"]), _mem]
+                  " · ".join(disp_root(c) for c in _f["concepts"]), _mem]
         _tds = "".join(
             f'<td style="padding:5px 9px;border-top:1px solid #EEF2F7;text-align:right;'
             f'{"font-family:Amiri,serif;" if _k in (7, 8) else ""}">{_c}</td>'
@@ -839,19 +839,19 @@ _partners = {n: [] for n in d["nodes"]}
 for _a, _b, _w in sorted(d["edges"], key=lambda e: -e[2]):
     if len(_partners[_a]) < 3: _partners[_a].append(_b)
     if len(_partners[_b]) < 3: _partners[_b].append(_a)
-_clab = {ti: " · ".join(top) for ti, _o, top in d["themes"]}
+_clab = {ti: " · ".join(disp_root(t) for t in top) for ti, _o, top in d["themes"]}
 _rolemap = {"connector / bridge": "bridge", "family anchor (hub)": "hub"}
 _rows = []
 for n in d["nodes"]:
     _ti = d["theme_of"][n]
     _role = _rolemap.get((d["gf"].get(normalize_letters(n)) or {}).get("role"), "member")
-    _rows.append({"concept": n, "frequency": d["docf"][n], "community #": _ti + 1,
+    _rows.append({"concept": disp_root(n), "frequency": d["docf"][n], "community #": _ti + 1,
                   "community": _clab.get(_ti, ""), "role": _role,
                   "degree": _deg.get(n, 0), "degree_cent": round(_degc.get(n, 0.0), 3),
                   "betweenness": round(_bet.get(n, 0.0), 3), "closeness": round(_clo.get(n, 0.0), 3),
                   "eigenvector": round(_eig.get(n, 0.0), 3), "pagerank": round(_pr.get(n, 0.0), 4),
                   "clustering": round(_clu.get(n, 0.0), 3), "revelation 1–114": round(d["nuz"][n]),
-                  "top partners": " · ".join(_partners[n])})
+                  "top partners": " · ".join(disp_root(p) for p in _partners[n])})
 _df = pd.DataFrame(_rows).sort_values(["community #", "frequency"], ascending=[True, False])
 layer(1, "📋 Data behind the map — scrollable · copyable (use the CSV below to sort)")
 # Full-width HTML table — st.dataframe won't stretch on this Streamlit build, so we control width directly.
@@ -906,17 +906,17 @@ with st.expander("ℹ️ What the columns mean — and why each matters"):
 
 # inline concept peek — quick profile without leaving the map
 _pick = st.selectbox("🔍 Inspect a concept", [""] + d["nodes"],
-                     format_func=lambda r: "— pick a root —" if r == "" else r, key="atlas_pick")
+                     format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
 if _pick:
     _nb = sorted(((w, (b if a == _pick else a)) for a, b, w in d["edges"] if _pick in (a, b)), reverse=True)[:6]
     _th = d["theme_of"][_pick]; _top = d["themes"][_th][2]
-    _bits = [f"freq <b>{d['docf'][_pick]}</b>", f"theme <b>{_th + 1}</b> ({' · '.join(_top)})",
+    _bits = [f"freq <b>{d['docf'][_pick]}</b>", f"theme <b>{_th + 1}</b> ({' · '.join(disp_root(t) for t in _top)})",
              f"revelation <b>{d['nuz'][_pick]:.0f}/114</b>"]
-    if _nb: _bits.append("pairs with <b>" + " · ".join(m for _w, m in _nb) + "</b>")
+    if _nb: _bits.append("pairs with <b>" + " · ".join(disp_root(m) for _w, m in _nb) + "</b>")
     st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
                 "padding:8px 14px;margin:4px 0 8px;font-size:13.5px;color:#10243A;line-height:1.75'>"
-                f"🌱 <b>{_pick}</b> &nbsp;·&nbsp; " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
-    if st.button(f"Open {_pick} in Search →", key="atlas_open"):
+                f"🌱 <b>{disp_root(_pick)}</b> &nbsp;·&nbsp; " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
+    if st.button(f"Open {disp_root(_pick)} in Search →", key="atlas_open"):
         st.session_state._pending_q = _pick
         st.switch_page("pages/38_Search.py")
 
@@ -925,7 +925,7 @@ for ti, ordered, top in d["themes"]:
     col = THEME_COLORS[ti % len(THEME_COLORS)]
     st.markdown(f"<div style='margin:8px 0 2px;font-size:13.5px;color:{INK}'>"
                 f"<span style='display:inline-block;width:11px;height:11px;border-radius:3px;"
-                f"background:{col};margin-left:4px'></span> <b>Theme {ti + 1}</b> · {' · '.join(top)}</div>",
+                f"background:{col};margin-left:4px'></span> <b>Theme {ti + 1}</b> · {' · '.join(disp_root(t) for t in top)}</div>",
                 unsafe_allow_html=True)
     rr = ordered[:18]
     with chip_row(f"atlas-{ti}"):                          # content-sized wrapping chips (density rule), not full-width

@@ -296,6 +296,10 @@ def inject_css():
     section[data-testid="stMain"] [data-testid="stMetricLabel"] p { font-size: 13px !important; }
     section[data-testid="stMain"] [data-testid="stMetricValue"] { font-size: 23px !important; }
     section[data-testid="stMain"] [data-testid="stMetricDelta"] { font-size: 13px !important; }
+    /* LOCKED density rule: st.table content-sizes (columns hug content) so sparse tables never sprawl
+       into empty gaps; the container scrolls if a table is genuinely wide. Applies app-wide, every page. */
+    section[data-testid="stMain"] [data-testid="stTable"] { overflow-x: auto !important; }
+    section[data-testid="stMain"] [data-testid="stTable"] table { width: auto !important; }
     section[data-testid="stMain"] [data-testid="stExpander"] details {
         border-radius: 10px !important;
     }

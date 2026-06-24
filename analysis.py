@@ -40,6 +40,18 @@ def strip_diacritics(text):
     return _TATWEEL.sub("", _DIACRITICS.sub("", text)).strip()
 
 
+def disp_root(r):
+    """Display-only prettifier for a root LABEL: bare leading hamza ء → أ (so ءلف reads as ألف,
+    ءذن→أذن, ءمر→أمر) and Persian forms ک→ك, ی→ي. For labels ONLY — never feed the result back into
+    matching/lookup; the corpus keeps the rasm form (ء / ک / ی) for all computation."""
+    if not r:
+        return r
+    r = r.replace("ک", "ك").replace("ی", "ي")
+    if r[:1] == "ء":
+        r = "أ" + r[1:]
+    return r
+
+
 def normalize_letters(text):
     """Fold every common Persian/Urdu/Sindhi/etc. variant of an Arabic
     letter to its canonical standard-Arabic codepoint, so the same root
