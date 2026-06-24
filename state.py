@@ -301,6 +301,8 @@ def inject_css():
     section[data-testid="stMain"] [data-testid="stTable"] { overflow-x: auto !important; }
     /* Streamlit pins st.table at min-width:100% — THAT is what makes sparse tables sprawl. Release it. */
     section[data-testid="stMain"] [data-testid="stTable"] table { width: auto !important; min-width: 0 !important; }
+    /* LOCKED: inputs sized to need, not full-bleed — cap selectboxes so short values don't sprawl. */
+    section[data-testid="stMain"] [data-testid="stSelectbox"] { max-width: 460px; }
     section[data-testid="stMain"] [data-testid="stExpander"] details {
         border-radius: 10px !important;
     }
