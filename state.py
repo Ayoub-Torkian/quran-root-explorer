@@ -299,7 +299,8 @@ def inject_css():
     /* LOCKED density rule: st.table content-sizes (columns hug content) so sparse tables never sprawl
        into empty gaps; the container scrolls if a table is genuinely wide. Applies app-wide, every page. */
     section[data-testid="stMain"] [data-testid="stTable"] { overflow-x: auto !important; }
-    section[data-testid="stMain"] [data-testid="stTable"] table { width: auto !important; }
+    /* Streamlit pins st.table at min-width:100% — THAT is what makes sparse tables sprawl. Release it. */
+    section[data-testid="stMain"] [data-testid="stTable"] table { width: auto !important; min-width: 0 !important; }
     section[data-testid="stMain"] [data-testid="stExpander"] details {
         border-radius: 10px !important;
     }
