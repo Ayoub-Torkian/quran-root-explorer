@@ -77,6 +77,7 @@ NAV_SECTIONS = [
         ]),
         ("Patterns & roles", [
             ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️"),
+            ("pages/42_Closeup_InnerSelf.py", "Anatomy of the inner self", "🧠"),
             ("pages/35_Mathani_Lab.py", "Mathānī · refrains", "🔁"),
             ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
         ]),
@@ -303,6 +304,7 @@ def inject_css():
     section[data-testid="stMain"] [data-testid="stTable"] table { width: auto !important; min-width: 0 !important; }
     /* LOCKED: inputs sized to need, not full-bleed — cap selectboxes so short values don't sprawl. */
     section[data-testid="stMain"] [data-testid="stSelectbox"] { max-width: 460px; }
+    section[data-testid="stMain"] [data-testid="stTextInput"] { max-width: 720px; }   /* search/paste box ~ wide but not full-bleed */
     /* default = content width: expanders hug their content (compact when collapsed). Charts stay full-width
        because they live OUTSIDE expanders and use use_container_width. */
     section[data-testid="stMain"] [data-testid="stExpander"] { width: fit-content !important; min-width: 0 !important; max-width: 100% !important; }
