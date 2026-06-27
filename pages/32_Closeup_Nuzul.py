@@ -387,6 +387,26 @@ C.verdict("CANDIDATE",
           "richer function-word stylometry (à la Sadeghi) at the passage level could revise the boundary upward")
 
 # ── PATH FORWARD ──
+# ── chronology web (partial-order map) — published from the al-Kawthar study ──
+C.section("The chronology web — a partial-order map (passages, not just sūras)")
+C.story(
+    "Where the clock above orders <b>sūras</b>, this map places <b>passages</b>: parallel developmental "
+    "threads — events, the Prophet's household, three legal-ruling gradients (khamr/qitāl/ribā), "
+    "referent-group formation, warning→glad-tidings, heaven/hell tone, ritual+promise — braided through "
+    "shared time-windows. A long sūra becomes a sub-graph: Āl ʿImrān holds a 3 AH chunk (Uhud) and a "
+    "~9–10 AH chunk (Najrān/Mubāhala) under one revelation number — so dating must work on chunks, not whole sūras.",
+    "The internal language-clocks are <b>MEASURED</b> on the rasm; the time-coordinates are traditional "
+    "event anchors <b>[REPORT]</b> — corroborative only, never asserted as fact; the whole is a "
+    "<b>[HUMAN CONSTRUCT]</b> partial order, not a line. Toggle threads, scroll horizontally/vertically, +/− to zoom.")
+import os as _os
+import streamlit.components.v1 as _components
+_p = _os.path.join(_os.path.dirname(__file__), "..", "assets", "chronology_web.html")
+try:
+    with open(_p, encoding="utf-8") as _f:
+        _components.html(_f.read(), height=720, scrolling=True)
+except Exception as _e:
+    st.warning("Chronology web could not be loaded: %s" % _e)
+
 C.section("The path forward — recovering the true order, ranked by probability of payoff")
 C.note("Not generic advice. Every move below is <b>grounded in a result measured on this page</b>, either amplifies "
        "a positive that demonstrably worked or retires a negative that demonstrably failed, and is ranked by its "
