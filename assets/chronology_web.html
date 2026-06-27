@@ -77,7 +77,7 @@ function draw(){
     const y=padT+i*laneH+laneH/2;
     // lane label
     let le=mk('text',{x:10,y:y-2,'font-size':13,fill:th.c,'font-weight':700});le.textContent=th.en;svg.append(le);
-    let la=mk('text',{x:10,y:y+16,'font-size':13,fill:th.c,class:'ar'});la.textContent=th.ar;svg.append(la);
+    let la=mk('text',{x:10,y:y+16,'font-size':13,fill:th.c,style:"font-family:'Noto Naskh Arabic','Amiri',serif"});la.textContent=th.ar;svg.append(la);
     const ns=NODES.filter(n=>n[0]===th.id).sort((a,b)=>a[1]-b[1]);
     // connectors
     for(let k=0;k<ns.length-1;k++){
