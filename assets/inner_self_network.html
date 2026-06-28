@@ -26,7 +26,7 @@ const ROLE={self:'#1D3557',cog:'#378ADD',act:'#0F6E56',up:'#1D9E75',down:'#E6394
 const ROLELAB={self:'self / organ',cog:'cognition',act:'action',up:'up-driver (→open)',down:'down-driver (→severance)',amp:'feedback (زاد)',bound:'boundary / veil',out_g:'outcome: kawthar',out_r:'outcome: abtar',root:'divine root'};
 // id:[ar,en,x,y,role,verse]
 const N={
- allah:['الله','God — root (seals · guides · increases · between man & heart · knows the whisper)',650,55,'root','8:24·50:16·64:11'],
+ allah:['الله','God — root (seals · guides · increases · between man & heart · knows the whisper)',650,66,'root','8:24·50:16·64:11'],
  nafs:['نفس','the self / agent (earns, judged; أمّارة·مسوّلة→لوّامة→مطمئنة)',462,452,'self','91:7·12:53·89:27'],
  sadr:['صدر','the breast / chamber (constricts ضیق ↔ expands شرح); where the whisper lands',366,452,'self','22:46·114:5'],
  qalb:['قلب','the heart — processor (reasons عقل · understands فقه · turns · seals/opens)',414,498,'self','22:46·7:179'],
@@ -93,10 +93,14 @@ function draw(){
  svg.setAttribute('width',W);svg.setAttribute('height',H);svg.innerHTML='';
  const mk=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
  const X=x=>x*SC,Y=y=>y*SC;
+ // outer graph frame + divine-root band (over BOTH domains) so the root sits INSIDE the graph
+ svg.append(mk('rect',{x:X(8),y:Y(30),width:X(1292)-X(8),height:Y(766)-Y(30),fill:'none',stroke:'#E2E8F1','stroke-width':1.4*SC,rx:16}));
+ svg.append(mk('rect',{x:X(18),y:Y(36),width:X(1282)-X(18),height:Y(94)-Y(36),fill:'#F4EEE7',stroke:'#E3D3C4','stroke-width':1*SC,rx:12}));
+ {let dl=mk('text',{x:X(700),y:Y(70),'font-size':12*SC,fill:'#8a6d2f','font-weight':700});dl.textContent='the root — over both domains';svg.append(dl);}
  // domain backdrops + boundary
- svg.append(mk('rect',{x:X(10),y:Y(95),width:X(835)-X(10),height:Y(760)-Y(95),fill:'#F4F7F4',rx:14}));
- svg.append(mk('rect',{x:X(905),y:Y(95),width:X(1290)-X(905),height:Y(760)-Y(95),fill:'#FBF6EC',rx:14}));
- svg.append(mk('rect',{x:X(848),y:Y(110),width:X(58),height:Y(640),fill:'#7A5AA6',opacity:.16}));
+ svg.append(mk('rect',{x:X(10),y:Y(102),width:X(835)-X(10),height:Y(760)-Y(102),fill:'#F4F7F4',rx:14}));
+ svg.append(mk('rect',{x:X(905),y:Y(102),width:X(1290)-X(905),height:Y(760)-Y(102),fill:'#FBF6EC',rx:14}));
+ svg.append(mk('rect',{x:X(848),y:Y(116),width:X(58),height:Y(634),fill:'#7A5AA6',opacity:.16}));
  let t=mk('text',{x:X(877),y:Y(130),'text-anchor':'middle','font-size':12*SC,fill:'#7A5AA6','font-weight':700});t.textContent='برزخ';svg.append(t);
  // edges
  for(const [a,b,lab,val,vs,cv] of E){
