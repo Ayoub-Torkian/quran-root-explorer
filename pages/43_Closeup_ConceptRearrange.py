@@ -2,7 +2,7 @@
 EGO-network: the 7 surah roots (gold) and the roots the Qur'ān distinctively uses with them (navy), bonds =
 PPMI ≥0.6 with ≥2 shared verses; width = strength; hover = verse-count. Distinct from the corpus-wide Concept
 Atlas (39) and the inner-self page (42). MEASURED on rasm. The two hapax (نحر/أبتر) come out isolated."""
-import os, json
+import os, json, math
 import streamlit as st
 import plotly.graph_objects as go
 
@@ -106,8 +106,9 @@ C.para("Each surah word resolves into a real neighbourhood: <b>عطو</b> (give)
        "highness). <b>شنء</b> (the hater) sits in the justice frame جرم · وقی · ءمن (crime vs God-wariness and faith, "
        "5:8). And <b>نحر · أبتر are isolated</b> — the surah's two hapax have no distinctive partner, so the very "
        "severance the surah names shows up as a structural fact in the web.")
-C.section("Strongest grounded bonds")
-_rows = [["%s — %s" % (_N[i]["label"], _N[j]["label"]), "%+.1f" % p, str(co)] for i, j, p, co in _BONDS[:12]]
+C.section("Strongest grounded bonds — by strength × support")
+_tbl = sorted(_BONDS, key=lambda b: -(b[2] * math.log(1 + b[3])))
+_rows = [["%s — %s" % (_N[i]["label"], _N[j]["label"]), "%+.1f" % p, str(co)] for i, j, p, co in _tbl[:12]]
 C.table(["bond (word — root)", "PPMI strength", "shared verses"], _rows)
 
 C.section("Open a surah word — what interprets it")
