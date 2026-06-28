@@ -80,7 +80,7 @@ fig.update_layout(annotations=_anns, paper_bgcolor="#FFFFFF", plot_bgcolor="#FFF
 fig.update_xaxes(visible=False, range=[-0.08, 1.08])
 fig.update_yaxes(visible=False, range=[-0.08, 1.08], scaleanchor="x", scaleratio=1)
 st.plotly_chart(fig, use_container_width=True,
-                config={"editable": True, "scrollZoom": True, "displaylogo": False,
+                config={"scrollZoom": True, "displaylogo": False,
                         "modeBarButtonsToRemove": ["select2d", "lasso2d"], "edits": {"annotationPosition": True}})
 
 C.note("<b>The connectome (constant in every view):</b> an edge = a <b>distinctive</b> association (PPMI, "
