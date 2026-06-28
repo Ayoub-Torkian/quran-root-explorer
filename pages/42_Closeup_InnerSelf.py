@@ -198,7 +198,34 @@ try:
 except Exception as _e:
     st.warning("Inner-self network could not be loaded: %s" % _e)
 
-# ── 7 · GATING CHAIN ──
+# -- 6b - THE MEASURED LEDGER BEHIND THE GRAPH --
+C.section("The ledger behind the graph - every edge, with its number")
+C.note("Each relation drawn above, with the Qurʾānic anchor and the actual statistic it rests on - so every edge is "
+       "checkable. Tagged MEASURED (a count or Fisher odds-ratio on Book6), TEXT (stated in the Qurʾān), or INFERRED "
+       "(a reading). The graph's <i>layout</i> is interpretive and is deliberately NOT scored with centrality / "
+       "betweenness - those would measure the drawing, not the corpus.")
+C.table(["Relation in the graph", "Qurʾānic anchor", "Statistic", "Status"], tight=False, rows=[
+    ["فؤاد ↔ sight / hearing", "17:36 · 53:11", "Fisher OR 8.8 (p = 5.5e-4)", "MEASURED"],
+    ["قلب takes turn (قلب) vs نفس", "—", "155 vs 4", "MEASURED"],
+    ["قلب sealed (طبع/ختم) vs نفس", "2:7 · 63:3", "11 vs 0", "MEASURED"],
+    ["نفس purified (زكو) vs قلب", "91:9 · 87:14", "7 vs 1", "MEASURED"],
+    ["علم ∩ عمل (cognition-action loop)", "35:28 · 16:97", "42 shared verses", "MEASURED"],
+    ["faith→deed («amanu wa amilu l-salihat»)", "2:25 etc.", "50 verses", "MEASURED"],
+    ["deed-while-believing («wa-huwa muʾmin»)", "16:97 · 4:124", "5 verses", "MEASURED"],
+    ["evil deed → rust (ران) on the heart", "83:14", "1 (the anchor)", "TEXT"],
+    ["waswasa: شيطان vs نفس", "114:5 · 50:16", "4 vs 1", "MEASURED"],
+    ["taswil (enticement): نفس vs شيطان", "12:18 · 47:25", "3 vs 1", "MEASURED"],
+    ["زاد ↔ disease (مرض)", "2:10 · 9:125", "Fisher OR 16.2 (p = 1.3e-3)", "MEASURED"],
+    ["زاد ↔ guidance (هدى)", "47:17 · 19:76", "Fisher OR 3.5", "MEASURED"],
+    ["زاد ↔ disbelief (كفر)", "3:90 · 9:125", "Fisher OR 3.2", "MEASURED"],
+    ["زاد ↔ faith (إيمان)", "8:2 · 9:124", "Fisher OR 2.6 (p = 3.4e-3)", "MEASURED"],
+    ["نفس ⊃ صدر ⊃ قلب (containment)", "22:46", "structural", "TEXT"],
+    ["نفس = locus of fujūr / taqwā", "91:7-8", "—", "TEXT"],
+    ["barzakh boundary; veil lifted", "23:100 · 50:22", "—", "TEXT"],
+    ["closed vs open heart-state gradation", "—", "modularity z = -7.31 (NULL)", "MEASURED"],
+    ["coupled processor (قلب) + agent (نفس)", "—", "a held-lightly reading", "INFERRED"],
+])
+
 C.section("Gating chain — what survives, and where the model stops")
 C.para("<b>Naive look</b> — four words that all seem to mean 'heart'. <b>Control 1 · dissociation</b> — they take "
        "different predicates at very different rates (155:4 turn, 11:0 seal, 1:7 purify); they are distinct organs, "
