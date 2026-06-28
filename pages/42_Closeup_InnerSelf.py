@@ -203,6 +203,82 @@ C.callout("دنیا and آخرة — two orientations, not two times (correcting
           "resurrection — <b>not</b> the wall between worlds. So <b>kawthar</b> = اخروی (joined to the lasting → "
           "crosses); <b>abtar</b> = دنیوی (clinging to the near → cut off). The choice is made now, in the heart "
           "and the deed; death only lifts the veil on the life the self was already living.", accent=C.GOLD)
+# -- 6c THE MEASURED GRAPH (corpus co-occurrence) + GRAPH METRICS --
+import json as _json, plotly.graph_objects as _g2
+_gp = os.path.join(os.path.dirname(__file__), "..", "assets", "inner_self_graph_metrics.json")
+try:
+    _GM = _json.load(open(_gp, encoding="utf-8"))
+except Exception:
+    _GM = None
+if _GM:
+    C.section("The measured graph — corpus co-occurrence, with metrics")
+    C.note("This is the primary network — the directed reading follows below as a labelled schematic. Here are the "
+           "SAME nodes as a <b>real graph built from the corpus</b>: an edge is drawn where two roots co-occur in a "
+           "verse, weighted by <b>PPMI</b> (frequency-controlled, so association — not raw frequency). Positions are "
+           "a <b>force-directed layout</b> of those measured edges, not hand-placed. The metrics are properties of "
+           "the corpus, not of a drawing. Node <i>selection</i> and colours are interpretive; edges, weights and "
+           "metrics are MEASURED.")
+    C.kpis([
+        (str(_GM["density"]), "density", "Edge density of the 25-node PPMI graph — these inner-self concepts form a dense web.", C.TEAL),
+        (str(_GM["cycles"]), "independent cycles", "Cycle-basis size — a web, not a tree (echoes the corpus-wide 309-cycle result).", C.TEAL),
+        ("+%s" % _GM["modularity_z"], "modularity z (vs null)", "Community structure vs a degree-preserving null: real but modest (z>2 = above chance).", C.GOLD),
+        (str(len(_GM["communities"])), "communities", "Greedy-modularity communities on PPMI weights.", C.SLATE),
+        ("قلب", "top hub (PPMI strength)", "Once frequency is controlled (PPMI), the heart is the most strongly-associated node — strength %.1f." % _GM["strength"]["قلب"], C.TEAL),
+        ("ذکر", "top bridge (betweenness)", "Highest betweenness — remembrance is the structural connector between regions (%.3f)." % _GM["betweenness"]["ذکر"], C.GOLD),
+    ])
+    _ROLEC = {"self": "#1D3557", "cog": "#378ADD", "act": "#0F6E56", "up": "#1D9E75", "down": "#E63946",
+              "amp": "#EF9F27", "bound": "#7A5AA6", "dom": "#94A3B8", "out_g": "#0F6E56", "out_r": "#C1121F", "root": "#B5651D"}
+    _pos = _GM["pos"]; _roles = _GM["roles"]; _strg = _GM["strength"]; _btw = _GM["betweenness"]; _deg = _GM["deg"]
+    _ex = []; _ey = []; _wmax = max(w for *_ , w in _GM["backbone"]) or 1
+    for a, b, w in _GM["backbone"]:
+        _ex += [_pos[a][0], _pos[b][0], None]; _ey += [_pos[a][1], _pos[b][1], None]
+    _et = _g2.Scatter(x=_ex, y=_ey, mode="lines", line=dict(color="#CBD5E1", width=1), hoverinfo="none", showlegend=False)
+    _nx = [_pos[n][0] for n in _pos]; _ny = [_pos[n][1] for n in _pos]
+    _nlab = list(_pos); _ncol = [_ROLEC.get(_roles[n], "#888") for n in _nlab]
+    _nsz = [10 + 2.3 * (_strg[n] ** 0.5) for n in _nlab]
+    _nhov = ["<b>%s</b><br>PPMI strength %.1f · degree %d<br>betweenness %.3f" % (n, _strg[n], _deg[n], _btw[n]) for n in _nlab]
+    def _tp(x, y):
+        h = ("right" if x > 0.15 else "left" if x < -0.15 else "center")
+        v = ("top" if y >= 0 else "bottom")
+        return ("middle " + h) if abs(x) > 0.15 else (v + " center")
+    _ntp = [_tp(_pos[n][0], _pos[n][1]) for n in _nlab]
+    _nt = _g2.Scatter(x=_nx, y=_ny, mode="markers+text", marker=dict(size=_nsz, color=_ncol, line=dict(width=1.5, color="#fff")),
+                      text=_nlab, textposition=_ntp, textfont=dict(size=12, color="#10243A"),
+                      hovertext=_nhov, hoverinfo="text", showlegend=False)
+    _fg = _g2.Figure([_et, _nt])
+    _fg.update_layout(paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF", margin=dict(l=6, r=6, t=8, b=6), height=520,
+                      title=dict(text="<b>Inner-self co-occurrence graph (PPMI, force-directed) · node size = association strength</b>", x=0.5, font=dict(size=14)))
+    _fg.update_xaxes(visible=False, range=[-1.45,1.45]); _fg.update_yaxes(visible=False, scaleanchor="x", scaleratio=1, range=[-1.4,1.4])
+    st.plotly_chart(_fg, use_container_width=True, config={"displaylogo": False, "scrollZoom": True, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
+    # bridges + hubs bars
+    _bb = sorted(_btw.items(), key=lambda x: -x[1])[:8][::-1]
+    _hb = sorted(_strg.items(), key=lambda x: -x[1])[:8][::-1]
+    _cL, _cR = st.columns(2, gap="medium")
+    with _cL:
+        _f1 = _g2.Figure(_g2.Bar(x=[v for _, v in _bb], y=[k for k, _ in _bb], orientation="h", marker_color="#EF9F27",
+                                 text=["%.3f" % v for _, v in _bb], textposition="outside", cliponaxis=False))
+        _f1.update_layout(title=dict(text="<b>Bridges · betweenness (frequency-neutral)</b>", x=0.5, font=dict(size=13)),
+                          paper_bgcolor="#fff", plot_bgcolor="#F8FAFC", margin=dict(l=6, r=6, t=34, b=6), height=300)
+        _f1.update_xaxes(gridcolor="#E4ECF3"); _f1.update_yaxes(tickfont=dict(size=13))
+        st.plotly_chart(_f1, use_container_width=True, config={"displaylogo": False})
+    with _cR:
+        _f2 = _g2.Figure(_g2.Bar(x=[v for _, v in _hb], y=[k for k, _ in _hb], orientation="h", marker_color="#1D3557",
+                                 text=["%.1f" % v for _, v in _hb], textposition="outside", cliponaxis=False))
+        _f2.update_layout(title=dict(text="<b>Hubs · PPMI association strength</b>", x=0.5, font=dict(size=13)),
+                          paper_bgcolor="#fff", plot_bgcolor="#F8FAFC", margin=dict(l=6, r=6, t=34, b=6), height=300)
+        _f2.update_xaxes(gridcolor="#E4ECF3"); _f2.update_yaxes(tickfont=dict(size=13))
+        st.plotly_chart(_f2, use_container_width=True, config={"displaylogo": False})
+    C.note("<b>Communities (PPMI, greedy modularity):</b> " + " &nbsp;·&nbsp; ".join("{%s}" % " ".join(c) for c in _GM["communities"]) +
+           " — دنیا and آخرة fall in one community (co-present, weighed together); ذکر·غطاء form their own pair (a measured echo of 18:101 «غطاء عن ذکري»).")
+    with st.expander("per-node graph metrics (degree · PPMI strength · betweenness · eigenvector · clustering)"):
+        _rows = []
+        for n in sorted(_GM["nodes"], key=lambda n: -_strg[n]):
+            _rows.append([n, str(_deg[n]), "%.1f" % _strg[n], "%.3f" % _btw[n], "%.3f" % _GM["eigenvector"][n], "%.2f" % _GM["clustering"][n]])
+        C.table(["node", "degree", "PPMI strength", "betweenness", "eigenvector", "clustering"], _rows, tight=True)
+
+
+C.section("The interpretive schematic — the directed reading (illustrative)")
+C.note("Beneath the measured graph sits the <i>reading</i>: directed up-drivers and down-drivers, the زاد amplifier, and the کوثر / أبتر outcome, laid out for teaching. Node positions here are illustrative (hand-placed); the directed edges are the interpretive model and their anchors/statistics are the data (see the ledger below). Centrality is deliberately NOT computed on this curated edge-set — that is exactly what the measured graph above is for.")
 import math as _math, plotly.graph_objects as _gon
 _ROLE={'self':'#1D3557','cog':'#378ADD','act':'#0F6E56','up':'#1D9E75','down':'#E63946','amp':'#EF9F27','bound':'#7A5AA6','dom':'#94A3B8','out_g':'#0F6E56','out_r':'#C1121F','root':'#B5651D'}
 _RLAB={'self':'self / organ','cog':'cognition','act':'action','up':'up-driver','down':'down-driver','amp':'feedback (zād)','bound':'veil / partition','dom':'orientation (co-present)','out_g':'outcome: kawthar','out_r':'outcome: abtar','root':'divine root'}
@@ -313,79 +389,6 @@ def _layp(fig, title, h=360):
     fig.update_xaxes(gridcolor="#E4ECF3", zeroline=False)
     fig.update_yaxes(gridcolor="#E4ECF3", zeroline=False)
     return fig
-
-# -- 6c THE MEASURED GRAPH (corpus co-occurrence) + GRAPH METRICS --
-import json as _json, plotly.graph_objects as _g2
-_gp = os.path.join(os.path.dirname(__file__), "..", "assets", "inner_self_graph_metrics.json")
-try:
-    _GM = _json.load(open(_gp, encoding="utf-8"))
-except Exception:
-    _GM = None
-if _GM:
-    C.section("The measured graph — corpus co-occurrence, with metrics")
-    C.note("Everything above is the <i>interpretive model</i> (directed reading; illustrative layout). Here are the "
-           "SAME nodes as a <b>real graph built from the corpus</b>: an edge is drawn where two roots co-occur in a "
-           "verse, weighted by <b>PPMI</b> (frequency-controlled, so association — not raw frequency). Positions are "
-           "a <b>force-directed layout</b> of those measured edges, not hand-placed. The metrics are properties of "
-           "the corpus, not of a drawing. Node <i>selection</i> and colours are interpretive; edges, weights and "
-           "metrics are MEASURED.")
-    C.kpis([
-        (str(_GM["density"]), "density", "Edge density of the 25-node PPMI graph — these inner-self concepts form a dense web.", C.TEAL),
-        (str(_GM["cycles"]), "independent cycles", "Cycle-basis size — a web, not a tree (echoes the corpus-wide 309-cycle result).", C.TEAL),
-        ("+%s" % _GM["modularity_z"], "modularity z (vs null)", "Community structure vs a degree-preserving null: real but modest (z>2 = above chance).", C.GOLD),
-        (str(len(_GM["communities"])), "communities", "Greedy-modularity communities on PPMI weights.", C.SLATE),
-        ("قلب", "top hub (PPMI strength)", "Once frequency is controlled (PPMI), the heart is the most strongly-associated node — strength %.1f." % _GM["strength"]["قلب"], C.TEAL),
-        ("ذکر", "top bridge (betweenness)", "Highest betweenness — remembrance is the structural connector between regions (%.3f)." % _GM["betweenness"]["ذکر"], C.GOLD),
-    ])
-    _ROLEC = {"self": "#1D3557", "cog": "#378ADD", "act": "#0F6E56", "up": "#1D9E75", "down": "#E63946",
-              "amp": "#EF9F27", "bound": "#7A5AA6", "dom": "#94A3B8", "out_g": "#0F6E56", "out_r": "#C1121F", "root": "#B5651D"}
-    _pos = _GM["pos"]; _roles = _GM["roles"]; _strg = _GM["strength"]; _btw = _GM["betweenness"]; _deg = _GM["deg"]
-    _ex = []; _ey = []; _wmax = max(w for *_ , w in _GM["backbone"]) or 1
-    for a, b, w in _GM["backbone"]:
-        _ex += [_pos[a][0], _pos[b][0], None]; _ey += [_pos[a][1], _pos[b][1], None]
-    _et = _g2.Scatter(x=_ex, y=_ey, mode="lines", line=dict(color="#CBD5E1", width=1), hoverinfo="none", showlegend=False)
-    _nx = [_pos[n][0] for n in _pos]; _ny = [_pos[n][1] for n in _pos]
-    _nlab = list(_pos); _ncol = [_ROLEC.get(_roles[n], "#888") for n in _nlab]
-    _nsz = [10 + 2.3 * (_strg[n] ** 0.5) for n in _nlab]
-    _nhov = ["<b>%s</b><br>PPMI strength %.1f · degree %d<br>betweenness %.3f" % (n, _strg[n], _deg[n], _btw[n]) for n in _nlab]
-    def _tp(x, y):
-        h = ("right" if x > 0.15 else "left" if x < -0.15 else "center")
-        v = ("top" if y >= 0 else "bottom")
-        return ("middle " + h) if abs(x) > 0.15 else (v + " center")
-    _ntp = [_tp(_pos[n][0], _pos[n][1]) for n in _nlab]
-    _nt = _g2.Scatter(x=_nx, y=_ny, mode="markers+text", marker=dict(size=_nsz, color=_ncol, line=dict(width=1.5, color="#fff")),
-                      text=_nlab, textposition=_ntp, textfont=dict(size=12, color="#10243A"),
-                      hovertext=_nhov, hoverinfo="text", showlegend=False)
-    _fg = _g2.Figure([_et, _nt])
-    _fg.update_layout(paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF", margin=dict(l=6, r=6, t=8, b=6), height=520,
-                      title=dict(text="<b>Inner-self co-occurrence graph (PPMI, force-directed) · node size = association strength</b>", x=0.5, font=dict(size=14)))
-    _fg.update_xaxes(visible=False, range=[-1.45,1.45]); _fg.update_yaxes(visible=False, scaleanchor="x", scaleratio=1, range=[-1.4,1.4])
-    st.plotly_chart(_fg, use_container_width=True, config={"displaylogo": False, "scrollZoom": True, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
-    # bridges + hubs bars
-    _bb = sorted(_btw.items(), key=lambda x: -x[1])[:8][::-1]
-    _hb = sorted(_strg.items(), key=lambda x: -x[1])[:8][::-1]
-    _cL, _cR = st.columns(2, gap="medium")
-    with _cL:
-        _f1 = _g2.Figure(_g2.Bar(x=[v for _, v in _bb], y=[k for k, _ in _bb], orientation="h", marker_color="#EF9F27",
-                                 text=["%.3f" % v for _, v in _bb], textposition="outside", cliponaxis=False))
-        _f1.update_layout(title=dict(text="<b>Bridges · betweenness (frequency-neutral)</b>", x=0.5, font=dict(size=13)),
-                          paper_bgcolor="#fff", plot_bgcolor="#F8FAFC", margin=dict(l=6, r=6, t=34, b=6), height=300)
-        _f1.update_xaxes(gridcolor="#E4ECF3"); _f1.update_yaxes(tickfont=dict(size=13))
-        st.plotly_chart(_f1, use_container_width=True, config={"displaylogo": False})
-    with _cR:
-        _f2 = _g2.Figure(_g2.Bar(x=[v for _, v in _hb], y=[k for k, _ in _hb], orientation="h", marker_color="#1D3557",
-                                 text=["%.1f" % v for _, v in _hb], textposition="outside", cliponaxis=False))
-        _f2.update_layout(title=dict(text="<b>Hubs · PPMI association strength</b>", x=0.5, font=dict(size=13)),
-                          paper_bgcolor="#fff", plot_bgcolor="#F8FAFC", margin=dict(l=6, r=6, t=34, b=6), height=300)
-        _f2.update_xaxes(gridcolor="#E4ECF3"); _f2.update_yaxes(tickfont=dict(size=13))
-        st.plotly_chart(_f2, use_container_width=True, config={"displaylogo": False})
-    C.note("<b>Communities (PPMI, greedy modularity):</b> " + " &nbsp;·&nbsp; ".join("{%s}" % " ".join(c) for c in _GM["communities"]) +
-           " — دنیا and آخرة fall in one community (co-present, weighed together); ذکر·غطاء form their own pair (a measured echo of 18:101 «غطاء عن ذکري»).")
-    with st.expander("per-node graph metrics (degree · PPMI strength · betweenness · eigenvector · clustering)"):
-        _rows = []
-        for n in sorted(_GM["nodes"], key=lambda n: -_strg[n]):
-            _rows.append([n, str(_deg[n]), "%.1f" % _strg[n], "%.3f" % _btw[n], "%.3f" % _GM["eigenvector"][n], "%.2f" % _GM["clustering"][n]])
-        C.table(["node", "degree", "PPMI strength", "betweenness", "eigenvector", "clustering"], _rows, tight=True)
 
 C.section("The measured ledger — every edge, as a chart")
 with st.expander("ℹ️ concept · finding · significance"):
