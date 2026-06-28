@@ -185,7 +185,7 @@ C.story(
     "chamber and فؤاد the sensor feeding in; up-drivers (ذكر · تقوى · إيمان · هدى) versus down-drivers (ظنّ · هوى "
     "· لهو · وسواس · تسويل · مرض · طبع); زاد amplifying either pole; the برزخ veil-boundary; and the outcome — "
     "كوثر (continuity that crosses) or أبتر (severance, cut off). Hover any node or edge for its Qur'ānic anchor; "
-    "scroll horizontally / vertically and use +/− to zoom.",
+    "scroll to zoom (toward the cursor) and drag to pan, like any graph.",
     "The NODES and EDGES are drawn from the MEASURED dissociations and co-occurrences above (green = toward "
     "openness · red = toward severance · gold = the زاد feedback · navy = structure / divine). The spatial layout "
     "and the 'two-domains-across-a-veil' framing are an INFERRED reading of those measured links, not a separate "
