@@ -198,33 +198,82 @@ try:
 except Exception as _e:
     st.warning("Inner-self network could not be loaded: %s" % _e)
 
-# -- 6b - THE MEASURED LEDGER BEHIND THE GRAPH --
-C.section("The ledger behind the graph - every edge, with its number")
-C.note("Each relation drawn above, with the Qurʾānic anchor and the actual statistic it rests on - so every edge is "
-       "checkable. Tagged MEASURED (a count or Fisher odds-ratio on Book6), TEXT (stated in the Qurʾān), or INFERRED "
-       "(a reading). The graph's <i>layout</i> is interpretive and is deliberately NOT scored with centrality / "
-       "betweenness - those would measure the drawing, not the corpus.")
-C.table(["Relation in the graph", "Qurʾānic anchor", "Statistic", "Status"], tight=False, rows=[
-    ["فؤاد ↔ sight / hearing", "17:36 · 53:11", "Fisher OR 8.8 (p = 5.5e-4)", "MEASURED"],
-    ["قلب takes turn (قلب) vs نفس", "—", "155 vs 4", "MEASURED"],
-    ["قلب sealed (طبع/ختم) vs نفس", "2:7 · 63:3", "11 vs 0", "MEASURED"],
-    ["نفس purified (زكو) vs قلب", "91:9 · 87:14", "7 vs 1", "MEASURED"],
-    ["علم ∩ عمل (cognition-action loop)", "35:28 · 16:97", "42 shared verses", "MEASURED"],
-    ["faith→deed («amanu wa amilu l-salihat»)", "2:25 etc.", "50 verses", "MEASURED"],
-    ["deed-while-believing («wa-huwa muʾmin»)", "16:97 · 4:124", "5 verses", "MEASURED"],
-    ["evil deed → rust (ران) on the heart", "83:14", "1 (the anchor)", "TEXT"],
-    ["waswasa: شيطان vs نفس", "114:5 · 50:16", "4 vs 1", "MEASURED"],
-    ["taswil (enticement): نفس vs شيطان", "12:18 · 47:25", "3 vs 1", "MEASURED"],
-    ["زاد ↔ disease (مرض)", "2:10 · 9:125", "Fisher OR 16.2 (p = 1.3e-3)", "MEASURED"],
-    ["زاد ↔ guidance (هدى)", "47:17 · 19:76", "Fisher OR 3.5", "MEASURED"],
-    ["زاد ↔ disbelief (كفر)", "3:90 · 9:125", "Fisher OR 3.2", "MEASURED"],
-    ["زاد ↔ faith (إيمان)", "8:2 · 9:124", "Fisher OR 2.6 (p = 3.4e-3)", "MEASURED"],
-    ["نفس ⊃ صدر ⊃ قلب (containment)", "22:46", "structural", "TEXT"],
-    ["نفس = locus of fujūr / taqwā", "91:7-8", "—", "TEXT"],
-    ["barzakh boundary; veil lifted", "23:100 · 50:22", "—", "TEXT"],
-    ["closed vs open heart-state gradation", "—", "modularity z = -7.31 (NULL)", "MEASURED"],
-    ["coupled processor (قلب) + agent (نفس)", "—", "a held-lightly reading", "INFERRED"],
-])
+# -- 6b - THE MEASURED LEDGER, AS CHARTS (house plotly style) --
+import plotly.graph_objects as _go
+_INKp = "#10243A"
+def _layp(fig, title, h=360):
+    fig.update_layout(title=dict(text=f"<b>{title}</b>", x=0.5, font=dict(size=15)),
+                      paper_bgcolor="#FFFFFF", plot_bgcolor="#F8FAFC",
+                      font=dict(size=13, color=_INKp), margin=dict(l=10, r=10, t=48, b=10), height=h)
+    fig.update_xaxes(gridcolor="#E4ECF3", zeroline=False)
+    fig.update_yaxes(gridcolor="#E4ECF3", zeroline=False)
+    return fig
+
+C.section("The measured ledger — every edge, as a chart")
+with st.expander("ℹ️ concept · finding · significance"):
+    st.markdown(
+        "**Concept.** Every edge in the network above is a *measured* relation on Book6 — a Fisher "
+        "odds-ratio or a raw count — not an assertion.\n\n"
+        "**Finding.** The bonds sit far above chance (the amplifier زاد↔disease at OR 16.2, فؤاد↔senses "
+        "at 8.8), and the faculties take visibly different verbs (the heart turns and is sealed; the self "
+        "is purified).\n\n"
+        "**Significance.** This is the checkable spine under the picture. The graph's *layout* is "
+        "interpretive and is deliberately NOT scored with centrality or betweenness — those would measure "
+        "the drawing, not the corpus.")
+
+# Chart 1 — effect sizes vs the Fisher null (chance = OR 1)
+_orr = [("zād ↔ disease", 16.2, "#E63946"), ("fuʾād ↔ senses", 8.8, "#1D3557"),
+        ("zād ↔ guidance", 3.5, "#1D9E75"), ("zād ↔ disbelief", 3.2, "#E63946"),
+        ("zād ↔ faith", 2.6, "#1D9E75")]
+_orr.sort(key=lambda r: r[1])
+f1 = _go.Figure(_go.Bar(x=[v for _, v, _ in _orr], y=[n for n, _, _ in _orr], orientation="h",
+                        marker_color=[c for *_, c in _orr],
+                        text=[f"OR {v}" for _, v, _ in _orr], textposition="outside",
+                        cliponaxis=False))
+f1.add_vline(x=1, line=dict(color="#10243A", width=1.4, dash="dash"))
+f1.add_annotation(x=1, y=1.06, yref="paper", text="chance · OR 1", showarrow=False,
+                  font=dict(size=12, color="#10243A"))
+f1.update_layout(xaxis_title="Fisher odds-ratio (co-occurrence vs chance)", yaxis_title="",
+                 xaxis_range=[0, 18])
+st.plotly_chart(_layp(f1, "How far above chance each bond sits  ·  vs Fisher null (OR = 1)", h=330),
+                use_container_width=True)
+
+# Chart 2 — predicate dissociation: qalb vs nafs (counts)
+_preds = ["turn (q-l-b)", "seal (ṭabʿ / khatm)", "purify (zakā)"]
+f2 = _go.Figure()
+f2.add_trace(_go.Bar(name="qalb · heart", x=_preds, y=[155, 11, 1], marker_color="#1D3557",
+                     text=[155, 11, 1], textposition="outside", cliponaxis=False))
+f2.add_trace(_go.Bar(name="nafs · self", x=_preds, y=[4, 0, 7], marker_color="#0F6E56",
+                     text=[4, 0, 7], textposition="outside", cliponaxis=False))
+f2.update_layout(barmode="group", yaxis_title="times the predicate attaches", xaxis_title="",
+                 legend=dict(orientation="h", y=1.13, x=0, font=dict(size=12)))
+st.plotly_chart(_layp(f2, "The faculties take different verbs  ·  qalb vs nafs (counts)", h=340),
+                use_container_width=True)
+
+C.note("Both charts are MEASURED on Book6 (Fisher exact / raw counts). The full edge-by-edge ledger, with "
+       "the Qurʾānic anchor and status (MEASURED · TEXT · INFERRED) for every relation, is below.")
+with st.expander("full ledger — every edge, anchor, statistic, status"):
+    C.table(["Relation in the graph", "Qurʾānic anchor", "Statistic", "Status"], tight=False, rows=[
+        ["فؤاد ↔ sight / hearing", "17:36 · 53:11", "Fisher OR 8.8 (p = 5.5e-4)", "MEASURED"],
+        ["قلب takes turn (قلب) vs نفس", "—", "155 vs 4", "MEASURED"],
+        ["قلب sealed (طبع/ختم) vs نفس", "2:7 · 63:3", "11 vs 0", "MEASURED"],
+        ["نفس purified (زكو) vs قلب", "91:9 · 87:14", "7 vs 1", "MEASURED"],
+        ["علم ∩ عمل (cognition-action loop)", "35:28 · 16:97", "42 shared verses", "MEASURED"],
+        ["faith→deed («amanu wa amilu l-salihat»)", "2:25 etc.", "50 verses", "MEASURED"],
+        ["deed-while-believing («wa-huwa muʾmin»)", "16:97 · 4:124", "5 verses", "MEASURED"],
+        ["evil deed → rust (ران) on the heart", "83:14", "1 (the anchor)", "TEXT"],
+        ["waswasa: شيطان vs نفس", "114:5 · 50:16", "4 vs 1", "MEASURED"],
+        ["taswil (enticement): نفس vs شيطان", "12:18 · 47:25", "3 vs 1", "MEASURED"],
+        ["زاد ↔ disease (مرض)", "2:10 · 9:125", "Fisher OR 16.2 (p = 1.3e-3)", "MEASURED"],
+        ["زاد ↔ guidance (هدى)", "47:17 · 19:76", "Fisher OR 3.5", "MEASURED"],
+        ["زاد ↔ disbelief (كفر)", "3:90 · 9:125", "Fisher OR 3.2", "MEASURED"],
+        ["زاد ↔ faith (إيمان)", "8:2 · 9:124", "Fisher OR 2.6 (p = 3.4e-3)", "MEASURED"],
+        ["نفس ⊃ صدر ⊃ قلب (containment)", "22:46", "structural", "TEXT"],
+        ["نفس = locus of fujūr / taqwā", "91:7-8", "—", "TEXT"],
+        ["barzakh boundary; veil lifted", "23:100 · 50:22", "—", "TEXT"],
+        ["closed vs open heart-state gradation", "—", "modularity z = -7.31 (NULL)", "MEASURED"],
+        ["coupled processor (قلب) + agent (نفس)", "—", "a held-lightly reading", "INFERRED"],
+    ])
 
 C.section("Gating chain — what survives, and where the model stops")
 C.para("<b>Naive look</b> — four words that all seem to mean 'heart'. <b>Control 1 · dissociation</b> — they take "
