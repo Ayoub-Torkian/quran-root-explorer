@@ -179,24 +179,122 @@ C.vbars([("زاد ↔ disease مرض", 16.2, C.CORAL, "OR 16.2, p = 1.3e-3 — d
         ymax=18, fmt="{:.1f}")
 
 # ── 6 · THE NETWORK ──
-C.section("The inner-self network — one reality, two domains, coupled across a veil")
+C.section("The inner-self network — one reality, two co-present orientations")
 C.story(
-    "All of the above, as a single web: نفس (agent) and قلب (processor) coupled by the علم↔عمل loop; صدر the "
+    "All of the above as a single web: نفس (agent) and قلب (processor) coupled by the علم↔عمل loop; صدر the "
     "chamber and فؤاد the sensor feeding in; up-drivers (ذكر · تقوى · إيمان · هدى) versus down-drivers (ظنّ · هوى "
-    "· لهو · وسواس · تسويل · مرض · طبع); زاد amplifying either pole; the برزخ veil-boundary; and the outcome — "
-    "كوثر (continuity that crosses) or أبتر (severance, cut off). Hover any node or edge for its Qur'ānic anchor; "
-    "scroll to zoom (toward the cursor) and drag to pan, like any graph.",
-    "The NODES and EDGES are drawn from the MEASURED dissociations and co-occurrences above (green = toward "
-    "openness · red = toward severance · gold = the زاد feedback · navy = structure / divine). The spatial layout "
-    "and the 'two-domains-across-a-veil' framing are an INFERRED reading of those measured links, not a separate "
-    "measurement.", accent=C.TEAL)
-import streamlit.components.v1 as _components
-_p = os.path.join(os.path.dirname(__file__), "..", "assets", "inner_self_network.html")
-try:
-    with open(_p, encoding="utf-8") as _f:
-        _components.html(_f.read(), height=760, scrolling=True)
-except Exception as _e:
-    st.warning("Inner-self network could not be loaded: %s" % _e)
+    "· لهو · وسواس · تسویل · مرض · طبع); زاد amplifying either pole. دنیا (the near) and آخرة (the lasting/real) "
+    "are TWO CO-PRESENT orientations — by what it knows and does the self becomes دنیوی or اخروی; the غطاء veil "
+    "is over perception (present in life, lifted when sight sharpens). Outcome — کوثر (joined to the lasting → "
+    "crosses) or أبتر (clinging to the near → cut off). Hover any node or edge for its anchor; use the chart "
+    "toolbar (zoom · pan · autoscale/home · fullscreen) like every other chart.",
+    "NODES and EDGES are drawn from the MEASURED dissociations and co-occurrences (green = toward the lasting / "
+    "openness · red = toward the near / severance · gold = the زاد feedback · grey = structure). The layout and "
+    "the orientation reading are INFERRED from those measured links, not a separate measurement.", accent=C.TEAL)
+C.callout("دنیا and آخرة — two orientations, not two times (correcting a near-universal misreading)",
+          "Almost everyone reads <b>دنیا</b> as ‘this world, now’ and <b>آخرة</b> as ‘the next world, after death’, "
+          "with death (or the barzakh) as the wall between them. The text points elsewhere. <b>دنیا</b> is from the "
+          "root دنو, ‘to draw near’ — الحیاة الدنیا is ‘the <i>nearer</i> life’, the immediate, which 29:64 calls "
+          "لهو ولعب (distraction and play). <b>آخرة</b> (from أخر, ‘the last/other’) 29:64 calls الحیوان — the real "
+          "life — in the <i>present</i> tense («لو کانوا یعلمون», if only they knew). The two are weighed as a "
+          "<b>present choice</b> in 57 verses («منکم من یرید الدنیا ومنکم من یرید الآخرة», 3:152). The <b>غطاء</b> "
+          "(veil) is over perception and present in life (18:101), lifting when sight sharpens (50:22). And "
+          "<b>برزخ</b> is a partition — 2 of its 3 uses are the barrier between the two seas, one is the dead until "
+          "resurrection — <b>not</b> the wall between worlds. So <b>kawthar</b> = اخروی (joined to the lasting → "
+          "crosses); <b>abtar</b> = دنیوی (clinging to the near → cut off). The choice is made now, in the heart "
+          "and the deed; death only lifts the veil on the life the self was already living.", accent=C.GOLD)
+import math as _math, plotly.graph_objects as _gon
+_ROLE={'self':'#1D3557','cog':'#378ADD','act':'#0F6E56','up':'#1D9E75','down':'#E63946','amp':'#EF9F27','bound':'#7A5AA6','dom':'#94A3B8','out_g':'#0F6E56','out_r':'#C1121F','root':'#B5651D'}
+_RLAB={'self':'self / organ','cog':'cognition','act':'action','up':'up-driver','down':'down-driver','amp':'feedback (zād)','bound':'veil / partition','dom':'orientation (co-present)','out_g':'outcome: kawthar','out_r':'outcome: abtar','root':'divine root'}
+_VAL={'g':'#1D9E75','r':'#E63946','o':'#EF9F27','n':'#94A3B8'}
+# id:[ar,en,x,y,role,verse]
+_NN={
+ 'allah':['الله','root — seals, guides, increases, between man and heart',650,66,'root','8:24·50:16'],
+ 'nafs':['نفس','the self / agent — earns, judged; ammāra→lawwāma→muṭmaʾinna',462,452,'self','91:7·89:27'],
+ 'sadr':['صدر','the breast / chamber — where the whisper lands',366,452,'self','22:46·114:5'],
+ 'qalb':['قلب','the heart — processor: reasons, turns, seals/opens',414,498,'self','22:46·7:179'],
+ 'fuad':['فؤاد','sensor — perception with eye and ear (sight OR 8.8)',225,560,'self','17:36·53:11'],
+ 'ilm':['علم·عقل','knowledge / reason — sound cognition',590,360,'cog','2:282'],
+ 'amal':['عمل صالح','righteous action — purifies the self',590,590,'act','16:97'],
+ 'zann':['ظنّ','conjecture — corrupt cognition',300,690,'down','53:28'],
+ 'hawa':['هوی','desire enthroned as a god — rival governor',150,610,'down','45:23'],
+ 'dhikr':['ذکر','remembrance / revelation — the input, the defence',230,250,'up','13:28·7:201'],
+ 'taqwa':['تقوی','God-wariness — the running guidance',390,180,'up','2:282·8:29'],
+ 'iman':['إیمان','faith — validates the deed',520,165,'up','16:97'],
+ 'huda':['هدی','guidance — increased for the guided',640,195,'up','47:17'],
+ 'lahw':['لهو·لعب','diversion and play — the nature of the near life',120,400,'down','29:64'],
+ 'waswas':['وسواس·شیطان','the Whisperer — external injection into the breast',150,300,'down','114:5'],
+ 'taswil':['تسویل·نفس','enticement — internal fair-seeming of the wrong',270,500,'down','12:18·47:25'],
+ 'marad':['مرض','disease of the heart — grows',430,660,'down','2:10·9:125'],
+ 'tab':['طبع·ختم','sealing — the absorbing state',560,690,'down','63:3·2:7'],
+ 'zad':['زاد','amplifier — reinforces either pole',730,470,'amp','47:17·2:10'],
+ 'barzakh':['برزخ','a partition — the dead until resurrection (23:100); 2 of 3 uses are the sea-barrier, NOT a world-wall',1150,455,'bound','23:100·55:20'],
+ 'ghita':['غطاء','veil over PERCEPTION — present in life (18:101), lifted when sight sharpens (50:22)',770,300,'bound','18:101·50:22'],
+ 'dunya':['دنیا','the near (root دنو = draw near) — the passing, lahw·laʿib; a CO-PRESENT orientation, not a later time',1140,600,'dom','29:64·87:16'],
+ 'akhira':['آخرة·حیوان','the lasting / real life (al-ḥayawān) — CO-PRESENT now but veiled; wanted or not',1140,310,'dom','29:64·42:20'],
+ 'kawthar':['کوثر','continuity that CROSSES — the اخروی orientation, joined to the lasting',1040,205,'out_g','108:1'],
+ 'abtar':['أبتر','severance — CUT OFF; the دنیوی orientation, clinging to the near',1030,705,'out_r','108:3'],
+}
+_EE=[
+ ['ilm','amal','knowledge issues in deed','n','35:28',0.0],['amal','ilm','deed/taqwā → guidance & teaching','g','29:69',0.35],
+ ['amal','ilm','evil deed → RUST on the heart','r','83:14',-0.35],['dhikr','ilm','input feeds cognition','g','13:28',0],
+ ['taqwa','ilm','taqwā → He teaches you','g','2:282',0],['iman','amal','faith validates the deed','g','16:97',0],
+ ['huda','qalb','guidance opens the heart','g','47:17',0],['ilm','qalb','cognition runs on the heart','n','22:46',0],
+ ['amal','nafs','action transforms the self','n','91:9',0],['zann','ilm','conjecture corrupts cognition','r','53:28',0],
+ ['hawa','nafs','desire-as-god governs the self','r','45:23',0],['hawa','amal','drives desire-led action','r','53:23',0.2],
+ ['lahw','dhikr','diverts from remembrance','r','63:9',0],['waswas','sadr','whispers into the chamber','r','114:5',0],
+ ['taswil','nafs','entices the self from within','r','12:18',0],['marad','qalb','disease afflicts and grows','r','2:10',0],
+ ['tab','qalb','sealing — terminal','r','63:3',0],['zad','kawthar','amplifies faith↑faith','g','47:17',0.2],
+ ['zad','abtar','amplifies disease↑disease','r','2:10',0.2],['ilm','zad','sound loop feeds amplifier','g','47:17',0.1],
+ ['marad','zad','corrupt loop feeds amplifier','r','2:10',0.1],
+ ['amal','dunya','deeds aimed at the near — harvest of the dunyā','r','42:20·87:16',0.18],
+ ['amal','akhira','deeds aimed at the lasting — harvest of the ākhira','g','42:20·2:201',-0.18],
+ ['hawa','dunya','desire pulls the self to the near/passing','r','79:38',0.1],
+ ['lahw','dunya','the near life IS distraction and play','r','29:64',0],
+ ['nafs','dunya','a self turned to the near is دنیوی','n','—',0.12],
+ ['nafs','akhira','a self turned to the lasting is اخروی','n','—',-0.12],
+ ['dunya','abtar','clinging to the near → cut off','r','108:3',0.12],
+ ['akhira','kawthar','joined to the lasting → continuity','g','29:64·108:1',0.12],
+ ['qalb','akhira','heart with yaqīn perceives the real (veil lifts)','g','2:4·50:22',0.2],
+ ['ghita','fuad','veil over perception — present in life','n','18:101',0],
+ ['ghita','akhira','veil lifted, sight sharpens → the real seen','g','50:22',0.25],
+ ['nafs','barzakh','every nafs tastes death; a partition for the dead — not the world-wall','n','3:185·23:100',0],
+ ['allah','qalb','seals · guides · comes between','n','8:24·64:11',0],['allah','zad','He increases (zādahum)','n','47:17',0],
+ ['sadr','qalb','chamber contains the heart','n','22:46',0],['nafs','sadr','self contains the chamber','n','—',0],
+]
+def _Y(y): return -y
+_eann=[]; _mx=[]; _my=[]; _mt=[]
+for a,b,lab,val,vs,cv in _EE:
+    if a not in _NN or b not in _NN: continue
+    xa,ya=_NN[a][2],_Y(_NN[a][3]); xb,yb=_NN[b][2],_Y(_NN[b][3])
+    dx,dy=xb-xa,yb-ya; L=_math.hypot(dx,dy) or 1.0
+    ox,oy=-dy/L*(cv*120),dx/L*(cv*120)
+    xa2,ya2,xb2,yb2=xa+ox,ya+oy,xb+ox,yb+oy
+    _eann.append(dict(x=xb2,y=yb2,ax=xa2,ay=ya2,xref='x',yref='y',axref='x',ayref='y',showarrow=True,
+        arrowhead=2,arrowsize=1,arrowwidth=1.5,arrowcolor=_VAL[val],opacity=.5,standoff=13,startstandoff=13))
+    _mx.append((xa2+xb2)/2);_my.append((ya2+yb2)/2);_mt.append("<b>%s → %s</b><br>%s<br>%s"%(_NN[a][0],_NN[b][0],lab,vs))
+_SZ={'root':30,'self':26,'out_g':26,'out_r':26,'dom':25,'amp':22,'bound':20}
+_nx=[];_ny=[];_nt=[];_nc=[];_ns=[];_nh=[]
+for k,(ar,en,x,y,role,vs) in _NN.items():
+    _nx.append(x);_ny.append(_Y(y));_nt.append(ar);_nc.append(_ROLE[role]);_ns.append(_SZ.get(role,18))
+    _nh.append("<b>%s</b> · [%s]<br>%s<br>%s"%(ar,_RLAB.get(role,role),en,vs))
+_fig=_gon.Figure([
+    _gon.Scatter(x=_mx,y=_my,mode='markers',marker=dict(size=16,color='rgba(0,0,0,0)'),hovertext=_mt,hoverinfo='text',showlegend=False),
+    _gon.Scatter(x=_nx,y=_ny,mode='markers+text',marker=dict(size=_ns,color=_nc,line=dict(width=2,color='#ffffff')),
+        text=_nt,textposition='top center',textfont=dict(size=13,color='#10243A'),hovertext=_nh,hoverinfo='text',showlegend=False),
+])
+_fig.add_shape(type='rect',x0=60,y0=_Y(756),x1=1240,y1=_Y(108),fillcolor='#F8FAFC',line=dict(width=0),layer='below')
+_fig.add_shape(type='rect',x0=18,y0=_Y(94),x1=1282,y1=_Y(36),fillcolor='#F4EEE7',line=dict(color='#E3D3C4',width=1),layer='below')
+_fig.update_layout(annotations=_eann+[
+    dict(x=80,y=_Y(66),text='the root — over all',showarrow=False,font=dict(size=12,color='#8a6d2f'),xanchor='left'),
+    dict(x=1232,y=_Y(150),text='oriented to the lasting (آخرة) → kawthar',showarrow=False,font=dict(size=12,color='#0F6E56'),xanchor='right'),
+    dict(x=1232,y=_Y(665),text='oriented to the near (دنیا) → abtar',showarrow=False,font=dict(size=12,color='#8a6d2f'),xanchor='right'),
+ ],paper_bgcolor='#FFFFFF',plot_bgcolor='#FFFFFF',margin=dict(l=6,r=6,t=6,b=6),height=560,showlegend=False,hovermode='closest',dragmode='pan')
+_fig.update_xaxes(visible=False,range=[0,1300])
+_fig.update_yaxes(visible=False,range=[_Y(772),_Y(18)],scaleanchor='x',scaleratio=1)
+st.plotly_chart(_fig,use_container_width=True,config={'displaylogo':False,'scrollZoom':True,'modeBarButtonsToRemove':['select2d','lasso2d']})
+_lg=[('self / organ','#1D3557'),('cognition','#378ADD'),('action','#0F6E56'),('up-driver','#1D9E75'),('down-driver','#E63946'),('feedback (zād)','#EF9F27'),('veil / partition','#7A5AA6'),('orientation','#94A3B8'),('kawthar','#0F6E56'),('abtar','#C1121F'),('root','#B5651D')]
+st.markdown("<div style='display:flex;flex-wrap:wrap;gap:5px 13px;font-size:12px;color:#10243A;margin:2px 2px 6px'>"+ "".join("<span style='display:inline-flex;align-items:center;gap:5px'><span style='width:11px;height:11px;border-radius:50%%;background:%s;display:inline-block'></span>%s</span>"%(c,n) for n,c in _lg)+"</div>", unsafe_allow_html=True)
 
 # -- 6b - THE MEASURED LEDGER, AS CHARTS (house plotly style) --
 import plotly.graph_objects as _go
@@ -270,7 +368,11 @@ with st.expander("full ledger — every edge, anchor, statistic, status"):
         ["زاد ↔ faith (إيمان)", "8:2 · 9:124", "Fisher OR 2.6 (p = 3.4e-3)", "MEASURED"],
         ["نفس ⊃ صدر ⊃ قلب (containment)", "22:46", "structural", "TEXT"],
         ["نفس = locus of fujūr / taqwā", "91:7-8", "—", "TEXT"],
-        ["barzakh boundary; veil lifted", "23:100 · 50:22", "—", "TEXT"],
+        ["دنیا = the near (root دنو), present orientation, lahw·laʿib", "29:64 · 87:16", "co-present, not a later time", "TEXT"],
+        ["آخرة = the lasting/real life (al-ḥayawān), present but veiled", "29:64 · 42:20", "—", "TEXT"],
+        ["دنیا vs آخرة weighed as a present choice (yurīd)", "3:152 · 42:20", "57 shared verses; ~24% with a wanting-verb", "MEASURED"],
+        ["غطاء = veil over perception, present in life, lifted at death", "18:101 · 50:22", "—", "TEXT"],
+        ["barzakh = a partition (seas; the dead) — not the world-wall", "25:53 · 55:20 · 23:100", "2 of 3 uses are sea-barriers", "MEASURED"],
         ["closed vs open heart-state gradation", "—", "modularity z = -7.31 (NULL)", "MEASURED"],
         ["coupled processor (قلب) + agent (نفس)", "—", "a held-lightly reading", "INFERRED"],
     ])

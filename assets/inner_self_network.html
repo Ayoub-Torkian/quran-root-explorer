@@ -17,14 +17,14 @@
  .ctl{font-size:13px;margin:4px 0;} .ctl button{font-size:13px;padding:3px 10px;margin-right:6px;border:1px solid #E2E8F1;border-radius:8px;background:#fff;cursor:pointer;}
 </style>
 <h1>الشبكة الباطنية · The inner-self network</h1>
-<p class="sub">One reality, two domains across a veil-boundary; the qalb (processor) and nafs (agent) coupled by the علم↔عمل loop; up-drivers vs down-drivers; زاد amplifies; outcome = kawthar (crosses) or abtar (cut off). Hover any node or edge for its Qurʾānic anchor. <b>Edges: green=toward openness · red=toward severance · gold=feedback · navy=structure/divine.</b></p>
+<p class="sub">One reality with two <b>co-present orientations</b> — دنیا (the near, root دنو=draw near; the passing) and آخرة (the lasting/real life, الحیوان). By what it knows and does, the self becomes دنیوی or اخروی; the غطاء (veil) over perception is present in life and lifts when sight sharpens (50:22). Outcome = kawthar (joined to the lasting → crosses) or abtar (clinging to the near → cut off). Hover any node or edge for its Qurʾānic anchor. <b>Edges: green=toward the lasting/openness · red=toward the near/severance · gold=feedback · grey=structure.</b></p>
 <div class="ctl">scroll to zoom · drag to pan <button onclick="resetView()">⤢ reset view</button></div>
 <div class="legend" id="lg"></div>
 <div class="wrap"><svg id="svg"></svg></div>
 <div id="tip"></div>
 <script>
 const ROLE={self:'#1D3557',cog:'#378ADD',act:'#0F6E56',up:'#1D9E75',down:'#E63946',amp:'#EF9F27',bound:'#7A5AA6',dom:'#94A3B8',out_g:'#0F6E56',out_r:'#C1121F',root:'#B5651D'};
-const ROLELAB={self:'self / organ',cog:'cognition',act:'action',up:'up-driver (→open)',down:'down-driver (→severance)',amp:'feedback (زاد)',bound:'boundary / veil',out_g:'outcome: kawthar',out_r:'outcome: abtar',root:'divine root'};
+const ROLELAB={self:'self / organ',cog:'cognition',act:'action',up:'up-driver (→open)',down:'down-driver (→severance)',amp:'feedback (زاد)',bound:'veil / partition',out_g:'outcome: kawthar',out_r:'outcome: abtar',root:'divine root',dom:'orientation (co-present)'};
 // id:[ar,en,x,y,role,verse]
 const N={
  allah:['الله','God — root (seals · guides · increases · between man & heart · knows the whisper)',650,66,'root','8:24·50:16·64:11'],
@@ -46,11 +46,12 @@ const N={
  marad:['مرض','disease of the heart — grows (فزادهم مرضاً)',430,660,'down','2:10·9:125'],
  tab:['طبع·ختم','sealing — the absorbing state (لا یفقهون)',560,690,'down','63:3·2:7'],
  zad:['زاد','amplifier — self-reinforces either pole (faith↑ OR disease↑)',730,470,'amp','47:17·2:10'],
- barzakh:['برزخ·غطاء','the veil-boundary; lifted at the crossing (sight made sharp)',880,440,'bound','23:100·50:22·55:20'],
- dunya:['دنیا','this domain = lahw & laʿib (play)',210,120,'dom','57:20·29:64'],
- akhira:['آخرة·حیوان','the real life — same reality, veiled now (perceived by يقين 2:4)',1130,430,'dom','29:64·2:4'],
- kawthar:['کوثر','abundance · continuity that CROSSES the boundary',1055,250,'out_g','108:1'],
- abtar:['أبتر','severance — CUT OFF at the boundary',1010,680,'out_r','108:3'],
+ barzakh:['برزخ','a partition — for the dead until resurrection (23:100); 2 of its 3 uses are the barrier between seas, NOT a dunyā/ākhira wall',1150,455,'bound','23:100·55:20'],
+ ghita:['غطاء','veil over PERCEPTION — present in life (eyes covered from ذکر 18:101), lifted when sight sharpens (50:22)',770,300,'bound','18:101·50:22'],
+ dunya:['دنیا','the near (أدنی, root دنو=draw near) — the immediate/passing, لهو·لعب; a CO-PRESENT orientation, not a later time',1140,600,'dom','29:64·87:16'],
+ akhira:['آخرة·حیوان','the lasting / real life (الحیوان) — CO-PRESENT now but veiled; wanted or not (يريد الآخرة)',1140,310,'dom','29:64·42:20'],
+ kawthar:['کوثر','abundance · continuity that CROSSES — the اخروی orientation, joined to the lasting',1040,205,'out_g','108:1'],
+ abtar:['أبتر','severance — CUT OFF; the دنیوی orientation, clinging to the passing/near',1030,705,'out_r','108:3'],
 };
 // edges: [from,to,label,valence(g/r/o/n),verse,curve]
 const E=[
@@ -75,12 +76,18 @@ const E=[
  ['zad','abtar','amplifies disease↑disease','r','2:10',0.2],
  ['ilm','zad','sound loop feeds amplifier','g','47:17',0.1],
  ['marad','zad','corrupt loop feeds amplifier','r','2:10',0.1],
- ['nafs','barzakh','the nafs crosses at death (موت)','n','3:185',0],
- ['nafs','kawthar','purified self → crosses into the real life','g','89:27',0.15],
- ['nafs','abtar','corrupted self → cut off','r','—',0.15],
- ['kawthar','akhira','continuity into the real life','g','29:64',0],
- ['abtar','barzakh','severed at the boundary','r','108:3',0],
- ['qalb','akhira','open heart perceives across (يقين)','g','2:4',0.25],
+ ['amal','dunya','deeds aimed at the near — harvest of the dunyā','r','42:20·87:16',0.18],
+ ['amal','akhira','deeds aimed at the lasting — harvest of the ākhira','g','42:20·2:201',-0.18],
+ ['hawa','dunya','desire pulls the self to the near/passing','r','79:38·45:23',0.1],
+ ['lahw','dunya','the near life IS distraction & play','r','29:64·57:20',0],
+ ['nafs','dunya','a self turned to the near is دنیوی','n','—',0.12],
+ ['nafs','akhira','a self turned to the lasting is اخروی','n','—',-0.12],
+ ['dunya','abtar','clinging to the near → cut off (abtar)','r','108:3',0.12],
+ ['akhira','kawthar','joined to the lasting/real → continuity (kawthar)','g','29:64·108:1',0.12],
+ ['qalb','akhira','heart with يقين perceives the real (veil lifts)','g','2:4·50:22',0.2],
+ ['ghita','fuad','veil over perception — present in life','n','18:101',0],
+ ['ghita','akhira','veil lifted, sight sharpens → the real seen','g','50:22',0.25],
+ ['nafs','barzakh','every nafs tastes death; a partition for the dead — not the world-wall','n','3:185·23:100',0],
  ['allah','qalb','seals · guides · comes between','n','8:24·64:11',0],
  ['allah','zad','He increases (زادهم)','n','47:17',0],
  ['sadr','qalb','chamber contains the heart','n','22:46',0],
@@ -98,11 +105,10 @@ function draw(){
   const defs=mk('defs',{}); for(const v in VAL){const m=mk('marker',{id:'arr'+v,viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:7,markerHeight:7,orient:'auto-start-reverse'});m.append(mk('path',{d:'M0 0 L10 5 L0 10 z',fill:VAL[v]}));defs.append(m);} cam.append(defs);
   cam.append(mk('rect',{x:8,y:30,width:1284,height:736,fill:'none',stroke:'#E2E8F1','stroke-width':1.4,rx:16}));
   cam.append(mk('rect',{x:18,y:36,width:1264,height:58,fill:'#F4EEE7',stroke:'#E3D3C4','stroke-width':1,rx:12}));
-  {let dl=mk('text',{x:700,y:70,'font-size':12,fill:'#8a6d2f','font-weight':700});dl.textContent='the root — over both domains';cam.append(dl);}
-  cam.append(mk('rect',{x:10,y:102,width:825,height:658,fill:'#F4F7F4',rx:14}));
-  cam.append(mk('rect',{x:905,y:102,width:385,height:658,fill:'#FBF6EC',rx:14}));
-  cam.append(mk('rect',{x:848,y:116,width:58,height:634,fill:'#7A5AA6',opacity:.16}));
-  {let t=mk('text',{x:877,y:138,'text-anchor':'middle','font-size':12,fill:'#7A5AA6','font-weight':700});t.textContent='برزخ';cam.append(t);}
+  {let dl=mk('text',{x:700,y:70,'font-size':12,fill:'#8a6d2f','font-weight':700});dl.textContent='the root — over all';cam.append(dl);}
+  cam.append(mk('rect',{x:60,y:108,width:1180,height:648,fill:'#F8FAFC',rx:14}));
+  {let t1=mk('text',{x:1232,y:168,'text-anchor':'end','font-size':12,fill:'#0F6E56','font-weight':700});t1.textContent='oriented to the lasting (آخرة) → kawthar';cam.append(t1);}
+  {let t2=mk('text',{x:1232,y:742,'text-anchor':'end','font-size':12,fill:'#8a6d2f','font-weight':700});t2.textContent='oriented to the near (دنیا) → abtar';cam.append(t2);}
   for(const [a,b,lab,val,vs,cv] of E){
     const p=N[a],q=N[b]; if(!p||!q)continue;
     const x1=p[2],y1=p[3],x2=q[2],y2=q[3];
@@ -115,7 +121,7 @@ function draw(){
   }
   for(const id in N){
     const [ar,en,x,y,role,vs]=N[id];
-    const big=(id=='nafs'||id=='akhira'||id=='kawthar'); const r=big?26:18;
+    const big=(id=='nafs'||id=='akhira'||id=='kawthar'||id=='dunya'); const r=big?26:18;
     const c=mk('circle',{cx:x,cy:y,r:r,fill:ROLE[role],stroke:'#fff','stroke-width':2.5,opacity:.92,style:'cursor:pointer'});
     c.addEventListener('mousemove',ev=>{tip.style.display='block';tip.style.left=(ev.clientX+13)+'px';tip.style.top=(ev.clientY+12)+'px';
       tip.innerHTML=`<b><span class="a ar">${ar}</span></b> · <small>[${ROLELAB[role]||role}]</small><br>${en}<br><span class="v">${vs}</span>`;});
