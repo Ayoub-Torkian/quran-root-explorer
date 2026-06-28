@@ -78,7 +78,7 @@ NAV_SECTIONS = [
         ("Patterns & roles", [
             ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️"),
             ("pages/42_Closeup_InnerSelf.py", "Anatomy of the inner self", "🧠"),
-            ("pages/43_Closeup_ConceptRearrange.py", "Concept rearrangement", "🧭"),
+            ("pages/43_Closeup_ConceptRearrange.py", "al-Kawthar word-web", "🧭"),
             ("pages/35_Mathani_Lab.py", "Mathānī · refrains", "🔁"),
             ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
         ]),
