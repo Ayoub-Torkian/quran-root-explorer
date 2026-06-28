@@ -295,6 +295,13 @@ _fig.update_yaxes(visible=False,range=[_Y(772),_Y(18)],scaleanchor='x',scalerati
 st.plotly_chart(_fig,use_container_width=True,config={'displaylogo':False,'scrollZoom':True,'modeBarButtonsToRemove':['select2d','lasso2d']})
 _lg=[('self / organ','#1D3557'),('cognition','#378ADD'),('action','#0F6E56'),('up-driver','#1D9E75'),('down-driver','#E63946'),('feedback (zād)','#EF9F27'),('veil / partition','#7A5AA6'),('orientation','#94A3B8'),('kawthar','#0F6E56'),('abtar','#C1121F'),('root','#B5651D')]
 st.markdown("<div style='display:flex;flex-wrap:wrap;gap:5px 13px;font-size:12px;color:#10243A;margin:2px 2px 6px'>"+ "".join("<span style='display:inline-flex;align-items:center;gap:5px'><span style='width:11px;height:11px;border-radius:50%%;background:%s;display:inline-block'></span>%s</span>"%(c,n) for n,c in _lg)+"</div>", unsafe_allow_html=True)
+C.note("<b>Graph metrics</b> — these describe the curated model (the edge-set), not a discovered corpus topology, "
+       "and are layout-independent (node positions are illustrative): <b>25 nodes · 37 edges</b>, directed density "
+       "0.06, one connected component. Edge valence: <b>11</b> toward the lasting/openness · <b>15</b> toward the "
+       "near/severance · <b>11</b> structural. Most-connected: <b>علم·عقل and عمل·صالح (degree 8)</b> — the "
+       "cognition↔action loop is the hub — then قلب · نفس (7), then زاد · دنیا · آخرة (5). Per-edge statistics "
+       "(counts, Fisher odds-ratios, anchors) are in the charts and full ledger below. Centrality/betweenness are "
+       "deliberately NOT computed: on a hand-curated edge-set they would measure our choices, not the corpus.")
 
 # -- 6b - THE MEASURED LEDGER, AS CHARTS (house plotly style) --
 import plotly.graph_objects as _go
