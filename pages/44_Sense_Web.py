@@ -149,7 +149,8 @@ if _csel:
     fig.add_trace(_line(foc, "#4E6E92", 1.6, 0.7, "family bonds", False))
 else:
     fig.add_trace(_line(_E, _GREY, 1.2, 0.5, "bonds", False))
-fig.add_trace(_line(_SL, "#E63946", 2.5, 0.55, "sense fold (·a–·b)", True))
+if _focus != "(whole web)":   # fold lines only in focus view — 25 of them slash across the global map as noise
+    fig.add_trace(_line(_SL, "#E63946", 2.5, 0.55, "sense fold (·a–·b)", True))
 sb = 5 if _is3d else 9
 for c in _CM:
     cid = c["id"]
