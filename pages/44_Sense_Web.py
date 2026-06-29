@@ -111,13 +111,16 @@ if _minv > 0:
 if not keep:
     keep = set(range(len(_N)))
 def _active(i): return (not _csel) or (_N[i]["comm"] in _csel)
+# label the key concepts so the map is readable: all split-senses + the highest-degree hubs
+_topdeg = sorted(keep, key=lambda i: -_N[i]["deg"])[:30]
+_LABEL = {i for i in keep if _N[i]["sense"]} | set(_topdeg)
 
 # ── FIGURE ───────────────────────────────────────────────────────────────────
 def _nodes(ids, color, ring, ringcol, showtext, name, leg, sizebase):
     xs = [_N[i]["x3"] if _is3d else _N[i]["x2"] for i in ids]
     ys = [_N[i]["y3"] if _is3d else _N[i]["y2"] for i in ids]
     sz = [sizebase + 9 * (min(_N[i]["df"], 300) / 300) ** 0.5 for i in ids]
-    txt = [_N[i]["label"] if showtext else "" for i in ids]
+    txt = [_N[i]["label"] if (showtext or i in _LABEL) else "" for i in ids]
     hov = ["%s · %d verses · deg %d · betw %.3f" % (_N[i]["label"], _N[i]["df"], _N[i]["deg"], _N[i]["bet"]) for i in ids]
     mk = dict(size=sz, color=color, line=dict(width=ring, color=ringcol))
     if _is3d:
@@ -160,13 +163,13 @@ for active, ring, rc, nm in [(True, 2.2, "#CC8A3C", "split senses"), (False, 1.0
         col = [_PAL[_N[i]["comm"] % len(_PAL)] if _active(i) else _GREY for i in ids]
         fig.add_trace(_nodes(ids, col, ring, rc, active, nm or "", bool(nm), sb + 1))
 if _is3d:
-    fig.update_layout(height=650, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF",
+    fig.update_layout(height=650, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="keep",
         legend=dict(font=dict(size=12), itemsizing="constant"),
         scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False), bgcolor="#FFFFFF"))
 else:
     fig.update_layout(height=630, margin=dict(l=6, r=6, t=8, b=6), paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF",
-                      dragmode="pan", legend=dict(font=dict(size=12), itemsizing="constant"))
-    fig.update_xaxes(visible=False, autorange=True); fig.update_yaxes(visible=False, autorange=True)
+                      dragmode="pan", uirevision="keep", legend=dict(font=dict(size=12), itemsizing="constant"))
+    fig.update_xaxes(visible=False); fig.update_yaxes(visible=False, scaleanchor="x", scaleratio=1)
 st.plotly_chart(fig, use_container_width=True, config={"scrollZoom": _is3d, "displaylogo": False,
     "displayModeBar": True, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
 C.note("<b>Navigate:</b> in <b>2-D</b> drag to pan up/down/sideways and the page scrolls normally over the graph; "
