@@ -477,7 +477,7 @@ def figure(d, color_by, focus=None, dim3=False):
     xs = [pos[n][0] for n in nodes]; ys = [pos[n][1] for n in nodes]
     zs = [pos[n][2] for n in nodes] if dim3 else None
     sizes = [6 + (docf[n] ** 0.5) * 0.9 for n in nodes]
-    top40 = set(sorted(nodes, key=lambda r: -docf[r])[:40])
+    top40 = set(nodes)   # label every node (was top-40 by frequency; user wants all labels)
     texts = [disp_root(n) if n in top40 else "" for n in nodes]
     gf = d.get("gf", {})
     if color_by == "Theme":
