@@ -117,10 +117,14 @@ def build_atlas(_cid, scope="all", sel=None, n_nodes=150, drop_ubiq=10, topk=3):
         it = [(snz[s], cc) for s, cc in occ[r].items() if s in snz]
         tot = sum(cc for _, cc in it); nuz[r] = (sum(nz * cc for nz, cc in it) / tot) if tot else 57.0
     pos = nx.spring_layout(G, weight="weight", seed=7, k=0.5, iterations=60)
-    pos3 = nx.spring_layout(G, dim=3, weight="weight", seed=7, k=0.5, iterations=60)
+    _p3 = nx.spring_layout(G, dim=3, weight="weight", seed=7, k=0.5, iterations=60)
+    _nl = list(_p3.keys()); _a = np.array([_p3[n] for n in _nl], float)
+    _a = (_a - _a.mean(0)) / (_a.std(0) + 1e-9)                      # equalize axes (kill the flat disc)
+    _a = _a / (np.linalg.norm(_a, axis=1, keepdims=True) + 1e-9)     # project onto unit sphere -> globe
+    pos3 = {n: [float(_a[k][0]), float(_a[k][1]), float(_a[k][2])] for k, n in enumerate(_nl)}
     return dict(nodes=nodes, docf={r: docf[r] for r in nodes}, edges=[(a, b, G[a][b]["weight"]) for a, b in G.edges()],
                 theme_of=theme_of, themes=themes, nuz=nuz, pos={n: [float(p[0]), float(p[1])] for n, p in pos.items()},
-                pos3={n: [float(p[0]), float(p[1]), float(p[2])] for n, p in pos3.items()})
+                pos3=pos3)
 
 @st.cache_data(show_spinner="Building the semantic space…")
 def _semantic_space(_cid, n=750):
@@ -610,7 +614,7 @@ else:
         _dim3 = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="atlas_dim",
                          label_visibility="collapsed").startswith("3")
         st.plotly_chart(figure(d, color_by, _focus, _dim3), use_container_width=True,
-                        config={"scrollZoom": _dim3, "displaylogo": False})
+                        config={"scrollZoom": True, "displaylogo": False})
         if color_by == "Network role":
             _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
             _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
