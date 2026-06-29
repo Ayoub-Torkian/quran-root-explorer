@@ -1,4 +1,4 @@
-﻿# re-deploy 1779770521
+# re-deploy 1779770521
 """state.py — v4: simple, bright, always-visible menu."""
 from __future__ import annotations
 
@@ -78,6 +78,8 @@ NAV_SECTIONS = [
         ("Patterns & roles", [
             ("pages/34_Closeup_Importance.py", "Importance as roles", "🕸️"),
             ("pages/42_Closeup_InnerSelf.py", "Anatomy of the inner self", "🧠"),
+            ("pages/43_Closeup_ConceptRearrange.py", "al-Kawthar word-web", "🧭"),
+            ("pages/44_Sense_Web.py", "Sense-resolved web · 3-D", "🕸"),
             ("pages/35_Mathani_Lab.py", "Mathānī · refrains", "🔁"),
             ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
         ]),
