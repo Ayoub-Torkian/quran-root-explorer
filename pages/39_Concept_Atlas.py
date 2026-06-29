@@ -466,14 +466,22 @@ def _axis_vec(S, pairs):
 def figure(d, color_by, focus=None, dim3=False):
     pos = d["pos3"] if dim3 else d["pos"]
     nodes, docf = d["nodes"], d["docf"]
-    ex, ey, ez = [], [], []
+    _themed = focus is not None and color_by == "Theme"
+    _tcol = THEME_COLORS[focus % len(THEME_COLORS)] if _themed else "#cfd8dc"
+    ex, ey, ez = [], [], []          # other (grey) edges
+    tx, ty, tz = [], [], []          # focused-theme edges (coloured like its nodes)
     for a, b, _w in d["edges"]:
-        ex += [pos[a][0], pos[b][0], None]; ey += [pos[a][1], pos[b][1], None]
-        if dim3: ez += [pos[a][2], pos[b][2], None]
+        _in = _themed and d["theme_of"][a] == focus and d["theme_of"][b] == focus
+        X, Y = (tx, ty) if _in else (ex, ey)
+        X += [pos[a][0], pos[b][0], None]; Y += [pos[a][1], pos[b][1], None]
+        if dim3:
+            (tz if _in else ez).extend([pos[a][2], pos[b][2], None])
     if dim3:
         edge_tr = go.Scatter3d(x=ex, y=ey, z=ez, mode="lines", line=dict(width=1.2, color="#cfd8dc"), opacity=0.45, hoverinfo="none")
+        theme_edge_tr = go.Scatter3d(x=tx, y=ty, z=tz, mode="lines", line=dict(width=2.6, color=_tcol), opacity=0.85, hoverinfo="none") if tx else None
     else:
         edge_tr = go.Scatter(x=ex, y=ey, mode="lines", line=dict(width=0.6, color="#cfd8dc"), hoverinfo="none")
+        theme_edge_tr = go.Scatter(x=tx, y=ty, mode="lines", line=dict(width=1.6, color=_tcol), opacity=0.9, hoverinfo="none") if tx else None
     xs = [pos[n][0] for n in nodes]; ys = [pos[n][1] for n in nodes]
     zs = [pos[n][2] for n in nodes] if dim3 else None
     sizes = [6 + (docf[n] ** 0.5) * 0.9 for n in nodes]
@@ -514,14 +522,14 @@ def figure(d, color_by, focus=None, dim3=False):
     if dim3:
         node_tr = go.Scatter3d(x=xs, y=ys, z=zs, mode="markers+text", text=texts, textposition="top center",
                                textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
-        fig = go.Figure([edge_tr, node_tr])
+        fig = go.Figure([t for t in [edge_tr, theme_edge_tr, node_tr] if t is not None])
         fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=660, uirevision="atlas",
                           scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False),
                                      bgcolor="rgba(0,0,0,0)"), paper_bgcolor="rgba(0,0,0,0)")
     else:
         node_tr = go.Scatter(x=xs, y=ys, mode="markers+text", text=texts, textposition="top center",
                              textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
-        fig = go.Figure([edge_tr, node_tr])
+        fig = go.Figure([t for t in [edge_tr, theme_edge_tr, node_tr] if t is not None])
         fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=650, dragmode="pan", uirevision="atlas",
                           xaxis=dict(visible=False), yaxis=dict(visible=False),
                           plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
