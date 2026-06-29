@@ -188,7 +188,7 @@ cdf = pd.DataFrame([{
     "family (hub-concept)": c["label"], "concepts": c["n"], "avg degree": c["avg_deg"],
     "avg betweenness": c["avg_bet"], "density": c["density"], "internal bonds": c["intra"],
     "bridge bonds": c["inter"], "top members": " · ".join(c["members"][:6])} for c in _CM])
-st.dataframe(cdf, use_container_width=True, hide_index=True, height=460)
+st.dataframe(cdf, width="stretch", hide_index=True, height=460)
 
 C.section("Concept metrics — full centralities" + (" (selected families)" if _csel else " (all concepts)"))
 sel = [n for n in _N if (not _csel or n["comm"] in _csel)]
@@ -197,7 +197,7 @@ ndf = pd.DataFrame([{
     "degree": n["deg"], "betweenness": n["bet"], "pagerank": n["pr"], "eigenvector": n["eig"],
     "clustering": n["clu"], "family": _clabels[n["comm"]].split("  (")[0]} for n in sel])
 ndf = ndf.sort_values(["family", "pagerank"], ascending=[True, False])
-st.dataframe(ndf, use_container_width=True, hide_index=True, height=420)
+st.dataframe(ndf, width="stretch", hide_index=True, height=420)
 C.note("Degree = direct co-occurrences · Betweenness = bridges between families · PageRank/eigenvector = hub "
        "influence · Clustering = how tightly its neighbours interlink. See the conceptual-foundation panel above.")
 
