@@ -117,8 +117,10 @@ def build_atlas(_cid, scope="all", sel=None, n_nodes=150, drop_ubiq=10, topk=3):
         it = [(snz[s], cc) for s, cc in occ[r].items() if s in snz]
         tot = sum(cc for _, cc in it); nuz[r] = (sum(nz * cc for nz, cc in it) / tot) if tot else 57.0
     pos = nx.spring_layout(G, weight="weight", seed=7, k=0.5, iterations=60)
+    pos3 = nx.spring_layout(G, dim=3, weight="weight", seed=7, k=0.5, iterations=60)
     return dict(nodes=nodes, docf={r: docf[r] for r in nodes}, edges=[(a, b, G[a][b]["weight"]) for a, b in G.edges()],
-                theme_of=theme_of, themes=themes, nuz=nuz, pos={n: [float(p[0]), float(p[1])] for n, p in pos.items()})
+                theme_of=theme_of, themes=themes, nuz=nuz, pos={n: [float(p[0]), float(p[1])] for n, p in pos.items()},
+                pos3={n: [float(p[0]), float(p[1]), float(p[2])] for n, p in pos3.items()})
 
 @st.cache_data(show_spinner="Building the semantic space…")
 def _semantic_space(_cid, n=750):
@@ -457,13 +459,19 @@ def _axis_vec(S, pairs):
     ax = np.mean(offs, 0); ax /= np.linalg.norm(ax) + 1e-9
     return ax, len(offs)
 
-def figure(d, color_by, focus=None):
-    pos, nodes, docf = d["pos"], d["nodes"], d["docf"]
-    ex, ey = [], []
+def figure(d, color_by, focus=None, dim3=False):
+    pos = d["pos3"] if dim3 else d["pos"]
+    nodes, docf = d["nodes"], d["docf"]
+    ex, ey, ez = [], [], []
     for a, b, _w in d["edges"]:
         ex += [pos[a][0], pos[b][0], None]; ey += [pos[a][1], pos[b][1], None]
-    edge_tr = go.Scatter(x=ex, y=ey, mode="lines", line=dict(width=0.6, color="#cfd8dc"), hoverinfo="none")
+        if dim3: ez += [pos[a][2], pos[b][2], None]
+    if dim3:
+        edge_tr = go.Scatter3d(x=ex, y=ey, z=ez, mode="lines", line=dict(width=1.2, color="#cfd8dc"), opacity=0.45, hoverinfo="none")
+    else:
+        edge_tr = go.Scatter(x=ex, y=ey, mode="lines", line=dict(width=0.6, color="#cfd8dc"), hoverinfo="none")
     xs = [pos[n][0] for n in nodes]; ys = [pos[n][1] for n in nodes]
+    zs = [pos[n][2] for n in nodes] if dim3 else None
     sizes = [6 + (docf[n] ** 0.5) * 0.9 for n in nodes]
     top40 = set(sorted(nodes, key=lambda r: -docf[r])[:40])
     texts = [disp_root(n) if n in top40 else "" for n in nodes]
@@ -499,12 +507,20 @@ def figure(d, color_by, focus=None):
             extra = " · " + ROLE_TAG.get(f.get("role"), "member")
             if f.get("family_label"): extra += f" · family {f['family_label']}"
         hov.append(f"{n} · freq {docf[n]} · revelation {d['nuz'][n]:.0f}/114 · theme {d['theme_of'][n] + 1}{extra}")
-    node_tr = go.Scatter(x=xs, y=ys, mode="markers+text", text=texts, textposition="top center",
-                         textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
-    fig = go.Figure([edge_tr, node_tr])
-    fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=650,
-                      xaxis=dict(visible=False), yaxis=dict(visible=False),
-                      plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
+    if dim3:
+        node_tr = go.Scatter3d(x=xs, y=ys, z=zs, mode="markers+text", text=texts, textposition="top center",
+                               textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
+        fig = go.Figure([edge_tr, node_tr])
+        fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=660,
+                          scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False),
+                                     bgcolor="rgba(0,0,0,0)"), paper_bgcolor="rgba(0,0,0,0)")
+    else:
+        node_tr = go.Scatter(x=xs, y=ys, mode="markers+text", text=texts, textposition="top center",
+                             textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
+        fig = go.Figure([edge_tr, node_tr])
+        fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=650,
+                          xaxis=dict(visible=False), yaxis=dict(visible=False),
+                          plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
     return fig
 
 hero("🗺️ Concept Atlas",
@@ -591,7 +607,10 @@ else:
         _focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
                                    disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
         _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
-        st.plotly_chart(figure(d, color_by, _focus), use_container_width=True)
+        _dim3 = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="atlas_dim",
+                         label_visibility="collapsed").startswith("3")
+        st.plotly_chart(figure(d, color_by, _focus, _dim3), use_container_width=True,
+                        config={"scrollZoom": _dim3, "displaylogo": False})
         if color_by == "Network role":
             _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
             _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
