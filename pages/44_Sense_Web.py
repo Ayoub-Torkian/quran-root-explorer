@@ -188,6 +188,7 @@ cdf = pd.DataFrame([{
     "family (hub-concept)": c["label"], "concepts": c["n"], "avg degree": c["avg_deg"],
     "avg betweenness": c["avg_bet"], "density": c["density"], "internal bonds": c["intra"],
     "bridge bonds": c["inter"], "top members": " · ".join(c["members"][:6])} for c in _CM])
+st.markdown("<style>[data-testid='stDataFrame'],[data-testid='stDataFrameResizable']{width:100% !important;max-width:100% !important}</style>", unsafe_allow_html=True)
 st.dataframe(cdf, width="stretch", hide_index=True, height=460)
 
 C.section("Concept metrics — full centralities" + (" (selected families)" if _csel else " (all concepts)"))
