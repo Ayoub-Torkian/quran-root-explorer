@@ -167,9 +167,12 @@ if _is3d:
         legend=dict(font=dict(size=12), itemsizing="constant"),
         scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False), bgcolor="#FFFFFF"))
 else:
+    _ax = [n["x2"] for n in _N]; _ay = [n["y2"] for n in _N]
+    _lo = min(min(_ax), min(_ay)); _hi = max(max(_ax), max(_ay)); _pd = 0.06 * (_hi - _lo + 1e-9)
     fig.update_layout(height=630, margin=dict(l=6, r=6, t=8, b=6), paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF",
                       dragmode="pan", uirevision="keep", legend=dict(font=dict(size=12), itemsizing="constant"))
-    fig.update_xaxes(visible=False); fig.update_yaxes(visible=False)
+    fig.update_xaxes(visible=False, range=[_lo - _pd, _hi + _pd], autorange=False)
+    fig.update_yaxes(visible=False, range=[_lo - _pd, _hi + _pd], autorange=False)
 st.plotly_chart(fig, use_container_width=True, key="sense_web_net", config={"scrollZoom": _is3d, "displaylogo": False,
     "displayModeBar": True, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
 C.note("<b>Navigate:</b> in <b>2-D</b> drag to pan up/down/sideways and the page scrolls normally over the graph; "
