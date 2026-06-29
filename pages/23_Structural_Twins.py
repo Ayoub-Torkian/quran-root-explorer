@@ -153,8 +153,8 @@ excess=round(100*(m["n_pairs"]-m["null_mean"])/m["null_mean"])
 nmin, nmax = min(m["null_T"]), max(m["null_T"])
 hub_name, hub_links = sname(top_hubs[0][0]), top_hubs[0][1]
 
-hero("♊ Mathāni (مثاني)",
-     "Structural Twins — verses sharing at least half their roots. Computed concordance, gated vs chance. Not tafsir.")
+hero("♊ Structural Twins — the paired sense of mathānī (مثاني)",
+     "Verses sharing at least half their roots. Computed concordance, gated vs chance. Not tafsir.")
 
 st.success(
     "🧬 **Now multimodally validated (Latent Feature L21, grade 96).** The twin bond is not just shared vocabulary: "
@@ -169,7 +169,12 @@ except Exception:
 st.markdown(
     "<div style='background:#EEEDFE; border-left:4px solid #534AB7; border-radius:6px; "
     "padding:12px 16px; margin:10px 0 6px; font-size:14px; color:#10243A;'>"
-    "<b>Two senses of <i>al-math\u0101n\u012b</i> (\u0645\u062b\u0627\u0646\u064a).</b> This page is the "
+    "<b>Two senses of <i>al-math\u0101n\u012b</i> (\u0645\u062b\u0627\u0646\u064a).</b> The root <b>\u062b\u00b7\u0646\u00b7\u064a</b> "
+    "means <i>to fold / double</i> (<i>mathn\u0101</i> \u0645\u062b\u0646\u0649 \u2018two-by-two\u2019, 34:46; 35:1) \u2014 so both senses are "
+    "one idea, <b>doubling</b>. <b>Not the 3:7 dyad:</b> at the whole-Book level the Qur'ān is described as both "
+    "<i>muḥkam</i> (firm — 11:1 أحكمت آياته) and <i>mutashābih-mathānī</i> (consimilar-paired — 39:23); the "
+    "<i>muḥkam</i>/<i>mutashābih</i> opposition of 3:7 is a verse-by-verse distinction, not a contradiction with the "
+    "Book's overall paired self-resemblance. This page is the "
     "<b>paired / doubled</b> sense (39:23 <i>math\u0101niya</i>) \u2014 verses that <b>resemble each other</b> "
     "by root, rhyme and length. The <b>oft-repeated</b> sense (15:87 <i>sab\u02bfan mina l-math\u0101n\u012b</i>) "
     "\u2014 verbatim refrains and repetition \u2014 is a separate lens:</div>",
