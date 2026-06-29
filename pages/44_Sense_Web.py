@@ -170,7 +170,7 @@ else:
     fig.update_layout(height=630, margin=dict(l=6, r=6, t=8, b=6), paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF",
                       dragmode="pan", uirevision="keep", legend=dict(font=dict(size=12), itemsizing="constant"))
     fig.update_xaxes(visible=False); fig.update_yaxes(visible=False, scaleanchor="x", scaleratio=1)
-st.plotly_chart(fig, use_container_width=True, config={"scrollZoom": _is3d, "displaylogo": False,
+st.plotly_chart(fig, use_container_width=True, key="sense_web_net", config={"scrollZoom": _is3d, "displaylogo": False,
     "displayModeBar": True, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
 C.note("<b>Navigate:</b> in <b>2-D</b> drag to pan up/down/sideways and the page scrolls normally over the graph; "
        "use the graph toolbar (top-right) to zoom or reset. In <b>3-D</b> drag to rotate, scroll to zoom. "
