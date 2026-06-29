@@ -319,7 +319,7 @@ def chart_network(g: nx.Graph, communities: dict[str, int]) -> go.Figure:
     fig = go.Figure(data=[edge_trace, node_trace])
     fig.update_xaxes(showgrid=False, zeroline=False, visible=False)
     fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
-    fig.update_layout(plot_bgcolor="#F8FAFC")
+    fig.update_layout(plot_bgcolor="#F8FAFC", dragmode="pan", uirevision="keep")
     return _layout(fig,
                    "Co-occurrence network",
                    h=620)

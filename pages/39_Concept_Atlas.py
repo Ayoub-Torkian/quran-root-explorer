@@ -511,14 +511,14 @@ def figure(d, color_by, focus=None, dim3=False):
         node_tr = go.Scatter3d(x=xs, y=ys, z=zs, mode="markers+text", text=texts, textposition="top center",
                                textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
         fig = go.Figure([edge_tr, node_tr])
-        fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=660,
+        fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=660, uirevision="atlas",
                           scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False),
                                      bgcolor="rgba(0,0,0,0)"), paper_bgcolor="rgba(0,0,0,0)")
     else:
         node_tr = go.Scatter(x=xs, y=ys, mode="markers+text", text=texts, textposition="top center",
                              textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
         fig = go.Figure([edge_tr, node_tr])
-        fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=650,
+        fig.update_layout(showlegend=False, margin=dict(l=0, r=0, t=0, b=0), height=650, dragmode="pan", uirevision="atlas",
                           xaxis=dict(visible=False), yaxis=dict(visible=False),
                           plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
     return fig
