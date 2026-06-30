@@ -435,6 +435,11 @@ def main():
             st.switch_page("pages/41_Structure_Map.py")
         if _q[2].button("🌐 Network roles", key="qs_net",
                         help="Which roots bridge themes and which anchor a family — measured."):
+            # Network needs a query or it hard-stops with "No valid roots parsed." — seed a
+            # sensible default (mercy cluster: rich, central, shows anchors + bridges) unless the
+            # user already has one of their own loaded.
+            if not st.session_state.get("query_roots"):
+                _set_query(["رحم", "ءله", "ءمن"])
             st.switch_page("pages/2_Network.py")
         if _q[3].button("🫀 Correspondence", key="qs_corr",
                         help="Where the text's structure mirrors that of other designed systems."):
