@@ -638,10 +638,11 @@ def inject_css():
     [data-testid="stDataFrameResizable"] {
         border-radius: 10px;
         overflow: hidden;
-        max-width: 460px !important;
-        display: inline-block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
         vertical-align: top;
-        margin: 4px 10px 4px 0 !important;
+        margin: 4px 0 !important;
     }
     /* When tables are stacked inside columns we still want them tight */
     [data-testid="stVerticalBlock"] > [data-testid="stDataFrame"] {
