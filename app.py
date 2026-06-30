@@ -419,8 +419,7 @@ def main():
         with chip_row("themes"):
             _tc = st.columns(len(SAMPLE_QUERIES))
             for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
-                if _tc[_i].button(_lab, key=f"theme_{_i}",
-                                  help="Load this root cluster: " + " · ".join(_rts)):
+                if _tc[_i].button(_lab, key=f"theme_{_i}"):
                     _set_query(_rts); st.rerun()
 
     # About / help tucked BELOW the action so it never pushes empty space up top.
