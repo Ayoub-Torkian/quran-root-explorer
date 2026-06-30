@@ -19,7 +19,7 @@ import math as _ma
 import numpy as np
 import plotly.graph_objects as go
 
-_CS = [[0.0, "#F5FBF8"], [0.4, "#D2ECE0"], [0.72, "#8FCDB0"], [1.0, "#2BA37D"]]
+_CS = [[0.0, "#FBFEFD"], [0.45, "#E8F5EF"], [0.75, "#C3E2D4"], [1.0, "#86C9A9"]]   # pale, translucent greens
 
 
 def _pack(cx, cy, k, rad):
@@ -63,8 +63,8 @@ def family_landscape(families, nodes, *, height_label="value", zoom_hub=None, tr
     def zat(px, py):
         return float(sum(ch[c] * _ma.exp(-(((px - cx[c]) ** 2 + (py - cy[c]) ** 2) / (2 * sig ** 2))) for c in ch))
 
-    fig = go.Figure(go.Surface(x=gx, y=gy, z=Z, colorscale=_CS, showscale=False, opacity=0.8, hoverinfo="skip",
-                               contours=dict(z=dict(show=True, color="#CFE4DC", width=1, project_z=True))))
+    fig = go.Figure(go.Surface(x=gx, y=gy, z=Z, colorscale=_CS, showscale=False, opacity=0.6, hoverinfo="skip",
+                               contours=dict(z=dict(show=True, color="#D8E8E0", width=1, project_z=True))))
 
     npos = {}
     for f in show:
@@ -105,11 +105,19 @@ def family_landscape(families, nodes, *, height_label="value", zoom_hub=None, tr
                                    marker=dict(size=13, color="#E63946", line=dict(width=1.5, color="#FFFFFF")),
                                    hoverinfo="skip", showlegend=False))
 
-    if not zoomed:                                              # label each hill, sitting on its summit (with the dots)
+    if not zoomed:                                              # label every hill, floated just above the whole
+        _ztop = float(Z.max()) + 0.08                           # range so no front hill occludes a back label
         fig.add_trace(go.Scatter3d(x=[cx[f["id"]] for f in show], y=[cy[f["id"]] for f in show],
-                                   z=[zat(cx[f["id"]], cy[f["id"]]) + 0.04 for f in show], mode="text",
+                                   z=[_ztop for _f in show], mode="text",
                                    text=["<b>%s</b>" % f["hub"] for f in show],
                                    textfont=dict(size=15, color="#14304F"), hoverinfo="none", showlegend=False))
+        # thin stems connecting each floating label down to its summit, so the link is unmistakable
+        _sx = []; _sy = []; _sz = []
+        for f in show:
+            _zs = zat(cx[f["id"]], cy[f["id"]])
+            _sx += [cx[f["id"]], cx[f["id"]], None]; _sy += [cy[f["id"]], cy[f["id"]], None]; _sz += [_zs, _ztop, None]
+        fig.add_trace(go.Scatter3d(x=_sx, y=_sy, z=_sz, mode="lines", line=dict(color="#9FB6C8", width=1),
+                                   opacity=0.55, hoverinfo="none", showlegend=False))
 
     fig.update_layout(height=640, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="land",
                       scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False),
