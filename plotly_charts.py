@@ -1738,9 +1738,9 @@ def chart_4stage_evolution(corpus, build_phase_subgraph_fn):
     for col_i, (name, gph) in enumerate(graphs, start=1):
         _draw_one_graph(fig, gph, subplot_pos=(1, col_i),
                         edge_color_overrides="#F77F00" if col_i <= 3 else "#06AED5")
-    return _layout(fig,
-                   "4-stage evolution",
-                   h=420)
+    # No figure title — the page already renders a "### 4-stage evolution" header above it; an
+    # internal title duplicated that AND overlapped the four subplot titles (Early Meccan …).
+    return _layout(fig, "", h=420)
 
 
 def chart_sankey_phase_flow(g_meccan, g_medinan):
@@ -2477,28 +2477,28 @@ def chart_dependency(dep: dict, root: str, max_each: int = 7) -> go.Figure:
         return [1.0 - 2.0 * k / (n - 1) for k in range(n)]
 
     TEAL, ORANGE, NAVY = "#06AED5", "#F77F00", "#1D3557"
-    nx_, ny_, ntext, ncol = [], [], [], []
-    # incoming (left): arrow X -> root
+    nx_, ny_, ntext, ncol, nhov = [], [], [], [], []
+    # incoming (left): arrow X -> root. Clean arrow only — the P·lift values live in the hover and
+    # in the caption above, NOT stamped on the node (which overlapped the root label = clutter).
     for (x, w, conf, lift), y in zip(ins, _ys(len(ins))):
         nx_.append(-1); ny_.append(y); ntext.append(x); ncol.append(TEAL)
+        nhov.append(f"{x} ⇒ {root} · P={conf:.2f} · {lift:.0f}× lift · {int(w)} shared verses")
         fig.add_annotation(ax=-1, ay=y, x=-0.10, y=0, xref="x", yref="y",
                            axref="x", ayref="y", showarrow=True, arrowhead=3,
-                           arrowsize=1, arrowwidth=_ew(lift), arrowcolor=TEAL, opacity=0.85,
-                           text=f"<span style='font-size:12px;color:#10243A'> {conf:.2f}·{lift:.0f}× </span>",
-                           font=dict(size=11))
+                           arrowsize=1, arrowwidth=_ew(lift), arrowcolor=TEAL, opacity=0.85)
     # outgoing (right): arrow root -> X
     for (x, w, conf, lift), y in zip(outs, _ys(len(outs))):
         nx_.append(1); ny_.append(y); ntext.append(x); ncol.append(ORANGE)
+        nhov.append(f"{root} ⇒ {x} · P={conf:.2f} · {lift:.0f}× lift · {int(w)} shared verses")
         fig.add_annotation(ax=0.10, ay=0, x=1, y=y, xref="x", yref="y",
                            axref="x", ayref="y", showarrow=True, arrowhead=3,
                            arrowsize=1, arrowwidth=_ew(lift), arrowcolor=ORANGE, opacity=0.85)
-    # leaf nodes
+    # leaf nodes — root label only on the face; numbers on hover
     fig.add_trace(go.Scatter(
         x=nx_, y=ny_, mode="markers+text", text=ntext, textposition="middle center",
         textfont=dict(size=15, color="#FFFFFF"),
         marker=dict(size=40, color=ncol, line=dict(width=1, color="#10243A")),
-        hoverinfo="text",
-        hovertext=[f"{t}" for t in ntext], showlegend=False))
+        hoverinfo="text", hovertext=nhov, showlegend=False))
     # centre root
     fig.add_trace(go.Scatter(
         x=[0], y=[0], mode="markers+text", text=[root], textposition="middle center",
