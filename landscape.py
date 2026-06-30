@@ -51,8 +51,8 @@ def family_landscape(families, nodes, *, height_label="value", zoom_hub=None, tr
             a = 2 * _ma.pi * i / max(len(show), 1)
             cx[f["id"]] = R * _ma.cos(a); cy[f["id"]] = R * _ma.sin(a); ch[f["id"]] = f["hval"]
         hmax = max(ch.values()) or 1.0
-        for k in ch:
-            ch[k] = ch[k] / hmax
+        for k in ch:                                            # floor so even a small theme gets a visible hill
+            ch[k] = 0.32 + 0.68 * (ch[k] / hmax)                # under its dots (not a flat patch in the valley)
 
     gx = np.linspace(-ext, ext, 120); gy = np.linspace(-ext, ext, 120)
     GX, GY = np.meshgrid(gx, gy)
