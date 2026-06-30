@@ -295,6 +295,41 @@ C.note("Degree/betweenness shown are <b>global</b> (the concept’s role in the 
        "<b>within-subnet degree</b> and <b>→ outward bonds</b> are added so you can tell interior concepts from "
        "bridges. PageRank/eigenvector = hub influence · Clustering = how tightly its neighbours interlink.")
 
+# ── MEANING LANDSCAPE (3-D surface — z is a real measured quantity) ───────────
+C.section("Meaning landscape — the map as 3-D topography")
+C.para("The same concept map seen as <b>terrain</b>: elevation is the <b>local concentration</b> of well-connected "
+       "concepts (a weighted density of the measured layout). <b>Peaks</b> are the cores of concept-families; the "
+       "<b>valleys and saddles</b> between them are the boundaries the bridge-concepts cross. This is an interpretive "
+       "smoothing of the measured map — a reading aid for seeing regional structure, not a new measurement.")
+_zsrc = st.radio("Elevation =", ["degree (connectedness)", "PageRank (influence)", "betweenness (bridging)"],
+                 horizontal=True, key="land_z")
+_zk = {"degree (connectedness)": "deg", "PageRank (influence)": "pr", "betweenness (bridging)": "bet"}[_zsrc]
+_lx = np.array([n["x2"] for n in _N], dtype=float); _ly = np.array([n["y2"] for n in _N], dtype=float)
+_lw = np.array([float(n[_zk]) for n in _N], dtype=float); _lw = _lw / (_lw.max() or 1.0)
+_gx = np.linspace(_lx.min(), _lx.max(), 70); _gy = np.linspace(_ly.min(), _ly.max(), 70)
+_GXX, _GYY = np.meshgrid(_gx, _gy)
+_sig = 0.06 * max(_lx.max() - _lx.min(), _ly.max() - _ly.min(), 1e-6)
+_Z = np.zeros_like(_GXX)
+for _k in range(len(_lx)):
+    _Z += _lw[_k] * np.exp(-(((_GXX - _lx[_k]) ** 2 + (_GYY - _ly[_k]) ** 2) / (2 * _sig ** 2)))
+def _zat(px, py):
+    return float((_lw * np.exp(-(((px - _lx) ** 2 + (py - _ly) ** 2) / (2 * _sig ** 2)))).sum())
+_zmax = float(_Z.max()) or 1.0
+_surf = go.Figure(go.Surface(x=_gx, y=_gy, z=_Z, colorscale="Greens", showscale=False, opacity=0.93,
+                             contours=dict(z=dict(show=True, usecolormap=True, project_z=True, width=1))))
+_nz = [_zat(n["x2"], n["y2"]) + 0.02 * _zmax for n in _N]
+_surf.add_trace(go.Scatter3d(x=_lx, y=_ly, z=_nz, mode="markers",
+    marker=dict(size=[3 + 5 * (min(n["df"], 300) / 300) ** 0.5 for n in _N],
+                color=[_PAL[n["comm"] % len(_PAL)] for n in _N], line=dict(width=0.5, color="#FFFFFF")),
+    hovertext=["%s · %s %.3f" % (n["label"], _zk, float(n[_zk])) for n in _N], hoverinfo="text", showlegend=False))
+_surf.update_layout(height=620, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="land",
+    scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False),
+               zaxis=dict(title=_zk, color="#10243A"), bgcolor="#FFFFFF"))
+st.plotly_chart(_surf, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
+C.note("Drag to rotate, scroll to zoom. Elevation = a Gaussian-weighted density (σ ≈ 6% of the map) of the chosen "
+       "centrality over the 2-D layout; dots are concepts on the terrain, coloured by family. Interpretive smoothing — "
+       "a way to <i>see</i> where families pile up and where the boundaries sit, not a separate measurement.")
+
 # ── WHAT IT SHOWS ────────────────────────────────────────────────────────────
 C.section("What it shows — measured sense splits")
 C.para("Each split recovers a real distinction we find elsewhere, which is the validation: <b>صلو</b> "
