@@ -14,6 +14,7 @@ import pandas as pd
 import numpy as np
 from analysis import COL_SURAH, COL_SURAH_NAME, COL_AYAH, normalize_letters, disp_root
 from state import get_corpus, hero, layer, log_page, chip_row
+import landscape as LS
 
 st.set_page_config(page_title="Concept Atlas", page_icon="🗺️", layout="wide")
 log_page("concept_atlas")
@@ -634,6 +635,56 @@ else:
                         "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
         st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
                    "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
+
+    # ── MEANING LANDSCAPE — the themes as a mountain range (shared landscape.py helper) ──
+    layer(1, "🏔️ Meaning landscape — the themes as a mountain range")
+    st.markdown("<div style='font-size:14px;color:#10243A;line-height:1.6;margin:2px 0 6px'>"
+                "The same themes as <b>terrain</b>: each <b>hill is one theme</b> (labelled by its top concept), with "
+                "its concepts packed on the hill-top (dot size = frequency). <b>Height</b> is a measured quantity you "
+                "choose below. Left–right placement is for legibility only — read the elevation, not the compass "
+                "direction. A reading aid, not a claim.</div>", unsafe_allow_html=True)
+    _PALA = ["#1D9E75", "#378ADD", "#7209B7", "#EF9F27", "#0F6E56", "#138A74", "#B5651D", "#94A3B8", "#E63946", "#1D3557", "#8a5a16", "#534AB7"]
+    _hubA = {ti: disp_root(o[0]) for ti, o, _t in d["themes"]}
+    _lcA = st.columns([2, 2])
+    with _lcA[0]:
+        _lh = st.radio("Hill height =", ["concepts in the theme", "total occurrences", "internal density"],
+                       horizontal=True, key="atlas_land_h")
+    with _lcA[1]:
+        _lz = st.selectbox("Zoom to one theme — or see all", ["All themes"] + [_hubA[ti] for ti, _o, _t in d["themes"]],
+                           key="atlas_land_z")
+    _docfA = d["docf"]; _edgesA = d["edges"]
+    def _hvalA(mem):
+        if _lh.startswith("total"):
+            return float(sum(_docfA.get(m, 0) for m in mem))
+        if _lh.startswith("internal"):
+            ms = set(mem); k = len(ms)
+            if k < 2:
+                return 0.0
+            ec = sum(1 for a, b, _w in _edgesA if a in ms and b in ms)
+            return ec / (k * (k - 1) / 2.0) * 10.0
+        return float(len(mem))
+    _MEXPLA = {
+        "concepts in the theme": "<b>how many concepts</b> the theme holds — its <b>breadth</b>. A tall hill is a wide-ranging theme; a low hill is small and focused.",
+        "total occurrences": "<b>how often the theme’s concepts occur</b> across the Qur’ān — its <b>weight</b> in the text. A tall hill is a frequently-invoked theme.",
+        "internal density": "<b>how tightly the theme’s concepts interlink</b> (share of the possible bonds present) — its <b>cohesion</b>. A tall hill is tight-knit.",
+    }
+    st.markdown("<div style='font-size:13.5px;color:#10243A;margin:2px 0 4px'><b>Hill height = %s</b> — %s</div>"
+                % (_lh, _MEXPLA[_lh]), unsafe_allow_html=True)
+    _famA = [{"id": ti, "hub": _hubA[ti], "color": _PALA[ti % len(_PALA)], "members": list(o), "hval": _hvalA(o)}
+             for ti, o, _t in d["themes"]]
+    _nodesA = {r: {"label": disp_root(r), "full": disp_root(r), "size": _docfA.get(r, 1),
+                   "hover": "%s · %d verses" % (disp_root(r), _docfA.get(r, 0))} for r in d["nodes"]}
+    _surfA = LS.family_landscape(_famA, _nodesA, height_label=_lh,
+                                 zoom_hub=(None if _lz == "All themes" else _lz),
+                                 trace=None, edges=[(a, b) for a, b, _w in _edgesA])
+    st.plotly_chart(_surfA, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
+    _pkA = pd.DataFrame([{"theme (top concept)": _hubA[ti], "concepts": len(o),
+                          "total occurrences": int(sum(_docfA.get(m, 0) for m in o)),
+                          "top members": " · ".join(disp_root(x) for x in _t)} for ti, o, _t in d["themes"]])
+    st.markdown("<style>[data-testid='stDataFrame']{width:100% !important}</style>", unsafe_allow_html=True)
+    st.dataframe(_pkA, use_container_width=True, hide_index=True, height=300)
+    st.caption("Each hill is a theme; the table gives the numbers behind every hill’s height. "
+               "Use “Zoom to one theme” to segment a single hill with its concepts named.")
 
 # ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
 if _scope == "A sūra":
