@@ -701,13 +701,35 @@ else:
                                  zoom_hub=(None if _lz == "All themes" else _lz),
                                  trace=None, edges=[(a, b) for a, b, _w in _edgesA])
     st.plotly_chart(_surfA, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
-    _pkA = pd.DataFrame([{"theme (top concept)": _hubA[ti], "concepts": len(o),
-                          "total occurrences": int(sum(_docfA.get(m, 0) for m in o)),
-                          "top members": " · ".join(disp_root(x) for x in _t)} for ti, o, _t in d["themes"]])
+    _intraA = Counter(); _interA = Counter()
+    for _a, _b, _w in d["edges"]:
+        _ta = d["theme_of"].get(_a); _tb = d["theme_of"].get(_b)
+        if _ta is None or _tb is None:
+            continue
+        if _ta == _tb:
+            _intraA[_ta] += 1
+        else:
+            _interA[_ta] += 1; _interA[_tb] += 1
+    _pkrows = []
+    for ti, o, _t in d["themes"]:
+        _n = len(o); _occ = int(sum(_docfA.get(m, 0) for m in o)); _ib = _intraA.get(ti, 0)
+        _pkrows.append({
+            "theme (top concept)": _hubA[ti],
+            "concepts (breadth)": _n,
+            "total occurrences (weight)": _occ,
+            "avg occ / concept": int(round(_occ / max(_n, 1))),
+            "internal density (cohesion)": round(_ib / (_n * (_n - 1) / 2), 3) if _n > 1 else 0.0,
+            "internal bonds": _ib,
+            "bridge bonds (out)": _interA.get(ti, 0),
+            "avg degree (within)": round(2 * _ib / max(_n, 1), 2),
+            "top concepts": " · ".join(disp_root(x) for x in o[:8]),
+        })
+    _pkA = pd.DataFrame(_pkrows)
     st.markdown("<style>[data-testid='stDataFrame']{width:100% !important}</style>", unsafe_allow_html=True)
-    st.dataframe(_pkA, use_container_width=True, hide_index=True, height=300)
-    st.caption("Each hill is a theme; the table gives the numbers behind every hill’s height. "
-               "Use “Zoom to one theme” to segment a single hill with its concepts named.")
+    st.dataframe(_pkA, use_container_width=True, hide_index=True, height=340)
+    st.caption("Every theme with all three height metrics side by side (breadth · weight · cohesion) plus its "
+               "connectivity — internal bonds, <b>bridge bonds</b> to other themes, and within-theme average degree. "
+               "Click a column header to sort; “Zoom to one theme” opens a single hill with its concepts named.")
 
 # ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
 if _scope == "A sūra":
