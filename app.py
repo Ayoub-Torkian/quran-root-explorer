@@ -425,14 +425,14 @@ def main():
             st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:0 0 1px'>"
                         "Search &mdash; <span style='color:#378ADD'>look something up</span></div>"
                         "<div style='font-size:13px;color:#10243A;line-height:1.45;margin:0 0 6px'>"
-                        "Find <b>where</b> a word, phrase, root, or verse (e.g. 2:255) appears — any spelling. "
-                        "Jumps straight to the matching āyāt.</div>", unsafe_allow_html=True)
+                        "Find <b>where</b> a word, phrase, or verse (e.g. 2:255) appears — any spelling, "
+                        "diacritics optional.</div>", unsafe_allow_html=True)
             if st.button("🔎 Open Search  →", key="fx_open_search", width='stretch'):
                 st.switch_page("pages/38_Search.py")
             # Example searches (a verse · a word · a phrase) — fill the column, balance the theme
             # chips opposite, and show what Search does. Each seeds the query and opens Search.
-            st.markdown("<div style='font-size:12px;color:#10243A;margin:11px 0 3px'>"
-                        "Or try one — a verse, a word, a phrase:</div>", unsafe_allow_html=True)
+            st.markdown("<div style='font-size:12px;color:#10243A;margin:6px 0 2px'>"
+                        "Or try:</div>", unsafe_allow_html=True)
             _exq = [("📖 2:255", "2:255"), ("🔤 نور", "نور"), ("❝ الرحمن الرحيم ❞", "الرحمن الرحيم")]
             with chip_row("searchex"):
                 _xc = st.columns(len(_exq))
