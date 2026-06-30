@@ -296,55 +296,37 @@ C.note("Degree/betweenness shown are <b>global</b> (the concept’s role in the 
        "<b>within-subnet degree</b> and <b>→ outward bonds</b> are added so you can tell interior concepts from "
        "bridges. PageRank/eigenvector = hub influence · Clustering = how tightly its neighbours interlink.")
 
-# ── MEANING LANDSCAPE (3-D family mountain-range — explainable) ───────────────
-import math as _ma
-C.section("Meaning landscape — the concept-families as a mountain range")
-with st.expander("What this is and how to read it — open me first", expanded=True):
-    C.para("<b>The idea.</b> Everything above is a flat web. Here the SAME measured families become <b>terrain</b>: "
-           "each <b>hill is one concept-family</b>, labelled by its hub-concept; the <b>height</b> is a measured "
-           "quantity you pick (size · internal density · hub-influence). The low ground between hills is where "
-           "families meet.")
-    C.para("<b>How to read it.</b> Tall hill = a big/central family; low hill = a minor one; the <b>dots packed on a "
-           "hill-top</b> are that family’s own concepts (bigger dot = more verses). <b>Drag</b> to rotate, "
-           "<b>scroll</b> to zoom. To study one family up close, use <b>“Zoom to one family”</b> — it segments out "
-           "that single hill with every concept named. The table below gives the exact numbers.")
-    C.para("<b>What ·a and ·b mean.</b> A two-meaning word appears as <b>two</b> dots — <b>·a</b> and <b>·b</b>, one "
-           "per sense — and (the key finding) they sit on <b>different hills</b>, because each sense keeps different "
-           "company. A <b>coral line</b> joins the two senses, so you can watch one word stretch across two families "
-           "(e.g. <b>صلو·a</b> inner prayer vs <b>صلو·b</b> the prayer–almsgiving institution).")
-    C.para("<b>The lines (relations).</b> The terrain stays clean by default. Pick a word under <b>Trace a two-meaning "
-           "word</b> to light <b>one</b> coral ·a–·b link (its two senses); <b>zoom one family</b> to see that family’s "
-           "internal bonds. Bonds here are above-chance links (PPMI-thresholded) and <b>unweighted in this map — "
-           "uniform width, no thickness</b>; the web at the top of the page is the full relational view.")
-    C.para("<b>Honest reading (the one law).</b> <b>Height and dot-sizes are MEASURED</b>; the left–right "
-           "<b>placement is for legibility only</b> and means nothing — read the elevation, not the compass "
-           "direction. A reading aid, not a discovery.")
+# ── FAMILY SIZES — ranked bar chart (shared landscape.py helper) ──────────────
+C.section("Family sizes — the concept-families, ranked")
+with st.expander("What this shows — open me", expanded=True):
+    C.para("The web above shows the families as colour; here they are <b>ranked</b>. One <b>bar per family</b> "
+           "(labelled by its hub-concept), its length = a measured quantity you choose: the family’s <b>breadth</b> "
+           "(how many concepts), its <b>cohesion</b> (how tightly they interlink), or its <b>hub-influence</b> (how "
+           "central it is to the whole web). So you see at a glance which families are biggest, tightest, or most "
+           "central — and how lopsided the set is.")
+    C.para("<b>Zoom to one family</b> to switch the chart to that family’s <b>concepts</b>, each a bar whose length is "
+           "<b>how many verses it appears in</b>. All MEASURED; a reading aid, not a new claim. (·a / ·b on a concept "
+           "mark the two senses of a two-meaning word — the web above shows how they land in different families.)")
 _hub = {c["id"]: _clabels[c["id"]].split("  (")[0].replace("·a", "").replace("·b", "") for c in _CM}
-_foldof = {}
-for _i, _j in _SL:
-    _foldof[_N[_i]["label"].replace("·a", "").replace("·b", "")] = (_i, _j)
-_lc = st.columns([2, 2, 2])
+_lc = st.columns([2, 2])
 with _lc[0]:
-    _hsrc = st.radio("Hill height =", ["concepts in the family", "internal density", "hub-influence (PageRank)"],
+    _hsrc = st.radio("Rank families by", ["concepts in the family", "internal density", "hub-influence (PageRank)"],
                      horizontal=True, key="land_h")
 with _lc[1]:
-    _zoom = st.selectbox("Zoom to one family (segment) — or see all",
+    _zoom = st.selectbox("Zoom to one family (its concepts) — or rank all",
                          ["All families"] + [_hub[c["id"]] for c in sorted(_CM, key=lambda c: -c["n"])], key="land_zoom")
-with _lc[2]:
-    _trace = st.selectbox("Trace a two-meaning word (·a–·b link)", ["(none)"] + sorted(_foldof), key="land_trace")
 _MEXPL = {
-    "concepts in the family": "<b>how many distinct concepts</b> the family holds — its <b>breadth</b>. A tall hill is a wide-ranging theme (many ideas travel together); a low hill is a small, focused family.",
-    "internal density": "<b>how tightly its concepts interlink</b> (share of the possible bonds that are present) — its <b>cohesion</b>. A tall hill is a tight-knit theme where almost everything connects; a low hill is loose.",
-    "hub-influence (PageRank)": "<b>the family’s total hub-influence</b> across the whole web (summed PageRank of its concepts) — its <b>centrality</b>. A tall hill is a theme the rest of the Qur’ān leans on; a low hill sits at the periphery.",
+    "concepts in the family": "<b>breadth</b> — how many distinct concepts the family holds (wide-ranging vs small and focused).",
+    "internal density": "<b>cohesion</b> — how tightly its concepts interlink (share of the possible bonds present).",
+    "hub-influence (PageRank)": "<b>centrality</b> — the family’s total hub-influence across the whole web (summed PageRank).",
 }
-C.note("<b>Hill height = %s</b> — %s" % (_hsrc, _MEXPL[_hsrc]))
+C.note("<b>Bar length = %s:</b> %s" % (_hsrc, _MEXPL[_hsrc]))
 def _cval(c):
     if _hsrc.startswith("internal"): return float(c["density"]) * 10.0
     if _hsrc.startswith("hub"): return float(sum(n["pr"] for n in _N if n["comm"] == c["id"]))
     return float(c["n"])
 _order = sorted(_CM, key=lambda c: -_cval(c))
 _zoomed = _zoom != "All families"
-_show = [c for c in _CM if _hub[c["id"]] == _zoom] if _zoomed else _order
 _nodesLS = {}
 for n in _N:
     _base = n["label"].replace("·a", "").replace("·b", "")
@@ -353,19 +335,18 @@ for n in _N:
                   if n["sense"] else ("%s · %d verses" % (n["label"], n["df"])))}
 _families = [{"id": c["id"], "hub": _hub[c["id"]], "color": _PAL[c["id"] % len(_PAL)],
               "members": [n["id"] for n in _N if n["comm"] == c["id"]], "hval": _cval(c)} for c in _CM]
-_trpair = _foldof.get(_trace) if _trace != "(none)" else None
-_surf = LS.family_landscape(_families, _nodesLS, height_label=_hsrc,
-                            zoom_hub=(_zoom if _zoomed else None), trace=_trpair, edges=[(i, j) for i, j in _E])
-st.plotly_chart(_surf, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
-C.note("Showing <b>%s</b> alone, with its internal bonds — every concept labelled." % _zoom if _zoomed else
-       "Hover a dot for its concept and verse-count; use <b>Trace a two-meaning word</b> to light a single ·a–·b link.")
+_surf = LS.family_landscape(_families, _nodesLS, height_label=_hsrc, zoom_hub=(_zoom if _zoomed else None))
+st.plotly_chart(_surf, use_container_width=True, config={"displaylogo": False})
+C.note(("Showing <b>%s</b>’s concepts — each bar sized by how many verses it appears in." % _zoom) if _zoomed else
+       "One bar per family, ranked by the chosen metric; hover a bar for its concept-count.")
 _peakdf = pd.DataFrame([{
     "family (hub-concept)": _hub[c["id"]], "concepts": c["n"], "avg degree": c["avg_deg"],
-    "density": c["density"], "internal bonds": c["intra"], "bridge bonds (saddles out)": c["inter"]}
+    "avg betweenness": c["avg_bet"], "density": c["density"], "internal bonds": c["intra"],
+    "bridge bonds (links out)": c["inter"], "top concepts": " · ".join(c["members"][:8])}
     for c in _order])
 st.dataframe(_peakdf, width="stretch", hide_index=True, height=300)
-C.note("The terrain is just this table made visual: the taller a family’s hill, the larger its value in the chosen "
-       "column. <b>Bridge bonds</b> are the links leaving a family — the saddles between the hills.")
+C.note("The chart is this table made visual: a <b>longer bar = a larger value</b> in the chosen column. "
+       "<b>Bridge bonds</b> = links leaving a family for another.")
 
 # ── WHAT IT SHOWS ────────────────────────────────────────────────────────────
 C.section("What it shows — measured sense splits")

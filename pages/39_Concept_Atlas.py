@@ -636,48 +636,42 @@ else:
         st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
                    "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
 
-    # ── MEANING LANDSCAPE — the themes as a mountain range (shared landscape.py helper) ──
-    layer(1, "🏔️ Meaning landscape — the themes as a mountain range")
-    with st.expander("What this is and how to read it — open me first", expanded=True):
+    # ── THEME SIZES — ranked bar chart (shared landscape.py helper) ──
+    layer(1, "📊 Theme sizes — the themes, ranked")
+    with st.expander("What this shows — open me", expanded=True):
         st.markdown(
             "<div style='font-size:14px;color:#10243A;line-height:1.65'>"
-            "<b>The idea.</b> The map above is flat. Here the SAME measured themes become <b>terrain</b>: each "
-            "<b>hill is one theme</b>, labelled by its top concept, and the <b>height</b> is a measured quantity you "
-            "pick below (breadth · weight in the text · cohesion). The low ground between hills is where themes meet."
-            "</div>"
+            "<b>The idea.</b> The map above shows the themes as colour; here they are <b>ranked</b> — one <b>bar per "
+            "theme</b> (labelled by its top concept), its length = a measured quantity you pick below: <b>breadth</b> "
+            "(how many concepts), <b>weight</b> (how much text they fill), or <b>cohesion</b> (how tightly they "
+            "interlink). So you see at a glance which themes dominate and how lopsided the set is.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
-            "<b>Which concepts are here — NOT every root.</b> To stay legible this maps only the <b>most frequent "
+            "<b>Which concepts are here — NOT every root.</b> To stay legible this covers only the <b>most frequent "
             "content concepts</b> of the current scope (the same nodes as the map above) — for a sūra the top ~90, for "
             "the whole Qur’ān ~150. It is <b>not the full root inventory</b>: ubiquitous ‘glue’ roots (God · say · all) "
             "are dropped as uninformative, and rare one-off roots aren’t shown. The <b>“Concepts mapped”</b> number at "
             "the top of the page is exactly how many appear here — so for al-Baqarah you see its leading concepts "
             "grouped into themes, not its entire vocabulary.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
-            "<b>How to read it.</b> A <b>tall hill</b> = a big or central theme; a <b>low hill</b> = a minor one; the "
-            "<b>dots packed on a hill-top</b> are that theme’s own concepts (bigger dot = occurs in more verses). "
-            "<b>Drag</b> to rotate, <b>scroll</b> to zoom; hover a dot for its concept and verse-count. To study one "
-            "theme up close, use <b>“Zoom to one theme”</b> — it segments out that single hill with every concept "
-            "named. The table below lists the exact value behind every hill’s height.</div>"
+            "<b>How to read it.</b> Bars are <b>ranked longest-first</b>, so the top bar is the biggest theme on the "
+            "chosen metric. <b>Zoom to one theme</b> switches the chart to that theme’s <b>concepts</b>, each a bar "
+            "whose length is how many verses it appears in. Hover any bar for details; the table below has every "
+            "theme’s exact numbers.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
-            "<b>What to look for — the significance.</b> A few <b>tall, broad hills</b> are the Qur’ān’s dominant "
-            "themes; a scatter of <b>small hills</b> are its finer sub-themes — so the skyline shows, at a glance, "
-            "<b>how many big ideas the territory has and how lopsided it is</b>. <b>Switch the height metric</b> to ask "
-            "three different questions of the SAME themes: which theme is the <b>widest</b> (breadth = concepts), which "
-            "carries the <b>most text</b> (weight = total occurrences), which is the <b>most tightly-knit</b> "
-            "(cohesion = internal density). A theme can be tall on one and short on another — e.g. a <b>broad but "
+            "<b>What to look for — the significance.</b> <b>Switch the metric</b> to ask three questions of the SAME "
+            "themes: which is the <b>widest</b> (breadth), which carries the <b>most text</b> (weight), which is the "
+            "<b>most tightly-knit</b> (cohesion). A theme can rank high on one and low on another — a <b>broad but "
             "loose</b> theme (many concepts, few bonds) vs a <b>small but dense</b> one — and that contrast is the "
-            "insight. <b>Zoom to one theme</b> to read every concept on its hill; the <b>table below</b> gives the "
-            "exact number behind each hill’s height.</div>"
+            "insight.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
-            "<b>Honest reading.</b> <b>Height and dot-sizes are MEASURED</b>; the left–right <b>placement of the hills "
-            "is for legibility only</b> and means nothing — read the elevation, not the compass direction. Themes are "
-            "auto-grouped (Louvain): a navigation map and reading aid, not a structural claim.</div>",
+            "<b>Honest reading.</b> All values are <b>MEASURED</b>; themes are auto-grouped (Louvain). A navigation "
+            "aid, not a structural claim.</div>",
             unsafe_allow_html=True)
     _PALA = ["#1D9E75", "#378ADD", "#7209B7", "#EF9F27", "#0F6E56", "#138A74", "#B5651D", "#94A3B8", "#E63946", "#1D3557", "#8a5a16", "#534AB7"]
     _hubA = {ti: disp_root(o[0]) for ti, o, _t in d["themes"]}
     _lcA = st.columns([2, 2])
     with _lcA[0]:
-        _lh = st.radio("Hill height =", ["concepts in the theme", "total occurrences", "internal density"],
+        _lh = st.radio("Rank themes by", ["concepts in the theme", "total occurrences", "internal density"],
                        horizontal=True, key="atlas_land_h")
     with _lcA[1]:
         _lz = st.selectbox("Zoom to one theme — or see all", ["All themes"] + [_hubA[ti] for ti, _o, _t in d["themes"]],
@@ -694,11 +688,11 @@ else:
             return ec / (k * (k - 1) / 2.0) * 10.0
         return float(len(mem))
     _MEXPLA = {
-        "concepts in the theme": "<b>how many concepts</b> the theme holds — its <b>breadth</b>. A tall hill is a wide-ranging theme; a low hill is small and focused.",
-        "total occurrences": "<b>how often the theme’s concepts occur</b> across the Qur’ān — its <b>weight</b> in the text. A tall hill is a frequently-invoked theme.",
-        "internal density": "<b>how tightly the theme’s concepts interlink</b> (share of the possible bonds present) — its <b>cohesion</b>. A tall hill is tight-knit.",
+        "concepts in the theme": "<b>breadth</b> — how many concepts the theme holds (wide-ranging vs small and focused).",
+        "total occurrences": "<b>weight</b> — how often the theme’s concepts occur across the Qur’ān (a frequently-invoked theme).",
+        "internal density": "<b>cohesion</b> — how tightly the theme’s concepts interlink (share of the possible bonds present).",
     }
-    st.markdown("<div style='font-size:13.5px;color:#10243A;margin:2px 0 4px'><b>Hill height = %s</b> — %s</div>"
+    st.markdown("<div style='font-size:13.5px;color:#10243A;margin:2px 0 4px'><b>Bar length = %s</b> — %s</div>"
                 % (_lh, _MEXPLA[_lh]), unsafe_allow_html=True)
     _famA = [{"id": ti, "hub": _hubA[ti], "color": _PALA[ti % len(_PALA)], "members": list(o), "hval": _hvalA(o)}
              for ti, o, _t in d["themes"]]
@@ -734,9 +728,9 @@ else:
     _pkA = pd.DataFrame(_pkrows)
     st.markdown("<style>[data-testid='stDataFrame']{width:100% !important}</style>", unsafe_allow_html=True)
     st.dataframe(_pkA, use_container_width=True, hide_index=True, height=340)
-    st.caption("Every theme with all three height metrics side by side (breadth · weight · cohesion) plus its "
-               "connectivity — internal bonds, <b>bridge bonds</b> to other themes, and within-theme average degree. "
-               "Click a column header to sort; “Zoom to one theme” opens a single hill with its concepts named.")
+    st.caption("Every theme with all three ranking metrics side by side (breadth · weight · cohesion) plus its "
+               "connectivity — internal bonds, bridge bonds to other themes, and within-theme average degree. "
+               "Click a column header to sort; “Zoom to one theme” shows that theme’s concepts as bars.")
 
 # ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
 if _scope == "A sūra":
