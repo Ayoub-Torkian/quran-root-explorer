@@ -927,16 +927,36 @@ def inject_css():
             box-shadow: 0 1px 4px rgba(0,0,0,0.06);
         }
     }
-    /* ───── HORIZONTAL SCROLL FOR PLOTLY CHARTS ON SMALL SCREENS ─────
-       Wraps any chart in a swipeable container so labels stop overlapping. */
+    /* ───── MOBILE PLOTLY — fit the screen + native touch (replaces the old forced-720 swipe) ─────
+       Old rule forced every chart to 720px inside a sideways-scroll box: charts showed half and the
+       scroll box stole touch gestures from interactive graphs. Now charts fit the viewport and Plotly
+       owns rotate/pan/pinch. */
     @media (max-width: 720px) {
         [data-testid="stPlotlyChart"] {
-            overflow-x: auto !important;
-            -webkit-overflow-scrolling: touch;
+            overflow-x: visible !important;
+            width: 100% !important;
         }
-        [data-testid="stPlotlyChart"] > div {
-            min-width: 720px !important;
+        [data-testid="stPlotlyChart"] > div,
+        [data-testid="stPlotlyChart"] .js-plotly-plot,
+        [data-testid="stPlotlyChart"] .plot-container,
+        [data-testid="stPlotlyChart"] .svg-container {
+            min-width: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
         }
+        /* hand touch gestures to Plotly (rotate 3-D / pan / pinch-zoom) instead of page scroll */
+        [data-testid="stPlotlyChart"] .nsewdrag,
+        [data-testid="stPlotlyChart"] .draglayer,
+        [data-testid="stPlotlyChart"] .gl-container,
+        [data-testid="stPlotlyChart"] canvas {
+            touch-action: none !important;
+        }
+        /* keep the legend on-screen on a narrow phone */
+        [data-testid="stPlotlyChart"] .legend text { font-size: 12px !important; }
+        /* graph controls span the screen and stack, with comfortable tap targets */
+        section[data-testid="stMain"] [data-testid="stSelectbox"],
+        section[data-testid="stMain"] [data-testid="stRadio"] { max-width: 100% !important; }
+        section[data-testid="stMain"] [data-testid="stRadio"] label { padding: 6px 8px !important; }
     }
 
     /* ───── MOBILE / TOUCH FRIENDLY (iPhone, iPad, Android) ───── */
