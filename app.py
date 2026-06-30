@@ -429,6 +429,17 @@ def main():
                         "Jumps straight to the matching āyāt.</div>", unsafe_allow_html=True)
             if st.button("🔎 Open Search  →", key="fx_open_search", width='stretch'):
                 st.switch_page("pages/38_Search.py")
+            # Example searches (a verse · a word · a phrase) — fill the column, balance the theme
+            # chips opposite, and show what Search does. Each seeds the query and opens Search.
+            st.markdown("<div style='font-size:12px;color:#10243A;margin:11px 0 3px'>"
+                        "Or try one — a verse, a word, a phrase:</div>", unsafe_allow_html=True)
+            _exq = [("📖 2:255", "2:255"), ("🔤 نور", "نور"), ("❝ الرحمن الرحيم ❞", "الرحمن الرحيم")]
+            with chip_row("searchex"):
+                _xc = st.columns(len(_exq))
+                for _i, (_lab, _qq) in enumerate(_exq):
+                    if _xc[_i].button(_lab, key=f"searchex_{_i}"):
+                        st.session_state["_pending_q"] = _qq
+                        st.switch_page("pages/38_Search.py")
         with _fx[1]:
             # keyed wrapper → draws the vertical divider line (border-left) between the two halves,
             # and keeps the theme chips INSIDE this column (under Explore, where they belong) so they
