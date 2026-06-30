@@ -1,5 +1,30 @@
 # Working rules for this project (LOCKED — honor every session)
 
+## NOVELTY BAR — LOCKED (added 2026-06-24, top priority, honor EVERY session)
+**The recurring failure is the circular loop: end a null → propose the next untested probe → null again.** Stop it.
+1. **No activity unless it teaches something NOT already known.** Do not propose OR run any probe/feature on the
+   *promise* of discovery without **tested, evidence-based** justification it will yield something new. "Let's try
+   X and see" is forbidden — that IS the loop.
+2. **The prior is null.** Every instrument tested to date either confirms known structure or returns null
+   (distributional/topological → generic/null; grounded → recovers KNOWN meaning). Treat that as the baseline; the
+   burden is to show from PRIOR TESTED results why a new move would break it. If I can't, I don't propose it.
+3. **Computation's demonstrated role here is to LOCALIZE/RANK candidates for human reading — not to generate
+   meaning.** Present it as such; never dress ranking/known-recovery up as discovery.
+4. **If nothing meets the bar, say so plainly and STOP.** Do not fill silence with another probe. Silence is the
+   correct output when there is no tested basis for novelty.
+
+## TEXT vs REPORT — LOCKED (added 2026-06-24, recurring failure: stating tradition as fact)
+1. **The Qur'anic TEXT (rasm) is base truth. Asbab al-nuzul, hadith, sira, traditional "occasions" are EXTERNAL
+   human reports of uncertain/varying authenticity** (often multiple contradictory versions per verse) —
+   corroborative at most, NEVER asserted as historical fact. (This is the ONE LAW applied to history.)
+2. **Tag every historical/contextual claim:** [TEXT] (in the Qur'an itself) · [REPORT] (external transmission,
+   uncertain) · [INFERENCE] (my reasoning). Never let a [REPORT] wear a [TEXT]/fact tone.
+3. **Do not smuggle a traditional backstory in to "explain" a verse.** Derive the situation from the text's own
+   terms FIRST; introduce any external report explicitly flagged and as uncertain, only if needed.
+4. Recurring failures to stop: al-Duha "pause/fatra of revelation," al-Kawthar "al-As ibn Wa'il taunt" — both
+   [REPORT], both stated by me as fact. A "pause" even presupposes a known revelation RATE, which is itself
+   unestablished. Catch this BEFORE asserting.
+
 ## Response style — NON-NEGOTIABLE
 1. **Always make a recommendation.** Whenever options, scenarios, or candidates are listed, present them as a
    ranked numbered list (1, 2, 3, …) with the **#1 = my explicit recommendation** and one line of why. Never
@@ -19,6 +44,25 @@
    - Inspect the data's raw shape/units BEFORE reasoning on top of it (e.g. what "N roots" actually is).
    - Self-flag: confident closure ("exhausted", "mature map", "not >90", "collapses to") is the LEAST reliable
      output and — per the BASE-TRUTH axiom — structurally suspect. Treat it as a flag on myself, not a finding.
+
+## PRE-HANDOFF SELF-AUDIT — LOCKED (added 2026-06-30; recurring meta-failure: I fix only what the user points at, repeat the same class of mistake elsewhere, and ask trivial questions I already know the answer to)
+**Two standing rules, EVERY turn:**
+1. **DON'T ASK WHAT I CAN DECIDE.** If the next step is obvious, in-scope, and reversible, DO IT and report —
+   never end with "Want me to…?" / "Should I…?" for the obviously-correct move. Only ask when the answer genuinely
+   changes the outcome AND cannot be inferred from the request or the codebase. Trivial/common-sense questions
+   waste the user's time and are themselves a recurring failure.
+2. **AUDIT THE WHOLE SURFACE BEFORE SAYING "push"/"done" — never outsource the look to the user.** For ANY UI
+   change, before handoff scan against the KNOWN recurring offenders (each has bitten us repeatedly):
+   - [ ] **Width / space:** every table/element uses the available width? No element filling < ~60% of its row,
+         no empty columns, no dead horizontal space, no `max-width` px cap strangling a wide table.
+   - [ ] **Redundancy:** nothing said twice across expander/notes/captions; nothing missing that forces the user
+         to re-ask (coverage, scope, caveats present where a reader will wonder).
+   - [ ] **Labels:** every visible label plain + legible — no cryptic tokens (e.g. ·a/·b) on the face, ≥12px, ink.
+   - [ ] **Look:** I opened the LIVE rendered page and inspected the WHOLE composition (not just my diff) and
+         caught the issue myself — did not wait for the user's screenshot. If I could not look, SAY SO; never imply I did.
+   - [ ] **Root, not symptom:** is this a one-off patch, or a shared/global cause (one CSS rule, one helper) to fix
+         once for ALL pages? Prefer the global fix.
+   Report briefly what I checked.
 
 ## Deliverable checklist — RUN BEFORE PRESENTING any diagram / map / report
 - [ ] Plain enough that the user can NAVIGATE it (where am I, do I have direction, am I astray).
