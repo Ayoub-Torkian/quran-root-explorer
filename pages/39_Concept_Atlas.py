@@ -1111,7 +1111,20 @@ def _load_concept_profiles():
     except Exception:
         return {}
 _PROFILES = _load_concept_profiles()   # curated registry — add a concept by editing concept_profiles.json (no code change)
-_pick = st.selectbox("🔍 Inspect a concept — its profile opens in place (the map stays above)", [""] + d["nodes"],
+def _load_concept_families():
+    import json, os
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "..", "concept_families.json"), encoding="utf-8") as _f:
+            return json.load(_f).get("families", {})
+    except Exception:
+        return {}
+_FAM_OF = {}   # root -> (family name, organ_role) from the curated families registry (the "organs")
+for _fid, _fv in _load_concept_families().items():
+    for _m in _fv.get("members", []):
+        _FAM_OF[_m] = (_fv.get("name", _fid), _fv.get("organ_role", ""))
+layer(1, "🧬 CONCEPT PROFILE — pick any concept; its layers open here, in place")
+_pick = st.selectbox("🔍 Pick a concept — its profile opens below (the map stays above)",
+                     [""] + sorted(d["nodes"], key=disp_root),
                      format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
 if _pick:
     _th = d["theme_of"][_pick]; _top = d["themes"][_th][2]
@@ -1124,9 +1137,11 @@ if _pick:
     _prof = _PROFILES.get(_pick) or _PROFILES.get(normalize_letters(_pick))
     _typ = _prof["structural_type"] if _prof else "not yet profiled — measured attributes only"
     _tcol = "#1D9E75" if _prof else "#8FA6BC"
+    _fam = _FAM_OF.get(_pick) or _FAM_OF.get(normalize_letters(_pick))
+    _famtxt = _fam[0] if _fam else ("Theme %d (%s)" % (_th + 1, " · ".join(disp_root(t) for t in _top)))
     st.markdown("<div style='font-size:12.5px;color:#10243A;margin:6px 0 3px'>"
-                "🐘 <b>Whole</b> &nbsp;›&nbsp; 🗂 <b>Family</b>: Theme %d (%s) &nbsp;›&nbsp; 🌱 <b>%s</b></div>"
-                % (_th + 1, " · ".join(disp_root(t) for t in _top), disp_root(_pick)), unsafe_allow_html=True)
+                "🐘 <b>Whole</b> &nbsp;›&nbsp; 🗂 <b>Family</b>: %s &nbsp;›&nbsp; 🌱 <b>%s</b></div>"
+                % (_famtxt, disp_root(_pick)), unsafe_allow_html=True)
     _read = ""
     if _prof:
         _rd = _prof.get("reading", {})
@@ -1135,6 +1150,8 @@ if _pick:
                 _read += "<br><b style='color:#1D3557'>%s:</b> %s" % (_lab, _rd[_k])
         if _prof.get("senses"):
             _read += "<br><b style='color:#1D3557'>senses:</b> " + " · ".join(_prof["senses"])
+    if _fam and _fam[1]:
+        _read += "<br><b style='color:#1D3557'>family role (in the whole):</b> %s" % _fam[1]
     _mm = ("freq <b>%d</b> · role <b>%s</b> · degree <b>%d</b> (#%d/%d) · betweenness <b>#%d</b> · revelation <b>%.0f/114</b>"
            % (d["docf"][_pick], _rolelab, _deg.get(_pick, 0), _drank, _N, _brank, d["nuz"][_pick]))
     _partners = ("<br>pairs with <b>" + " · ".join(disp_root(m) for _w, m in _nb) + "</b>") if _nb else ""
