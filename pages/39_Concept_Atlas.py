@@ -1103,11 +1103,14 @@ with st.expander("ℹ️ What the columns mean — and why each matters"):
 # ── In-context CONCEPT PROFILE — part-in-whole: the profile opens HERE, the map/families stay framed
 #    (the elephant is never lost). Structural-type comes from a curated registry that grows as concepts
 #    are mapped (MISSION §5/§6); un-profiled concepts show measured attributes only. ──
-_PROFILED = {   # concept(root) -> (structural-type, one-line reading, close-up page or None)
-    "قلب": ("ladder-of-states (~27)", "graded states sealed→trembling→sound; ONE organ-system with صدر·فؤاد (co-reference)", "pages/42_Closeup_InnerSelf.py"),
-    "صدر": ("ladder-of-states (~27)", "the breast — constriction/expansion pole of the heart-system", "pages/42_Closeup_InnerSelf.py"),
-    "رحم": ("gradient / ambient field", "overlapping gradient over a SHARED recipient field — no clean partition; الرحمن universal · الرحيم particular", None),
-}
+def _load_concept_profiles():
+    import json, os
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "..", "concept_profiles.json"), encoding="utf-8") as _f:
+            return json.load(_f).get("profiles", {})
+    except Exception:
+        return {}
+_PROFILES = _load_concept_profiles()   # curated registry — add a concept by editing concept_profiles.json (no code change)
 _pick = st.selectbox("🔍 Inspect a concept — its profile opens in place (the map stays above)", [""] + d["nodes"],
                      format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
 if _pick:
@@ -1118,13 +1121,20 @@ if _pick:
     _N = len(d["nodes"])
     _drank = sorted(d["nodes"], key=lambda n: -_deg.get(n, 0)).index(_pick) + 1
     _brank = sorted(d["nodes"], key=lambda n: -_bet.get(n, 0.0)).index(_pick) + 1
-    _prof = _PROFILED.get(_pick) or _PROFILED.get(normalize_letters(_pick))
-    _typ = _prof[0] if _prof else "not yet profiled — measured attributes only"
+    _prof = _PROFILES.get(_pick) or _PROFILES.get(normalize_letters(_pick))
+    _typ = _prof["structural_type"] if _prof else "not yet profiled — measured attributes only"
     _tcol = "#1D9E75" if _prof else "#8FA6BC"
     st.markdown("<div style='font-size:12.5px;color:#10243A;margin:6px 0 3px'>"
                 "🐘 <b>Whole</b> &nbsp;›&nbsp; 🗂 <b>Family</b>: Theme %d (%s) &nbsp;›&nbsp; 🌱 <b>%s</b></div>"
                 % (_th + 1, " · ".join(disp_root(t) for t in _top), disp_root(_pick)), unsafe_allow_html=True)
-    _read = ("<br><span>%s</span>" % _prof[1]) if _prof else ""
+    _read = ""
+    if _prof:
+        _rd = _prof.get("reading", {})
+        for _lab, _k in (("form ↔ content", "form_content"), ("grammar ↔ semantics", "grammar_semantics"), ("structure ↔ function", "structure_function")):
+            if _rd.get(_k):
+                _read += "<br><b style='color:#1D3557'>%s:</b> %s" % (_lab, _rd[_k])
+        if _prof.get("senses"):
+            _read += "<br><b style='color:#1D3557'>senses:</b> " + " · ".join(_prof["senses"])
     _mm = ("freq <b>%d</b> · role <b>%s</b> · degree <b>%d</b> (#%d/%d) · betweenness <b>#%d</b> · revelation <b>%.0f/114</b>"
            % (d["docf"][_pick], _rolelab, _deg.get(_pick, 0), _drank, _N, _brank, d["nuz"][_pick]))
     _partners = ("<br>pairs with <b>" + " · ".join(disp_root(m) for _w, m in _nb) + "</b>") if _nb else ""
@@ -1135,8 +1145,9 @@ if _pick:
     _bc = st.columns([1, 1, 3])
     if _bc[0].button("🔎 Open in Search →", key="atlas_open"):
         st.session_state._pending_q = _pick; st.switch_page("pages/38_Search.py")
-    if _prof and _prof[2] and _bc[1].button("🗺 Full close-up →", key="atlas_closeup"):
-        st.switch_page(_prof[2])
+    _cp = _prof.get("closeup_page") if _prof else None
+    if _cp and _bc[1].button("🗺 Full close-up →", key="atlas_closeup"):
+        st.switch_page(_cp)
 
 layer(1, "Themes — click a concept to open it in Search")
 for ti, ordered, top in d["themes"]:

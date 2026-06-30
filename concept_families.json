@@ -1,0 +1,35 @@
+{
+  "_schema": "Curated concept FAMILIES = the organs of the Qur'ānic universe. The measured Louvain themes are weak/soft (modularity ≈ 0.03, one blended field), so families here are CURATED thematic groupings seeded by the measure — not crisp auto-clusters. Each: name, organ_role (its function in the whole — how the elephant uses it), members[] (rasm roots), colour. Grows as concepts are profiled.",
+  "families": {
+    "inner_self": {
+      "name": "The inner self / heart",
+      "organ_role": "the RECEIVER — the faculty that responds (or fails to) to guidance; where the text's address lands",
+      "members": ["قلب", "صدر", "فاد", "نفس", "روح"],
+      "colour": "#1D9E75"
+    },
+    "mercy_relief": {
+      "name": "Mercy & relief",
+      "organ_role": "the ambient FIELD — the default divine stance the whole system runs within",
+      "members": ["رحم", "غفر", "توب", "نعم", "فضل"],
+      "colour": "#378ADD"
+    },
+    "command_law": {
+      "name": "Command & law",
+      "organ_role": "the STRUCTURE — the imperative/legislative spine (do/forbid, judge, ordain)",
+      "members": ["ءمر", "نهی", "حکم", "قضی", "شرع"],
+      "colour": "#1D3557"
+    },
+    "cosmos": {
+      "name": "Cosmos / creation",
+      "organ_role": "the STAGE — the created universe the drama plays out on (heaven·earth merism)",
+      "members": ["سمو", "ءرض", "خلق", "شمس", "قمر", "نجم"],
+      "colour": "#EF9F27"
+    },
+    "eschatology": {
+      "name": "Eschatology / the horizon",
+      "organ_role": "the HORIZON — the end toward which everything is oriented (the Day, garden, fire)",
+      "members": ["ءخر", "یوم", "جنن", "نار", "بعث", "حسب"],
+      "colour": "#E63946"
+    }
+  }
+}
