@@ -18,6 +18,7 @@ try:
 except Exception:
     S = None
 import closeup as C
+import landscape as LS
 
 st.set_page_config(page_title="Close-up · Sense-resolved web", page_icon="\U0001f578", layout="wide")
 if S:
@@ -318,7 +319,7 @@ with st.expander("What this is and how to read it — open me first", expanded=T
     C.para("<b>Honest reading (the one law).</b> <b>Height and dot-sizes are MEASURED</b>; the left–right "
            "<b>placement is for legibility only</b> and means nothing — read the elevation, not the compass "
            "direction. A reading aid, not a discovery.")
-_hub = {c["id"]: _clabels[c["id"]].split("  (")[0] for c in _CM}
+_hub = {c["id"]: _clabels[c["id"]].split("  (")[0].replace("·a", "").replace("·b", "") for c in _CM}
 _foldof = {}
 for _i, _j in _SL:
     _foldof[_N[_i]["label"].replace("·a", "").replace("·b", "")] = (_i, _j)
@@ -344,80 +345,17 @@ def _cval(c):
 _order = sorted(_CM, key=lambda c: -_cval(c))
 _zoomed = _zoom != "All families"
 _show = [c for c in _CM if _hub[c["id"]] == _zoom] if _zoomed else _order
-_cx = {}; _cy = {}; _ch = {}
-if _zoomed:
-    c = _show[0]; _cx[c["id"]] = 0.0; _cy[c["id"]] = 0.0
-    _ch[c["id"]] = 0.4 + 0.6 * (_cval(c) / (max(_cval(x) for x in _CM) or 1.0))   # dome height tracks the chosen metric
-    _sig = 1.35; _ext = 2.8; _nrad = 1.0
-else:
-    _R = 4.0; _sig = 0.72; _ext = _R + 1.4; _nrad = 0.34
-    for _i, c in enumerate(_show):
-        _ang = 2 * _ma.pi * _i / max(len(_show), 1)
-        _cx[c["id"]] = _R * _ma.cos(_ang); _cy[c["id"]] = _R * _ma.sin(_ang); _ch[c["id"]] = _cval(c)
-    _hmax = max(_ch.values()) or 1.0
-    for _k in _ch: _ch[_k] = _ch[_k] / _hmax
-_gx = np.linspace(-_ext, _ext, 120); _gy = np.linspace(-_ext, _ext, 120)
-_GXX, _GYY = np.meshgrid(_gx, _gy)
-_Z = np.zeros_like(_GXX)
-for _cid in _ch:
-    _Z += _ch[_cid] * np.exp(-(((_GXX - _cx[_cid]) ** 2 + (_GYY - _cy[_cid]) ** 2) / (2 * _sig ** 2)))
-def _zat(px, py):
-    return float(sum(_ch[c] * _ma.exp(-(((px - _cx[c]) ** 2 + (py - _cy[c]) ** 2) / (2 * _sig ** 2))) for c in _ch))
-_CS = [[0.0, "#F5FBF8"], [0.4, "#D2ECE0"], [0.72, "#8FCDB0"], [1.0, "#2BA37D"]]
-_surf = go.Figure(go.Surface(x=_gx, y=_gy, z=_Z, colorscale=_CS, showscale=False, opacity=0.8, hoverinfo="skip",
-                             contours=dict(z=dict(show=True, color="#CFE4DC", width=1, project_z=True))))
-def _pack(cx, cy, k, rad):
-    out = []
-    for _t in range(k):
-        _rr = rad * ((_t + 0.5) / max(k, 1)) ** 0.5; _aa = _t * 2.399963229
-        out.append((cx + _rr * _ma.cos(_aa), cy + _rr * _ma.sin(_aa)))
-    return out
-_NPOS = {}                                   # node-id -> (x, y, z) so we can draw the relations
-for c in _show:
-    _cid = c["id"]; _mem = [n for n in _N if n["comm"] == _cid]
-    if not _mem:
-        continue
-    _pts = _pack(_cx[_cid], _cy[_cid], len(_mem), _nrad)
-    _xx = [p[0] for p in _pts]; _yy = [p[1] for p in _pts]; _zz = [_zat(p[0], p[1]) + 0.02 for p in _pts]
-    for _n2, _p2, _z2 in zip(_mem, _pts, _zz):
-        _NPOS[_n2["id"]] = (_p2[0], _p2[1], _z2)
-    _sz = [4 + 6 * (min(n["df"], 300) / 300) ** 0.5 for n in _mem]
-    _hv = ["%s · %d verses" % (n["label"], n["df"]) for n in _mem]
-    _md = "markers+text" if _zoomed else "markers"
-    _surf.add_trace(go.Scatter3d(x=_xx, y=_yy, z=_zz, mode=_md,
-        marker=dict(size=_sz, color=_PAL[_cid % len(_PAL)], line=dict(width=0.5, color="#FFFFFF")),
-        text=[n["label"] for n in _mem], textposition="top center", textfont=dict(size=12, color="#10243A"),
-        hovertext=_hv, hoverinfo="text", showlegend=False))
-# RELATIONS (bonds). Edges are above-chance bonds (unweighted in this map → uniform width, no thickness).
-def _eline(pairs, col, w, op):
-    _ex = []; _ey = []; _ez = []
-    for _ii, _jj in pairs:
-        if _ii in _NPOS and _jj in _NPOS:
-            _ex += [_NPOS[_ii][0], _NPOS[_jj][0], None]; _ey += [_NPOS[_ii][1], _NPOS[_jj][1], None]
-            _ez += [_NPOS[_ii][2], _NPOS[_jj][2], None]
-    if _ex:
-        _surf.add_trace(go.Scatter3d(x=_ex, y=_ey, z=_ez, mode="lines",
-            line=dict(color=col, width=w), opacity=op, hoverinfo="none", showlegend=False))
-if _zoomed:                                  # one family: show its internal bonds (uncluttered)
-    _eline([(i, j) for i, j in _E], "#6E86A6", 1.6, 0.4)
-if (not _zoomed) and _trace != "(none)" and _trace in _foldof:   # ONE word's ·a–·b link, on demand (no spaghetti)
-    _ti, _tj = _foldof[_trace]
-    _eline([(_ti, _tj)], "#E63946", 4.0, 0.95)
-    if _ti in _NPOS and _tj in _NPOS:        # highlight & label its two sense-dots
-        _surf.add_trace(go.Scatter3d(x=[_NPOS[_ti][0], _NPOS[_tj][0]], y=[_NPOS[_ti][1], _NPOS[_tj][1]],
-            z=[_NPOS[_ti][2] + 0.05, _NPOS[_tj][2] + 0.05], mode="markers+text",
-            text=[_N[_ti]["label"], _N[_tj]["label"]], textposition="top center",
-            textfont=dict(size=13, color="#E63946"),
-            marker=dict(size=13, color="#E63946", line=dict(width=1.5, color="#FFFFFF")),
-            hoverinfo="skip", showlegend=False))
-if not _zoomed:
-    _surf.add_trace(go.Scatter3d(x=[_cx[c["id"]] for c in _show], y=[_cy[c["id"]] for c in _show],
-        z=[_ch[c["id"]] + 0.1 for c in _show], mode="text", text=[_hub[c["id"]] for c in _show],
-        textfont=dict(size=13, color="#10243A"), hoverinfo="none", showlegend=False))
-_surf.update_layout(height=640, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="land",
-    scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False),
-               zaxis=dict(title="height = " + _hsrc, color="#10243A", gridcolor="#E2E8F1"), bgcolor="#FFFFFF",
-               aspectmode="manual", aspectratio=dict(x=1, y=1, z=0.5), camera=dict(eye=dict(x=1.5, y=1.5, z=0.9))))
+_nodesLS = {}
+for n in _N:
+    _base = n["label"].replace("·a", "").replace("·b", "")
+    _nodesLS[n["id"]] = {"label": _base, "full": n["label"], "size": n["df"],
+        "hover": (("%s — one sense of the two-meaning word %s · %d verses" % (n["label"], _base, n["df"]))
+                  if n["sense"] else ("%s · %d verses" % (n["label"], n["df"])))}
+_families = [{"id": c["id"], "hub": _hub[c["id"]], "color": _PAL[c["id"] % len(_PAL)],
+              "members": [n["id"] for n in _N if n["comm"] == c["id"]], "hval": _cval(c)} for c in _CM]
+_trpair = _foldof.get(_trace) if _trace != "(none)" else None
+_surf = LS.family_landscape(_families, _nodesLS, height_label=_hsrc,
+                            zoom_hub=(_zoom if _zoomed else None), trace=_trpair, edges=[(i, j) for i, j in _E])
 st.plotly_chart(_surf, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
 C.note("Showing <b>%s</b> alone, with its internal bonds — every concept labelled." % _zoom if _zoomed else
        "Hover a dot for its concept and verse-count; use <b>Trace a two-meaning word</b> to light a single ·a–·b link.")
