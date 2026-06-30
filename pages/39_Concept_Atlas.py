@@ -667,6 +667,23 @@ else:
             "<b>Honest reading.</b> All values are <b>MEASURED</b>; themes are auto-grouped (Louvain). A navigation "
             "aid, not a structural claim.</div>",
             unsafe_allow_html=True)
+    with st.expander("Where the data comes from & how the themes are made — read me"):
+        st.markdown(
+            "<div style='font-size:14px;color:#10243A;line-height:1.65'>"
+            "<b>The data.</b> Every verse in the current scope is a bag of roots; two roots get a <b>bond</b> when they "
+            "co-occur <b>far above chance</b> (PPMI, which controls for how common each one is). It is all "
+            "<b>measured</b> from the text — nothing is imposed by hand.</div>"
+            "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
+            "<b>How the themes are made.</b> A <b>community-detection</b> algorithm (Louvain) groups roots that bond "
+            "tightly into themes, each named by its most central root. The grouping is <b>measured</b> (real structure "
+            "vs a random baseline), but the <b>exact number of themes is not an absolute</b> — a different setting "
+            "shifts a few borderline roots or changes the count by one or two. Read it as a good map, not a fixed "
+            "number.</div>"
+            "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
+            "<b>Coverage &amp; sizes.</b> As noted above, only the top ~90 (a sūra) / ~150 (whole Qur’ān) most frequent "
+            "content roots are mapped — not every root. And themes come out <b>unequal in size</b>; the “concepts in "
+            "the theme” bars report exactly that.</div>",
+            unsafe_allow_html=True)
     _PALA = ["#1D9E75", "#378ADD", "#7209B7", "#EF9F27", "#0F6E56", "#138A74", "#B5651D", "#94A3B8", "#E63946", "#1D3557", "#8a5a16", "#534AB7"]
     _hubA = {ti: disp_root(o[0]) for ti, o, _t in d["themes"]}
     _lcA = st.columns([2, 2])

@@ -307,6 +307,21 @@ with st.expander("What this shows — open me", expanded=True):
     C.para("<b>Zoom to one family</b> to switch the chart to that family’s <b>concepts</b>, each a bar whose length is "
            "<b>how many verses it appears in</b>. All MEASURED; a reading aid, not a new claim. (·a / ·b on a concept "
            "mark the two senses of a two-meaning word — the web above shows how they land in different families.)")
+with st.expander("Where the data comes from & how the families are made — read me"):
+    C.para("<b>The data.</b> On the <b>rasm</b> (the consonant skeleton), every verse is a bag of roots. Two concepts "
+           "get a <b>bond</b> when they appear in the same verses <b>far above chance</b> — measured by PPMI, which "
+           "controls for how common each word is, so ubiquitous words don’t bond with everything. A two-meaning word "
+           "is split into two sense-nodes by the different company each sense keeps. Everything is <b>measured from "
+           "the text itself</b> — nothing is imposed by hand.")
+    C.para("<b>How the families are made.</b> A <b>community-detection</b> algorithm groups concepts that bond tightly "
+           "into families and names each by its most central member. The grouping is <b>measured</b> (it beats a "
+           "random baseline), but the <b>exact number of families is not an absolute</b> — change the algorithm’s "
+           "resolution and a few borderline concepts move, or you get one family more or fewer. Read it as a good "
+           "map, not a fixed count.")
+    C.para("<b>What’s included, and why sizes differ.</b> This covers the <b>most strongly-connected concepts</b> (the "
+           "same nodes as the web above), not literally every root; the <b>zoom</b> lists a family’s top 30 by "
+           "verse-count. And families come out <b>unequal in size</b> — that inequality is exactly what the “concepts "
+           "in the family” bars report.")
 _hub = {c["id"]: _clabels[c["id"]].split("  (")[0].replace("·a", "").replace("·b", "") for c in _CM}
 _lc = st.columns([2, 2])
 with _lc[0]:
