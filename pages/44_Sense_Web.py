@@ -311,21 +311,26 @@ with st.expander("What this is and how to read it — open me first", expanded=T
            "per sense — and (the key finding) they sit on <b>different hills</b>, because each sense keeps different "
            "company. A <b>coral line</b> joins the two senses, so you can watch one word stretch across two families "
            "(e.g. <b>صلو·a</b> inner prayer vs <b>صلو·b</b> the prayer–almsgiving institution).")
-    C.para("<b>The lines (relations).</b> <b>Coral</b> = a word’s two senses (·a–·b); when you <b>zoom one family</b>, "
-           "its internal bonds are drawn too. Bonds here are above-chance links (PPMI-thresholded) and are "
-           "<b>unweighted in this map — so lines are uniform, with no thickness</b>; the web at the top of the page is "
-           "the full relational view.")
+    C.para("<b>The lines (relations).</b> The terrain stays clean by default. Pick a word under <b>Trace a two-meaning "
+           "word</b> to light <b>one</b> coral ·a–·b link (its two senses); <b>zoom one family</b> to see that family’s "
+           "internal bonds. Bonds here are above-chance links (PPMI-thresholded) and <b>unweighted in this map — "
+           "uniform width, no thickness</b>; the web at the top of the page is the full relational view.")
     C.para("<b>Honest reading (the one law).</b> <b>Height and dot-sizes are MEASURED</b>; the left–right "
            "<b>placement is for legibility only</b> and means nothing — read the elevation, not the compass "
            "direction. A reading aid, not a discovery.")
 _hub = {c["id"]: _clabels[c["id"]].split("  (")[0] for c in _CM}
-_lc = st.columns([2, 2])
+_foldof = {}
+for _i, _j in _SL:
+    _foldof[_N[_i]["label"].replace("·a", "").replace("·b", "")] = (_i, _j)
+_lc = st.columns([2, 2, 2])
 with _lc[0]:
     _hsrc = st.radio("Hill height =", ["concepts in the family", "internal density", "hub-influence (PageRank)"],
                      horizontal=True, key="land_h")
 with _lc[1]:
     _zoom = st.selectbox("Zoom to one family (segment) — or see all",
                          ["All families"] + [_hub[c["id"]] for c in sorted(_CM, key=lambda c: -c["n"])], key="land_zoom")
+with _lc[2]:
+    _trace = st.selectbox("Trace a two-meaning word (·a–·b link)", ["(none)"] + sorted(_foldof), key="land_trace")
 def _cval(c):
     if _hsrc.startswith("internal"): return float(c["density"]) * 10.0
     if _hsrc.startswith("hub"): return float(sum(n["pr"] for n in _N if n["comm"] == c["id"]))
@@ -388,8 +393,17 @@ def _eline(pairs, col, w, op):
         _surf.add_trace(go.Scatter3d(x=_ex, y=_ey, z=_ez, mode="lines",
             line=dict(color=col, width=w), opacity=op, hoverinfo="none", showlegend=False))
 if _zoomed:                                  # one family: show its internal bonds (uncluttered)
-    _eline([(i, j) for i, j in _E], "#6E86A6", 2.0, 0.5)
-_eline(_SL, "#E63946", 3.0, 0.85)            # the ·a–·b sense-folds: a word's two senses, across hills
+    _eline([(i, j) for i, j in _E], "#6E86A6", 1.6, 0.4)
+if (not _zoomed) and _trace != "(none)" and _trace in _foldof:   # ONE word's ·a–·b link, on demand (no spaghetti)
+    _ti, _tj = _foldof[_trace]
+    _eline([(_ti, _tj)], "#E63946", 4.0, 0.95)
+    if _ti in _NPOS and _tj in _NPOS:        # highlight & label its two sense-dots
+        _surf.add_trace(go.Scatter3d(x=[_NPOS[_ti][0], _NPOS[_tj][0]], y=[_NPOS[_ti][1], _NPOS[_tj][1]],
+            z=[_NPOS[_ti][2] + 0.05, _NPOS[_tj][2] + 0.05], mode="markers+text",
+            text=[_N[_ti]["label"], _N[_tj]["label"]], textposition="top center",
+            textfont=dict(size=13, color="#E63946"),
+            marker=dict(size=13, color="#E63946", line=dict(width=1.5, color="#FFFFFF")),
+            hoverinfo="skip", showlegend=False))
 if not _zoomed:
     _surf.add_trace(go.Scatter3d(x=[_cx[c["id"]] for c in _show], y=[_cy[c["id"]] for c in _show],
         z=[_ch[c["id"]] + 0.1 for c in _show], mode="text", text=[_hub[c["id"]] for c in _show],
@@ -399,8 +413,9 @@ _surf.update_layout(height=640, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="
                zaxis=dict(title="height = " + _hsrc, color="#10243A", gridcolor="#E2E8F1"), bgcolor="#FFFFFF",
                aspectmode="manual", aspectratio=dict(x=1, y=1, z=0.5), camera=dict(eye=dict(x=1.5, y=1.5, z=0.9))))
 st.plotly_chart(_surf, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
-C.note(("Showing <b>%s</b> alone — every concept labelled. " % _zoom if _zoomed else
-        "Each labelled <b>hill = a concept-family</b>; dots packed on a top are its concepts (size = verse-count). ")
+C.note(("Showing <b>%s</b> alone, with its internal bonds — every concept labelled. " % _zoom if _zoomed else
+        "Each labelled <b>hill = a concept-family</b>; dots packed on a top are its concepts (size = verse-count); "
+        "use <b>Trace a two-meaning word</b> to light just that word’s ·a–·b link. ")
        + "<b>Height = %s</b> (measured). Drag to rotate, scroll to zoom; left–right placement is for legibility only." % _hsrc)
 _peakdf = pd.DataFrame([{
     "family (hub-concept)": _hub[c["id"]], "concepts": c["n"], "avg degree": c["avg_deg"],
