@@ -638,11 +638,24 @@ else:
 
     # ── MEANING LANDSCAPE — the themes as a mountain range (shared landscape.py helper) ──
     layer(1, "🏔️ Meaning landscape — the themes as a mountain range")
-    st.markdown("<div style='font-size:14px;color:#10243A;line-height:1.6;margin:2px 0 6px'>"
-                "The same themes as <b>terrain</b>: each <b>hill is one theme</b> (labelled by its top concept), with "
-                "its concepts packed on the hill-top (dot size = frequency). <b>Height</b> is a measured quantity you "
-                "choose below. Left–right placement is for legibility only — read the elevation, not the compass "
-                "direction. A reading aid, not a claim.</div>", unsafe_allow_html=True)
+    with st.expander("What this is and how to read it — open me first", expanded=True):
+        st.markdown(
+            "<div style='font-size:14px;color:#10243A;line-height:1.65'>"
+            "<b>The idea.</b> The map above is flat. Here the SAME measured themes become <b>terrain</b>: each "
+            "<b>hill is one theme</b>, labelled by its top concept, and the <b>height</b> is a measured quantity you "
+            "pick below (breadth · weight in the text · cohesion). The low ground between hills is where themes meet."
+            "</div>"
+            "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
+            "<b>How to read it.</b> A <b>tall hill</b> = a big or central theme; a <b>low hill</b> = a minor one; the "
+            "<b>dots packed on a hill-top</b> are that theme’s own concepts (bigger dot = occurs in more verses). "
+            "<b>Drag</b> to rotate, <b>scroll</b> to zoom; hover a dot for its concept and verse-count. To study one "
+            "theme up close, use <b>“Zoom to one theme”</b> — it segments out that single hill with every concept "
+            "named. The table below lists the exact value behind every hill’s height.</div>"
+            "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
+            "<b>Honest reading.</b> <b>Height and dot-sizes are MEASURED</b>; the left–right <b>placement of the hills "
+            "is for legibility only</b> and means nothing — read the elevation, not the compass direction. Themes are "
+            "auto-grouped (Louvain): a navigation map and reading aid, not a structural claim.</div>",
+            unsafe_allow_html=True)
     _PALA = ["#1D9E75", "#378ADD", "#7209B7", "#EF9F27", "#0F6E56", "#138A74", "#B5651D", "#94A3B8", "#E63946", "#1D3557", "#8a5a16", "#534AB7"]
     _hubA = {ti: disp_root(o[0]) for ti, o, _t in d["themes"]}
     _lcA = st.columns([2, 2])
