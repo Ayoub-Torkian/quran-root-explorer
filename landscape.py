@@ -30,7 +30,7 @@ def family_landscape(families, nodes, *, height_label="value", zoom_hub=None, tr
         f = [x for x in fams if x["hub"] == zoom_hub][0]
         mem = [m for m in f["members"] if m in nodes]
         mem = sorted(mem, key=lambda m: nodes[m].get("size", 0))[-30:]          # top 30 by size, ascending
-        ys = [nodes[m].get("full", nodes[m]["label"]) for m in mem]
+        ys = [nodes[m]["label"] for m in mem]                                   # plain word; ·a/·b only in the hover
         xs = [nodes[m].get("size", 0) for m in mem]
         hov = [nodes[m].get("hover", nodes[m]["label"]) for m in mem]
         fig = go.Figure(go.Bar(x=xs, y=ys, orientation="h", marker_color=f.get("color", "#1D9E75"),
