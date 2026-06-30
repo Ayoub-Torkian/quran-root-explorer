@@ -411,7 +411,17 @@ st.caption("Nodes on a ring, edges as chords.")
 safe_chart(PC.chart_chord_diagram, gv, R["communities"])
 
 st.markdown("### Adjacency matrix")
-st.caption("Roots × roots, cell = ayahs shared.")
+st.markdown(
+    "<div style='font-size:13px;color:#10243A;line-height:1.55;margin:0 0 6px'>"
+    "The <b>same network shown as a grid</b>. Every root appears on <b>both</b> the top edge and the "
+    "left edge (ordered most-connected first, so the busiest roots sit in the <b>top-left</b>). Each "
+    "square answers one question: <b>how many āyāt do these two roots share?</b> — "
+    "<b>bright yellow = many, dark purple = none</b>. The blank diagonal is just a root against itself. "
+    "<b>How to read it:</b> a bright <b>block in the top-left corner</b> is a tight cluster of roots that "
+    "keep turning up in the same verses (your hubs); the large <b>dark areas</b> are pairs that almost "
+    "never co-occur (structural holes). Hover any square for the exact count. It is the same information "
+    "as the node-link graph above — a grid just makes dense clusters and gaps easier to spot.</div>",
+    unsafe_allow_html=True)
 safe_chart(PC.chart_adjacency_matrix, gv)
 
 st.divider()
