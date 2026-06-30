@@ -2493,12 +2493,15 @@ def chart_dependency(dep: dict, root: str, max_each: int = 7) -> go.Figure:
         fig.add_annotation(ax=0.10, ay=0, x=1, y=y, xref="x", yref="y",
                            axref="x", ayref="y", showarrow=True, arrowhead=3,
                            arrowsize=1, arrowwidth=_ew(lift), arrowcolor=ORANGE, opacity=0.85)
-    # leaf nodes — root label only on the face; numbers on hover
+    # leaf nodes — label sits OUTSIDE the dot (left of the left column, right of the right column)
+    # so the Arabic root is NEVER clipped by the circle (it was occluded inside the 40px marker).
+    # Ink text on the light background; smaller solid dots since they no longer hold text.
+    _tpos = ["middle left" if xx < 0 else "middle right" for xx in nx_]
     fig.add_trace(go.Scatter(
-        x=nx_, y=ny_, mode="markers+text", text=ntext, textposition="middle center",
-        textfont=dict(size=15, color="#FFFFFF"),
-        marker=dict(size=40, color=ncol, line=dict(width=1, color="#10243A")),
-        hoverinfo="text", hovertext=nhov, showlegend=False))
+        x=nx_, y=ny_, mode="markers+text", text=[f"  {t}  " for t in ntext], textposition=_tpos,
+        textfont=dict(size=14, color="#10243A"),
+        marker=dict(size=28, color=ncol, line=dict(width=1.5, color="#FFFFFF")),
+        hoverinfo="text", hovertext=nhov, showlegend=False, cliponaxis=False))
     # centre root
     fig.add_trace(go.Scatter(
         x=[0], y=[0], mode="markers+text", text=[root], textposition="middle center",
@@ -2512,7 +2515,7 @@ def chart_dependency(dep: dict, root: str, max_each: int = 7) -> go.Figure:
                        font=dict(size=13, color=ORANGE), xanchor="center")
     _layout(fig, f"Directed dependencies · {root}  (arrow width = lift)", h=460)
     fig.update_layout(
-        xaxis=dict(visible=False, range=[-1.6, 1.6]),
+        xaxis=dict(visible=False, range=[-1.95, 1.95]),
         yaxis=dict(visible=False, range=[-1.45, 1.45]),
         margin=dict(l=10, r=10, t=46, b=10))
     return fig

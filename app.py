@@ -404,38 +404,37 @@ def main():
                           help="18 lenses, verdicts, and reviewed claims."):
                 st.switch_page("pages/22_Lens_Lab.py")
 
-    # ====== FIND & EXPLORE — the TWO search entries unified in ONE standout panel, each clearly
-    #        labelled with what it does and HOW THEY DIFFER: SEARCH = look something up (locate a
-    #        word/phrase/verse); EXPLORE BY ROOT = analyse a root's reach. Blue-accented panel
-    #        (data/lookup) to distinguish it from the green discovery launchpad while keeping the
-    #        SAME panel shape — consistent treatment across sections. ======
+    # ====== FIND & EXPLORE — the TWO search entries unified in ONE standout panel, SIDE BY SIDE
+    #        so they USE the width and stay compact (no tall empty bands / dead space beside a
+    #        button or input). Each clearly labelled with what it does and HOW THEY DIFFER:
+    #        SEARCH = look something up (locate a word/phrase/verse); EXPLORE BY ROOT = analyse a
+    #        root's reach. Blue-accented panel, same shape as the green launchpad. ======
     st.markdown(
         "<style>"
         "div.st-key-findexplore{background:#EAF2FB;border:1px solid #CFE0F2;"
-        "border-left:5px solid #378ADD;border-radius:12px;padding:12px 16px 14px;margin:16px 0 4px;"
+        "border-left:5px solid #378ADD;border-radius:12px;padding:10px 16px 11px;margin:6px 0 4px;"
         "box-shadow:0 1px 4px rgba(16,36,58,.07)}"
         "</style>", unsafe_allow_html=True)
     with st.container(key="findexplore"):
-        st.markdown("<div style='font-size:16px;font-weight:800;color:#1D3557;margin:0 0 4px'>"
+        st.markdown("<div style='font-size:16px;font-weight:800;color:#1D3557;margin:0 0 6px'>"
                     "🔎 Find &amp; explore the text&nbsp; <span style='font-size:13px;font-weight:600;color:#10243A'>"
                     "— two ways in, for two different needs</span></div>", unsafe_allow_html=True)
-        st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:4px 0 1px'>"
-                    "Search &mdash; <span style='color:#378ADD'>look something up</span></div>"
-                    "<div style='font-size:13px;color:#10243A;line-height:1.5;margin:0 0 7px'>"
-                    "Find <b>where</b> a word, phrase, root, or verse (e.g. 2:255) appears — any spelling, "
-                    "diacritics optional. Takes you straight to the matching āyāt.</div>", unsafe_allow_html=True)
-        with st.container(key="fitrow-fxsearch"):
-            _sc = st.columns(1)
-            if _sc[0].button("🔎 Open Search  →", key="fx_open_search"):
+        _fx = st.columns(2, gap="medium")
+        with _fx[0]:
+            st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:0 0 1px'>"
+                        "Search &mdash; <span style='color:#378ADD'>look something up</span></div>"
+                        "<div style='font-size:13px;color:#10243A;line-height:1.45;margin:0 0 6px'>"
+                        "Find <b>where</b> a word, phrase, root, or verse (e.g. 2:255) appears — any spelling. "
+                        "Jumps straight to the matching āyāt.</div>", unsafe_allow_html=True)
+            if st.button("🔎 Open Search  →", key="fx_open_search", width='stretch'):
                 st.switch_page("pages/38_Search.py")
-        st.markdown("<div style='border-top:1px dashed #CFE0F2;margin:12px 0 8px'></div>", unsafe_allow_html=True)
-        st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:0 0 1px'>"
-                    "🌱 Explore by root &mdash; <span style='color:#1D9E75'>analyse, don't just find</span></div>"
-                    "<div style='font-size:13px;color:#10243A;line-height:1.5;margin:0 0 7px'>"
-                    "Give it an Arabic <b>root</b> (or several) and it maps the root's <b>reach</b> — its co-occurring "
-                    "partners, themes, tight pairings, and revelation timing across all 6,236 āyāt. Or start from a "
-                    "theme below.</div>", unsafe_allow_html=True)
-        run_top = render_top_input_bar(corpus, empty_samples=False)
+        with _fx[1]:
+            st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:0 0 1px'>"
+                        "🌱 Explore by root &mdash; <span style='color:#1D9E75'>analyse, don't just find</span></div>"
+                        "<div style='font-size:13px;color:#10243A;line-height:1.45;margin:0 0 6px'>"
+                        "Map an Arabic <b>root</b>'s <b>reach</b> — partners, themes, pairings, and revelation "
+                        "timing across 6,236 āyāt. Or pick a theme below.</div>", unsafe_allow_html=True)
+            run_top = render_top_input_bar(corpus, empty_samples=False)
         if not st.session_state.get("query_roots") and not st.session_state.get("prefix_top", "").strip():
             with chip_row("themes"):
                 _tc = st.columns(len(SAMPLE_QUERIES))
@@ -450,7 +449,7 @@ def main():
     st.markdown(
         "<style>"
         "div.st-key-fitrow-quickdisc{background:#F4F9F7;border:1px solid #cfe4dc;"
-        "border-left:5px solid #1D9E75;border-radius:12px;padding:11px 16px 13px;margin:16px 0 4px;"
+        "border-left:5px solid #1D9E75;border-radius:12px;padding:11px 16px 13px;margin:8px 0 4px;"
         "box-shadow:0 1px 4px rgba(16,36,58,.07)}"
         "div.st-key-fitrow-quickdisc button{border:1.5px solid #1D9E75 !important;background:#fff !important;"
         "color:#1D3557 !important;font-weight:700 !important}"
