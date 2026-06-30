@@ -414,6 +414,7 @@ def main():
         "div.st-key-findexplore{background:#EAF2FB;border:1px solid #CFE0F2;"
         "border-left:5px solid #378ADD;border-radius:12px;padding:10px 16px 11px;margin:6px 0 4px;"
         "box-shadow:0 1px 4px rgba(16,36,58,.07)}"
+        "div.st-key-fxright{border-left:1px solid #BFD4EC;padding-left:22px;height:100%}"
         "</style>", unsafe_allow_html=True)
     with st.container(key="findexplore"):
         st.markdown("<div style='font-size:16px;font-weight:800;color:#1D3557;margin:0 0 6px'>"
@@ -429,18 +430,22 @@ def main():
             if st.button("🔎 Open Search  →", key="fx_open_search", width='stretch'):
                 st.switch_page("pages/38_Search.py")
         with _fx[1]:
-            st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:0 0 1px'>"
-                        "🌱 Explore by root &mdash; <span style='color:#1D9E75'>analyse, don't just find</span></div>"
-                        "<div style='font-size:13px;color:#10243A;line-height:1.45;margin:0 0 6px'>"
-                        "Map an Arabic <b>root</b>'s <b>reach</b> — partners, themes, pairings, and revelation "
-                        "timing across 6,236 āyāt. Or pick a theme below.</div>", unsafe_allow_html=True)
-            run_top = render_top_input_bar(corpus, empty_samples=False)
-        if not st.session_state.get("query_roots") and not st.session_state.get("prefix_top", "").strip():
-            with chip_row("themes"):
-                _tc = st.columns(len(SAMPLE_QUERIES))
-                for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
-                    if _tc[_i].button(_lab, key=f"theme_{_i}"):
-                        _set_query(_rts); st.rerun()
+            # keyed wrapper → draws the vertical divider line (border-left) between the two halves,
+            # and keeps the theme chips INSIDE this column (under Explore, where they belong) so they
+            # no longer float full-width across both.
+            with st.container(key="fxright"):
+                st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:0 0 1px'>"
+                            "🌱 Explore by root &mdash; <span style='color:#1D9E75'>analyse, don't just find</span></div>"
+                            "<div style='font-size:13px;color:#10243A;line-height:1.45;margin:0 0 6px'>"
+                            "Map an Arabic <b>root</b>'s <b>reach</b> — partners, themes, pairings, and revelation "
+                            "timing across 6,236 āyāt. Or pick a theme below.</div>", unsafe_allow_html=True)
+                run_top = render_top_input_bar(corpus, empty_samples=False)
+                if not st.session_state.get("query_roots") and not st.session_state.get("prefix_top", "").strip():
+                    with chip_row("themes"):
+                        _tc = st.columns(len(SAMPLE_QUERIES))
+                        for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
+                            if _tc[_i].button(_lab, key=f"theme_{_i}"):
+                                _set_query(_rts); st.rerun()
 
     # ====== JUMP TO A DISCOVERY — surface the distinctive DISCOVER views (the concept map,
     #        the scales, network roles, correspondence, flagship close-ups) that otherwise sit
