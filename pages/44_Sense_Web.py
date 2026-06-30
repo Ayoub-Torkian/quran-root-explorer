@@ -1,8 +1,14 @@
 """Close-up · Sense-resolved web (2-D / 3-D, focusable, with community metrics). Polysemous roots split into two
 senses, each joining a different concept-community. Communities are labelled by their measured hub-concept; select
 one (or more) to light it up while the rest grey out; full centrality/metric tables below. MEASURED on rasm
-(PPMI co-occurrence + per-occurrence context 2-means)."""
+(PPMI co-occurrence + per-occurrence context 2-means).
+
+When a SINGLE family is lit OR a word is focused, the view switches to an INDEPENDENT subnetwork: the induced
+subgraph is re-laid on its own (seeded), so its internal bonds stay intact and nothing dangles. Bonds to the rest
+of the web are NOT severed silently — bridge nodes are gold-ringed and labelled with a "→k" outward-bond count."""
 import os, json, collections
+import numpy as np
+import networkx as nx
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -36,9 +42,9 @@ C.story("The Qur’ān interprets itself — «القرآن يفسّر بعضه 
         "word with two meanings into a single dot — but measured across every occurrence, <b>34 of the 40</b> most "
         "ambiguous roots have their two senses land in <b>different families</b>. Here each appears as two sense-nodes "
         "(·a / ·b) joined by a faint <b>fold</b> line, so you watch one word stretch across two regions of meaning.",
-        "Each <b>colour + legend name</b> is a family, labelled by its measured hub-concept. <b>Select a family</b> to "
-        "light it up while the rest grey out; <b>rotate</b> in 3-D; and read the <b>centrality tables</b> below — so "
-        "you can see not just the picture but the numbers behind every concept and family.")
+        "Each <b>colour + legend name</b> is a family, labelled by its measured hub-concept. <b>Light up one family</b> "
+        "(or <b>focus a word</b>) to open it as an <b>independent subnetwork</b> — re-laid on its own so no bond is cut; "
+        "bridge nodes show a <b>→k</b> count of their bonds to other families. Read the <b>centrality tables</b> below.")
 
 with st.expander("Conceptual foundation — why a web, why senses, what the metrics mean (read me)"):
     C.para("<b>Why a web, not a list.</b> The Qur’ān explains itself: a term left ambiguous in one verse is fixed by "
@@ -53,11 +59,12 @@ with st.expander("Conceptual foundation — why a web, why senses, what the metr
            "<b>bridge</b> that ties families together. <b>PageRank / eigenvector</b> = <b>hub influence</b> (central to "
            "its family, linked to other well-linked concepts). <b>Clustering</b> = how tightly a word’s neighbours "
            "interlink. <b>Density</b> = how cohesive a whole family is.")
-    C.para("<b>Why sense-resolution, and its impact.</b> A word like <b>صلو</b> (prayer) means two things — inner "
-           "devotion and the alms-ritual institution. Blurred, it sits as one misleading dot bridging both. "
-           "<b>Resolved</b>, each sense joins its true family — and 34 of 40 such words split across families. The "
-           "payoff for understanding: scattered cross-references become a <b>navigable map</b> where you can see the "
-           "Qur’ān’s thematic families, the bridge-concepts that connect them, and exactly which words do two jobs.")
+    C.para("<b>Independent subnetwork view.</b> When you light a single family or focus a word, we extract its "
+           "<b>induced subgraph</b> and give it a <b>fresh layout</b>, so the family reads as a self-contained object "
+           "with every internal bond intact. Its links to the rest of the web are <b>not deleted</b> — each bridge "
+           "node is gold-ringed and tagged <b>→k</b> (k bonds leaving the subnetwork), so you still see that the "
+           "family connects outward. The centrality tables keep the <b>global</b> numbers (a node’s true role in the "
+           "whole web); a separate column adds its <b>within-subnetwork</b> degree.")
     C.para("<b>Honest limit.</b> This <b>refines and navigates known structure</b>; it is a reading aid, not a new "
            "discovery. Senses are a continuum (two is a floor); the split and the families are measured on the rasm "
            "surface and are approximate. 3-D is for exploring; 2-D is better for precise reading.")
@@ -80,7 +87,7 @@ if "csel" not in st.session_state:
     st.session_state["csel"] = []
 _fc = st.columns([2, 2, 2])
 with _fc[0]:
-    _focus = st.selectbox("Focus a word (ego view)", ["(whole web)"] + _bases)
+    _focus = st.selectbox("Focus a word (independent ego-network)", ["(whole web)"] + _bases)
 with _fc[1]:
     _minv = st.slider("Min verses per node", 0, 80, 0, 5)
 with _fc[2]:
@@ -91,14 +98,15 @@ if _qb[0].button("✨ Light all"):
 if _qb[1].button("Clear (overview)"):
     st.session_state["csel"] = []
 with _qb[2]:
-    _csel = st.multiselect("Light up family / families — pick any, or use the buttons",
+    _csel = st.multiselect("Light up family / families — pick ONE to open it as an independent subnetwork",
                            _allids, format_func=lambda c: _clabels[c], key="csel")
-_is3d = _mode.startswith("3")
 _is3d = _mode.startswith("3")
 
 _adj = collections.defaultdict(set)
 for i, j in _E:
     _adj[i].add(j); _adj[j].add(i)
+
+# focus ego-net (seed word + its neighbours)
 keep = set(range(len(_N)))
 if _focus != "(whole web)":
     seed = {n["id"] for n in _N if n["label"].replace("·a", "").replace("·b", "") == _focus}
@@ -110,21 +118,77 @@ if _minv > 0:
     keep = {i for i in keep if _N[i]["df"] >= _minv or _N[i]["sense"]}
 if not keep:
     keep = set(range(len(_N)))
+
+
+@st.cache_data(show_spinner=False)
+def _sub_layout(ids_tuple, edge_tuple, dim):
+    """Fresh, SEEDED layout for an induced subgraph → independent coordinates (reproducible)."""
+    ids = list(ids_tuple); idset = set(ids)
+    G = nx.Graph(); G.add_nodes_from(ids)
+    for i, j in edge_tuple:
+        if i in idset and j in idset:
+            G.add_edge(i, j)
+    p = nx.spring_layout(G, dim=dim, seed=42, iterations=200)
+    a = np.array([p[i] for i in ids], dtype=float)
+    if dim == 3:
+        a = (a - a.mean(0)) / (a.std(0) + 1e-9)
+        a = a / (np.linalg.norm(a, axis=1, keepdims=True) + 1e-9)   # unit sphere → real depth
+    else:
+        a = a - a.mean(0); a = a / (np.abs(a).max() + 1e-9)         # centre, fit [-1,1]
+    return {i: a[k].tolist() for k, i in enumerate(ids)}
+
+
+# INDEPENDENT subnetwork when exactly one family is lit OR a word is focused
+independent = (_focus != "(whole web)") or (len(_csel) == 1)
+outward = {}
+if independent:
+    if _focus != "(whole web)":
+        subids = set(keep)
+        _subtitle = "focused word «%s» + its partners" % _focus
+    else:
+        cid = _csel[0]
+        subids = {i for i in range(len(_N)) if _N[i]["comm"] == cid}
+        if _minv > 0:
+            subids = {i for i in subids if _N[i]["df"] >= _minv or _N[i]["sense"]}
+        _subtitle = "family «%s»" % _clabels[cid].split("  (")[0]
+    if len(subids) < 2:
+        subids |= {j for i in subids for j in _adj[i]}
+    keep = set(subids)
+    _pos = _sub_layout(tuple(sorted(subids)), tuple(map(tuple, _E)), 3 if _is3d else 2)
+    PX = {i: _pos[i][0] for i in subids}
+    PY = {i: _pos[i][1] for i in subids}
+    PZ = {i: (_pos[i][2] if _is3d else 0.0) for i in subids}
+    outward = {i: len([j for j in _adj[i] if j not in subids]) for i in subids}
+    internal_deg = {i: len([j for j in _adj[i] if j in subids]) for i in subids}
+else:
+    rng = range(len(_N))
+    PX = {i: (_N[i]["x3"] if _is3d else _N[i]["x2"]) for i in rng}
+    PY = {i: (_N[i]["y3"] if _is3d else _N[i]["y2"]) for i in rng}
+    PZ = {i: _N[i]["z3"] for i in rng}
+
 def _active(i): return (not _csel) or (_N[i]["comm"] in _csel)
-# label the key concepts so the map is readable: all split-senses + the highest-degree hubs
-_topdeg = sorted(keep, key=lambda i: -_N[i]["deg"])[:30]
-_LABEL = {i for i in keep if _N[i]["sense"]} | set(_topdeg)
+# labels: independent view labels everything (it's small); else split-senses + top hubs
+if independent:
+    _LABEL = set(keep)
+else:
+    _topdeg = sorted(keep, key=lambda i: -_N[i]["deg"])[:30]
+    _LABEL = {i for i in keep if _N[i]["sense"]} | set(_topdeg)
+
 
 # ── FIGURE ───────────────────────────────────────────────────────────────────
-def _nodes(ids, color, ring, ringcol, showtext, name, leg, sizebase):
-    xs = [_N[i]["x3"] if _is3d else _N[i]["x2"] for i in ids]
-    ys = [_N[i]["y3"] if _is3d else _N[i]["y2"] for i in ids]
+def _nodes(ids, color, ring, ringcol, showtext, name, leg, sizebase, labels=None):
+    xs = [PX[i] for i in ids]; ys = [PY[i] for i in ids]
     sz = [sizebase + 9 * (min(_N[i]["df"], 300) / 300) ** 0.5 for i in ids]
-    txt = [_N[i]["label"] if (showtext or i in _LABEL) else "" for i in ids]
-    hov = ["%s · %d verses · deg %d · betw %.3f" % (_N[i]["label"], _N[i]["df"], _N[i]["deg"], _N[i]["bet"]) for i in ids]
+    if labels is not None:
+        txt = labels
+    else:
+        txt = [_N[i]["label"] if (showtext or i in _LABEL) else "" for i in ids]
+    hov = ["%s · %d verses · deg %d · betw %.3f%s" % (
+        _N[i]["label"], _N[i]["df"], _N[i]["deg"], _N[i]["bet"],
+        ("  ·  →%d bonds out" % outward[i]) if outward.get(i, 0) > 0 else "") for i in ids]
     mk = dict(size=sz, color=color, line=dict(width=ring, color=ringcol))
     if _is3d:
-        zs = [_N[i]["z3"] for i in ids]
+        zs = [PZ[i] for i in ids]
         return go.Scatter3d(x=xs, y=ys, z=zs, mode="markers+text", marker=mk, text=txt, textposition="top center",
                             textfont=dict(size=12, color="#10243A"), hovertext=hov, hoverinfo="text", name=name, showlegend=leg)
     return go.Scatter(x=xs, y=ys, mode="markers+text", marker=mk, text=txt, textposition="top center",
@@ -133,54 +197,73 @@ def _line(pairs, color, width, op, name, leg):
     xs, ys, zs = [], [], []
     for i, j in pairs:
         if i in keep and j in keep:
-            xs += [_N[i]["x3"] if _is3d else _N[i]["x2"], _N[j]["x3"] if _is3d else _N[j]["x2"], None]
-            ys += [_N[i]["y3"] if _is3d else _N[i]["y2"], _N[j]["y3"] if _is3d else _N[j]["y2"], None]
-            zs += [_N[i]["z3"], _N[j]["z3"], None] if _is3d else [None, None, None]
+            xs += [PX[i], PX[j], None]; ys += [PY[i], PY[j], None]
+            zs += [PZ[i], PZ[j], None] if _is3d else [None, None, None]
     if _is3d:
         return go.Scatter3d(x=xs, y=ys, z=zs, mode="lines", line=dict(color=color, width=width), opacity=op, hoverinfo="none", name=name, showlegend=leg)
     return go.Scatter(x=xs, y=ys, mode="lines", line=dict(color=color, width=width), opacity=op, hoverinfo="none", name=name, showlegend=leg)
 
 fig = go.Figure()
-# edges: focus (within lit families) vs context (rest)
-if _csel:
-    foc = [(i, j) for i, j in _E if _N[i]["comm"] in _csel and _N[j]["comm"] in _csel]
-    ctx = [(i, j) for i, j in _E if not (_N[i]["comm"] in _csel and _N[j]["comm"] in _csel)]
-    fig.add_trace(_line(ctx, _GREY, 1.0, 0.30, "other bonds", False))
-    fig.add_trace(_line(foc, "#4E6E92", 1.6, 0.7, "family bonds", False))
-else:
-    fig.add_trace(_line(_E, _GREY, 1.2, 0.5, "bonds", False))
-if _focus != "(whole web)":   # fold lines only in focus view — 25 of them slash across the global map as noise
-    fig.add_trace(_line(_SL, "#E63946", 2.5, 0.55, "sense fold (·a–·b)", True))
 sb = 5 if _is3d else 9
-for c in _CM:
-    cid = c["id"]
-    ids = [i for i in keep if _N[i]["comm"] == cid and not _N[i]["sense"]]
-    if ids:
-        col = c["color"] if _active(ids[0]) else _GREY
-        fig.add_trace(_nodes(ids, col, 0.5, "#FFFFFF", False, _clabels[cid], True, sb))
-for active, ring, rc, nm in [(True, 2.2, "#CC8A3C", "split senses"), (False, 1.0, _GREY, None)]:
-    ids = [i for i in keep if _N[i]["sense"] and _active(i) == active]
-    if ids:
-        col = [_PAL[_N[i]["comm"] % len(_PAL)] if _active(i) else _GREY for i in ids]
-        fig.add_trace(_nodes(ids, col, ring, rc, active, nm or "", bool(nm), sb + 1))
+if independent:
+    # all internal bonds — intact, nothing dangling
+    intern = [(i, j) for i, j in _E if i in keep and j in keep]
+    fig.add_trace(_line(intern, "#4E6E92", 1.5, 0.6, "internal bonds", False))
+    foldin = [(i, j) for i, j in _SL if i in keep and j in keep]
+    if foldin:
+        fig.add_trace(_line(foldin, "#E63946", 2.5, 0.6, "sense fold (·a–·b)", True))
+    # nodes: split bridge (gold ring + →k) vs interior; coloured by their own family
+    for isbridge, ring, rc, nm in [(True, 2.8, "#CC8A3C", "bridge → other families"), (False, 0.6, "#FFFFFF", None)]:
+        gids = [i for i in keep if (outward.get(i, 0) > 0) == isbridge]
+        if not gids:
+            continue
+        cols = [_PAL[_N[i]["comm"] % len(_PAL)] for i in gids]
+        labs = [_N[i]["label"] + ((" →%d" % outward[i]) if isbridge else "") for i in gids]
+        fig.add_trace(_nodes(gids, cols, ring, rc, True, nm or "", bool(nm), sb + 1, labels=labs))
+else:
+    # whole-web (or multi-family) view: lit families vs context
+    if _csel:
+        foc = [(i, j) for i, j in _E if _N[i]["comm"] in _csel and _N[j]["comm"] in _csel]
+        ctx = [(i, j) for i, j in _E if not (_N[i]["comm"] in _csel and _N[j]["comm"] in _csel)]
+        fig.add_trace(_line(ctx, _GREY, 1.0, 0.30, "other bonds", False))
+        fig.add_trace(_line(foc, "#4E6E92", 1.6, 0.7, "family bonds", False))
+    else:
+        fig.add_trace(_line(_E, _GREY, 1.2, 0.5, "bonds", False))
+    for c in _CM:
+        cid = c["id"]
+        ids = [i for i in keep if _N[i]["comm"] == cid and not _N[i]["sense"]]
+        if ids:
+            col = c["color"] if _active(ids[0]) else _GREY
+            fig.add_trace(_nodes(ids, col, 0.5, "#FFFFFF", False, _clabels[cid], True, sb))
+    for active, ring, rc, nm in [(True, 2.2, "#CC8A3C", "split senses"), (False, 1.0, _GREY, None)]:
+        ids = [i for i in keep if _N[i]["sense"] and _active(i) == active]
+        if ids:
+            col = [_PAL[_N[i]["comm"] % len(_PAL)] if _active(i) else _GREY for i in ids]
+            fig.add_trace(_nodes(ids, col, ring, rc, active, nm or "", bool(nm), sb + 1))
+
 if _is3d:
     fig.update_layout(height=650, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="keep",
         legend=dict(font=dict(size=12), itemsizing="constant"),
         scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False), bgcolor="#FFFFFF"))
 else:
-    _ax = [n["x2"] for n in _N]; _ay = [n["y2"] for n in _N]
-    _lo = min(min(_ax), min(_ay)); _hi = max(max(_ax), max(_ay)); _pd = 0.06 * (_hi - _lo + 1e-9)
+    _axv = [PX[i] for i in keep]; _ayv = [PY[i] for i in keep]
+    _lo = min(min(_axv), min(_ayv)); _hi = max(max(_axv), max(_ayv)); _pd = 0.08 * (_hi - _lo + 1e-9)
     fig.update_layout(height=630, margin=dict(l=6, r=6, t=8, b=6), paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF",
                       dragmode="pan", uirevision="keep", legend=dict(font=dict(size=12), itemsizing="constant"))
     fig.update_xaxes(visible=False, range=[_lo - _pd, _hi + _pd], autorange=False)
     fig.update_yaxes(visible=False, range=[_lo - _pd, _hi + _pd], autorange=False)
+
+if independent:
+    st.caption("Independent subnetwork — %s — re-laid on its own; every internal bond is intact. "
+               "Gold-ringed nodes are bridges; «→k» = bonds leaving this subnetwork. "
+               "Pick the whole web (Clear + no focus) to see all families together." % _subtitle)
+
 st.plotly_chart(fig, use_container_width=True, config={"scrollZoom": True, "displaylogo": False,
     "displayModeBar": True, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
-C.note("<b>Navigate:</b> in <b>2-D</b> drag to pan up/down/sideways and the page scrolls normally over the graph; "
-       "use the graph toolbar (top-right) to zoom or reset. In <b>3-D</b> drag to rotate, scroll to zoom. "
-       "Each colour + legend name is a measured family; select families above to light them while the rest grey out; "
-       "coral <b>fold</b> lines join a word’s two senses; gold-ringed = split senses. Hover a node for its "
-       "verse-count, degree and betweenness.")
+C.note("<b>Navigate:</b> in <b>2-D</b> drag to pan and use the toolbar (top-right) to zoom or reset; in <b>3-D</b> "
+       "drag to rotate, scroll to zoom. <b>Light one family</b> or <b>focus a word</b> to open it as an independent "
+       "subnetwork (re-laid, bonds intact, bridges tagged <b>→k</b>); pick several families to compare them in place. "
+       "Coral <b>fold</b> lines join a word’s two senses; gold rings mark split-senses / bridges. Hover for metrics.")
 
 # ── METRIC TABLES ────────────────────────────────────────────────────────────
 C.section("Family metrics — the numbers behind the picture")
@@ -191,16 +274,26 @@ cdf = pd.DataFrame([{
 st.markdown("<style>[data-testid='stDataFrame'],[data-testid='stDataFrameResizable']{width:100% !important;max-width:100% !important}</style>", unsafe_allow_html=True)
 st.dataframe(cdf, width="stretch", hide_index=True, height=460)
 
-C.section("Concept metrics — full centralities" + (" (selected families)" if _csel else " (all concepts)"))
-sel = [n for n in _N if (not _csel or n["comm"] in _csel)]
-ndf = pd.DataFrame([{
-    "concept": n["label"], "type": "split-sense" if n["sense"] else "root", "verses": n["df"],
-    "degree": n["deg"], "betweenness": n["bet"], "pagerank": n["pr"], "eigenvector": n["eig"],
-    "clustering": n["clu"], "family": _clabels[n["comm"]].split("  (")[0]} for n in sel])
+_scope = ("subnetwork: " + _subtitle) if independent else ("selected families" if _csel else "all concepts")
+C.section("Concept metrics — full centralities (%s)" % _scope)
+if independent:
+    sel = [n for n in _N if n["id"] in keep]
+else:
+    sel = [n for n in _N if (not _csel or n["comm"] in _csel)]
+def _row(n):
+    r = {"concept": n["label"], "type": "split-sense" if n["sense"] else "root", "verses": n["df"],
+         "degree (global)": n["deg"], "betweenness (global)": n["bet"], "pagerank": n["pr"],
+         "eigenvector": n["eig"], "clustering": n["clu"], "family": _clabels[n["comm"]].split("  (")[0]}
+    if independent:
+        r["within-subnet degree"] = internal_deg.get(n["id"], 0)
+        r["→ outward bonds"] = outward.get(n["id"], 0)
+    return r
+ndf = pd.DataFrame([_row(n) for n in sel])
 ndf = ndf.sort_values(["family", "pagerank"], ascending=[True, False])
 st.dataframe(ndf, width="stretch", hide_index=True, height=420)
-C.note("Degree = direct co-occurrences · Betweenness = bridges between families · PageRank/eigenvector = hub "
-       "influence · Clustering = how tightly its neighbours interlink. See the conceptual-foundation panel above.")
+C.note("Degree/betweenness shown are <b>global</b> (the concept’s role in the whole web). In the subnetwork view, "
+       "<b>within-subnet degree</b> and <b>→ outward bonds</b> are added so you can tell interior concepts from "
+       "bridges. PageRank/eigenvector = hub influence · Clustering = how tightly its neighbours interlink.")
 
 # ── WHAT IT SHOWS ────────────────────────────────────────────────────────────
 C.section("What it shows — measured sense splits")
@@ -212,7 +305,8 @@ C.para("Each split recovers a real distinction we find elsewhere, which is the v
        "we derived independently, which is why we trust the map.")
 C.callout("Takeaway",
           "A word like صلو or بصر is not one point on the map — it is two, in two "
-          "families. Rotate the web, light up a family, and read its metrics: the Qur’ān’s concept structure becomes "
-          "something you can navigate, with the two-meaning words made explicit.", accent=C.TEAL)
+          "families. Light up a family or focus a word to open it as its own intact subnetwork, rotate it, and read "
+          "its metrics: the Qur’ān’s concept structure becomes something you can navigate.", accent=C.TEAL)
 
 st.page_link("pages/27_Closeup_Index.py", label="← Back to the Close-up map", icon="\U0001f50e")
+# independent-subnetwork mode + bridge badges — verified 2026-06-29
