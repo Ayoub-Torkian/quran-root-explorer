@@ -331,6 +331,12 @@ with _lc[1]:
                          ["All families"] + [_hub[c["id"]] for c in sorted(_CM, key=lambda c: -c["n"])], key="land_zoom")
 with _lc[2]:
     _trace = st.selectbox("Trace a two-meaning word (·a–·b link)", ["(none)"] + sorted(_foldof), key="land_trace")
+_MEXPL = {
+    "concepts in the family": "<b>how many distinct concepts</b> the family holds — its <b>breadth</b>. A tall hill is a wide-ranging theme (many ideas travel together); a low hill is a small, focused family.",
+    "internal density": "<b>how tightly its concepts interlink</b> (share of the possible bonds that are present) — its <b>cohesion</b>. A tall hill is a tight-knit theme where almost everything connects; a low hill is loose.",
+    "hub-influence (PageRank)": "<b>the family’s total hub-influence</b> across the whole web (summed PageRank of its concepts) — its <b>centrality</b>. A tall hill is a theme the rest of the Qur’ān leans on; a low hill sits at the periphery.",
+}
+C.note("<b>Hill height = %s</b> — %s" % (_hsrc, _MEXPL[_hsrc]))
 def _cval(c):
     if _hsrc.startswith("internal"): return float(c["density"]) * 10.0
     if _hsrc.startswith("hub"): return float(sum(n["pr"] for n in _N if n["comm"] == c["id"]))
@@ -413,10 +419,8 @@ _surf.update_layout(height=640, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="
                zaxis=dict(title="height = " + _hsrc, color="#10243A", gridcolor="#E2E8F1"), bgcolor="#FFFFFF",
                aspectmode="manual", aspectratio=dict(x=1, y=1, z=0.5), camera=dict(eye=dict(x=1.5, y=1.5, z=0.9))))
 st.plotly_chart(_surf, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
-C.note(("Showing <b>%s</b> alone, with its internal bonds — every concept labelled. " % _zoom if _zoomed else
-        "Each labelled <b>hill = a concept-family</b>; dots packed on a top are its concepts (size = verse-count); "
-        "use <b>Trace a two-meaning word</b> to light just that word’s ·a–·b link. ")
-       + "<b>Height = %s</b> (measured). Drag to rotate, scroll to zoom; left–right placement is for legibility only." % _hsrc)
+C.note("Showing <b>%s</b> alone, with its internal bonds — every concept labelled." % _zoom if _zoomed else
+       "Hover a dot for its concept and verse-count; use <b>Trace a two-meaning word</b> to light a single ·a–·b link.")
 _peakdf = pd.DataFrame([{
     "family (hub-concept)": _hub[c["id"]], "concepts": c["n"], "avg degree": c["avg_deg"],
     "density": c["density"], "internal bonds": c["intra"], "bridge bonds (saddles out)": c["inter"]}
