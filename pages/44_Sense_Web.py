@@ -352,6 +352,18 @@ _families = [{"id": c["id"], "hub": _hub[c["id"]], "color": _PAL[c["id"] % len(_
               "members": [n["id"] for n in _N if n["comm"] == c["id"]], "hval": _cval(c)} for c in _CM]
 _surf = LS.family_landscape(_families, _nodesLS, height_label=_hsrc, zoom_hub=(_zoom if _zoomed else None))
 st.plotly_chart(_surf, use_container_width=True, config={"displaylogo": False})
+st.markdown(
+    "<div style='background:#FBF1E6;border-left:4px solid #EF9F27;border-radius:7px;padding:11px 15px;"
+    "margin:6px 0 2px;font-size:13.5px;color:#10243A;line-height:1.65'>"
+    "<b>Scope &amp; coverage — read this so the numbers aren’t misread.</b><br>"
+    "&bull; <b>%d families</b> among the <b>%d sense-concepts</b> shown here.<br>"
+    "&bull; This is a <b>deliberately focused set</b> — two-meaning words and their strongest partners — covering "
+    "only about <b>15%% of the Qur’ān’s root-mentions</b>. It is <b>not a frequency ranking of the whole text</b>; "
+    "the corpus-wide view is the <b>Concept Atlas</b>.<br>"
+    "&bull; The family split is a <b>measured grouping</b> (not a hand-made list), but the <b>exact number is not a "
+    "fixed fact</b> about the Qur’ān — a different setting gives a few more or fewer, with borderline concepts "
+    "shifting between them.</div>"
+    % (len(_CM), len({n["label"].replace("·a", "").replace("·b", "") for n in _N})), unsafe_allow_html=True)
 C.note(("Showing <b>%s</b>’s concepts — each bar sized by how many verses it appears in." % _zoom) if _zoomed else
        "One bar per family, ranked by the chosen metric; hover a bar for its concept-count.")
 _peakdf = pd.DataFrame([{

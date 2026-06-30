@@ -123,9 +123,15 @@ def build_atlas(_cid, scope="all", sel=None, n_nodes=150, drop_ubiq=10, topk=3):
     _a = (_a - _a.mean(0)) / (_a.std(0) + 1e-9)                      # equalize axes (kill the flat disc)
     _a = _a / (np.linalg.norm(_a, axis=1, keepdims=True) + 1e-9)     # project onto unit sphere -> globe
     pos3 = {n: [float(_a[k][0]), float(_a[k][1]), float(_a[k][2])] for k, n in enumerate(_nl)}
+    _allf = sum(docf.values()); _mapf = sum(docf[r] for r in nodes)     # coverage = mapped vs ALL roots in scope
+    try:
+        _modq = float(nxcom.modularity(G, comms, weight="weight"))      # how clean the family split is (>0.3 strong)
+    except Exception:
+        _modq = float("nan")
     return dict(nodes=nodes, docf={r: docf[r] for r in nodes}, edges=[(a, b, G[a][b]["weight"]) for a, b in G.edges()],
                 theme_of=theme_of, themes=themes, nuz=nuz, pos={n: [float(p[0]), float(p[1])] for n, p in pos.items()},
-                pos3=pos3)
+                pos3=pos3, coverage=(_mapf / _allf if _allf else 0.0), n_all_roots=len(docf),
+                total_mentions=int(_allf), mapped_mentions=int(_mapf), modularity=_modq)
 
 @st.cache_data(show_spinner="Building the semantic space…")
 def _semantic_space(_cid, n=750):
@@ -719,6 +725,23 @@ else:
                                  zoom_hub=(None if _lz == "All themes" else _lz),
                                  trace=None, edges=[(a, b) for a, b, _w in _edgesA])
     st.plotly_chart(_surfA, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
+    _cov = d.get("coverage"); _nall = d.get("n_all_roots"); _modq = d.get("modularity")
+    _covtxt = ("%.0f%%" % (100 * _cov)) if _cov is not None else "—"
+    _modtxt = ("%.2f" % _modq) if (_modq is not None and _modq == _modq) else "—"
+    st.markdown(
+        "<div style='background:#FBF1E6;border-left:4px solid #EF9F27;border-radius:7px;padding:11px 15px;"
+        "margin:8px 0 2px;font-size:13.5px;color:#10243A;line-height:1.65'>"
+        "<b>Scope &amp; coverage — read this so the numbers aren’t misread.</b><br>"
+        "&bull; <b>%d themes</b> were found among the <b>%d concepts</b> shown here — the most frequent ones, out of "
+        "<b>%s distinct roots</b> in this scope.<br>"
+        "&bull; Those concepts cover only about <b>%s of this scope’s root-mentions</b>. The rest are <b>ubiquitous "
+        "‘glue’ roots</b> (God · say · all — deliberately dropped) plus a <b>long tail of rare roots</b> (not shown). "
+        "So the themes describe the <b>frequent-concept core</b>, <b>not the whole vocabulary</b>.<br>"
+        "&bull; The split into themes is a <b>measured grouping</b> (modularity <b>%s</b>; above ~0.30 = clear, "
+        "real separation), but the <b>exact number of themes is not a fixed fact</b> about the Qur’ān — a different "
+        "setting would give a few more or fewer, with borderline roots moving between them.</div>"
+        % (len(d["themes"]), len(d["nodes"]), (str(_nall) if _nall else "—"), _covtxt, _modtxt),
+        unsafe_allow_html=True)
     _intraA = Counter(); _interA = Counter()
     for _a, _b, _w in d["edges"]:
         _ta = d["theme_of"].get(_a); _tb = d["theme_of"].get(_b)
