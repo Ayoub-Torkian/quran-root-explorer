@@ -295,40 +295,74 @@ C.note("Degree/betweenness shown are <b>global</b> (the concept’s role in the 
        "<b>within-subnet degree</b> and <b>→ outward bonds</b> are added so you can tell interior concepts from "
        "bridges. PageRank/eigenvector = hub influence · Clustering = how tightly its neighbours interlink.")
 
-# ── MEANING LANDSCAPE (3-D surface — z is a real measured quantity) ───────────
-C.section("Meaning landscape — the map as 3-D topography")
-C.para("The same concept map seen as <b>terrain</b>: elevation is the <b>local concentration</b> of well-connected "
-       "concepts (a weighted density of the measured layout). <b>Peaks</b> are the cores of concept-families; the "
-       "<b>valleys and saddles</b> between them are the boundaries the bridge-concepts cross. This is an interpretive "
-       "smoothing of the measured map — a reading aid for seeing regional structure, not a new measurement.")
-_zsrc = st.radio("Elevation =", ["degree (connectedness)", "PageRank (influence)", "betweenness (bridging)"],
-                 horizontal=True, key="land_z")
-_zk = {"degree (connectedness)": "deg", "PageRank (influence)": "pr", "betweenness (bridging)": "bet"}[_zsrc]
-_lx = np.array([n["x2"] for n in _N], dtype=float); _ly = np.array([n["y2"] for n in _N], dtype=float)
-_lw = np.array([float(n[_zk]) for n in _N], dtype=float); _lw = _lw / (_lw.max() or 1.0)
-_gx = np.linspace(_lx.min(), _lx.max(), 70); _gy = np.linspace(_ly.min(), _ly.max(), 70)
+# ── MEANING LANDSCAPE (3-D family mountain-range — explained) ─────────────────
+import math as _ma, random as _rnd
+C.section("Meaning landscape — the concept-families as a mountain range")
+with st.expander("What this is and how to read it — open me first", expanded=True):
+    C.para("<b>The idea.</b> Everything above is a flat web. Here the SAME measured families become <b>terrain</b>: "
+           "each <b>peak is one concept-family</b>, labelled by its hub-concept, and the <b>height of the peak is a "
+           "measured quantity</b> you pick below — how many concepts the family holds, how tightly they bond, or how "
+           "much hub-influence it carries. The low ground between peaks is where families meet.")
+    C.para("<b>How to read it.</b> A <b>tall mountain</b> = a big or central family; a <b>low hill</b> = a minor one; "
+           "the <b>dots on each slope</b> are that family’s concepts (bigger dot = appears in more verses). Rotate by "
+           "dragging, zoom by scrolling, and hover any dot for its concept and verse-count. The table below lists the "
+           "exact value behind every peak’s height.")
+    C.para("<b>Honest reading (the one law).</b> The <b>height and the dot sizes are MEASURED</b>; the "
+           "<b>left–right placement of the peaks is arranged for legibility only</b> (like a diagram of organs) and "
+           "means nothing — read the <i>elevation</i>, not the compass direction. This is a reading aid, not a new "
+           "discovery.")
+_hsrc = st.radio("Peak height =", ["concepts in the family", "internal density", "hub-influence (PageRank)"],
+                 horizontal=True, key="land_h")
+def _cval(c):
+    if _hsrc.startswith("concepts"): return float(c["n"])
+    if _hsrc.startswith("internal"): return float(c["density"]) * 10.0
+    return float(sum(n["pr"] for n in _N if n["comm"] == c["id"]))
+_order = sorted(_CM, key=lambda c: -_cval(c))
+_K = len(_order); _R = 3.4; _cx = {}; _cy = {}; _ch = {}
+for _i, c in enumerate(_order):
+    _ang = 2 * _ma.pi * _i / max(_K, 1)
+    _cx[c["id"]] = _R * _ma.cos(_ang); _cy[c["id"]] = _R * _ma.sin(_ang); _ch[c["id"]] = _cval(c)
+_hmax = max(_ch.values()) or 1.0
+for _k in _ch: _ch[_k] = _ch[_k] / _hmax
+_sig = 0.5
+_gx = np.linspace(-_R - 1.4, _R + 1.4, 110); _gy = np.linspace(-_R - 1.4, _R + 1.4, 110)
 _GXX, _GYY = np.meshgrid(_gx, _gy)
-_sig = 0.06 * max(_lx.max() - _lx.min(), _ly.max() - _ly.min(), 1e-6)
 _Z = np.zeros_like(_GXX)
-for _k in range(len(_lx)):
-    _Z += _lw[_k] * np.exp(-(((_GXX - _lx[_k]) ** 2 + (_GYY - _ly[_k]) ** 2) / (2 * _sig ** 2)))
+for _cid in _ch:
+    _Z += _ch[_cid] * np.exp(-(((_GXX - _cx[_cid]) ** 2 + (_GYY - _cy[_cid]) ** 2) / (2 * _sig ** 2)))
 def _zat(px, py):
-    return float((_lw * np.exp(-(((px - _lx) ** 2 + (py - _ly) ** 2) / (2 * _sig ** 2)))).sum())
-_zmax = float(_Z.max()) or 1.0
-_surf = go.Figure(go.Surface(x=_gx, y=_gy, z=_Z, colorscale="Greens", showscale=False, opacity=0.93,
+    return float(sum(_ch[c] * _ma.exp(-(((px - _cx[c]) ** 2 + (py - _cy[c]) ** 2) / (2 * _sig ** 2))) for c in _ch))
+_surf = go.Figure(go.Surface(x=_gx, y=_gy, z=_Z, colorscale="Greens", showscale=False, opacity=0.9,
                              contours=dict(z=dict(show=True, usecolormap=True, project_z=True, width=1))))
-_nz = [_zat(n["x2"], n["y2"]) + 0.02 * _zmax for n in _N]
-_surf.add_trace(go.Scatter3d(x=_lx, y=_ly, z=_nz, mode="markers",
-    marker=dict(size=[3 + 5 * (min(n["df"], 300) / 300) ** 0.5 for n in _N],
-                color=[_PAL[n["comm"] % len(_PAL)] for n in _N], line=dict(width=0.5, color="#FFFFFF")),
-    hovertext=["%s · %s %.3f" % (n["label"], _zk, float(n[_zk])) for n in _N], hoverinfo="text", showlegend=False))
-_surf.update_layout(height=620, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="land",
+_rnd.seed(7)
+_nx2 = []; _ny2 = []; _nz2 = []; _ncol = []; _nsz = []; _nhov = []
+for n in _N:
+    _cid = n["comm"]
+    if _cid not in _cx: continue
+    _jx = _cx[_cid] + _rnd.uniform(-0.4, 0.4); _jy = _cy[_cid] + _rnd.uniform(-0.4, 0.4)
+    _nx2.append(_jx); _ny2.append(_jy); _nz2.append(_zat(_jx, _jy) + 0.03)
+    _ncol.append(_PAL[_cid % len(_PAL)]); _nsz.append(4 + 6 * (min(n["df"], 300) / 300) ** 0.5)
+    _nhov.append("%s · %d verses · family %s" % (n["label"], n["df"], _clabels[_cid].split("  (")[0]))
+_surf.add_trace(go.Scatter3d(x=_nx2, y=_ny2, z=_nz2, mode="markers",
+    marker=dict(size=_nsz, color=_ncol, line=dict(width=0.5, color="#FFFFFF")),
+    hovertext=_nhov, hoverinfo="text", showlegend=False))
+_surf.add_trace(go.Scatter3d(x=[_cx[c["id"]] for c in _CM], y=[_cy[c["id"]] for c in _CM],
+    z=[_ch[c["id"]] + 0.13 for c in _CM], mode="text", text=[_clabels[c["id"]].split("  (")[0] for c in _CM],
+    textfont=dict(size=13, color="#10243A"), hoverinfo="none", showlegend=False))
+_surf.update_layout(height=640, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="land",
     scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False),
-               zaxis=dict(title=_zk, color="#10243A"), bgcolor="#FFFFFF"))
+               zaxis=dict(title="height = " + _hsrc, color="#10243A"), bgcolor="#FFFFFF",
+               camera=dict(eye=dict(x=1.55, y=1.55, z=0.85))))
 st.plotly_chart(_surf, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
-C.note("Drag to rotate, scroll to zoom. Elevation = a Gaussian-weighted density (σ ≈ 6% of the map) of the chosen "
-       "centrality over the 2-D layout; dots are concepts on the terrain, coloured by family. Interpretive smoothing — "
-       "a way to <i>see</i> where families pile up and where the boundaries sit, not a separate measurement.")
+C.note("Each labelled <b>peak = a concept-family</b>; <b>height = %s</b> (measured); dots are its concepts "
+       "(size = verse-count), coloured by family. Left–right placement is for legibility only." % _hsrc)
+_peakdf = pd.DataFrame([{
+    "family (hub-concept)": _clabels[c["id"]].split("  (")[0], "concepts": c["n"], "avg degree": c["avg_deg"],
+    "density": c["density"], "internal bonds": c["intra"], "bridge bonds (saddles out)": c["inter"]}
+    for c in _order])
+st.dataframe(_peakdf, width="stretch", hide_index=True, height=300)
+C.note("The terrain is just this table made visual: the taller a family’s peak, the larger its value in the chosen "
+       "column. <b>Bridge bonds</b> are the links leaving a family — the saddles between the peaks.")
 
 # ── WHAT IT SHOWS ────────────────────────────────────────────────────────────
 C.section("What it shows — measured sense splits")
