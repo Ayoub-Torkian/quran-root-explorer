@@ -105,9 +105,9 @@ def family_landscape(families, nodes, *, height_label="value", zoom_hub=None, tr
                                    marker=dict(size=13, color="#E63946", line=dict(width=1.5, color="#FFFFFF")),
                                    hoverinfo="skip", showlegend=False))
 
-    if not zoomed:                                              # label each hill with its family hub
+    if not zoomed:                                              # label each hill, sitting on its summit (with the dots)
         fig.add_trace(go.Scatter3d(x=[cx[f["id"]] for f in show], y=[cy[f["id"]] for f in show],
-                                   z=[ch[f["id"]] + 0.12 for f in show], mode="text",
+                                   z=[zat(cx[f["id"]], cy[f["id"]]) + 0.04 for f in show], mode="text",
                                    text=["<b>%s</b>" % f["hub"] for f in show],
                                    textfont=dict(size=15, color="#14304F"), hoverinfo="none", showlegend=False))
 
