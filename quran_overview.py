@@ -211,8 +211,8 @@ def render_overview(corpus, source="Book6"):
     #   meaning-similarity + the navigable concept map). Computed from the text's own statistics,
     #   every link shown WITH its number so the user can check it — not curated, not keyword. —
     novel = ("<div class='ov-nov'>"
-             "<div class='ov-nov-bar'><b>🧭 What only this tool does</b>"
-             "<span>measured from the text's own statistics — every link shows its number, so you can check it</span></div>"
+             "<div class='ov-nov-bar'><b>🧭 What's distinctive here</b>"
+             "<span>measured from the text's own statistics — every link shows its number, so you can check it &middot; jump in from “🧭 Jump to a discovery” above</span></div>"
              "<div class='ov-nov-g'>"
              "<div class='ov-nov-i'><b>Concept network roles.</b> Which roots are <i>bridges</i> linking "
              "themes and which <i>anchor</i> a family — measured (e.g. ظلم is a bridge, betweenness z +4.65).</div>"

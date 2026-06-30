@@ -407,6 +407,33 @@ def main():
                           help="18 lenses, verdicts, and reviewed claims."):
                 st.switch_page("pages/22_Lens_Lab.py")
 
+    # ====== JUMP TO A DISCOVERY — surface the distinctive DISCOVER views (the concept map,
+    #        the scales, network roles, correspondence, flagship close-ups) that otherwise sit
+    #        2–3 levels deep in the side menu. Compact fit-row, content-sized buttons (no sprawl). ======
+    st.markdown("<div style='font-size:14.5px;color:#1D3557;margin:14px 0 2px'>"
+                "<b>🧭 Jump to a discovery</b> — the distinctive views, otherwise tucked under the menus"
+                "</div>", unsafe_allow_html=True)
+    with st.container(key="fitrow-quickdisc"):
+        _q = st.columns(6)
+        if _q[0].button("🗺️ Concept Atlas", key="qs_atlas",
+                        help="The whole text as one map — 1,701 roots grouped into themes, whole-Qur'ān or per sūra."):
+            st.switch_page("pages/39_Concept_Atlas.py")
+        if _q[1].button("🪜 Structure Map", key="qs_struct",
+                        help="The nested scales — letter → word → āyah → sūra → whole."):
+            st.switch_page("pages/41_Structure_Map.py")
+        if _q[2].button("🌐 Network roles", key="qs_net",
+                        help="Which roots bridge themes and which anchor a family — measured."):
+            st.switch_page("pages/2_Network.py")
+        if _q[3].button("🫀 Correspondence", key="qs_corr",
+                        help="Where the text's structure mirrors that of other designed systems."):
+            st.switch_page("pages/26_Correspondence.py")
+        if _q[4].button("🧠 Inner-self anatomy", key="qs_inner",
+                        help="The graded states of the heart — qalb · ṣadr · fuʾād."):
+            st.switch_page("pages/42_Closeup_InnerSelf.py")
+        if _q[5].button("🔢 Code 19", key="qs_code19",
+                        help="The 19-based claim, reviewed and measured."):
+            st.switch_page("pages/31_Closeup_Code19.py")
+
     # ====== ROOT-EXPLORE — research entry: input bar + MEANINGFUL themed starters
     #        (the old empty-state grid of 30 random roots was patchy/confusing). ======
     st.markdown("<div style='font-size:14.5px;color:#1D3557;margin:14px 0 2px'>"
