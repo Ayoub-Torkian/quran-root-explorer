@@ -354,20 +354,38 @@ _surf = LS.family_landscape(_families, _nodesLS, height_label=_hsrc, zoom_hub=(_
 st.plotly_chart(_surf, use_container_width=True, config={"displaylogo": False})
 _nbase = len({n["label"].replace("·a", "").replace("·b", "") for n in _N})
 _fsz = [c["n"] for c in _CM]
-_swrows = [
-    ("Concepts shown", str(len(_N)), "sense-nodes — a two-meaning word appears twice (·a / ·b)"),
-    ("Distinct roots", str(_nbase), "the base words behind those nodes"),
-    ("Coverage", "~15%", "share of the Qur’ān’s root-mentions this set covers — a <b>focused set</b> (two-meaning "
-     "words + their strongest partners), <b>not</b> a frequency ranking; for the whole-text view use the "
-     "<b>Concept Atlas</b>"),
-    ("Families", str(len(_CM)), "measured groups — a good map, <b>not a fixed count</b> (a different setting gives a "
-     "few more or fewer)"),
-    ("Biggest / smallest family", ("%d / %d" % (max(_fsz), min(_fsz)) if _fsz else "—"),
-     "concepts per family — shows how lopsided the split is"),
-]
+# Map at a glance — DYNAMIC: whole-set when "All families", else the zoomed family's own numbers
+_selc = next((c for c in _CM if _hub[c["id"]] == _zoom), None) if _zoomed else None
+if _selc is not None:
+    _shdr = "“%s” at a glance — the one family you’ve zoomed to" % _zoom
+    _swrows = [
+        ("Family", _zoom, "the family in view — named by its top concept"),
+        ("Concepts in it", str(_selc["n"]), "how many sense-nodes this family holds — its breadth"),
+        ("Share of the map", "~%.0f%%" % (100 * _selc["n"] / max(len(_N), 1)),
+         "this family’s slice of the %d concepts shown on the map" % len(_N)),
+        ("Cohesion (internal density)", "%.3f" % float(_selc["density"]),
+         "how tightly its own concepts interlink — share of the possible bonds present"),
+        ("Internal / bridge bonds", "%d / %d" % (_selc["intra"], _selc["inter"]),
+         "links inside the family vs links reaching out to other families"),
+        ("Avg links per concept", "%.2f" % float(_selc["avg_deg"]),
+         "average number of within-family links each concept has"),
+    ]
+else:
+    _shdr = "Map at a glance — read this so the numbers aren’t misread"
+    _swrows = [
+        ("Concepts shown", str(len(_N)), "sense-nodes — a two-meaning word appears twice (·a / ·b)"),
+        ("Distinct roots", str(_nbase), "the base words behind those nodes"),
+        ("Coverage", "~15%", "share of the Qur’ān’s root-mentions this set covers — a <b>focused set</b> (two-meaning "
+         "words + their strongest partners), <b>not</b> a frequency ranking; for the whole-text view use the "
+         "<b>Concept Atlas</b>"),
+        ("Families", str(len(_CM)), "measured groups — a good map, <b>not a fixed count</b> (a different setting gives a "
+         "few more or fewer)"),
+        ("Biggest / smallest family", ("%d / %d" % (max(_fsz), min(_fsz)) if _fsz else "—"),
+         "concepts per family — shows how lopsided the split is"),
+    ]
 _thS = "text-align:left;padding:6px 11px;border:1px solid #CFE0F2;font-weight:800;background:#EAF2FB"
 _tdS = "padding:6px 11px;border:1px solid #E2E8F1;vertical-align:top"
-_htmlS = ("<div style='font-size:14px;color:#1D3557;font-weight:800;margin:10px 0 3px'>Map at a glance — read this so the numbers aren’t misread</div>"
+_htmlS = ("<div style='font-size:14px;color:#1D3557;font-weight:800;margin:10px 0 3px'>%s</div>" % _shdr +
           "<table style='border-collapse:collapse;width:100%%;font-size:13.5px;color:#10243A'>"
           "<tr><th style='%s'>Metric</th><th style='%s'>Value</th><th style='%s'>What it means</th></tr>" % (_thS, _thS, _thS))
 for _m, _v, _w in _swrows:
@@ -375,12 +393,13 @@ for _m, _v, _w in _swrows:
 st.markdown(_htmlS + "</table>", unsafe_allow_html=True)
 C.note(("Showing <b>%s</b>’s concepts — each bar sized by how many verses it appears in." % _zoom) if _zoomed else
        "One bar per family, ranked by the chosen metric; hover a bar for its concept-count.")
-_peakdf = pd.DataFrame([{
-    "family (hub-concept)": _hub[c["id"]], "concepts": c["n"], "avg degree": c["avg_deg"],
-    "avg betweenness": c["avg_bet"], "density": c["density"], "internal bonds": c["intra"],
-    "bridge bonds (links out)": c["inter"], "top concepts": " · ".join(c["members"][:8])}
-    for c in _order])
-st.dataframe(_peakdf, width="stretch", hide_index=True, height=300)
+# comprehensive per-family table — full width, headers wrap to 2 lines (LS.html_table) so no stretched-empty columns
+_pkhdrS = ["family (hub-concept)", "concepts", "avg degree", "avg betweenness", "density",
+           "internal bonds", "bridge bonds (links out)", "top concepts"]
+_pkrowsS = [[_hub[c["id"]], c["n"], "%.2f" % float(c["avg_deg"]), "%.3f" % float(c["avg_bet"]),
+             "%.3f" % float(c["density"]), c["intra"], c["inter"], " · ".join(c["members"][:8])]
+            for c in _order]
+st.markdown(LS.html_table(_pkhdrS, _pkrowsS, num_cols={1, 2, 3, 4, 5, 6}, wide_col=7), unsafe_allow_html=True)
 C.note("The chart is this table made visual: a <b>longer bar = a larger value</b> in the chosen column. "
        "<b>Bridge bonds</b> = links leaving a family for another.")
 

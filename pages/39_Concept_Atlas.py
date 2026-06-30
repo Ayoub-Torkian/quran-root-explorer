@@ -726,29 +726,11 @@ else:
                                  trace=None, edges=[(a, b) for a, b, _w in _edgesA])
     st.plotly_chart(_surfA, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
     _cov = d.get("coverage"); _nall = d.get("n_all_roots"); _modq = d.get("modularity")
+    _totment = d.get("total_mentions")
     _covtxt = ("~%.0f%%" % (100 * _cov)) if _cov is not None else "—"
     _modtxt = ("%.2f" % _modq) if (_modq is not None and _modq == _modq) else "—"
     _fsz = [len(o) for _ti, o, _t in d["themes"]]
-    _atrows = [
-        ("Distinct roots in scope", (str(_nall) if _nall else "—"), "the full content vocabulary of this scope"),
-        ("Concepts mapped", str(len(d["nodes"])), "the most frequent ones — what you actually see here"),
-        ("Coverage", _covtxt, "share of this scope’s root-mentions the mapped concepts cover — the rest are "
-         "ubiquitous ‘glue’ roots (dropped) and a long tail of rare roots (not shown)"),
-        ("Families (themes)", str(len(d["themes"])), "measured groups — a good map, <b>not a fixed count</b> "
-         "(a different setting gives a few more or fewer)"),
-        ("Grouping strength (modularity)", _modtxt, "how cleanly the families separate — above ~0.30 = clear, real "
-         "structure, not random"),
-        ("Biggest / smallest family", ("%d / %d" % (max(_fsz), min(_fsz)) if _fsz else "—"),
-         "concepts per family — shows how lopsided the split is"),
-    ]
-    _th = "text-align:left;padding:6px 11px;border:1px solid #CFE0F2;font-weight:800;background:#EAF2FB"
-    _td = "padding:6px 11px;border:1px solid #E2E8F1;vertical-align:top"
-    _html = ("<div style='font-size:14px;color:#1D3557;font-weight:800;margin:10px 0 3px'>Map at a glance — read this so the numbers aren’t misread</div>"
-             "<table style='border-collapse:collapse;width:100%%;font-size:13.5px;color:#10243A'>"
-             "<tr><th style='%s'>Metric</th><th style='%s'>Value</th><th style='%s'>What it means</th></tr>" % (_th, _th, _th))
-    for _m, _v, _w in _atrows:
-        _html += "<tr><td style='%s'><b>%s</b></td><td style='%s'>%s</td><td style='%s'>%s</td></tr>" % (_td, _m, _td, _v, _td, _w)
-    st.markdown(_html + "</table>", unsafe_allow_html=True)
+    # internal/bridge bonds per theme — built once, reused by the glance table AND the comprehensive table
     _intraA = Counter(); _interA = Counter()
     for _a, _b, _w in d["edges"]:
         _ta = d["theme_of"].get(_a); _tb = d["theme_of"].get(_b)
@@ -758,26 +740,64 @@ else:
             _intraA[_ta] += 1
         else:
             _interA[_ta] += 1; _interA[_tb] += 1
+    # Map at a glance — DYNAMIC: whole-scope when "All themes", else the zoomed family's own numbers
+    _selti = next((ti for ti, _o, _t in d["themes"] if _hubA[ti] == _lz), None) if _lz != "All themes" else None
+    if _selti is not None:
+        _so = next(o for ti, o, _t in d["themes"] if ti == _selti)
+        _sn = len(_so); _socc = int(sum(_docfA.get(m, 0) for m in _so))
+        _sib = _intraA.get(_selti, 0); _sbr = _interA.get(_selti, 0)
+        _sdens = round(_sib / (_sn * (_sn - 1) / 2), 3) if _sn > 1 else 0.0
+        _scovt = ("~%.1f%%" % (100 * _socc / _totment)) if _totment else "—"
+        _smapt = "~%.0f%%" % (100 * _sn / max(len(d["nodes"]), 1))
+        _atheading = "“%s” at a glance — the one family you’ve zoomed to" % _lz
+        _atrows = [
+            ("Family", _lz, "the family in view — named by its top (most frequent) concept"),
+            ("Concepts in it", str(_sn), "how many concepts this family holds — its breadth"),
+            ("Total occurrences", str(_socc), "how often this family’s concepts occur across the scope — its weight"),
+            ("Coverage of scope", _scovt, "share of ALL this scope’s root-mentions that this one family accounts for"),
+            ("Share of the map", _smapt, "this family’s slice of the %d concepts shown on the map" % len(d["nodes"])),
+            ("Cohesion (internal density)", "%.3f" % _sdens, "how tightly its own concepts interlink — share of possible bonds present"),
+            ("Internal / bridge bonds", "%d / %d" % (_sib, _sbr), "links inside the family vs links reaching out to other families"),
+        ]
+    else:
+        _atheading = "Map at a glance — read this so the numbers aren’t misread"
+        _atrows = [
+            ("Distinct roots in scope", (str(_nall) if _nall else "—"), "the full content vocabulary of this scope"),
+            ("Concepts mapped", str(len(d["nodes"])), "the most frequent ones — what you actually see here"),
+            ("Coverage", _covtxt, "share of this scope’s root-mentions the mapped concepts cover — the rest are "
+             "ubiquitous ‘glue’ roots (dropped) and a long tail of rare roots (not shown)"),
+            ("Families (themes)", str(len(d["themes"])), "measured groups — a good map, <b>not a fixed count</b> "
+             "(a different setting gives a few more or fewer)"),
+            ("Grouping strength (modularity)", _modtxt, "how cleanly the families separate — above ~0.30 = clear, real "
+             "structure, not random"),
+            ("Biggest / smallest family", ("%d / %d" % (max(_fsz), min(_fsz)) if _fsz else "—"),
+             "concepts per family — shows how lopsided the split is"),
+        ]
+    _th = "text-align:left;padding:6px 11px;border:1px solid #CFE0F2;font-weight:800;background:#EAF2FB"
+    _td = "padding:6px 11px;border:1px solid #E2E8F1;vertical-align:top"
+    _html = ("<div style='font-size:14px;color:#1D3557;font-weight:800;margin:10px 0 3px'>%s</div>" % _atheading +
+             "<table style='border-collapse:collapse;width:100%%;font-size:13.5px;color:#10243A'>"
+             "<tr><th style='%s'>Metric</th><th style='%s'>Value</th><th style='%s'>What it means</th></tr>" % (_th, _th, _th))
+    for _m, _v, _w in _atrows:
+        _html += "<tr><td style='%s'><b>%s</b></td><td style='%s'>%s</td><td style='%s'>%s</td></tr>" % (_td, _m, _td, _v, _td, _w)
+    st.markdown(_html + "</table>", unsafe_allow_html=True)
+    # comprehensive per-theme table — full width, headers wrap to 2 lines (LS.html_table) so no stretched-empty columns
     _pkrows = []
     for ti, o, _t in d["themes"]:
         _n = len(o); _occ = int(sum(_docfA.get(m, 0) for m in o)); _ib = _intraA.get(ti, 0)
-        _pkrows.append({
-            "theme (top concept)": _hubA[ti],
-            "concepts (breadth)": _n,
-            "total occurrences (weight)": _occ,
-            "avg occ / concept": int(round(_occ / max(_n, 1))),
-            "internal density (cohesion)": round(_ib / (_n * (_n - 1) / 2), 3) if _n > 1 else 0.0,
-            "internal bonds": _ib,
-            "bridge bonds (out)": _interA.get(ti, 0),
-            "avg degree (within)": round(2 * _ib / max(_n, 1), 2),
-            "top concepts": " · ".join(disp_root(x) for x in o[:8]),
-        })
-    _pkA = pd.DataFrame(_pkrows)
-    st.markdown("<style>[data-testid='stDataFrame']{width:100% !important}</style>", unsafe_allow_html=True)
-    st.dataframe(_pkA, use_container_width=True, hide_index=True, height=340)
+        _pkrows.append([
+            _hubA[ti], _n, _occ, int(round(_occ / max(_n, 1))),
+            "%.3f" % (round(_ib / (_n * (_n - 1) / 2), 3) if _n > 1 else 0.0),
+            _ib, _interA.get(ti, 0), "%.2f" % round(2 * _ib / max(_n, 1), 2),
+            " · ".join(disp_root(x) for x in o[:8]),
+        ])
+    _pkrows.sort(key=lambda r: r[1], reverse=True)
+    _pkhdr = ["theme (top concept)", "concepts (breadth)", "total occurrences (weight)", "avg occ / concept",
+              "internal density (cohesion)", "internal bonds", "bridge bonds (out)", "avg degree (within)", "top concepts"]
+    st.markdown(LS.html_table(_pkhdr, _pkrows, num_cols={1, 2, 3, 4, 5, 6, 7}, wide_col=8), unsafe_allow_html=True)
     st.caption("Every theme with all three ranking metrics side by side (breadth · weight · cohesion) plus its "
                "connectivity — internal bonds, bridge bonds to other themes, and within-theme average degree. "
-               "Click a column header to sort; “Zoom to one theme” shows that theme’s concepts as bars.")
+               "Sorted by breadth; “Zoom to one theme” above shows that theme’s concepts as bars.")
 
 # ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
 if _scope == "A sūra":

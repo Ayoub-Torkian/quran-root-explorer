@@ -57,3 +57,28 @@ def family_landscape(families, nodes, *, height_label="value", zoom_hub=None, tr
     fig.update_xaxes(title=dict(text=height_label, font=dict(size=12, color=_INK)), gridcolor="#E4ECF3")
     fig.update_yaxes(tickfont=dict(size=13, color=_INK))
     return fig
+
+
+def html_table(headers, rows, *, num_cols=None, wide_col=None):
+    """A full-width HTML table that fixes the 'stretched columns / empty space' look of st.dataframe:
+    column HEADERS wrap to multiple lines (so they don't force wide columns), numeric columns stay tight and
+    right-aligned, and one long-text column (wide_col) absorbs the slack so the table fills the row with no gaps.
+    headers: list of titles · rows: list of row-lists (already-stringified) · num_cols: indices to right-align ·
+    wide_col: index of the text column that should expand. Returns an HTML string for st.markdown."""
+    num = set(num_cols or [])
+    _th = "padding:6px 9px;border:1px solid #CFE0F2;background:#EAF2FB;font-weight:800;line-height:1.2;white-space:normal;vertical-align:bottom"
+    out = ["<table style='border-collapse:collapse;width:100%;font-size:13px;color:#10243A'>", "<tr>"]
+    for i, h in enumerate(headers):
+        al = "right" if i in num else "left"
+        ww = "width:99%" if (wide_col is not None and i == wide_col) else "white-space:nowrap"
+        out.append("<th style='%s;text-align:%s;%s'>%s</th>" % (_th, al, ww, h))
+    out.append("</tr>")
+    for r in rows:
+        out.append("<tr>")
+        for i, c in enumerate(r):
+            al = "right" if i in num else "left"
+            nw = "" if (wide_col is not None and i == wide_col) else "white-space:nowrap"
+            out.append("<td style='padding:5px 9px;border:1px solid #E2E8F1;text-align:%s;%s'>%s</td>" % (al, nw, c))
+        out.append("</tr>")
+    out.append("</table>")
+    return "".join(out)
