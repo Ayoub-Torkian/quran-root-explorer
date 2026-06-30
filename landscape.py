@@ -66,19 +66,39 @@ def html_table(headers, rows, *, num_cols=None, wide_col=None):
     headers: list of titles · rows: list of row-lists (already-stringified) · num_cols: indices to right-align ·
     wide_col: index of the text column that should expand. Returns an HTML string for st.markdown."""
     num = set(num_cols or [])
+    n = len(headers)
+    nnum = sum(1 for i in range(n) if i in num)
+    has_wide = wide_col is not None
+    # Deterministic fixed layout via <colgroup>: the wide text column takes a fixed big share,
+    # label columns a medium share, numeric columns split the rest evenly. No width:99% hack
+    # (that fought width:100% and caused horizontal overflow + very tall rows). table-layout:fixed
+    # keeps columns honest; numeric cells are nowrap+tight, the text column wraps within its share.
+    wide_w, label_w = (30.0, 11.0) if has_wide else (0.0, 16.0)
+    nlabel = n - nnum - (1 if has_wide else 0)
+    rest = max(0.0, 100.0 - wide_w - label_w * nlabel)
+    each_num = (rest / nnum) if nnum else 0.0
+    widths = []
+    for i in range(n):
+        if has_wide and i == wide_col:
+            widths.append(wide_w)
+        elif i in num:
+            widths.append(each_num)
+        else:
+            widths.append(label_w)
+    colg = "<colgroup>" + "".join("<col style='width:%.2f%%'>" % w for w in widths) + "</colgroup>"
     _th = "padding:6px 9px;border:1px solid #CFE0F2;background:#EAF2FB;font-weight:800;line-height:1.2;white-space:normal;vertical-align:bottom"
-    out = ["<table style='border-collapse:collapse;width:100%;font-size:13px;color:#10243A'>", "<tr>"]
+    out = ["<table style='border-collapse:collapse;width:100%;table-layout:fixed;font-size:13px;color:#10243A'>",
+           colg, "<tr>"]
     for i, h in enumerate(headers):
-        al = "right" if i in num else "left"
-        ww = "width:99%" if (wide_col is not None and i == wide_col) else "white-space:nowrap"
-        out.append("<th style='%s;text-align:%s;%s'>%s</th>" % (_th, al, ww, h))
+        out.append("<th style='%s;text-align:%s'>%s</th>" % (_th, ("right" if i in num else "left"), h))
     out.append("</tr>")
     for r in rows:
         out.append("<tr>")
         for i, c in enumerate(r):
             al = "right" if i in num else "left"
-            nw = "" if (wide_col is not None and i == wide_col) else "white-space:nowrap"
-            out.append("<td style='padding:5px 9px;border:1px solid #E2E8F1;text-align:%s;%s'>%s</td>" % (al, nw, c))
+            nw = "white-space:nowrap;" if i in num else "word-break:break-word;"
+            out.append("<td style='padding:5px 9px;border:1px solid #E2E8F1;vertical-align:top;line-height:1.35;%stext-align:%s'>%s</td>"
+                       % (nw, al, c))
         out.append("</tr>")
     out.append("</table>")
     return "".join(out)

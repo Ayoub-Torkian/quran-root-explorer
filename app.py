@@ -409,11 +409,23 @@ def main():
 
     # ====== JUMP TO A DISCOVERY — surface the distinctive DISCOVER views (the concept map,
     #        the scales, network roles, correspondence, flagship close-ups) that otherwise sit
-    #        2–3 levels deep in the side menu. Compact fit-row, content-sized buttons (no sprawl). ======
-    st.markdown("<div style='font-size:14.5px;color:#1D3557;margin:14px 0 2px'>"
-                "<b>🧭 Jump to a discovery</b> — the distinctive views, otherwise tucked under the menus"
-                "</div>", unsafe_allow_html=True)
+    #        2–3 levels deep in the side menu. Styled as a tinted green-bordered LAUNCHPAD so it
+    #        visibly stands out; buttons stay content-sized (fit-row) so no full-width sprawl. ======
+    st.markdown(
+        "<style>"
+        "div.st-key-fitrow-quickdisc{background:#F4F9F7;border:1px solid #cfe4dc;"
+        "border-left:5px solid #1D9E75;border-radius:12px;padding:11px 16px 13px;margin:16px 0 4px;"
+        "box-shadow:0 1px 4px rgba(16,36,58,.07)}"
+        "div.st-key-fitrow-quickdisc button{border:1.5px solid #1D9E75 !important;background:#fff !important;"
+        "color:#1D3557 !important;font-weight:700 !important}"
+        "div.st-key-fitrow-quickdisc button:hover{background:#1D9E75 !important;border-color:#0F6E56 !important}"
+        "div.st-key-fitrow-quickdisc button:hover p,div.st-key-fitrow-quickdisc button:hover span{color:#fff !important}"
+        "</style>", unsafe_allow_html=True)
     with st.container(key="fitrow-quickdisc"):
+        st.markdown("<div style='font-size:16px;font-weight:800;color:#1D3557;margin:0 0 8px'>"
+                    "🧭 Jump to a discovery&nbsp; <span style='font-size:13px;font-weight:600;color:#0F6E56'>"
+                    "— the distinctive views, otherwise tucked under the menus</span></div>",
+                    unsafe_allow_html=True)
         _q = st.columns(6)
         if _q[0].button("🗺️ Concept Atlas", key="qs_atlas",
                         help="The whole text as one map — 1,701 roots grouped into themes, whole-Qur'ān or per sūra."):
