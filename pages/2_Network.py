@@ -322,7 +322,89 @@ st.markdown(
     '</div>',
     unsafe_allow_html=True,
 )
-safe_chart(PC.chart_network, gv, R["communities"])
+# View toggle: proven 2-D, 3-D rotate, or focus ONE community as an independent re-laid subnetwork
+import networkx as _ntnx, numpy as _ntnp, plotly.graph_objects as _ntgo
+_ntcomm = R["communities"]
+if hasattr(_ntcomm, "items"):
+    _ntcof = dict(_ntcomm)
+else:
+    _ntcof = {}
+    for _ntci, _ntmem in enumerate(_ntcomm or []):
+        for _ntn in _ntmem:
+            _ntcof[_ntn] = _ntci
+_ntids = sorted(set(_ntcof.values())) if _ntcof else []
+_ntmembers = {ci: [n for n in gv.nodes() if _ntcof.get(n) == ci] for ci in _ntids}
+_ntclab = {ci: "C%d · %s" % (ci + 1, " ".join(list(_ntmembers[ci])[:3])) for ci in _ntids}
+_ntc1, _ntc2 = st.columns([2, 3])
+with _ntc1:
+    _ntview = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="net_topo_view")
+with _ntc2:
+    _ntfocl = st.selectbox("Focus a community (independent subnetwork)",
+                           ["(whole web)"] + [_ntclab[ci] for ci in _ntids], key="net_topo_focus")
+_nt3d = _ntview.startswith("3")
+_ntfoc = next((ci for ci in _ntids if _ntclab[ci] == _ntfocl), None)
+if (not _nt3d) and (_ntfoc is None):
+    safe_chart(PC.chart_network, gv, R["communities"])
+else:
+    try:
+        _ntins = set(R["input_roots"])
+        _ntkeep = set(_ntmembers[_ntfoc]) if _ntfoc is not None else set(gv.nodes())
+        _ntout = {n: sum(1 for m in gv.neighbors(n) if m not in _ntkeep) for n in _ntkeep} if _ntfoc is not None else {}
+        _ntsub = gv.subgraph(_ntkeep)
+        _ntdim = 3 if _nt3d else 2
+        if _ntsub.number_of_nodes() == 0:
+            st.info("This community is empty for the current query.")
+        else:
+            _ntlay = _ntnx.spring_layout(_ntsub, dim=_ntdim, seed=42, weight="weight", iterations=150)
+            _ntnodes = list(_ntkeep)
+            _ntA = _ntnp.array([_ntlay[n] for n in _ntnodes], dtype=float)
+            if _ntdim == 3:
+                _ntA = (_ntA - _ntA.mean(0)) / (_ntA.std(0) + 1e-9); _ntA = _ntA / (_ntnp.linalg.norm(_ntA, axis=1, keepdims=True) + 1e-9)
+            else:
+                _ntA = _ntA - _ntA.mean(0); _ntA = _ntA / (_ntnp.abs(_ntA).max() + 1e-9)
+            _ntP = {n: _ntA[k] for k, n in enumerate(_ntnodes)}
+            _ntPAL = ["#1D9E75", "#378ADD", "#7209B7", "#EF9F27", "#0F6E56", "#138A74", "#B5651D", "#94A3B8"]
+            _ntex = []; _ntey = []; _ntez = []
+            for _a, _b in _ntsub.edges():
+                _ntex += [_ntP[_a][0], _ntP[_b][0], None]; _ntey += [_ntP[_a][1], _ntP[_b][1], None]
+                if _ntdim == 3:
+                    _ntez += [_ntP[_a][2], _ntP[_b][2], None]
+            _ntfig = _ntgo.Figure()
+            if _nt3d:
+                _ntfig.add_trace(_ntgo.Scatter3d(x=_ntex, y=_ntey, z=_ntez, mode="lines", line=dict(color="#C9D6E8", width=2), hoverinfo="none", showlegend=False))
+            else:
+                _ntfig.add_trace(_ntgo.Scatter(x=_ntex, y=_ntey, mode="lines", line=dict(color="#C9D6E8", width=1.2), hoverinfo="none", showlegend=False))
+            _ntdeg = dict(gv.degree(weight="weight")); _ntmx = (max(_ntdeg.values()) if _ntdeg else 1) or 1
+            def _ntcolor(n):
+                return "#E63946" if n in _ntins else _ntPAL[_ntcof.get(n, 0) % len(_ntPAL)]
+            for _ntbr, _ntring, _ntrc in [(True, 3.0, "#CC8A3C"), (False, 0.8, "#FFFFFF")]:
+                _g = [n for n in _ntnodes if ((_ntout.get(n, 0) > 0) == _ntbr)]
+                if not _g:
+                    continue
+                _sz = [11 + 9 * (_ntdeg.get(n, 1) ** 0.5 / (_ntmx ** 0.5)) for n in _g]
+                _co = [_ntcolor(n) for n in _g]
+                _tx = [n + ((" →%d" % _ntout[n]) if _ntbr else "") for n in _g]
+                _hv = ["%s · wdeg %.1f%s" % (n, _ntdeg.get(n, 0), ("  ·  →%d bonds to other communities" % _ntout[n]) if _ntout.get(n, 0) > 0 else "") for n in _g]
+                _mk = dict(size=_sz, color=_co, line=dict(width=_ntring, color=_ntrc))
+                if _nt3d:
+                    _ntfig.add_trace(_ntgo.Scatter3d(x=[_ntP[n][0] for n in _g], y=[_ntP[n][1] for n in _g], z=[_ntP[n][2] for n in _g], mode="markers+text", marker=_mk, text=_tx, textposition="top center", textfont=dict(size=11, color="#10243A"), hovertext=_hv, hoverinfo="text", showlegend=False))
+                else:
+                    _ntfig.add_trace(_ntgo.Scatter(x=[_ntP[n][0] for n in _g], y=[_ntP[n][1] for n in _g], mode="markers+text", marker=_mk, text=_tx, textposition="top center", textfont=dict(size=11, color="#10243A"), hovertext=_hv, hoverinfo="text", showlegend=False))
+            if _nt3d:
+                _ntfig.update_layout(height=600, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="nettopo",
+                                     scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False), bgcolor="#FFFFFF"))
+            else:
+                _ntv = [_ntP[n][0] for n in _ntnodes] + [_ntP[n][1] for n in _ntnodes]; _ntlo = min(_ntv); _nthi = max(_ntv); _ntpd = 0.12 * (_nthi - _ntlo + 1e-9)
+                _ntfig.update_layout(height=600, margin=dict(l=6, r=6, t=8, b=6), paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF", dragmode="pan", uirevision="nettopo")
+                _ntfig.update_xaxes(visible=False, range=[_ntlo - _ntpd, _nthi + _ntpd], autorange=False)
+                _ntfig.update_yaxes(visible=False, range=[_ntlo - _ntpd, _nthi + _ntpd], autorange=False)
+            if _ntfoc is not None:
+                st.caption("Independent subnetwork — %s — re-laid on its own; internal bonds intact. "
+                           "Gold-ringed = bridges; «→k» = bonds to other communities. Red = your input root(s)." % _ntfocl)
+            st.plotly_chart(_ntfig, use_container_width=True, config={"scrollZoom": True, "displaylogo": False, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
+    except Exception as _nte:
+        st.error("3-D / subnetwork view failed: %s: %s" % (type(_nte).__name__, _nte))
+        safe_chart(PC.chart_network, gv, R["communities"])
 
 st.markdown("### Chord")
 st.caption("Nodes on a ring, edges as chords.")
