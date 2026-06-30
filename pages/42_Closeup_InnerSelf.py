@@ -233,36 +233,126 @@ if _GM:
               "amp": "#EF9F27", "bound": "#7A5AA6", "dom": "#94A3B8", "out_g": "#0F6E56", "out_r": "#C1121F", "root": "#B5651D"}
     _pos = _GM["pos"]; _roles = _GM["roles"]; _strg = _GM["strength"]; _btw = _GM["betweenness"]; _deg = _GM["deg"]; _comms = _GM["communities"]
     _rof = _GM["region_of"]
-    _cross = sorted([(a, b, w) for a, b, w in _GM["edges"] if _rof.get(a) != _rof.get(b)], key=lambda e: -e[2])[:12]
-    _crs = set((a, b) for a, b, _ in _cross)
-    _ix = []; _iy = []; _gx = []; _gy = []
-    for a, b, w in _GM["edges"]:
-        sx = [_pos[a][0], _pos[b][0], None]; sy = [_pos[a][1], _pos[b][1], None]
-        if _rof.get(a) == _rof.get(b): _ix += sx; _iy += sy
-        elif (a, b) in _crs: _gx += sx; _gy += sy
-    _eti = _g2.Scatter(x=_ix, y=_iy, mode="lines", line=dict(color="#D7E0EA", width=1), hoverinfo="none", showlegend=False)
-    _etg = _g2.Scatter(x=_gx, y=_gy, mode="lines", line=dict(color="#EF9F27", width=2.4), hoverinfo="none", showlegend=False)
-    _nlab = list(_pos); _nx = [_pos[n][0] for n in _nlab]; _ny = [_pos[n][1] for n in _nlab]
-    _ncol = [_ROLEC.get(_roles[n], "#888") for n in _nlab]; _nsz = [12 + 2.2 * (_strg[n] ** 0.5) for n in _nlab]
-    _nhov = ["<b>%s</b><br>PPMI strength %.1f · degree %d<br>betweenness %.3f · closeness %.3f · PageRank %.3f" % (n, _strg[n], _deg[n], _btw[n], _GM["closeness"][n], _GM["pagerank"][n]) for n in _nlab]
-    _nt = _g2.Scatter(x=_nx, y=_ny, mode="markers+text", marker=dict(size=_nsz, color=_ncol, line=dict(width=1.5, color="#fff")),
-                      text=_nlab, textposition="top center", textfont=dict(size=11, color="#10243A"), hovertext=_nhov, hoverinfo="text", showlegend=False)
-    _fg = _g2.Figure([_eti, _etg, _nt])
-    _RTINT = {"apparatus": ("#EAF2FB", "#CFE0F2"), "drivers": ("#FBF1E6", "#EAD3B6"), "orientation": ("#EFF6F2", "#CFE4DC")}
-    _ann = []
-    for _key, _label, _grp in _GM["regions"]:
-        _grp = [n for n in _grp if n in _pos]
-        if not _grp: continue
-        _px = [_pos[n][0] for n in _grp]; _py = [_pos[n][1] for n in _grp]
-        _cx = sum(_px) / len(_px); _cy = sum(_py) / len(_py)
-        _rad = max(0.7, max(((_pos[n][0] - _cx) ** 2 + (_pos[n][1] - _cy) ** 2) ** 0.5 for n in _grp) + 0.55)
-        _fc, _lc = _RTINT.get(_key, ("#EEF3F8", "#CFE0F2"))
-        _fg.add_shape(type="circle", x0=_cx - _rad, y0=_cy - _rad, x1=_cx + _rad, y1=_cy + _rad, fillcolor=_fc, line=dict(color=_lc, width=1), layer="below", opacity=0.55)
-        _ann.append(dict(x=_cx, y=_cy + _rad + 0.2, text="<b>%s</b>" % _label, showarrow=False, font=dict(size=12, color="#1D3557")))
-    _fg.update_layout(annotations=_ann, paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF", margin=dict(l=6, r=6, t=30, b=6), height=560,
-                      title=dict(text="<b>Inner-self graph (PPMI) · three functional regions combined · cross-region bridges gold · node size = strength</b>", x=0.5, font=dict(size=13)))
-    _fg.update_xaxes(visible=False); _fg.update_yaxes(visible=False, scaleanchor="x", scaleratio=1)
-    _fg.update_layout(dragmode="pan", uirevision="keep")
+    import numpy as _np, networkx as _netx, collections as _col
+    _adjm = _col.defaultdict(set)
+    for _a, _b, _w in _GM["edges"]:
+        _adjm[_a].add(_b); _adjm[_b].add(_a)
+    _edges_t = tuple((a, b) for a, b, w in _GM["edges"])
+
+    @st.cache_data(show_spinner=False)
+    def _is_spring(ids_tuple, edges_tuple, dim):
+        """Fresh SEEDED layout for an induced subgraph / whole graph → independent, reproducible coordinates."""
+        ids = list(ids_tuple); idset = set(ids); G = _netx.Graph(); G.add_nodes_from(ids)
+        for a, b in edges_tuple:
+            if a in idset and b in idset:
+                G.add_edge(a, b)
+        p = _netx.spring_layout(G, dim=dim, seed=42, iterations=250)
+        arr = _np.array([p[i] for i in ids], dtype=float)
+        if dim == 3:
+            arr = (arr - arr.mean(0)) / (arr.std(0) + 1e-9); arr = arr / (_np.linalg.norm(arr, axis=1, keepdims=True) + 1e-9)
+        else:
+            arr = arr - arr.mean(0); arr = arr / (_np.abs(arr).max() + 1e-9)
+        return {i: arr[k].tolist() for k, i in enumerate(ids)}
+
+    _commlabels = ["C%d · %s" % (k + 1, " ".join(c[:3])) for k, c in enumerate(_comms)]
+    _isc = st.columns([2.6, 2, 3])
+    with _isc[0]:
+        _foc = st.selectbox("Focus a community (independent subnetwork)", ["(whole web)"] + _commlabels, key="is_focus")
+    with _isc[1]:
+        _vw = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="is_view")
+    _is3 = _vw.startswith("3")
+    _focidx = _commlabels.index(_foc) if _foc in _commlabels else -1
+    _focused = _focidx >= 0
+
+    _outw = {}
+    if _focused:
+        _keep = set(_comms[_focidx])
+        _P = _is_spring(tuple(sorted(_keep)), _edges_t, 3 if _is3 else 2)
+        _outw = {n: len([m for m in _adjm[n] if m not in _keep]) for n in _keep}
+    elif _is3:
+        _keep = set(_pos); _P = _is_spring(tuple(sorted(_keep)), _edges_t, 3)
+    else:
+        _keep = set(_pos); _P = {n: [_pos[n][0], _pos[n][1], 0.0] for n in _keep}
+    _PX = {n: _P[n][0] for n in _keep}; _PY = {n: _P[n][1] for n in _keep}; _PZ = {n: (_P[n][2] if len(_P[n]) > 2 else 0.0) for n in _keep}
+
+    _fg = _g2.Figure()
+    if _focused or _is3:                         # induced / re-laid: internal edges only, intact
+        _ix = []; _iy = []; _iz = []
+        for _a, _b, _w in _GM["edges"]:
+            if _a in _keep and _b in _keep:
+                _ix += [_PX[_a], _PX[_b], None]; _iy += [_PY[_a], _PY[_b], None]; _iz += [_PZ[_a], _PZ[_b], None]
+        if _is3:
+            _fg.add_trace(_g2.Scatter3d(x=_ix, y=_iy, z=_iz, mode="lines", line=dict(color="#C2CEDB", width=2), hoverinfo="none", showlegend=False))
+        else:
+            _fg.add_trace(_g2.Scatter(x=_ix, y=_iy, mode="lines", line=dict(color="#C2CEDB", width=1.3), hoverinfo="none", showlegend=False))
+    else:                                        # 2-D whole web: intra faint + cross-region bridges gold
+        _cross = sorted([(a, b, w) for a, b, w in _GM["edges"] if _rof.get(a) != _rof.get(b)], key=lambda e: -e[2])[:12]
+        _crs = set((a, b) for a, b, _ in _cross)
+        _ix = []; _iy = []; _gx = []; _gy = []
+        for a, b, w in _GM["edges"]:
+            sx = [_PX[a], _PX[b], None]; sy = [_PY[a], _PY[b], None]
+            if _rof.get(a) == _rof.get(b): _ix += sx; _iy += sy
+            elif (a, b) in _crs: _gx += sx; _gy += sy
+        _fg.add_trace(_g2.Scatter(x=_ix, y=_iy, mode="lines", line=dict(color="#D7E0EA", width=1), hoverinfo="none", showlegend=False))
+        _fg.add_trace(_g2.Scatter(x=_gx, y=_gy, mode="lines", line=dict(color="#EF9F27", width=2.4), hoverinfo="none", showlegend=False))
+
+    def _is_nodes(ids, ring, ringcol, labels):
+        sz = [12 + 2.2 * (_strg[n] ** 0.5) for n in ids]
+        col = [_ROLEC.get(_roles[n], "#888") for n in ids]
+        hov = ["<b>%s</b><br>PPMI strength %.1f · degree %d<br>betweenness %.3f · closeness %.3f · PageRank %.3f%s" % (
+            n, _strg[n], _deg[n], _btw[n], _GM["closeness"][n], _GM["pagerank"][n],
+            ("<br>→%d bonds to other communities" % _outw[n]) if _outw.get(n, 0) > 0 else "") for n in ids]
+        mk = dict(size=sz, color=col, line=dict(width=ring, color=ringcol))
+        if _is3:
+            return _g2.Scatter3d(x=[_PX[n] for n in ids], y=[_PY[n] for n in ids], z=[_PZ[n] for n in ids], mode="markers+text",
+                                 marker=mk, text=labels, textposition="top center", textfont=dict(size=11, color="#10243A"),
+                                 hovertext=hov, hoverinfo="text", showlegend=False)
+        return _g2.Scatter(x=[_PX[n] for n in ids], y=[_PY[n] for n in ids], mode="markers+text",
+                           marker=mk, text=labels, textposition="top center", textfont=dict(size=11, color="#10243A"),
+                           hovertext=hov, hoverinfo="text", showlegend=False)
+    if _focused:
+        for _isb, _ring, _rc in [(True, 3.0, "#CC8A3C"), (False, 1.5, "#FFFFFF")]:
+            _ids = [n for n in _keep if (_outw.get(n, 0) > 0) == _isb]
+            if not _ids:
+                continue
+            _labs = [n + ((" →%d" % _outw[n]) if _isb else "") for n in _ids]
+            _fg.add_trace(_is_nodes(_ids, _ring, _rc, _labs))
+    else:
+        _ids = list(_pos)
+        _fg.add_trace(_is_nodes(_ids, 1.5, "#FFFFFF", _ids))
+
+    if (not _is3) and (not _focused):            # region halos only in the flat whole-web view
+        _RTINT = {"apparatus": ("#EAF2FB", "#CFE0F2"), "drivers": ("#FBF1E6", "#EAD3B6"), "orientation": ("#EFF6F2", "#CFE4DC")}
+        _ann = []
+        for _key, _label, _grp in _GM["regions"]:
+            _grp = [n for n in _grp if n in _pos]
+            if not _grp:
+                continue
+            _px = [_pos[n][0] for n in _grp]; _py = [_pos[n][1] for n in _grp]
+            _cx = sum(_px) / len(_px); _cy = sum(_py) / len(_py)
+            _rad = max(0.7, max(((_pos[n][0] - _cx) ** 2 + (_pos[n][1] - _cy) ** 2) ** 0.5 for n in _grp) + 0.55)
+            _fc, _lc = _RTINT.get(_key, ("#EEF3F8", "#CFE0F2"))
+            _fg.add_shape(type="circle", x0=_cx - _rad, y0=_cy - _rad, x1=_cx + _rad, y1=_cy + _rad, fillcolor=_fc, line=dict(color=_lc, width=1), layer="below", opacity=0.55)
+            _ann.append(dict(x=_cx, y=_cy + _rad + 0.2, text="<b>%s</b>" % _label, showarrow=False, font=dict(size=12, color="#1D3557")))
+        _fg.update_layout(annotations=_ann)
+
+    if _is3:
+        _fg.update_layout(paper_bgcolor="#FFFFFF", margin=dict(l=0, r=0, t=30, b=0), height=600, uirevision="keep",
+                          title=dict(text="<b>Inner-self graph (PPMI) · 3-D — drag to rotate</b>", x=0.5, font=dict(size=13)),
+                          scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False), bgcolor="#FFFFFF"))
+    elif _focused:
+        _v = [_PX[n] for n in _keep] + [_PY[n] for n in _keep]; _lo = min(_v); _hi = max(_v); _pd = 0.14 * (_hi - _lo + 1e-9)
+        _fg.update_layout(paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF", margin=dict(l=6, r=6, t=30, b=6), height=560, dragmode="pan", uirevision="keep",
+                          title=dict(text="<b>Independent subnetwork · %s · internal bonds intact, bridges tagged →k</b>" % _foc, x=0.5, font=dict(size=13)))
+        _fg.update_xaxes(visible=False, range=[_lo - _pd, _hi + _pd], autorange=False)
+        _fg.update_yaxes(visible=False, range=[_lo - _pd, _hi + _pd], autorange=False)
+    else:
+        _fg.update_layout(paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF", margin=dict(l=6, r=6, t=30, b=6), height=560, dragmode="pan", uirevision="keep",
+                          title=dict(text="<b>Inner-self graph (PPMI) · three functional regions combined · cross-region bridges gold · node size = strength</b>", x=0.5, font=dict(size=13)))
+        _fg.update_xaxes(visible=False); _fg.update_yaxes(visible=False, scaleanchor="x", scaleratio=1)
+    if _focused:
+        st.caption("Independent subnetwork — community «%s» — re-laid on its own; internal PPMI bonds intact. "
+                   "Gold-ringed nodes are bridges; «→k» = bonds leaving this community." % _foc)
     st.plotly_chart(_fg, use_container_width=True, config={"displaylogo": False, "scrollZoom": True, "modeBarButtonsToRemove": ["select2d", "lasso2d"]})
     _bb = sorted(_btw.items(), key=lambda x: -x[1])[:8][::-1]
     _hb = sorted(_strg.items(), key=lambda x: -x[1])[:8][::-1]
