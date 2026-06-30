@@ -381,28 +381,7 @@ def main():
         "border-radius:3px;margin:0 0 14px'></div>" % _nr,
         unsafe_allow_html=True)
 
-    # ====== COMMAND CENTER — ONE compact card: primary Read on the left, the three
-    #        other entry paths as high-contrast buttons on the right (replaces the two
-    #        stacked boxes + the faint page-links that read as clutter). ======
-    with st.container(border=True):
-        st.markdown(
-            "<div style='display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:0 0 6px'>"
-            "<span style='font-size:20px;font-weight:800;color:#1D3557'>📖 Read &amp; listen</span>"
-            "<span style='font-size:13px;font-weight:700;color:#1D9E75'>start here</span>"
-            "<span style='font-size:13px;color:#10243A;margin-left:4px'>— read any sūra with "
-            "translation; tap an āyah's ▶ to hear it recited, the player follows along.</span>"
-            "</div>", unsafe_allow_html=True)
-        # Buttons hug their text and sit left-aligned (fit-row) — NO full-width stretch / empty bands.
-        with st.container(key="fitrow-homecmd"):
-            _b1, _b3, _b4 = st.columns(3)   # Search moved into the "Find & explore" panel below
-            if _b1.button("📖 Open the Reader  →", type="primary", key="home_open_read"):
-                st.switch_page("pages/40_Read.py")
-            if _b3.button("💡 Discovered", key="home_open_disc",
-                          help="The map of graded findings and how they connect."):
-                st.switch_page("pages/37_Discovery_Map.py")
-            if _b4.button("🧪 Rigor / claims", key="home_open_rigor",
-                          help="18 lenses, verdicts, and reviewed claims."):
-                st.switch_page("pages/22_Lens_Lab.py")
+    # (📖 Read & listen command center relocated to the END of the welcome page — see below.)
 
     # ====== FIND & EXPLORE — the TWO search entries unified in ONE standout panel, SIDE BY SIDE
     #        so they USE the width and stay compact (no tall empty bands / dead space beside a
@@ -415,6 +394,7 @@ def main():
         "border-left:5px solid #378ADD;border-radius:12px;padding:10px 16px 11px;margin:6px 0 4px;"
         "box-shadow:0 1px 4px rgba(16,36,58,.07)}"
         "div.st-key-fxright{border-left:1px solid #BFD4EC;padding-left:22px;height:100%}"
+        "div.st-key-fxright [data-testid='stVerticalBlock']{gap:.5rem}"
         "</style>", unsafe_allow_html=True)
     with st.container(key="findexplore"):
         st.markdown("<div style='font-size:16px;font-weight:800;color:#1D3557;margin:0 0 6px'>"
@@ -543,6 +523,25 @@ def main():
             quran_overview.render_overview(corpus, source="Book6")
         except Exception:
             pass
+        # ====== READ & LISTEN — relocated here, to the END of the welcome page (was at the top). ======
+        with st.container(border=True):
+            st.markdown(
+                "<div style='display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:0 0 6px'>"
+                "<span style='font-size:20px;font-weight:800;color:#1D3557'>📖 Read &amp; listen</span>"
+                "<span style='font-size:13px;font-weight:700;color:#1D9E75'>start here</span>"
+                "<span style='font-size:13px;color:#10243A;margin-left:4px'>— read any sūra with "
+                "translation; tap an āyah's ▶ to hear it recited, the player follows along.</span>"
+                "</div>", unsafe_allow_html=True)
+            with st.container(key="fitrow-homecmd"):
+                _b1, _b3, _b4 = st.columns(3)
+                if _b1.button("📖 Open the Reader  →", type="primary", key="home_open_read"):
+                    st.switch_page("pages/40_Read.py")
+                if _b3.button("💡 Discovered", key="home_open_disc",
+                              help="The map of graded findings and how they connect."):
+                    st.switch_page("pages/37_Discovery_Map.py")
+                if _b4.button("🧪 Rigor / claims", key="home_open_rigor",
+                              help="18 lenses, verdicts, and reviewed claims."):
+                    st.switch_page("pages/22_Lens_Lab.py")
         return
 
     R = need_results()
