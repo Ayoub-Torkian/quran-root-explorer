@@ -394,18 +394,54 @@ def main():
             "</div>", unsafe_allow_html=True)
         # Buttons hug their text and sit left-aligned (fit-row) — NO full-width stretch / empty bands.
         with st.container(key="fitrow-homecmd"):
-            _b1, _b2, _b3, _b4 = st.columns(4)
+            _b1, _b3, _b4 = st.columns(3)   # Search moved into the "Find & explore" panel below
             if _b1.button("📖 Open the Reader  →", type="primary", key="home_open_read"):
                 st.switch_page("pages/40_Read.py")
-            if _b2.button("🔎 Search", key="home_open_search",
-                          help="A word, phrase, root, or verse (2:255) — any spelling, diacritics optional."):
-                st.switch_page("pages/38_Search.py")
             if _b3.button("💡 Discovered", key="home_open_disc",
                           help="The map of graded findings and how they connect."):
                 st.switch_page("pages/37_Discovery_Map.py")
             if _b4.button("🧪 Rigor / claims", key="home_open_rigor",
                           help="18 lenses, verdicts, and reviewed claims."):
                 st.switch_page("pages/22_Lens_Lab.py")
+
+    # ====== FIND & EXPLORE — the TWO search entries unified in ONE standout panel, each clearly
+    #        labelled with what it does and HOW THEY DIFFER: SEARCH = look something up (locate a
+    #        word/phrase/verse); EXPLORE BY ROOT = analyse a root's reach. Blue-accented panel
+    #        (data/lookup) to distinguish it from the green discovery launchpad while keeping the
+    #        SAME panel shape — consistent treatment across sections. ======
+    st.markdown(
+        "<style>"
+        "div.st-key-findexplore{background:#EAF2FB;border:1px solid #CFE0F2;"
+        "border-left:5px solid #378ADD;border-radius:12px;padding:12px 16px 14px;margin:16px 0 4px;"
+        "box-shadow:0 1px 4px rgba(16,36,58,.07)}"
+        "</style>", unsafe_allow_html=True)
+    with st.container(key="findexplore"):
+        st.markdown("<div style='font-size:16px;font-weight:800;color:#1D3557;margin:0 0 4px'>"
+                    "🔎 Find &amp; explore the text&nbsp; <span style='font-size:13px;font-weight:600;color:#10243A'>"
+                    "— two ways in, for two different needs</span></div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:4px 0 1px'>"
+                    "Search &mdash; <span style='color:#378ADD'>look something up</span></div>"
+                    "<div style='font-size:13px;color:#10243A;line-height:1.5;margin:0 0 7px'>"
+                    "Find <b>where</b> a word, phrase, root, or verse (e.g. 2:255) appears — any spelling, "
+                    "diacritics optional. Takes you straight to the matching āyāt.</div>", unsafe_allow_html=True)
+        with st.container(key="fitrow-fxsearch"):
+            _sc = st.columns(1)
+            if _sc[0].button("🔎 Open Search  →", key="fx_open_search"):
+                st.switch_page("pages/38_Search.py")
+        st.markdown("<div style='border-top:1px dashed #CFE0F2;margin:12px 0 8px'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:14px;font-weight:800;color:#1D3557;margin:0 0 1px'>"
+                    "🌱 Explore by root &mdash; <span style='color:#1D9E75'>analyse, don't just find</span></div>"
+                    "<div style='font-size:13px;color:#10243A;line-height:1.5;margin:0 0 7px'>"
+                    "Give it an Arabic <b>root</b> (or several) and it maps the root's <b>reach</b> — its co-occurring "
+                    "partners, themes, tight pairings, and revelation timing across all 6,236 āyāt. Or start from a "
+                    "theme below.</div>", unsafe_allow_html=True)
+        run_top = render_top_input_bar(corpus, empty_samples=False)
+        if not st.session_state.get("query_roots") and not st.session_state.get("prefix_top", "").strip():
+            with chip_row("themes"):
+                _tc = st.columns(len(SAMPLE_QUERIES))
+                for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
+                    if _tc[_i].button(_lab, key=f"theme_{_i}"):
+                        _set_query(_rts); st.rerun()
 
     # ====== JUMP TO A DISCOVERY — surface the distinctive DISCOVER views (the concept map,
     #        the scales, network roles, correspondence, flagship close-ups) that otherwise sit
@@ -451,20 +487,7 @@ def main():
                         help="The 19-based claim, reviewed and measured."):
             st.switch_page("pages/31_Closeup_Code19.py")
 
-    # ====== ROOT-EXPLORE — research entry: input bar + MEANINGFUL themed starters
-    #        (the old empty-state grid of 30 random roots was patchy/confusing). ======
-    st.markdown("<div style='font-size:14.5px;color:#1D3557;margin:14px 0 2px'>"
-                "<b>🌱 Explore by root</b> — type or paste Arabic root(s), or start from a theme below"
-                "</div>", unsafe_allow_html=True)
-    run_top = render_top_input_bar(corpus, empty_samples=False)
-    if not st.session_state.get("query_roots") and not st.session_state.get("prefix_top", "").strip():
-        # chip_row → small, content-sized, wrapping chips (compact on desktop, wraps on mobile
-        # instead of 8 full-width stacked rows). No width='stretch'.
-        with chip_row("themes"):
-            _tc = st.columns(len(SAMPLE_QUERIES))
-            for _i, (_lab, _rts) in enumerate(SAMPLE_QUERIES.items()):
-                if _tc[_i].button(_lab, key=f"theme_{_i}"):
-                    _set_query(_rts); st.rerun()
+    # (Root-explore entry now lives inside the "Find & explore" panel above, alongside Search.)
 
     # About / help tucked BELOW the action so it never pushes empty space up top.
     with st.expander("ℹ️  About this tool · page guide · new here?", expanded=False):
