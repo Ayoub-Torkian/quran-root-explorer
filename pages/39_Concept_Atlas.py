@@ -794,10 +794,11 @@ else:
     _pkrows.sort(key=lambda r: r[1], reverse=True)
     _pkhdr = ["theme (top concept)", "concepts (breadth)", "total occurrences (weight)", "avg occ / concept",
               "internal density (cohesion)", "internal bonds", "bridge bonds (out)", "avg degree (within)", "top concepts"]
-    st.markdown(LS.html_table(_pkhdr, _pkrows, num_cols={1, 2, 3, 4, 5, 6, 7}, wide_col=8), unsafe_allow_html=True)
-    st.caption("Every theme with all three ranking metrics side by side (breadth · weight · cohesion) plus its "
-               "connectivity — internal bonds, bridge bonds to other themes, and within-theme average degree. "
-               "Sorted by breadth; “Zoom to one theme” above shows that theme’s concepts as bars.")
+    with st.expander("🔬 Per-theme detail table (breadth · weight · cohesion · connectivity)", expanded=False):
+        st.markdown(LS.html_table(_pkhdr, _pkrows, num_cols={1, 2, 3, 4, 5, 6, 7}, wide_col=8), unsafe_allow_html=True)
+        st.caption("Every theme with all three ranking metrics side by side (breadth · weight · cohesion) plus its "
+                   "connectivity — internal bonds, bridge bonds to other themes, and within-theme average degree. "
+                   "Sorted by breadth; “Zoom to one theme” above shows that theme’s concepts as bars.")
 
 # ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
 if _scope == "A sūra":
@@ -1099,21 +1100,43 @@ with st.expander("ℹ️ What the columns mean — and why each matters"):
 
 **Takeaway.** This table turns the map into numbers you can rank, sort, and export: find the concept that most **bridges** the Qur'ān's themes (top *betweenness*), the **anchor** of each theme (top *eigenvector* within a community), the most far-reaching ideas (top *closeness*), and how a concept's weight tilts **Meccan → Medinan** (*revelation*) — at whichever scale you choose (whole Qur'ān, one sūra, or a position band). It makes the picture **measurable and checkable**, not just visual.""")
 
-# inline concept peek — quick profile without leaving the map
-_pick = st.selectbox("🔍 Inspect a concept", [""] + d["nodes"],
+# ── In-context CONCEPT PROFILE — part-in-whole: the profile opens HERE, the map/families stay framed
+#    (the elephant is never lost). Structural-type comes from a curated registry that grows as concepts
+#    are mapped (MISSION §5/§6); un-profiled concepts show measured attributes only. ──
+_PROFILED = {   # concept(root) -> (structural-type, one-line reading, close-up page or None)
+    "قلب": ("ladder-of-states (~27)", "graded states sealed→trembling→sound; ONE organ-system with صدر·فؤاد (co-reference)", "pages/42_Closeup_InnerSelf.py"),
+    "صدر": ("ladder-of-states (~27)", "the breast — constriction/expansion pole of the heart-system", "pages/42_Closeup_InnerSelf.py"),
+    "رحم": ("gradient / ambient field", "overlapping gradient over a SHARED recipient field — no clean partition; الرحمن universal · الرحيم particular", None),
+}
+_pick = st.selectbox("🔍 Inspect a concept — its profile opens in place (the map stays above)", [""] + d["nodes"],
                      format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
 if _pick:
-    _nb = sorted(((w, (b if a == _pick else a)) for a, b, w in d["edges"] if _pick in (a, b)), reverse=True)[:6]
     _th = d["theme_of"][_pick]; _top = d["themes"][_th][2]
-    _bits = [f"freq <b>{d['docf'][_pick]}</b>", f"theme <b>{_th + 1}</b> ({' · '.join(disp_root(t) for t in _top)})",
-             f"revelation <b>{d['nuz'][_pick]:.0f}/114</b>"]
-    if _nb: _bits.append("pairs with <b>" + " · ".join(disp_root(m) for _w, m in _nb) + "</b>")
-    st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-radius:10px;"
-                "padding:8px 14px;margin:4px 0 8px;font-size:13.5px;color:#10243A;line-height:1.75'>"
-                f"🌱 <b>{disp_root(_pick)}</b> &nbsp;·&nbsp; " + " &nbsp;·&nbsp; ".join(_bits) + "</div>", unsafe_allow_html=True)
-    if st.button(f"Open {disp_root(_pick)} in Search →", key="atlas_open"):
-        st.session_state._pending_q = _pick
-        st.switch_page("pages/38_Search.py")
+    _role = ((d.get("gf", {}).get(normalize_letters(_pick)) or {}).get("role")) or "member"
+    _rolelab = {"connector / bridge": "bridge", "family anchor (hub)": "hub"}.get(_role, "member")
+    _nb = sorted(((w, (b if a == _pick else a)) for a, b, w in d["edges"] if _pick in (a, b)), reverse=True)[:6]
+    _N = len(d["nodes"])
+    _drank = sorted(d["nodes"], key=lambda n: -_deg.get(n, 0)).index(_pick) + 1
+    _brank = sorted(d["nodes"], key=lambda n: -_bet.get(n, 0.0)).index(_pick) + 1
+    _prof = _PROFILED.get(_pick) or _PROFILED.get(normalize_letters(_pick))
+    _typ = _prof[0] if _prof else "not yet profiled — measured attributes only"
+    _tcol = "#1D9E75" if _prof else "#8FA6BC"
+    st.markdown("<div style='font-size:12.5px;color:#10243A;margin:6px 0 3px'>"
+                "🐘 <b>Whole</b> &nbsp;›&nbsp; 🗂 <b>Family</b>: Theme %d (%s) &nbsp;›&nbsp; 🌱 <b>%s</b></div>"
+                % (_th + 1, " · ".join(disp_root(t) for t in _top), disp_root(_pick)), unsafe_allow_html=True)
+    _read = ("<br><span>%s</span>" % _prof[1]) if _prof else ""
+    _mm = ("freq <b>%d</b> · role <b>%s</b> · degree <b>%d</b> (#%d/%d) · betweenness <b>#%d</b> · revelation <b>%.0f/114</b>"
+           % (d["docf"][_pick], _rolelab, _deg.get(_pick, 0), _drank, _N, _brank, d["nuz"][_pick]))
+    _partners = ("<br>pairs with <b>" + " · ".join(disp_root(m) for _w, m in _nb) + "</b>") if _nb else ""
+    st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-left:4px solid %s;border-radius:10px;"
+                "padding:9px 14px;margin:2px 0 8px;font-size:13px;color:#10243A;line-height:1.7'>"
+                "structural type: <b style='color:%s'>%s</b>%s<br>%s%s</div>"
+                % (_tcol, _tcol, _typ, _read, _mm, _partners), unsafe_allow_html=True)
+    _bc = st.columns([1, 1, 3])
+    if _bc[0].button("🔎 Open in Search →", key="atlas_open"):
+        st.session_state._pending_q = _pick; st.switch_page("pages/38_Search.py")
+    if _prof and _prof[2] and _bc[1].button("🗺 Full close-up →", key="atlas_closeup"):
+        st.switch_page(_prof[2])
 
 layer(1, "Themes — click a concept to open it in Search")
 for ti, ordered, top in d["themes"]:
