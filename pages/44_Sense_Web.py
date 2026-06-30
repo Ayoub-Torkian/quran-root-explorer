@@ -352,18 +352,27 @@ _families = [{"id": c["id"], "hub": _hub[c["id"]], "color": _PAL[c["id"] % len(_
               "members": [n["id"] for n in _N if n["comm"] == c["id"]], "hval": _cval(c)} for c in _CM]
 _surf = LS.family_landscape(_families, _nodesLS, height_label=_hsrc, zoom_hub=(_zoom if _zoomed else None))
 st.plotly_chart(_surf, use_container_width=True, config={"displaylogo": False})
-st.markdown(
-    "<div style='background:#FBF1E6;border-left:4px solid #EF9F27;border-radius:7px;padding:11px 15px;"
-    "margin:6px 0 2px;font-size:13.5px;color:#10243A;line-height:1.65'>"
-    "<b>Scope &amp; coverage — read this so the numbers aren’t misread.</b><br>"
-    "&bull; <b>%d families</b> among the <b>%d sense-concepts</b> shown here.<br>"
-    "&bull; This is a <b>deliberately focused set</b> — two-meaning words and their strongest partners — covering "
-    "only about <b>15%% of the Qur’ān’s root-mentions</b>. It is <b>not a frequency ranking of the whole text</b>; "
-    "the corpus-wide view is the <b>Concept Atlas</b>.<br>"
-    "&bull; The family split is a <b>measured grouping</b> (not a hand-made list), but the <b>exact number is not a "
-    "fixed fact</b> about the Qur’ān — a different setting gives a few more or fewer, with borderline concepts "
-    "shifting between them.</div>"
-    % (len(_CM), len({n["label"].replace("·a", "").replace("·b", "") for n in _N})), unsafe_allow_html=True)
+_nbase = len({n["label"].replace("·a", "").replace("·b", "") for n in _N})
+_fsz = [c["n"] for c in _CM]
+_swrows = [
+    ("Concepts shown", str(len(_N)), "sense-nodes — a two-meaning word appears twice (·a / ·b)"),
+    ("Distinct roots", str(_nbase), "the base words behind those nodes"),
+    ("Coverage", "~15%", "share of the Qur’ān’s root-mentions this set covers — a <b>focused set</b> (two-meaning "
+     "words + their strongest partners), <b>not</b> a frequency ranking; for the whole-text view use the "
+     "<b>Concept Atlas</b>"),
+    ("Families", str(len(_CM)), "measured groups — a good map, <b>not a fixed count</b> (a different setting gives a "
+     "few more or fewer)"),
+    ("Biggest / smallest family", ("%d / %d" % (max(_fsz), min(_fsz)) if _fsz else "—"),
+     "concepts per family — shows how lopsided the split is"),
+]
+_thS = "text-align:left;padding:6px 11px;border:1px solid #CFE0F2;font-weight:800;background:#EAF2FB"
+_tdS = "padding:6px 11px;border:1px solid #E2E8F1;vertical-align:top"
+_htmlS = ("<div style='font-size:14px;color:#1D3557;font-weight:800;margin:10px 0 3px'>Map at a glance — read this so the numbers aren’t misread</div>"
+          "<table style='border-collapse:collapse;width:100%%;font-size:13.5px;color:#10243A'>"
+          "<tr><th style='%s'>Metric</th><th style='%s'>Value</th><th style='%s'>What it means</th></tr>" % (_thS, _thS, _thS))
+for _m, _v, _w in _swrows:
+    _htmlS += "<tr><td style='%s'><b>%s</b></td><td style='%s'>%s</td><td style='%s'>%s</td></tr>" % (_tdS, _m, _tdS, _v, _tdS, _w)
+st.markdown(_htmlS + "</table>", unsafe_allow_html=True)
 C.note(("Showing <b>%s</b>’s concepts — each bar sized by how many verses it appears in." % _zoom) if _zoomed else
        "One bar per family, ranked by the chosen metric; hover a bar for its concept-count.")
 _peakdf = pd.DataFrame([{

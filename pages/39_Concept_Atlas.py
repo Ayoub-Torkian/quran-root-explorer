@@ -726,22 +726,29 @@ else:
                                  trace=None, edges=[(a, b) for a, b, _w in _edgesA])
     st.plotly_chart(_surfA, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
     _cov = d.get("coverage"); _nall = d.get("n_all_roots"); _modq = d.get("modularity")
-    _covtxt = ("%.0f%%" % (100 * _cov)) if _cov is not None else "—"
+    _covtxt = ("~%.0f%%" % (100 * _cov)) if _cov is not None else "—"
     _modtxt = ("%.2f" % _modq) if (_modq is not None and _modq == _modq) else "—"
-    st.markdown(
-        "<div style='background:#FBF1E6;border-left:4px solid #EF9F27;border-radius:7px;padding:11px 15px;"
-        "margin:8px 0 2px;font-size:13.5px;color:#10243A;line-height:1.65'>"
-        "<b>Scope &amp; coverage — read this so the numbers aren’t misread.</b><br>"
-        "&bull; <b>%d themes</b> were found among the <b>%d concepts</b> shown here — the most frequent ones, out of "
-        "<b>%s distinct roots</b> in this scope.<br>"
-        "&bull; Those concepts cover only about <b>%s of this scope’s root-mentions</b>. The rest are <b>ubiquitous "
-        "‘glue’ roots</b> (God · say · all — deliberately dropped) plus a <b>long tail of rare roots</b> (not shown). "
-        "So the themes describe the <b>frequent-concept core</b>, <b>not the whole vocabulary</b>.<br>"
-        "&bull; The split into themes is a <b>measured grouping</b> (modularity <b>%s</b>; above ~0.30 = clear, "
-        "real separation), but the <b>exact number of themes is not a fixed fact</b> about the Qur’ān — a different "
-        "setting would give a few more or fewer, with borderline roots moving between them.</div>"
-        % (len(d["themes"]), len(d["nodes"]), (str(_nall) if _nall else "—"), _covtxt, _modtxt),
-        unsafe_allow_html=True)
+    _fsz = [len(o) for _ti, o, _t in d["themes"]]
+    _atrows = [
+        ("Distinct roots in scope", (str(_nall) if _nall else "—"), "the full content vocabulary of this scope"),
+        ("Concepts mapped", str(len(d["nodes"])), "the most frequent ones — what you actually see here"),
+        ("Coverage", _covtxt, "share of this scope’s root-mentions the mapped concepts cover — the rest are "
+         "ubiquitous ‘glue’ roots (dropped) and a long tail of rare roots (not shown)"),
+        ("Families (themes)", str(len(d["themes"])), "measured groups — a good map, <b>not a fixed count</b> "
+         "(a different setting gives a few more or fewer)"),
+        ("Grouping strength (modularity)", _modtxt, "how cleanly the families separate — above ~0.30 = clear, real "
+         "structure, not random"),
+        ("Biggest / smallest family", ("%d / %d" % (max(_fsz), min(_fsz)) if _fsz else "—"),
+         "concepts per family — shows how lopsided the split is"),
+    ]
+    _th = "text-align:left;padding:6px 11px;border:1px solid #CFE0F2;font-weight:800;background:#EAF2FB"
+    _td = "padding:6px 11px;border:1px solid #E2E8F1;vertical-align:top"
+    _html = ("<div style='font-size:14px;color:#1D3557;font-weight:800;margin:10px 0 3px'>Map at a glance — read this so the numbers aren’t misread</div>"
+             "<table style='border-collapse:collapse;width:100%%;font-size:13.5px;color:#10243A'>"
+             "<tr><th style='%s'>Metric</th><th style='%s'>Value</th><th style='%s'>What it means</th></tr>" % (_th, _th, _th))
+    for _m, _v, _w in _atrows:
+        _html += "<tr><td style='%s'><b>%s</b></td><td style='%s'>%s</td><td style='%s'>%s</td></tr>" % (_td, _m, _td, _v, _td, _w)
+    st.markdown(_html + "</table>", unsafe_allow_html=True)
     _intraA = Counter(); _interA = Counter()
     for _a, _b, _w in d["edges"]:
         _ta = d["theme_of"].get(_a); _tb = d["theme_of"].get(_b)
