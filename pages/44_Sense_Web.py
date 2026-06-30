@@ -295,74 +295,95 @@ C.note("Degree/betweenness shown are <b>global</b> (the concept’s role in the 
        "<b>within-subnet degree</b> and <b>→ outward bonds</b> are added so you can tell interior concepts from "
        "bridges. PageRank/eigenvector = hub influence · Clustering = how tightly its neighbours interlink.")
 
-# ── MEANING LANDSCAPE (3-D family mountain-range — explained) ─────────────────
-import math as _ma, random as _rnd
+# ── MEANING LANDSCAPE (3-D family mountain-range — explainable) ───────────────
+import math as _ma
 C.section("Meaning landscape — the concept-families as a mountain range")
 with st.expander("What this is and how to read it — open me first", expanded=True):
     C.para("<b>The idea.</b> Everything above is a flat web. Here the SAME measured families become <b>terrain</b>: "
-           "each <b>peak is one concept-family</b>, labelled by its hub-concept, and the <b>height of the peak is a "
-           "measured quantity</b> you pick below — how many concepts the family holds, how tightly they bond, or how "
-           "much hub-influence it carries. The low ground between peaks is where families meet.")
-    C.para("<b>How to read it.</b> A <b>tall mountain</b> = a big or central family; a <b>low hill</b> = a minor one; "
-           "the <b>dots on each slope</b> are that family’s concepts (bigger dot = appears in more verses). Rotate by "
-           "dragging, zoom by scrolling, and hover any dot for its concept and verse-count. The table below lists the "
-           "exact value behind every peak’s height.")
-    C.para("<b>Honest reading (the one law).</b> The <b>height and the dot sizes are MEASURED</b>; the "
-           "<b>left–right placement of the peaks is arranged for legibility only</b> (like a diagram of organs) and "
-           "means nothing — read the <i>elevation</i>, not the compass direction. This is a reading aid, not a new "
-           "discovery.")
-_hsrc = st.radio("Peak height =", ["concepts in the family", "internal density", "hub-influence (PageRank)"],
-                 horizontal=True, key="land_h")
+           "each <b>hill is one concept-family</b>, labelled by its hub-concept; the <b>height</b> is a measured "
+           "quantity you pick (size · internal density · hub-influence). The low ground between hills is where "
+           "families meet.")
+    C.para("<b>How to read it.</b> Tall hill = a big/central family; low hill = a minor one; the <b>dots packed on a "
+           "hill-top</b> are that family’s own concepts (bigger dot = more verses). <b>Drag</b> to rotate, "
+           "<b>scroll</b> to zoom. To study one family up close, use <b>“Zoom to one family”</b> — it segments out "
+           "that single hill with every concept named. The table below gives the exact numbers.")
+    C.para("<b>Honest reading (the one law).</b> <b>Height and dot-sizes are MEASURED</b>; the left–right "
+           "<b>placement is for legibility only</b> and means nothing — read the elevation, not the compass "
+           "direction. A reading aid, not a discovery.")
+_hub = {c["id"]: _clabels[c["id"]].split("  (")[0] for c in _CM}
+_lc = st.columns([2, 2])
+with _lc[0]:
+    _hsrc = st.radio("Hill height =", ["concepts in the family", "internal density", "hub-influence (PageRank)"],
+                     horizontal=True, key="land_h")
+with _lc[1]:
+    _zoom = st.selectbox("Zoom to one family (segment) — or see all",
+                         ["All families"] + [_hub[c["id"]] for c in sorted(_CM, key=lambda c: -c["n"])], key="land_zoom")
 def _cval(c):
-    if _hsrc.startswith("concepts"): return float(c["n"])
     if _hsrc.startswith("internal"): return float(c["density"]) * 10.0
-    return float(sum(n["pr"] for n in _N if n["comm"] == c["id"]))
+    if _hsrc.startswith("hub"): return float(sum(n["pr"] for n in _N if n["comm"] == c["id"]))
+    return float(c["n"])
 _order = sorted(_CM, key=lambda c: -_cval(c))
-_K = len(_order); _R = 3.4; _cx = {}; _cy = {}; _ch = {}
-for _i, c in enumerate(_order):
-    _ang = 2 * _ma.pi * _i / max(_K, 1)
-    _cx[c["id"]] = _R * _ma.cos(_ang); _cy[c["id"]] = _R * _ma.sin(_ang); _ch[c["id"]] = _cval(c)
-_hmax = max(_ch.values()) or 1.0
-for _k in _ch: _ch[_k] = _ch[_k] / _hmax
-_sig = 0.5
-_gx = np.linspace(-_R - 1.4, _R + 1.4, 110); _gy = np.linspace(-_R - 1.4, _R + 1.4, 110)
+_zoomed = _zoom != "All families"
+_show = [c for c in _CM if _hub[c["id"]] == _zoom] if _zoomed else _order
+_cx = {}; _cy = {}; _ch = {}
+if _zoomed:
+    c = _show[0]; _cx[c["id"]] = 0.0; _cy[c["id"]] = 0.0; _ch[c["id"]] = 1.0
+    _sig = 1.35; _ext = 2.8; _nrad = 1.0
+else:
+    _R = 4.0; _sig = 0.72; _ext = _R + 1.4; _nrad = 0.34
+    for _i, c in enumerate(_show):
+        _ang = 2 * _ma.pi * _i / max(len(_show), 1)
+        _cx[c["id"]] = _R * _ma.cos(_ang); _cy[c["id"]] = _R * _ma.sin(_ang); _ch[c["id"]] = _cval(c)
+    _hmax = max(_ch.values()) or 1.0
+    for _k in _ch: _ch[_k] = _ch[_k] / _hmax
+_gx = np.linspace(-_ext, _ext, 120); _gy = np.linspace(-_ext, _ext, 120)
 _GXX, _GYY = np.meshgrid(_gx, _gy)
 _Z = np.zeros_like(_GXX)
 for _cid in _ch:
     _Z += _ch[_cid] * np.exp(-(((_GXX - _cx[_cid]) ** 2 + (_GYY - _cy[_cid]) ** 2) / (2 * _sig ** 2)))
 def _zat(px, py):
     return float(sum(_ch[c] * _ma.exp(-(((px - _cx[c]) ** 2 + (py - _cy[c]) ** 2) / (2 * _sig ** 2))) for c in _ch))
-_surf = go.Figure(go.Surface(x=_gx, y=_gy, z=_Z, colorscale="Greens", showscale=False, opacity=0.9,
-                             contours=dict(z=dict(show=True, usecolormap=True, project_z=True, width=1))))
-_rnd.seed(7)
-_nx2 = []; _ny2 = []; _nz2 = []; _ncol = []; _nsz = []; _nhov = []
-for n in _N:
-    _cid = n["comm"]
-    if _cid not in _cx: continue
-    _jx = _cx[_cid] + _rnd.uniform(-0.4, 0.4); _jy = _cy[_cid] + _rnd.uniform(-0.4, 0.4)
-    _nx2.append(_jx); _ny2.append(_jy); _nz2.append(_zat(_jx, _jy) + 0.03)
-    _ncol.append(_PAL[_cid % len(_PAL)]); _nsz.append(4 + 6 * (min(n["df"], 300) / 300) ** 0.5)
-    _nhov.append("%s · %d verses · family %s" % (n["label"], n["df"], _clabels[_cid].split("  (")[0]))
-_surf.add_trace(go.Scatter3d(x=_nx2, y=_ny2, z=_nz2, mode="markers",
-    marker=dict(size=_nsz, color=_ncol, line=dict(width=0.5, color="#FFFFFF")),
-    hovertext=_nhov, hoverinfo="text", showlegend=False))
-_surf.add_trace(go.Scatter3d(x=[_cx[c["id"]] for c in _CM], y=[_cy[c["id"]] for c in _CM],
-    z=[_ch[c["id"]] + 0.13 for c in _CM], mode="text", text=[_clabels[c["id"]].split("  (")[0] for c in _CM],
-    textfont=dict(size=13, color="#10243A"), hoverinfo="none", showlegend=False))
+_CS = [[0.0, "#F5FBF8"], [0.4, "#D2ECE0"], [0.72, "#8FCDB0"], [1.0, "#2BA37D"]]
+_surf = go.Figure(go.Surface(x=_gx, y=_gy, z=_Z, colorscale=_CS, showscale=False, opacity=0.8,
+                             contours=dict(z=dict(show=True, color="#CFE4DC", width=1, project_z=True))))
+def _pack(cx, cy, k, rad):
+    out = []
+    for _t in range(k):
+        _rr = rad * ((_t + 0.5) / max(k, 1)) ** 0.5; _aa = _t * 2.399963229
+        out.append((cx + _rr * _ma.cos(_aa), cy + _rr * _ma.sin(_aa)))
+    return out
+for c in _show:
+    _cid = c["id"]; _mem = [n for n in _N if n["comm"] == _cid]
+    if not _mem:
+        continue
+    _pts = _pack(_cx[_cid], _cy[_cid], len(_mem), _nrad)
+    _xx = [p[0] for p in _pts]; _yy = [p[1] for p in _pts]; _zz = [_zat(p[0], p[1]) + 0.02 for p in _pts]
+    _sz = [4 + 6 * (min(n["df"], 300) / 300) ** 0.5 for n in _mem]
+    _hv = ["%s · %d verses" % (n["label"], n["df"]) for n in _mem]
+    _md = "markers+text" if _zoomed else "markers"
+    _surf.add_trace(go.Scatter3d(x=_xx, y=_yy, z=_zz, mode=_md,
+        marker=dict(size=_sz, color=_PAL[_cid % len(_PAL)], line=dict(width=0.5, color="#FFFFFF")),
+        text=[n["label"] for n in _mem], textposition="top center", textfont=dict(size=12, color="#10243A"),
+        hovertext=_hv, hoverinfo="text", showlegend=False))
+if not _zoomed:
+    _surf.add_trace(go.Scatter3d(x=[_cx[c["id"]] for c in _show], y=[_cy[c["id"]] for c in _show],
+        z=[_ch[c["id"]] + 0.1 for c in _show], mode="text", text=[_hub[c["id"]] for c in _show],
+        textfont=dict(size=13, color="#10243A"), hoverinfo="none", showlegend=False))
 _surf.update_layout(height=640, margin=dict(l=0, r=0, t=8, b=0), paper_bgcolor="#FFFFFF", uirevision="land",
     scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False),
-               zaxis=dict(title="height = " + _hsrc, color="#10243A"), bgcolor="#FFFFFF",
-               camera=dict(eye=dict(x=1.55, y=1.55, z=0.85))))
+               zaxis=dict(title="height = " + _hsrc, color="#10243A", gridcolor="#E2E8F1"), bgcolor="#FFFFFF",
+               aspectmode="manual", aspectratio=dict(x=1, y=1, z=0.5), camera=dict(eye=dict(x=1.5, y=1.5, z=0.9))))
 st.plotly_chart(_surf, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
-C.note("Each labelled <b>peak = a concept-family</b>; <b>height = %s</b> (measured); dots are its concepts "
-       "(size = verse-count), coloured by family. Left–right placement is for legibility only." % _hsrc)
+C.note(("Showing <b>%s</b> alone — every concept labelled. " % _zoom if _zoomed else
+        "Each labelled <b>hill = a concept-family</b>; dots packed on a top are its concepts (size = verse-count). ")
+       + "<b>Height = %s</b> (measured). Drag to rotate, scroll to zoom; left–right placement is for legibility only." % _hsrc)
 _peakdf = pd.DataFrame([{
-    "family (hub-concept)": _clabels[c["id"]].split("  (")[0], "concepts": c["n"], "avg degree": c["avg_deg"],
+    "family (hub-concept)": _hub[c["id"]], "concepts": c["n"], "avg degree": c["avg_deg"],
     "density": c["density"], "internal bonds": c["intra"], "bridge bonds (saddles out)": c["inter"]}
     for c in _order])
 st.dataframe(_peakdf, width="stretch", hide_index=True, height=300)
-C.note("The terrain is just this table made visual: the taller a family’s peak, the larger its value in the chosen "
-       "column. <b>Bridge bonds</b> are the links leaving a family — the saddles between the peaks.")
+C.note("The terrain is just this table made visual: the taller a family’s hill, the larger its value in the chosen "
+       "column. <b>Bridge bonds</b> are the links leaving a family — the saddles between the hills.")
 
 # ── WHAT IT SHOWS ────────────────────────────────────────────────────────────
 C.section("What it shows — measured sense splits")
