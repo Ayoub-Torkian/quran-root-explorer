@@ -502,6 +502,26 @@ def _load_family_graph():
     g.setdefault("gf", {})
     return g
 
+TYPE_COLORS = {"axis": "#EF9F27", "field": "#1D9E75", "partition": "#378ADD", "ladder": "#7209B7", "pair": "#4E6E92"}
+def _type_short(t):
+    t = (t or "").lower()
+    if "axis" in t: return "axis"
+    if "field" in t or "gradient" in t: return "field"
+    if "partition" in t: return "partition"
+    if "ladder" in t: return "ladder"
+    if "pair" in t or "merism" in t: return "pair"
+    return None
+def _load_type_of():
+    import json, os
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "..", "concept_profiles.json"), encoding="utf-8") as _f:
+            profs = json.load(_f).get("profiles", {})
+    except Exception:
+        return {}
+    return {normalize_letters(k): _type_short(v.get("structural_type")) for k, v in profs.items() if _type_short(v.get("structural_type"))}
+_TYPE_OF = _load_type_of()
+def _node_type(n): return _TYPE_OF.get(normalize_letters(n.split(" · ")[0]))
+
 def figure(d, color_by, focus=None, dim3=False):
     pos = d["pos3"] if dim3 else d["pos"]
     nodes, docf = d["nodes"], d["docf"]
@@ -547,6 +567,10 @@ def figure(d, color_by, focus=None, dim3=False):
                       cmin=-_m, cmax=_m, showscale=True,
                       colorbar=dict(title=d.get("axisname", ""), thickness=12),
                       line=dict(width=0.5, color="#ffffff"))
+    elif color_by == "Structural type":
+        colors = [TYPE_COLORS.get(_node_type(n), "#D7DEE7") for n in nodes]
+        texts = [_lab(n) if _node_type(n) else "" for n in nodes]
+        marker = dict(size=sizes, color=colors, line=dict(width=0.5, color="#ffffff"))
     else:
         colors = [d["nuz"][n] for n in nodes]
         marker = dict(size=sizes, color=colors, colorscale="YlOrRd", showscale=True,
@@ -684,9 +708,9 @@ else:
     else:
         st.caption("The map draws the %d most-frequent roots for legibility%s — the rest aren't dropped: every root is split into concepts in the registry and reachable via Search." % (len(d["nodes"]), (" of %s in scope" % d["n_all_roots"]) if d.get("n_all_roots") else ""))
     cc1, cc2 = st.columns([1, 1.4])
-    color_by = cc1.radio("Map mode", ["Theme", "Revelation phase", "Network role", "Around a concept"],
+    color_by = cc1.radio("Map mode", ["Theme", "Revelation phase", "Network role", "Structural type", "Around a concept"],
                          horizontal=True, key="atlas_color",
-                         format_func=lambda x: {"Theme": "Family", "Around a concept": "Around a root"}.get(x, x),
+                         format_func=lambda x: {"Theme": "Family", "Around a concept": "Around a root", "Structural type": "Structural shape"}.get(x, x),
                          help="The first three colour the whole territory. 'Around a root' zooms to one root's field.")
     _dim3 = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="atlas_dim",
                      label_visibility="collapsed").startswith("3")
@@ -719,6 +743,13 @@ else:
                         "<span style='color:#9FB3C8'>●</span> member"
                         "<br>Roles are a <b>banked graph finding</b> (degree-normalised betweenness for bridges, "
                         "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
+        if color_by == "Structural type":
+            _seen = [t for t in ["axis", "field", "partition", "ladder", "pair"] if any(_node_type(n) == t for n in dm["nodes"])]
+            _lg = " &nbsp;&nbsp;".join("<span style='color:%s'>●</span> %s" % (TYPE_COLORS[t], t) for t in _seen)
+            _nt = sum(1 for n in dm["nodes"] if _node_type(n))
+            st.markdown("<div style='font-size:12px;color:#10243A;margin:2px 0 0'>%s &nbsp;&nbsp;<span style='color:#D7DEE7'>●</span> not yet type-profiled"
+                        "<br>Colour = the concept's <b>structural shape</b> (%d profiled so far) — see the <b>Shapes of a concept</b> close-up. "
+                        "The form itself encodes the type.</div>" % (_lg, _nt), unsafe_allow_html=True)
         st.caption(("Edges = the strongest bonds between families (top 3 each). " if _family_level
                     else "Edges = above-chance pairings (PPMI) only — each root's strongest 3 partners. ")
                    + "Families are auto-grouped (Louvain); a navigation map, not a structural claim.")

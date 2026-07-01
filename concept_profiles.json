@@ -79,7 +79,7 @@
    ],
    "universe_analog": "physics — an ambient field; anatomy — the womb",
    "status": "reviewed",
-   "closeup_page": null
+   "closeup_page": "pages/45_Closeup_ConceptShapes.py"
   },
   "نور": {
    "display": "nūr — light",
@@ -99,7 +99,7 @@
    ],
    "universe_analog": "optics — an oriented axis (source → illumination)",
    "status": "reviewed",
-   "closeup_page": null
+   "closeup_page": "pages/45_Closeup_ConceptShapes.py"
   },
   "حرم": {
    "display": "ḥarām / ḥalāl — the forbidden & the sacred",
@@ -119,7 +119,7 @@
    ],
    "universe_analog": "law / set theory — a bounded domain (default region + marked exception)",
    "status": "reviewed",
-   "closeup_page": null
+   "closeup_page": "pages/45_Closeup_ConceptShapes.py"
   },
   "سمو": {
    "display": "samāwāt / arḍ — heaven & earth",
@@ -139,7 +139,7 @@
    ],
    "universe_analog": "cosmology — a vertical axis named by its two extremes (a merism for the cosmos)",
    "status": "reviewed",
-   "closeup_page": null
+   "closeup_page": "pages/45_Closeup_ConceptShapes.py"
   }
  }
 }

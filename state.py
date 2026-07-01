@@ -80,6 +80,7 @@ NAV_SECTIONS = [
             ("pages/42_Closeup_InnerSelf.py", "Anatomy of the inner self", "🧠"),
             ("pages/43_Closeup_ConceptRearrange.py", "al-Kawthar word-web", "🧭"),
             ("pages/44_Sense_Web.py", "Sense-resolved web · 3-D", "🕸"),
+            ("pages/45_Closeup_ConceptShapes.py", "Shapes of a concept", "🔷"),
             ("pages/35_Mathani_Lab.py", "Mathānī · refrains", "🔁"),
             ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
         ]),
