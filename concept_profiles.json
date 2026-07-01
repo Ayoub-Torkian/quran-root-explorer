@@ -140,6 +140,26 @@
    "universe_analog": "cosmology — a vertical axis named by its two extremes (a merism for the cosmos)",
    "status": "reviewed",
    "closeup_page": "pages/45_Closeup_ConceptShapes.py"
+  },
+  "سحر": {
+   "display": "siḥr — sorcery (vs the sign)",
+   "family": "sign_and_denial",
+   "structural_type": "counterfeit / adversarial mirror of the sign",
+   "reading": {
+    "form_content": "[TEXT · MEASURED] siḥr is mostly what deniers SAY — 44/59 sorcery-verses carry قول 'to say'; the formula سِحْرٌ مُبِين 'clear sorcery' (9×) is hurled at Moses, Jesus and Muhammad alike — the exact mirror of بيّنة/مبين 'clear proof' (same adjective, opposite verdict).",
+    "grammar_semantics": "[TEXT] the Qurʾān has NO word معجزة (0×; root عجز = 'to frustrate/escape'); its sign-vocabulary is آية (382) · بيّنة (523) · برهان (8). 'muʿjiza' is post-Qurʾānic. The real pair is āyah (sign) ↔ siḥr (its counterfeit).",
+    "structure_function": "[TEXT+INFERENCE] siḥr is built to be CONFUSABLE with the sign (both extraordinary); the text separates them by four differentiators — source (devil-taught 2:102 vs by-God's-leave), ontology (illusion of the eyes 7:116, 20:66 vs real), outcome (never prospers 20:69, nullified 10:81, swallowed 7:117), and the experts' verdict (the magicians themselves prostrate, 26:46·7:120·20:70)."
+   },
+   "senses": [
+    "sorcery / the accusation 'this is sorcery'",
+    "the magician (ساحر/سَحَرة)",
+    "bewitched (مسحور) — aimed at the prophet",
+    "taught sorcery — Hārūt/Mārūt, kufr (2:102)",
+    "the homograph سَحَر 'pre-dawn' (set aside)"
+   ],
+   "universe_analog": "epistemology / forensics — telling a genuine from a counterfeit by hidden markers",
+   "status": "reviewed",
+   "closeup_page": null
   }
  }
 }
