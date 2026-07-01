@@ -555,6 +555,8 @@ hero("🗺️ Concept Atlas",
      "frequency. Each node is a root; a curated concept can bundle several roots (see the concept profile up top). "
      "Scope it to the whole Qur'ān, a single sūra, or a relative-position band. Click any root to open it in Search.")
 
+_guide_slot = st.container()   # the one-page guide renders here — the very first thing after the title
+
 SNAME = _sura_names(id(corpus))
 BANDS = ["Opening", "Early", "Middle", "Late", "Closing"]
 _goto = st.session_state.pop("_atlas_goto_sura", None)        # set by the sūra-map dropdown
@@ -587,7 +589,7 @@ if _scope != "Whole Qur'ān":
         st.session_state["atlas_mapjump"] = 0
         st.session_state["_atlas_lastjump"] = 0
         st.rerun()
-with st.expander("ℹ️ What this page shows — scales, maps & metrics (one-page guide)"):
+with _guide_slot.expander("ℹ️ What this page shows — scales, maps & metrics (one-page guide)"):
     st.markdown(
 """**The core idea.** Each **root** is a node; an **edge** joins two roots that co-occur more than chance (PPMI); **colour** = the **family** each root falls into. (A curated **concept** can bundle several roots — قلب·صدر·فؤاد = the heart — and lives in the *concept profile* at the top.) The *same* engine drives every view below.
 
@@ -619,7 +621,7 @@ else:
         st.session_state["atlas_color"] = "Theme"
         _lt = d["theme_of"][_cp_g]
         st.session_state["atlas_focus"] = "Family %d: %s" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
-    layer(1, "🗺️ The map — roots as a web")
+    layer(2, "🗺️ The map — roots as a web")
     c1, c2, c3 = st.columns(3)
     c1.metric("Roots mapped", len(d["nodes"]))
     c2.metric("Attraction links", len(d["edges"]))
@@ -663,7 +665,7 @@ else:
                    "Families are auto-grouped (Louvain); a navigation map, not a structural claim.")
 
     # ── FAMILY SIZES — ranked bar chart (shared landscape.py helper) ──
-    layer(2, "📊 Family sizes — the families, ranked")
+    layer(3, "📊 Family sizes — the families, ranked")
     with st.expander("What this shows — open me", expanded=True):
         st.markdown(
             "<div style='font-size:14px;color:#10243A;line-height:1.65'>"
@@ -834,7 +836,7 @@ if _scope == "A sūra":
     _scd = {r: (_rc[r] / _tot) * _S["idf"].get(r, 0.0) for r in _rc}
     _top = sorted(_scd, key=lambda r: -_scd[r])[:25]
     _idx = [_S["ni"][r] for r in _top]
-    layer(3, "🧭 Where this sūra sits in the Qur'ān's meaning-space (semantic footprint)")
+    layer(4, "🧭 Where this sūra sits in the Qur'ān's meaning-space (semantic footprint)")
     if len(_idx) >= 6:
         _iu = np.triu_indices(len(_idx), 1)
         _obs = float(_S["SIM"][np.ix_(_idx, _idx)][_iu].mean())
@@ -878,7 +880,7 @@ if _scope == "A sūra":
         _ord = [(_Qs["suras"][b], float(_row[b]), _tlen.get(_Qs["suras"][b], 0))
                 for b in np.argsort(-_row) if _Qs["suras"][b] != _sel]
         _topc = _ord[0][1] if _ord else 0.0
-        layer(4, "🧭 Most related sūras (mutual) — by whole-vocabulary similarity")
+        layer(5, "🧭 Most related sūras (mutual) — by whole-vocabulary similarity")
         st.caption("⤷ Sūra-level companion (the maps above are the *root* territory). Similarity is "
                    "**symmetric** — these sūras and the one you picked elaborate *each other*; the relation arrow only "
                    "marks which side has more room to develop the shared material.")
@@ -956,7 +958,7 @@ if _scope == "A sūra":
 # ---- the 114 sūras as a semantic map (which sūras are alike) — whole-Qur'ān companion view ----
 if _scope == "Whole Qur'ān":
     _Q = _sura_space(id(corpus))
-    layer(3, "🗺️ The 114 sūras as a semantic map — which sūras are alike")
+    layer(4, "🗺️ The 114 sūras as a semantic map — which sūras are alike")
     _qx, _qs, _qc = _Q["xy"], _Q["suras"], _Q["comm"]
     _fam = {}
     for a, s in enumerate(_qs): _fam.setdefault(_qc.get(a, 0), []).append(s)
@@ -990,7 +992,7 @@ if _scope == "Whole Qur'ān":
                "Colour = family (legend above). Hover a point to see its name; use the dropdown to open a sūra's internal map + footprint. A navigation map, not a claim.")
     # ---- cluster (family) metrics table ----
     _F = _Q["families"]
-    layer(4, "📊 Cluster metrics — the sūra families")
+    layer(5, "📊 Cluster metrics — the sūra families")
     _hdr = "".join(
         f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
         f'text-align:right;font-size:12px;white-space:nowrap">{h}</th>'
@@ -1070,7 +1072,7 @@ for n in d["nodes"]:
                   "clustering": round(_clu.get(n, 0.0), 3), "revelation 1–114": round(d["nuz"][n]),
                   "top partners": " · ".join(disp_root(p) for p in _partners[n])})
 _df = pd.DataFrame(_rows).sort_values(["family #", "frequency"], ascending=[True, False])
-layer(5, "📋 Data behind the map — scrollable · copyable (use the CSV below to sort)")
+layer(6, "📋 Data behind the map — scrollable · copyable (use the CSV below to sort)")
 # Full-width HTML table — st.dataframe won't stretch on this Streamlit build, so we control width directly.
 _cols = list(_df.columns)
 _arab = {"root", "family", "top partners"}
@@ -1152,9 +1154,7 @@ def _load_concept_senses():
         return {}
 _SENSES = _load_concept_senses()   # root -> {occ, n_concepts, senses:[{sense,gloss,status,occ,forms}]} — ALL 1701 roots
 with _concept_slot:
-    st.markdown("<div style='display:inline-block;background:#1D3557;color:#fff;font-weight:800;font-size:15px;"
-                "padding:7px 15px;border-radius:8px;margin:2px 0 6px;letter-spacing:.03em'>🧬 CONCEPT PROFILE</div>",
-                unsafe_allow_html=True)
+    layer(1, "🧬 CONCEPT PROFILE — zoom into one root")
     _pickroots = sorted(set(_SENSES) | set(d["nodes"]), key=disp_root) if _SENSES else sorted(d["nodes"], key=disp_root)
     st.markdown("<div class='t-body' style='margin:-2px 0 6px;color:#10243A'><b>Zoom into one root</b> — the opposite of the map below. "
                 "Pick a root and read the <b>concept(s)</b> it carries (meaning · senses · partners); <b>Layer 1 · the map</b> below shows "
