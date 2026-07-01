@@ -1163,8 +1163,14 @@ with _concept_slot:
                 "Pick a root and read the <b>concept(s)</b> it carries (meaning · senses · partners); <b>Layer 1 · the map</b> below shows "
                 "<b>all</b> roots at once and <b>auto-highlights</b> your pick's family. <i>One ↔ the whole.</i></div>",
                 unsafe_allow_html=True)
-    _pick = st.selectbox("🔍 Pick a root (all %d)" % len(_pickroots),
-                         [""] + _pickroots,
+    _q = st.text_input("🔍 Type to find a root — Arabic or Persian both match (ك=ک · ي=ی · ة=ه)", key="atlas_pickq").strip()
+    _nq = normalize_letters(_q) if _q else ""
+    _opts = [r for r in _pickroots if (not _nq) or (_nq in normalize_letters(r))]
+    _cur = st.session_state.get("atlas_pick", "")
+    if _cur and _cur not in _opts:          # keep the current pick valid so the selectbox never errors
+        _opts = [_cur] + _opts
+    _pick = st.selectbox("…then choose it (all %d roots)" % len(_pickroots),
+                         [""] + _opts,
                          format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
     if _pick:
         _gkey = next((n for n in d["nodes"] if normalize_letters(n) == normalize_letters(_pick)), None)
