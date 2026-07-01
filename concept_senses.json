@@ -10593,36 +10593,36 @@
  },
  "زوج": {
   "occ": 81,
-  "n_concepts": 5,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [أ__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 51,
+    "sense": "spouse / pair",
+    "gloss": "زوج / أزواج / زوجین — a spouse, a pair",
+    "status": "curated",
+    "occ": 80,
     "forms": [
      [
       "أزواج",
       37
      ],
      [
-      "أزواجا",
-      14
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 22,
-    "forms": [
-     [
       "زوج",
       20
      ],
      [
+      "أزواجا",
+      14
+     ],
+     [
+      "زوجين",
+      6
+     ],
+     [
       "زوجا",
+      1
+     ],
+     [
+      "إزواج",
       1
      ],
      [
@@ -10632,32 +10632,8 @@
     ]
    },
    {
-    "sense": "candidate 3 [___ين]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
-     [
-      "زوجين",
-      6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [إ__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "إزواج",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [ي___]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
     "occ": 1,
     "forms": [
@@ -10671,20 +10647,52 @@
  },
  "طهر": {
   "occ": 31,
-  "n_concepts": 10,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [م___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 8,
+    "sense": "purity / purification",
+    "gloss": "طهر / مطهرة / طهور — to cleanse",
+    "status": "curated",
+    "occ": 30,
     "forms": [
      [
       "مطهرة",
       5
      ],
      [
+      "یطهر",
+      5
+     ],
+     [
+      "طهر",
+      4
+     ],
+     [
+      "أطهر",
+      4
+     ],
+     [
+      "یتطهر",
+      3
+     ],
+     [
+      "تطهر",
+      2
+     ],
+     [
+      "طهورا",
+      2
+     ],
+     [
+      "متطهرین",
+      1
+     ],
+     [
       "مطهر",
+      1
+     ],
+     [
+      "اطهر",
       1
      ],
      [
@@ -10698,104 +10706,8 @@
     ]
    },
    {
-    "sense": "candidate 2 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
-    "forms": [
-     [
-      "یطهر",
-      5
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "طهر",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "أطهر",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [یت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
-     [
-      "یتطهر",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "تطهر",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [__و_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "طهورا",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 8 [مت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "متطهرین",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 9 [ا___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "اطهر",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 10 [ت__ی_]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
     "occ": 1,
     "forms": [
@@ -11129,66 +11041,34 @@
  },
  "ضرب": {
   "occ": 58,
-  "n_concepts": 5,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 31,
+    "sense": "to strike / set forth",
+    "gloss": "ضرب / اضرب — strike, set a parable, travel",
+    "status": "curated",
+    "occ": 58,
     "forms": [
      [
       "ضرب",
       29
      ],
      [
-      "ضربا",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [ا___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 12,
-    "forms": [
-     [
       "اضرب",
       12
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 11,
-    "forms": [
+     ],
      [
       "یضرب",
       11
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ن___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
+     ],
      [
       "نضرب",
       3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
+     [
+      "ضربا",
+      2
+     ],
      [
       "تضرب",
       1
@@ -11619,13 +11499,13 @@
  },
  "فسق": {
   "occ": 54,
-  "n_concepts": 5,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 37,
+    "sense": "rebellion / immorality",
+    "gloss": "فاسق / فسوق — transgression",
+    "status": "curated",
+    "occ": 54,
     "forms": [
      [
       "فاسقین",
@@ -11636,63 +11516,31 @@
       17
      ],
      [
-      "فاسقا",
-      1
-     ],
-     [
-      "فاسق",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 7,
-    "forms": [
-     [
       "فسق",
       6
      ],
      [
-      "فسقا",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
-    "forms": [
-     [
       "یفسق",
       5
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [__و_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
+     ],
      [
       "فسوق",
       4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
+     [
+      "فسقا",
+      1
+     ],
+     [
+      "فاسقا",
+      1
+     ],
      [
       "تفسق",
+      1
+     ],
+     [
+      "فاسق",
       1
      ]
     ]
@@ -11755,42 +11603,26 @@
  },
  "عهد": {
   "occ": 46,
-  "n_concepts": 3,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 34,
+    "sense": "covenant / pledge",
+    "gloss": "عهد / عاهد — a binding pledge",
+    "status": "curated",
+    "occ": 46,
     "forms": [
      [
       "عهد",
       30
      ],
      [
-      "عهدا",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 11,
-    "forms": [
-     [
       "عاهد",
       11
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
+     [
+      "عهدا",
+      4
+     ],
      [
       "أعهد",
       1
@@ -13487,61 +13319,53 @@
  },
  "سجد": {
   "occ": 92,
-  "n_concepts": 11,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [م___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 22,
+    "sense": "prostration",
+    "gloss": "سجد / ساجد / سجود — to prostrate",
+    "status": "curated",
+    "occ": 69,
     "forms": [
      [
-      "مسجد",
-      20
+      "اسجد",
+      12
      ],
-     [
-      "مسجدا",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 19,
-    "forms": [
      [
       "سجدا",
       11
      ],
      [
-      "سجد",
-      8
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [ا___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 12,
-    "forms": [
-     [
-      "اسجد",
-      12
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 12,
-    "forms": [
-     [
       "ساجدین",
       10
+     ],
+     [
+      "سجد",
+      8
+     ],
+     [
+      "مساجد",
+      6
+     ],
+     [
+      "سجود",
+      6
+     ],
+     [
+      "یسجد",
+      6
+     ],
+     [
+      "تسجد",
+      3
+     ],
+     [
+      "يسجد",
+      3
+     ],
+     [
+      "مسجدا",
+      2
      ],
      [
       "ساجدون",
@@ -13554,83 +13378,27 @@
     ]
    },
    {
-    "sense": "candidate 5 [م_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
+    "sense": "mosque / place of prostration",
+    "gloss": "مسجد / مساجد — a mosque",
+    "status": "curated",
+    "occ": 20,
     "forms": [
      [
-      "مساجد",
-      6
+      "مسجد",
+      20
      ]
     ]
    },
    {
-    "sense": "candidate 6 [__و_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
-     [
-      "سجود",
-      6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
-     [
-      "یسجد",
-      6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 8 [ت___]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
     "occ": 3,
-    "forms": [
-     [
-      "تسجد",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 9 [ي___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
-     [
-      "يسجد",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 10 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
     "forms": [
      [
       "أسجد",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 11 [ن___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "نسجد",
       1
@@ -14093,108 +13861,60 @@
  },
  "ءکل": {
   "occ": 109,
-  "n_concepts": 8,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 32,
+    "sense": "eating / food",
+    "gloss": "کل / یأکل / مأکول — to eat",
+    "status": "curated",
+    "occ": 108,
     "forms": [
      [
       "کل",
       32
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [تأ__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 31,
-    "forms": [
+     ],
      [
       "تأکل",
       31
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [_أ__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 24,
-    "forms": [
+     ],
      [
       "یأکل",
       24
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [أ__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 15,
-    "forms": [
+     ],
      [
       "أکل",
       15
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [آ___ن]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
+     ],
      [
       "آکلون",
       2
      ],
      [
-      "آکلین",
+      "نأکل",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
-      "أکالون",
+      "آکلین",
       1
      ],
      [
       "أکلا",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [نأ__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
-      "نأکل",
+      "مأکول",
       1
      ]
     ]
    },
    {
-    "sense": "candidate 8 [مأ___]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
     "occ": 1,
     "forms": [
      [
-      "مأکول",
+      "أکالون",
       1
      ]
     ]
@@ -14392,9 +14112,9 @@
   "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
+    "sense": "tree",
+    "gloss": "شجرة / شجر — a tree",
+    "status": "curated",
     "occ": 27,
     "forms": [
      [
@@ -16503,13 +16223,13 @@
  },
  "لبس": {
   "occ": 23,
-  "n_concepts": 5,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 10,
+    "sense": "clothing / garment",
+    "gloss": "لباس / لبوس — a garment",
+    "status": "curated",
+    "occ": 11,
     "forms": [
      [
       "لباس",
@@ -16518,54 +16238,30 @@
      [
       "لباسا",
       3
+     ],
+     [
+      "لبوس",
+      1
      ]
     ]
    },
    {
-    "sense": "candidate 2 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
+    "sense": "to cloak / confound",
+    "gloss": "لبس / یلبس — to cover, confuse",
+    "status": "curated",
+    "occ": 12,
     "forms": [
      [
       "یلبس",
       6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
+     ],
      [
       "تلبس",
       4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "لبس",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [__و_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "لبوس",
-      1
      ]
     ]
    }
@@ -16643,13 +16339,13 @@
  },
  "زکو": {
   "occ": 59,
-  "n_concepts": 8,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 44,
+    "sense": "purity / growth",
+    "gloss": "زکا / أزکى / تزکى — to purify, grow",
+    "status": "curated",
+    "occ": 58,
     "forms": [
      [
       "زکاة",
@@ -16660,7 +16356,23 @@
       8
      ],
      [
+      "أزکى",
+      4
+     ],
+     [
+      "تزکى",
+      4
+     ],
+     [
       "زکا",
+      2
+     ],
+     [
+      "یتزکى",
+      2
+     ],
+     [
+      "یزکى",
       2
      ],
      [
@@ -16668,77 +16380,13 @@
       1
      ],
      [
-      "زکیة",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [أ__ى]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "أزکى",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [ت__ى]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "تزکى",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [_ت__ى]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "یتزکى",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [___ى]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "یزکى",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
       "تزکی",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [__ی_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
+     [
+      "زکیة",
+      1
+     ],
      [
       "زکیا",
       1
@@ -16746,8 +16394,8 @@
     ]
    },
    {
-    "sense": "candidate 8 [ت__]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
     "occ": 1,
     "forms": [
@@ -16761,16 +16409,24 @@
  },
  "رکع": {
   "occ": 13,
-  "n_concepts": 4,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
+    "sense": "bowing (rukūʿ)",
+    "gloss": "ارکع / راکع / رکع — to bow",
+    "status": "curated",
+    "occ": 13,
     "forms": [
      [
+      "ارکع",
+      4
+     ],
+     [
       "راکعین",
+      2
+     ],
+     [
+      "رکع",
       2
      ],
      [
@@ -16780,43 +16436,11 @@
      [
       "راکعا",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [ا___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "ارکع",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
-     [
-      "رکع",
-      2
      ],
      [
       "رکعا",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "یرکع",
       1
@@ -18641,50 +18265,26 @@
  },
  "ذبح": {
   "occ": 9,
-  "n_concepts": 4,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
+    "sense": "slaughter / sacrifice",
+    "gloss": "ذبح / یذبح — to sacrifice",
+    "status": "curated",
+    "occ": 9,
     "forms": [
      [
       "یذبح",
       3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
+     ],
      [
       "ذبح",
       3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "أذبح",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "تذبح",
       1
@@ -19109,13 +18709,13 @@
  },
  "بحر": {
   "occ": 42,
-  "n_concepts": 4,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 38,
+    "sense": "sea",
+    "gloss": "بحر / بحار — the sea",
+    "status": "curated",
+    "occ": 41,
     "forms": [
      [
       "بحر",
@@ -19126,43 +18726,27 @@
       4
      ],
      [
+      "بحار",
+      2
+     ],
+     [
+      "أبحر",
+      1
+     ],
+     [
       "بحران",
       1
      ]
     ]
    },
    {
-    "sense": "candidate 2 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "بحار",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [__ی_]",
-    "gloss": "",
-    "status": "candidate",
+    "sense": "the baḥīra",
+    "gloss": "بحیرة — a she-camel of pagan vow",
+    "status": "curated",
     "occ": 1,
     "forms": [
      [
       "بحیرة",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "أبحر",
       1
      ]
     ]
@@ -19423,13 +19007,13 @@
  },
  "وعد": {
   "occ": 151,
-  "n_concepts": 12,
+  "n_concepts": 3,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 87,
+    "sense": "promise",
+    "gloss": "وعد / واعد — a promise",
+    "status": "curated",
+    "occ": 105,
     "forms": [
      [
       "وعد",
@@ -19442,34 +19026,62 @@
      [
       "وعدا",
       7
+     ],
+     [
+      "تعد",
+      5
+     ],
+     [
+      "نعد",
+      4
+     ],
+     [
+      "موعدا",
+      4
+     ],
+     [
+      "واعد",
+      3
+     ],
+     [
+      "تواعد",
+      2
      ]
     ]
    },
    {
-    "sense": "candidate 2 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 13,
+    "sense": "threat / warning",
+    "gloss": "وعید / توعّد — a threat",
+    "status": "curated",
+    "occ": 29,
     "forms": [
      [
       "توعد",
       13
+     ],
+     [
+      "یوعد",
+      10
+     ],
+     [
+      "وعید",
+      6
      ]
     ]
    },
    {
-    "sense": "candidate 3 [م___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 13,
+    "sense": "appointed time / place",
+    "gloss": "موعد / میعاد — the tryst",
+    "status": "curated",
+    "occ": 15,
     "forms": [
      [
       "موعد",
       8
      ],
      [
-      "موعدا",
-      4
+      "میعاد",
+      6
      ],
      [
       "موعدة",
@@ -19478,107 +19090,15 @@
     ]
    },
    {
-    "sense": "candidate 4 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 10,
-    "forms": [
-     [
-      "یوعد",
-      10
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [می___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
-     [
-      "میعاد",
-      6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [__ی_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
-     [
-      "وعید",
-      6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [ت__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
-    "forms": [
-     [
-      "تعد",
-      5
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 8 [ن__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "نعد",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 9 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
-     [
-      "واعد",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 10 [ت_ا__]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
     "occ": 2,
     "forms": [
      [
-      "تواعد",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 11 [__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
       "عد",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 12 [م__و_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "موعود",
       1
@@ -20175,186 +19695,38 @@
  },
  "قتل": {
   "occ": 170,
-  "n_concepts": 17,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 47,
+    "sense": "killing / slaying",
+    "gloss": "قتل / یقتل / اقتل — to kill",
+    "status": "curated",
+    "occ": 98,
     "forms": [
      [
       "قتل",
       47
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 25,
-    "forms": [
-     [
-      "قاتل",
-      25
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 20,
-    "forms": [
+     ],
      [
       "یقتل",
       20
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ی_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 17,
-    "forms": [
-     [
-      "یقاتل",
-      17
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [__ت_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 16,
-    "forms": [
+     ],
      [
       "تقتل",
       16
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 13,
-    "forms": [
-     [
-      "قتال",
-      12
      ],
-     [
-      "قتالا",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [ا___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 10,
-    "forms": [
      [
       "اقتل",
       10
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 8 [__ات_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 7,
-    "forms": [
-     [
-      "تقاتل",
-      7
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 9 [ا__ت_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
-     [
-      "اقتتل",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 10 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
+     ],
      [
       "أقتل",
       3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 11 [ن_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "نقاتل",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 12 [_و__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "قوتل",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 13 [___ى]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "قتلى",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 14 [ي_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "يقاتل",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 15 [ن___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "نقتل",
       1
@@ -20362,23 +19734,59 @@
     ]
    },
    {
-    "sense": "candidate 16 [ی__ت_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
+    "sense": "fighting / combat",
+    "gloss": "قاتل / قتال / قوتل — to fight",
+    "status": "curated",
+    "occ": 70,
     "forms": [
      [
-      "یقتتل",
+      "قاتل",
+      25
+     ],
+     [
+      "یقاتل",
+      17
+     ],
+     [
+      "قتال",
+      12
+     ],
+     [
+      "تقاتل",
+      7
+     ],
+     [
+      "اقتتل",
+      3
+     ],
+     [
+      "نقاتل",
+      2
+     ],
+     [
+      "قوتل",
+      2
+     ],
+     [
+      "قتالا",
+      1
+     ],
+     [
+      "يقاتل",
       1
      ]
     ]
    },
    {
-    "sense": "candidate 17 [__تی_]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
-    "occ": 1,
+    "occ": 2,
     "forms": [
+     [
+      "یقتتل",
+      1
+     ],
      [
       "تقتیلا",
       1
@@ -22551,118 +21959,54 @@
  },
  "شرب": {
   "occ": 39,
-  "n_concepts": 9,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 11,
+    "sense": "drinking / drink",
+    "gloss": "شراب / یشرب — to drink",
+    "status": "curated",
+    "occ": 39,
     "forms": [
      [
       "شراب",
       9
      ],
      [
-      "شرابا",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [ا___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 7,
-    "forms": [
-     [
       "اشرب",
       7
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
+     ],
      [
       "شرب",
       6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
-    "forms": [
+     ],
+     [
+      "یشرب",
+      4
+     ],
      [
       "شاربین",
       3
      ],
      [
-      "شاربون",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "یشرب",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [م___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
       "مشرب",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "تشرب",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 8 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
+     [
+      "شاربون",
+      2
+     ],
+     [
+      "شرابا",
+      2
+     ],
      [
       "أشرب",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 9 [م_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "مشارب",
       1
@@ -22911,54 +22255,30 @@
  },
  "نبت": {
   "occ": 26,
-  "n_concepts": 4,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 12,
+    "sense": "growth / vegetation",
+    "gloss": "أنبت / نبات — to grow, plants",
+    "status": "curated",
+    "occ": 26,
     "forms": [
      [
       "أنبت",
       12
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 9,
-    "forms": [
+     ],
      [
       "نبات",
       6
      ],
      [
-      "نباتا",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [___ت]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
       "تنبت",
       4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
+     [
+      "نباتا",
+      3
+     ],
      [
       "ینبت",
       1
@@ -23523,28 +22843,52 @@
  },
  "عصی": {
   "occ": 32,
-  "n_concepts": 5,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 18,
+    "sense": "a staff",
+    "gloss": "عصا — Moses' staff",
+    "status": "curated",
+    "occ": 1,
+    "forms": [
+     [
+      "عصا",
+      1
+     ]
+    ]
+   },
+   {
+    "sense": "disobedience",
+    "gloss": "عصى / معصیة — to disobey",
+    "status": "curated",
+    "occ": 31,
     "forms": [
      [
       "عصی",
       9
      ],
      [
+      "عص",
+      8
+     ],
+     [
       "یعص",
       4
+     ],
+     [
+      "عصى",
+      3
      ],
      [
       "عصیا",
       2
      ],
      [
-      "عصا",
+      "معصیة",
+      2
+     ],
+     [
+      "أعصی",
       1
      ],
      [
@@ -23553,54 +22897,6 @@
      ],
      [
       "یعصی",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 8,
-    "forms": [
-     [
-      "عص",
-      8
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [__ى]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
-     [
-      "عصى",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [م___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "معصیة",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "أعصی",
       1
      ]
     ]
@@ -26083,90 +25379,50 @@
  },
  "حجج": {
   "occ": 33,
-  "n_concepts": 7,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 18,
+    "sense": "pilgrimage (Hajj)",
+    "gloss": "حج / حجاج — the pilgrimage",
+    "status": "curated",
+    "occ": 11,
     "forms": [
      [
       "حج",
       11
-     ],
+     ]
+    ]
+   },
+   {
+    "sense": "argument / disputation",
+    "gloss": "حجة / یحاج / حاج — a proof, to dispute",
+    "status": "curated",
+    "occ": 22,
+    "forms": [
      [
       "حجة",
       7
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [_ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
-    "forms": [
+     ],
      [
       "حاج",
       5
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [ت_ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
+     ],
      [
       "تحاج",
       4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ی_ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
+     ],
      [
       "یحاج",
       3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "حاجج",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "حجج",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [یت_ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "یتحاج",
       1
@@ -26665,17 +25921,21 @@
  },
  "ولد": {
   "occ": 102,
-  "n_concepts": 8,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 46,
+    "sense": "child / offspring",
+    "gloss": "ولد / أولاد / مولود — a child",
+    "status": "curated",
+    "occ": 71,
     "forms": [
      [
       "ولد",
       23
+     ],
+     [
+      "أولاد",
+      21
      ],
      [
       "ولدا",
@@ -26686,36 +25946,32 @@
       6
      ],
      [
-      "یلد",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [أ__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 23,
-    "forms": [
-     [
-      "أولاد",
-      21
+      "مولود",
+      3
      ],
      [
       "أولادا",
       2
+     ],
+     [
+      "ولیدا",
+      1
      ]
     ]
    },
    {
-    "sense": "candidate 3 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 22,
+    "sense": "parent",
+    "gloss": "والد / والدة — the parents",
+    "status": "curated",
+    "occ": 27,
     "forms": [
      [
       "والدی",
       10
+     ],
+     [
+      "والدين",
+      5
      ],
      [
       "والدة",
@@ -26740,59 +25996,19 @@
     ]
    },
    {
-    "sense": "candidate 4 [_ا__ين]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
-    "occ": 5,
+    "occ": 4,
     "forms": [
      [
-      "والدين",
-      5
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [م__و_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
-     [
-      "مولود",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [أ__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+      "یلد",
+      2
+     ],
      [
       "ألد",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [__ی_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "ولیدا",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 8 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "یولد",
       1
@@ -27335,53 +26551,33 @@
  },
  "حرم": {
   "occ": 83,
-  "n_concepts": 6,
+  "n_concepts": 3,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 43,
-    "forms": [
-     [
-      "حرم",
-      38
-     ],
-     [
-      "حرما",
-      3
-     ],
-     [
-      "حرمات",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 26,
+    "sense": "forbidden / unlawful",
+    "gloss": "حرّم / حرام — made unlawful",
+    "status": "curated",
+    "occ": 38,
     "forms": [
      [
       "حرام",
       25
      ],
      [
-      "حراما",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [___م]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
-    "forms": [
-     [
-      "محرم",
+      "حرما",
       3
+     ],
+     [
+      "یحرم",
+      3
+     ],
+     [
+      "حرمات",
+      2
+     ],
+     [
+      "تحرم",
+      2
      ],
      [
       "محرمة",
@@ -27390,13 +26586,33 @@
      [
       "محرما",
       1
+     ],
+     [
+      "حراما",
+      1
      ]
     ]
    },
    {
-    "sense": "candidate 4 [___وم]",
-    "gloss": "",
-    "status": "candidate",
+    "sense": "sacred / inviolable",
+    "gloss": "الحرم / حرمات — sanctuary, sacred months",
+    "status": "curated",
+    "occ": 41,
+    "forms": [
+     [
+      "حرم",
+      38
+     ],
+     [
+      "محرم",
+      3
+     ]
+    ]
+   },
+   {
+    "sense": "deprived",
+    "gloss": "محروم — the deprived",
+    "status": "curated",
     "occ": 4,
     "forms": [
      [
@@ -27405,30 +26621,6 @@
      ],
      [
       "محرومون",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 3,
-    "forms": [
-     [
-      "یحرم",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
-      "تحرم",
       2
      ]
     ]
@@ -34151,42 +33343,62 @@
  },
  "طوع": {
   "occ": 129,
-  "n_concepts": 17,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 33,
+    "sense": "ability / capacity",
+    "gloss": "استطاع / یستطیع — to be able",
+    "status": "curated",
+    "occ": 40,
+    "forms": [
+     [
+      "یستطیع",
+      17
+     ],
+     [
+      "استطع",
+      9
+     ],
+     [
+      "تستطیع",
+      6
+     ],
+     [
+      "استطاع",
+      5
+     ],
+     [
+      "یستطع",
+      2
+     ],
+     [
+      "تستطع",
+      1
+     ]
+    ]
+   },
+   {
+    "sense": "obedience",
+    "gloss": "أطاع / طاعة / أطیع — to obey",
+    "status": "curated",
+    "occ": 87,
     "forms": [
      [
       "أطیع",
       30
      ],
      [
-      "أطاع",
-      3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [_ست_ی_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 17,
-    "forms": [
+      "أطع",
+      12
+     ],
      [
-      "یستطیع",
-      17
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 14,
-    "forms": [
+      "تطع",
+      11
+     ],
+     [
+      "تطیع",
+      6
+     ],
      [
       "یطع",
       6
@@ -34196,127 +33408,39 @@
       4
      ],
      [
+      "أطاع",
+      3
+     ],
+     [
       "طاعة",
       3
      ],
      [
-      "طوع",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [أ__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 12,
-    "forms": [
-     [
-      "أطع",
-      12
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [_ست__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 11,
-    "forms": [
-     [
-      "استطع",
-      9
-     ],
-     [
-      "یستطع",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [ت__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 11,
-    "forms": [
-     [
-      "تطع",
-      11
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 8,
-    "forms": [
-     [
-      "تطیع",
-      6
-     ],
-     [
       "تطوع",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 8 [تست___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
-     [
-      "تستطیع",
-      6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 9 [_ست_ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
-    "forms": [
-     [
-      "استطاع",
-      5
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 10 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "یطاع",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 11 [__ی_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "یطیع",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 12 [م___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
+     [
+      "نطیع",
+      2
+     ],
+     [
+      "طوع",
+      1
+     ],
      [
       "مطوعین",
+      1
+     ],
+     [
+      "اسطاع",
       1
      ],
      [
@@ -34326,59 +33450,15 @@
     ]
    },
    {
-    "sense": "candidate 13 [ن___]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
     "occ": 2,
     "forms": [
      [
-      "نطیع",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 14 [تست__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "تستطع",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 15 [تس__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
       "تسطع",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 16 [_س_ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "اسطاع",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 17 [__ئ_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "طائعین",
       1
@@ -34937,70 +34017,70 @@
  },
  "حلل": {
   "occ": 51,
-  "n_concepts": 11,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [أ__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 15,
+    "sense": "lawful / permitted",
+    "gloss": "أحل / حلال — made lawful",
+    "status": "curated",
+    "occ": 42,
     "forms": [
      [
       "أحل",
       15
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [ی__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 12,
-    "forms": [
+     ],
      [
       "یحل",
       12
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
+     ],
      [
       "حلالا",
       5
      ],
      [
+      "تحل",
+      3
+     ],
+     [
+      "حلا",
+      1
+     ],
+     [
+      "حلائل",
+      1
+     ],
+     [
       "حلال",
+      1
+     ],
+     [
+      "احلل",
+      1
+     ],
+     [
+      "یحلل",
+      1
+     ],
+     [
+      "أحلل",
+      1
+     ],
+     [
+      "تحلة",
       1
      ]
     ]
    },
    {
-    "sense": "candidate 4 [__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
+    "sense": "alighting / becoming due",
+    "gloss": "حل / محل — to befall, a due place",
+    "status": "curated",
+    "occ": 8,
     "forms": [
      [
       "حل",
       4
      ],
-     [
-      "حلا",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [م__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
      [
       "محل",
       3
@@ -35012,77 +34092,13 @@
     ]
    },
    {
-    "sense": "candidate 6 [ت__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "تحل",
-      3
-     ],
-     [
-      "تحلة",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [__ائ_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "حلائل",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 8 [___]",
-    "gloss": "",
+    "sense": "(unassigned forms)",
+    "gloss": "review",
     "status": "candidate",
     "occ": 1,
     "forms": [
      [
       "حلل",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 9 [ا___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "احلل",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 10 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "یحلل",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 11 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "أحلل",
       1
      ]
     ]
@@ -36017,64 +35033,40 @@
  },
  "صوم": {
   "occ": 14,
-  "n_concepts": 4,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [_ی__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 9,
+    "sense": "fasting",
+    "gloss": "صیام / صائم — to fast",
+    "status": "curated",
+    "occ": 14,
     "forms": [
      [
       "صیام",
       8
      ],
      [
-      "صیاما",
+      "تصوم",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "یصم",
       1
      ],
      [
+      "صیاما",
+      1
+     ],
+     [
       "صوما",
       1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [__ئ_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "صائمین",
       1
      ],
      [
       "صائمات",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
-     [
-      "تصوم",
       1
      ]
     ]
@@ -39635,66 +38627,26 @@
  },
  "جهد": {
   "occ": 41,
-  "n_concepts": 6,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 22,
+    "sense": "striving / jihād",
+    "gloss": "جاهد / مجاهد / جهاد — to strive",
+    "status": "curated",
+    "occ": 35,
     "forms": [
      [
       "جاهد",
       22
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 6,
-    "forms": [
+     ],
      [
-      "جهد",
-      6
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [م_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
+      "یجاهد",
+      4
+     ],
      [
       "مجاهدین",
       3
      ],
-     [
-      "مجاهدون",
-      1
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ی_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "یجاهد",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
      [
       "جهاد",
       2
@@ -39702,18 +38654,26 @@
      [
       "جهادا",
       2
+     ],
+     [
+      "مجاهدون",
+      1
+     ],
+     [
+      "تجاهد",
+      1
      ]
     ]
    },
    {
-    "sense": "candidate 6 [ت_ا__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
+    "sense": "utmost effort / solemn oath",
+    "gloss": "جهد أیمانهم — utmost",
+    "status": "curated",
+    "occ": 6,
     "forms": [
      [
-      "تجاهد",
-      1
+      "جهد",
+      6
      ]
     ]
    }
@@ -39927,90 +38887,42 @@
  },
  "نکح": {
   "occ": 23,
-  "n_concepts": 7,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [ت___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 7,
+    "sense": "marriage",
+    "gloss": "نکاح / ینکح — to marry",
+    "status": "curated",
+    "occ": 23,
     "forms": [
      [
       "تنکح",
       7
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 5,
-    "forms": [
+     ],
+     [
+      "ینکح",
+      4
+     ],
      [
       "نکاح",
       3
      ],
      [
-      "نکاحا",
-      2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [ی___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 4,
-    "forms": [
-     [
-      "ینکح",
-      4
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [ا___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
-     [
       "انکح",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 5 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "نکح",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 6 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "أنکح",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 7 [یست___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
+     [
+      "نکاحا",
+      2
+     ],
      [
       "یستنکح",
       1
@@ -40497,50 +39409,22 @@
  },
  "طلق": {
   "occ": 23,
-  "n_concepts": 5,
+  "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 10,
+    "sense": "divorce",
+    "gloss": "طلاق / مطلقات — divorcing",
+    "status": "curated",
+    "occ": 14,
     "forms": [
      [
       "طلق",
       10
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [ان___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 8,
-    "forms": [
-     [
-      "انطلق",
-      8
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "طلاق",
       2
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 4 [م___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 2,
-    "forms": [
+     ],
      [
       "مطلقات",
       2
@@ -40548,11 +39432,15 @@
     ]
    },
    {
-    "sense": "candidate 5 [ین___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
+    "sense": "setting off / departing",
+    "gloss": "انطلق / ینطلق — to go forth",
+    "status": "curated",
+    "occ": 9,
     "forms": [
+     [
+      "انطلق",
+      8
+     ],
      [
       "ینطلق",
       1
@@ -44492,33 +43380,33 @@
   "n_concepts": 2,
   "senses": [
    {
-    "sense": "candidate 1 [__ا_]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 33,
+    "sense": "mountain",
+    "gloss": "جبال / جبل — the mountains",
+    "status": "curated",
+    "occ": 40,
     "forms": [
      [
       "جبال",
       33
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 8,
-    "forms": [
+     ],
      [
       "جبل",
       6
      ],
      [
-      "جبلة",
-      1
-     ],
-     [
       "جبلا",
+      1
+     ]
+    ]
+   },
+   {
+    "sense": "multitude / disposition",
+    "gloss": "جبلة — the throngs / natural bent",
+    "status": "curated",
+    "occ": 1,
+    "forms": [
+     [
+      "جبلة",
       1
      ]
     ]
@@ -54657,14 +53545,18 @@
  },
  "مطر": {
   "occ": 15,
-  "n_concepts": 3,
+  "n_concepts": 1,
   "senses": [
    {
-    "sense": "candidate 1 [___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 7,
+    "sense": "rain",
+    "gloss": "أمطر / مطر — rainfall",
+    "status": "curated",
+    "occ": 15,
     "forms": [
+     [
+      "أمطر",
+      7
+     ],
      [
       "مطر",
       4
@@ -54672,27 +53564,7 @@
      [
       "مطرا",
       3
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 2 [أ___]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 7,
-    "forms": [
-     [
-      "أمطر",
-      7
-     ]
-    ]
-   },
-   {
-    "sense": "candidate 3 [_م__]",
-    "gloss": "",
-    "status": "candidate",
-    "occ": 1,
-    "forms": [
+     ],
      [
       "ممطر",
       1
