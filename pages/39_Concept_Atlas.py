@@ -866,7 +866,9 @@ if _scope == "A sūra":
                     if _z < 0.8 else "moderately focused")
         st.caption(f"Grey = the whole Qur'ān's roots (faint backdrop); green = this sūra's distinctive roots. "
                    f"**Concentration z = {_z:+.1f}** → the footprint is {_verdict}. "
-                   "Semantic distance is from corpus-wide co-occurrence (validated z+3.6); the 2-D projection is approximate.")
+                   "Semantic distance is from corpus-wide co-occurrence (validated z+3.6). "
+                   "**Shown flat (2-D) by design** — an MDS distance-map, not a network layout, so it reads best in 2-D "
+                   "(3-D rotation is reserved for the graph views: the map and Around-a-root).")
     else:
         st.caption("Too few distinctive roots in the semantic space to map this sūra's footprint.")
 
@@ -989,7 +991,8 @@ if _scope == "Whole Qur'ān":
         st.session_state["_atlas_lastjump"] = _jump
         st.session_state["_atlas_goto_sura"] = int(_jump); st.rerun()
     st.caption("Each point is a sūra; distance ≈ vocabulary similarity (MDS on tf-idf cosine). "
-               "Colour = family (legend above). Hover a point to see its name; use the dropdown to open a sūra's internal map + footprint. A navigation map, not a claim.")
+               "Colour = family (legend above). Hover a point to see its name; use the dropdown to open a sūra's internal map + footprint. A navigation map, not a claim. "
+               "**Shown flat (2-D) by design** — an MDS distance-map reads best in 2-D; 3-D rotation is reserved for the graph views (the map and Around-a-root).")
     # ---- cluster (family) metrics table ----
     _F = _Q["families"]
     layer(5, "📊 Cluster metrics — the sūra families")
