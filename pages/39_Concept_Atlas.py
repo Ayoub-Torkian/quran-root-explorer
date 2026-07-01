@@ -651,6 +651,8 @@ else:
         st.session_state["atlas_focus"] = "Family %d: %s" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
     layer(2, "🗺️ The map — the web")
     _CG = _load_concept_graph(); _FG = _load_family_graph()
+    if st.session_state.pop("_atlas_pending_level", None):   # a family-drill just requested the Concept level
+        st.session_state["atlas_level"] = "Concept"
     if _scope == "Whole Qur'ān" and _CG:
         _opts = ["Root", "Concept"] + (["Family"] if _FG else [])
         _level = st.radio("Level", _opts, horizontal=True, key="atlas_level",
@@ -661,6 +663,13 @@ else:
     _concept_level = (_level == "Concept" and _CG is not None)
     _family_level = (_level == "Family" and _FG is not None)
     dm = _FG if _family_level else (_CG if _concept_level else d)
+    if _concept_level and ("_atlas_drill_to" in st.session_state):   # arrived by drilling a family from the meso level
+        _di = st.session_state.pop("_atlas_drill_to")
+        _ct = _CG.get("themes") or []
+        if isinstance(_di, int) and 0 <= _di < len(_ct):
+            _cd = _CG.get("disp") or {}
+            st.session_state["atlas_focus_c"] = "Family %d: %s" % (_di + 1, " · ".join((_cd.get(t) or disp_root(t)) for t in _ct[_di][2]))
+            st.session_state["atlas_color"] = "Theme"
     c1, c2, c3 = st.columns(3)
     c1.metric("Families mapped" if _family_level else ("Concepts mapped" if _concept_level else "Roots mapped"), len(dm["nodes"]))
     c2.metric("Inter-family bonds" if _family_level else "Attraction links", len(dm["edges"]))
@@ -734,6 +743,17 @@ else:
                 "<i>Names are an interpretive reading of the auto-grouped clusters, not a fixed label.</i></div>"
                 "<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px'>"
                 + "".join(_cards) + "</div>", unsafe_allow_html=True)
+            _dnames = dm.get("names") or {}
+            _dopts = ["— stay on the overview —"] + ["Family %d — %s" % (dm["theme_of"][_ff] + 1, _dnames.get(_ff, "")) for _ff in _fams]
+            st.markdown("<style>.st-key-atlas_familydrill{max-width:520px}</style>", unsafe_allow_html=True)
+            _dpick = st.selectbox("🔎 Drill into a family → open its concepts (jumps to the Concept level, focused on it)",
+                                  _dopts, key="atlas_familydrill")
+            if (not _dpick.startswith("—")) and _dpick != st.session_state.get("_atlas_familydrill_last"):
+                st.session_state["_atlas_familydrill_last"] = _dpick
+                _fpick = _fams[_dopts.index(_dpick) - 1]
+                st.session_state["_atlas_pending_level"] = True
+                st.session_state["_atlas_drill_to"] = dm["theme_of"][_fpick]
+                st.rerun()
 
     # ── FAMILY SIZES — ranked bar chart (shared landscape.py helper) ──
     layer(3, "📊 Family sizes — the families, ranked")
