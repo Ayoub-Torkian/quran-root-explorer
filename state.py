@@ -86,6 +86,7 @@ NAV_SECTIONS = [
         ]),
         ("Claims reviewed", [
             ("pages/14_Disjoint_Letters.py", "Mysterious letters · muqaṭṭaʿāt", "🔠"),
+            ("pages/46_Closeup_SignSorcery.py", "Sign & sorcery · muʿjiza", "✨"),
             ("pages/31_Closeup_Code19.py", "Code 19", "🔢"),
             ("pages/33_Closeup_Adadi.py", "Word-count miracle", "🧮"),
             ("pages/32_Closeup_Nuzul.py", "Revelation order", "🕰️"),
