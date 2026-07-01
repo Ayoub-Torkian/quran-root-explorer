@@ -81,12 +81,17 @@ C.para("<b>44 of 59</b> sorcery-verses carry the root <b>قول 'to say'</b>: si
        "<b>siḥr is the denier's name for the āyah.</b>")
 
 # ── 5 · DIFFERENTIATORS ──
-C.section("③ How the Qurʾān tells the sign from the sorcery — four differentiators")
-C.table(["Axis", "Sorcery (siḥr)", "Sign (āyah)"], tight=False, rows=[
-    ["Source", "taught by devils, learning it is kufr (2:102, Hārūt/Mārūt)", "by God's leave — bi-idhni-llāh"],
-    ["Ontology", "illusion of the eyes — سَحَرُوا أَعْيُنَ النَّاسِ (7:116); يُخَيَّلُ … أَنَّهَا تَسْعَىٰ (20:66, only *seems* to move)", "real (ḥaqq) — it *is*, not merely seems"],
-    ["Outcome", "never prospers — وَلَا يُفْلِحُ السَّاحِرُ حَيْثُ أَتَىٰ (20:69); God nullifies it (10:81)", "prevails — the staff تَلْقَفُ مَا يَأْفِكُونَ, swallows the fabrication (7:117)"],
-    ["Recognition", "—", "the experts themselves prostrate: فَأُلْقِيَ السَّحَرَةُ سَاجِدِين (26:46 · 7:120 · 20:70)"],
+C.section("③ How to tell the sign from the sorcery — feature by feature")
+C.table(["Feature", "Sorcery — siḥr", "Sign — āyah"], tight=False, rows=[
+    ["Source", "taught by devils; learning it is kufr (2:102, Hārūt/Mārūt)", "from God — bi-idhni-llāh, 'by His leave'"],
+    ["Nature", "illusion / takhyīl — it only *seems* (يُخَيَّلُ … أَنَّهَا تَسْعَىٰ, 20:66)", "reality / ḥaqq — it *is*, not merely seems"],
+    ["Acts on", "the eyes & senses — سَحَرُوا أَعْيُنَ النَّاسِ (7:116)", "the truth itself; the created order (staff · sea · earth · wind)"],
+    ["Can be learned / matched?", "yes — taught, transmitted, practised", "no — God-given; cannot be reproduced (the taḥaddī, §⑤)"],
+    ["Outcome", "fails, nullified — لَا يُفْلِحُ السَّاحِرُ (20:69); سَيُبْطِلُهُ (10:81)", "prevails, endures — تَلْقَفُ مَا يَأْفِكُونَ, swallows it (7:117)"],
+    ["Moral status", "kufr; harms, benefits not (2:102)", "guidance & mercy; warns — تَخْوِيفًا (17:59)"],
+    ["Effect sought", "to deceive & overawe — اسْتَرْهَبُوهُمْ (7:116)", "to authenticate the messenger & call to God"],
+    ["What it is called", "the denier's verdict: سِحْرٌ مُبِين 'clear sorcery' (9×)", "بيّنة 'clear proof' · برهان · آية"],
+    ["The experts' verdict", "— (they are the ones exposed)", "the magicians themselves prostrate — فَأُلْقِيَ السَّحَرَةُ سَاجِدِين (26:46 · 7:120 · 20:70)"],
 ])
 C.callout("The decisive tell",
           "The people who would know a trick best — Pharaoh's master magicians — are the <b>first to fall in "
