@@ -710,8 +710,27 @@ else:
                         "<span style='color:#9FB3C8'>●</span> member"
                         "<br>Roles are a <b>banked graph finding</b> (degree-normalised betweenness for bridges, "
                         "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
-        st.caption("Edges = above-chance pairings (PPMI) only — each root's strongest 3 partners. "
-                   "Families are auto-grouped (Louvain); a navigation map, not a structural claim.")
+        st.caption(("Edges = the strongest bonds between families (top 3 each). " if _family_level
+                    else "Edges = above-chance pairings (PPMI) only — each root's strongest 3 partners. ")
+                   + "Families are auto-grouped (Louvain); a navigation map, not a structural claim.")
+        if _family_level:
+            _fams = sorted(dm["nodes"], key=lambda n: -dm["docf"][n])
+            _cards = []
+            for _f in _fams:
+                _col = THEME_COLORS[dm["theme_of"][_f] % len(THEME_COLORS)]
+                _mem = (dm.get("members") or {}).get(_f, [])
+                _lead = " · ".join(disp_root(m) for m in _mem[:6])
+                _cards.append(
+                    "<div style='background:#fff;border:1px solid #E2E8F1;border-left:5px solid %s;border-radius:9px;padding:8px 12px'>"
+                    "<div style='font-size:13px;font-weight:700;color:#1D3557'><span style='color:%s'>●</span> Family %d "
+                    "<span style='font-size:12px;font-weight:500;color:#10243A'>· weight %d</span></div>"
+                    "<div style='font-size:15px;color:#10243A;font-family:Amiri,serif;direction:rtl;margin-top:3px'>%s</div></div>"
+                    % (_col, _col, dm["theme_of"][_f] + 1, dm["docf"][_f], _lead))
+            st.markdown(
+                "<div style='font-size:13px;color:#10243A;margin:10px 0 4px'><b>The 12 families named</b> — "
+                "each organ of the web, by its leading concepts (largest first):</div>"
+                "<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px'>"
+                + "".join(_cards) + "</div>", unsafe_allow_html=True)
 
     # ── FAMILY SIZES — ranked bar chart (shared landscape.py helper) ──
     layer(3, "📊 Family sizes — the families, ranked")
