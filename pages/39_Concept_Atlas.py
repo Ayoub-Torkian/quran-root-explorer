@@ -845,11 +845,11 @@ if _scope == "A sūra":
                     if _z > 3 else
                     "scattered — its distinctive words span several regions (typical of narrative / imagery sūras)"
                     if _z < 0.8 else "moderately focused")
-        st.caption(f"Grey = the whole Qur'ān's concepts (faint backdrop); green = this sūra's distinctive concepts. "
+        st.caption(f"Grey = the whole Qur'ān's roots (faint backdrop); green = this sūra's distinctive roots. "
                    f"**Concentration z = {_z:+.1f}** → the footprint is {_verdict}. "
                    "Semantic distance is from corpus-wide co-occurrence (validated z+3.6); the 2-D projection is approximate.")
     else:
-        st.caption("Too few distinctive concepts in the semantic space to map this sūra's footprint.")
+        st.caption("Too few distinctive roots in the semantic space to map this sūra's footprint.")
 
 # ---- thematic elaborators: which sūras most resemble THIS one by whole-vocabulary profile (df≥2 roots) ----
 if _scope == "A sūra":
@@ -862,7 +862,7 @@ if _scope == "A sūra":
                 for b in np.argsort(-_row) if _Qs["suras"][b] != _sel]
         _topc = _ord[0][1] if _ord else 0.0
         layer(4, "🧭 Most related sūras (mutual) — by whole-vocabulary similarity")
-        st.caption("⤷ Sūra-level companion (the maps above are the *concept* territory). Similarity is "
+        st.caption("⤷ Sūra-level companion (the maps above are the *root* territory). Similarity is "
                    "**symmetric** — these sūras and the one you picked elaborate *each other*; the relation arrow only "
                    "marks which side has more room to develop the shared material.")
         _self_len = _tlen.get(_sel, 0) or 1
@@ -978,7 +978,7 @@ if _scope == "Whole Qur'ān":
         f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
         f'text-align:right;font-size:12px;white-space:nowrap">{h}</th>'
         for h in ["family", "# sūras", "cohesion", "separation", "silhouette",
-                  "mean revelation", "mean length", "defining concepts", "members"])
+                  "mean revelation", "mean length", "defining roots", "members"])
     _trs = []
     for _f in _F:
         _col = THEME_COLORS[_f["id"] % len(THEME_COLORS)]
