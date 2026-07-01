@@ -605,10 +605,11 @@ if not _map_ok:
 else:
     # AUTO-FOLLOW: when you pick a concept up top, the map jumps to & highlights its family (only on change, so you can still explore freely after)
     _cp_now = st.session_state.get("atlas_pick", "")
-    if _cp_now and _cp_now != st.session_state.get("_atlas_lastpick") and _cp_now in d["theme_of"]:
+    _cp_g = next((n for n in d["nodes"] if normalize_letters(n) == normalize_letters(_cp_now)), None) if _cp_now else None
+    if _cp_g and _cp_now != st.session_state.get("_atlas_lastpick"):
         st.session_state["_atlas_lastpick"] = _cp_now
         st.session_state["atlas_color"] = "Theme"
-        _lt = d["theme_of"][_cp_now]
+        _lt = d["theme_of"][_cp_g]
         st.session_state["atlas_focus"] = "Family %d: %s" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
     layer(1, "🗺️ The map — roots as a web")
     c1, c2, c3 = st.columns(3)
@@ -1151,14 +1152,15 @@ with _concept_slot:
                          [""] + _pickroots,
                          format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
     if _pick:
-        _mapped = _pick in d.get("theme_of", {})
+        _gkey = next((n for n in d["nodes"] if normalize_letters(n) == normalize_letters(_pick)), None)
+        _mapped = _gkey is not None
         _prof = _PROFILES.get(_pick) or _PROFILES.get(normalize_letters(_pick))
         _fam = _FAM_OF.get(_pick) or _FAM_OF.get(normalize_letters(_pick))
         _reg = _SENSES.get(_pick) or _SENSES.get(normalize_letters(_pick)) or {}
         if _fam:
             _famtxt = _fam[0]
         elif _mapped:
-            _lt = d["theme_of"][_pick]
+            _lt = d["theme_of"][_gkey]
             _famtxt = "Family %d (%s)" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
         else:
             _famtxt = "none (rare root — not drawn on the map)"
@@ -1176,14 +1178,14 @@ with _concept_slot:
         if _fam and _fam[1]:
             _read += "<br><b style='color:#1D3557'>family role (in the whole):</b> %s" % _fam[1]
         if _mapped:
-            _role = ((d.get("gf", {}).get(normalize_letters(_pick)) or {}).get("role")) or "member"
+            _role = ((d.get("gf", {}).get(normalize_letters(_gkey)) or {}).get("role")) or "member"
             _rolelab = {"connector / bridge": "bridge", "family anchor (hub)": "hub"}.get(_role, "member")
-            _nb = sorted(((w, (b if a == _pick else a)) for a, b, w in d["edges"] if _pick in (a, b)), reverse=True)[:6]
+            _nb = sorted(((w, (b if a == _gkey else a)) for a, b, w in d["edges"] if _gkey in (a, b)), reverse=True)[:6]
             _N = len(d["nodes"])
-            _drank = sorted(d["nodes"], key=lambda n: -_deg.get(n, 0)).index(_pick) + 1
-            _brank = sorted(d["nodes"], key=lambda n: -_bet.get(n, 0.0)).index(_pick) + 1
+            _drank = sorted(d["nodes"], key=lambda n: -_deg.get(n, 0)).index(_gkey) + 1
+            _brank = sorted(d["nodes"], key=lambda n: -_bet.get(n, 0.0)).index(_gkey) + 1
             _mm = ("freq <b>%d</b> · role <b>%s</b> · degree <b>%d</b> (#%d/%d) · betweenness <b>#%d</b> · revelation <b>%.0f/114</b>"
-                   % (d["docf"][_pick], _rolelab, _deg.get(_pick, 0), _drank, _N, _brank, d["nuz"][_pick]))
+                   % (d["docf"][_gkey], _rolelab, _deg.get(_gkey, 0), _drank, _N, _brank, d["nuz"][_gkey]))
             _partners = ("<br>pairs with <b>" + " · ".join(disp_root(m) for _w, m in _nb) + "</b>") if _nb else ""
         else:
             _mm = ("freq <b>%d</b> · <b>rare</b> — below the map's top %d, so no graph metrics yet (its concept is authored here &amp; reachable in Search)"
@@ -1203,9 +1205,11 @@ with _concept_slot:
                 _fm = " · ".join("%s×%d" % (f, n) for f, n in s["forms"][:6])
                 _sp.append("<div style='margin:3px 0'>%s <b>%s</b> <span style='font-size:11px'>(%d)</span>%s"
                            "<br><span style='font-size:12px'>%s</span></div>" % (_bd, _lab, s["occ"], _gl, _fm))
+            _grid = ("<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));"
+                     "gap:2px 20px;margin-top:5px'>" + "".join(_sp) + "</div>")
             st.markdown("<div style='background:#EAF2FB;border:1px solid #CFE0F2;border-radius:10px;padding:8px 13px;"
                         "margin:2px 0 8px;font-size:13px;color:#10243A'><b>Concepts in this root</b> "
-                        "(split by surface form — ✓ curated · candidate):<br>%s</div>" % "".join(_sp), unsafe_allow_html=True)
+                        "(split by surface form — ✓ curated · candidate):%s</div>" % _grid, unsafe_allow_html=True)
         if _mapped:
             _conn = "this root sits in <b>%s</b> — <b>highlighted on the map below</b> the moment you pick it." % _famtxt
         else:
