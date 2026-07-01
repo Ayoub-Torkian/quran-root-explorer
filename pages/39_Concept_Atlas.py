@@ -613,6 +613,7 @@ else:
     c1.metric("Roots mapped", len(d["nodes"]))
     c2.metric("Attraction links", len(d["edges"]))
     c3.metric("Families", len(d["themes"]))
+    st.caption("The map draws the %d most-frequent roots for legibility%s — the rest aren't dropped: every root is split into concepts in the registry and reachable via Search." % (len(d["nodes"]), (" of %s in scope" % d["n_all_roots"]) if d.get("n_all_roots") else ""))
     cc1, cc2 = st.columns([1, 1.4])
     color_by = cc1.radio("Map mode", ["Theme", "Revelation phase", "Network role", "Around a concept"],
                          horizontal=True, key="atlas_color",
