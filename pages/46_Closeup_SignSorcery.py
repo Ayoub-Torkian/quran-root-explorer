@@ -83,16 +83,19 @@ C.para("<b>44 of 59</b> sorcery-verses carry the root <b>قول 'to say'</b>: si
 # ── 5 · DIFFERENTIATORS ──
 C.section("③ How to tell the sign from the sorcery — feature by feature")
 C.table(["Feature", "Sorcery — siḥr", "Sign — āyah"], tight=False, rows=[
-    ["Source", "taught by devils; learning it is kufr (2:102, Hārūt/Mārūt)", "from God — bi-idhni-llāh, 'by His leave'"],
-    ["Nature", "illusion / takhyīl — it only *seems* (يُخَيَّلُ … أَنَّهَا تَسْعَىٰ, 20:66)", "reality / ḥaqq — it *is*, not merely seems"],
-    ["Acts on", "the eyes & senses — سَحَرُوا أَعْيُنَ النَّاسِ (7:116)", "the truth itself; the created order (staff · sea · earth · wind)"],
-    ["Can be learned / matched?", "yes — taught, transmitted, practised", "no — God-given; cannot be reproduced (the taḥaddī, §⑤)"],
-    ["Outcome", "fails, nullified — لَا يُفْلِحُ السَّاحِرُ (20:69); سَيُبْطِلُهُ (10:81)", "prevails, endures — تَلْقَفُ مَا يَأْفِكُونَ, swallows it (7:117)"],
-    ["Moral status", "kufr; harms, benefits not (2:102)", "guidance & mercy; warns — تَخْوِيفًا (17:59)"],
-    ["Effect sought", "to deceive & overawe — اسْتَرْهَبُوهُمْ (7:116)", "to authenticate the messenger & call to God"],
-    ["What it is called", "the denier's verdict: سِحْرٌ مُبِين 'clear sorcery' (9×)", "بيّنة 'clear proof' · برهان · آية"],
+    ["Source", "taught by devils; kufr — يُعَلِّمُونَ النَّاسَ السِّحْرَ (2:102)", "only by God's leave — وَمَا كَانَ لِرَسُولٍ أَن يَأْتِيَ بِآيَةٍ إِلَّا بِإِذْنِ اللَّهِ (13:38)"],
+    ["Nature", "illusion / takhyīl — يُخَيَّلُ إِلَيْهِ … أَنَّهَا تَسْعَىٰ (20:66)", "truth — فَوَقَعَ الْحَقُّ وَبَطَلَ مَا كَانُوا يَعْمَلُونَ (7:118); وَيُحِقُّ اللَّهُ الْحَقَّ (10:82)"],
+    ["Acts on", "the eyes & senses — سَحَرُوا أَعْيُنَ النَّاسِ (7:116)", "the created order — the staff (7:117), the sea (7:136), the earth (28:81)"],
+    ["Learnable / matchable?", "yes — taught & transmitted (2:102)", "no — cannot be reproduced: فَأْتُوا بِسُورَةٍ مِّن مِّثْلِهِ (2:23; the taḥaddī, §⑤)"],
+    ["Outcome", "fails, nullified — لَا يُفْلِحُ السَّاحِرُ (20:69); سَيُبْطِلُهُ (10:81)", "prevails — تَلْقَفُ مَا يَأْفِكُونَ, swallows it (7:117)"],
+    ["Moral status", "kufr; harms, benefits not — يَضُرُّهُمْ وَلَا يَنفَعُهُمْ (2:102)", "guidance & mercy — هُدًى وَرَحْمَةٌ (27:77); warns — تَخْوِيفًا (17:59)"],
+    ["Effect sought", "to deceive & overawe — اسْتَرْهَبُوهُمْ (7:116)", "to authenticate the messenger — قَدْ جِئْتُكُم بِبَيِّنَةٍ مِّن رَّبِّكُمْ (7:105)"],
+    ["What it is called", "the denier's verdict — سِحْرٌ مُبِين 'clear sorcery' (9×) [MEASURED]", "بَيِّنَة 'clear proof' (7:105) · بُرْهَان · آيَة"],
     ["The experts' verdict", "— (they are the ones exposed)", "the magicians themselves prostrate — فَأُلْقِيَ السَّحَرَةُ سَاجِدِين (26:46 · 7:120 · 20:70)"],
 ])
+C.note("<b>Every cell is verse-anchored [TEXT]</b>; 'سِحْرٌ مُبِين ×9' is [MEASURED] (counted across the corpus). "
+       "The <i>reading</i> that these features together make siḥr the <b>counterfeit</b> of the āyah is [INFERRED] — "
+       "the citations are the data; the framing is the interpretation.")
 C.callout("The decisive tell",
           "The people who would know a trick best — Pharaoh's master magicians — are the <b>first to fall in "
           "prostration</b> when they see Moses' sign. <b>Expertise in the counterfeit is what certifies the genuine.</b> "
