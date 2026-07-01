@@ -50,7 +50,7 @@ C.kpis([
     ("9×", "'سِحْرٌ مُبِين'", "'clear sorcery' — hurled at Moses (10:76,27:13), Jesus (5:110,61:6), Muhammad (46:7,37:15). Mirror of بيّنة. [MEASURED]", C.CORAL),
 ])
 C.onpage(["① The problem", "② No 'muʿjiza'", "③ siḥr = what deniers say", "④ Four differentiators",
-          "⑤ Type", "⑥ Caveats", "⑦ Verdict"], fa="ss-fa", ar="ss-ar")
+          "⑤ The taḥaddī", "⑥ Type", "⑦ Caveats", "⑧ Verdict"], fa="ss-fa", ar="ss-ar")
 
 # ── 2 · FOUNDATION ──
 C.foundation(
@@ -102,6 +102,28 @@ C.para("In the concept typology (axis · field · partition · ladder · frozen 
        "differentiators</b> that separate the real from the mimic. The meaning lives neither in one pole nor in a "
        "clean contrast, but in <b>the criterion that tells look-alikes apart.</b> It is <b>word-level</b> (a lexical–"
        "narrative concept) — the opposite end from the muqaṭṭaʿāt's character-level letters.")
+
+# ── 6b · TAḤADDĪ ──
+C.section("⑤ The taḥaddī — the standing challenge, and where 'muʿjiza' comes from")
+C.para("The accusation <b>'he forged it'</b> (أَمْ يَقُولُونَ افْتَرَاهُ, 10:38 · 11:13) and <b>'he said it himself'</b> "
+       "(تَقَوَّلَهُ, 52:33) is met with one reply: <b>then produce the like.</b> The challenge is stated at four scopes:")
+C.table(["Scope demanded", "Verse", "Words"], tight=False, rows=[
+    ["the whole Qurʾān — even humans & jinn combined", "17:88", "لَا يَأْتُونَ بِمِثْلِهِ وَلَوْ كَانَ بَعْضُهُمْ لِبَعْضٍ ظَهِيرًا"],
+    ["ten forged sūras", "11:13", "فَأْتُوا بِعَشْرِ سُوَرٍ مِّثْلِهِ مُفْتَرَيَاتٍ"],
+    ["one sūra like it", "2:23 · 10:38", "فَأْتُوا بِسُورَةٍ مِّن مِّثْلِهِ"],
+    ["merely a discourse like it", "52:34", "فَلْيَأْتُوا بِحَدِيثٍ مِّثْلِهِ"],
+])
+C.callout("The self-staking sign — and the missing word, found",
+          "Alone among prophetic signs, the taḥaddī makes a <b>falsifiable, standing prediction</b>: not just 'you have "
+          "not' but <b>فَإِن لَّمْ تَفْعَلُوا وَلَن تَفْعَلُوا</b> — 'and you will <b>NEVER</b>' (2:24). Other prophets' "
+          "signs were one-time events; the Qurʾān's sign is <b>the text itself</b> — permanently present and openly "
+          "challengeable. And this is where the missing word comes from: the challenge asserts the opponents' "
+          "<b>عَجْز (inability)</b> — لَا يَأْتُونَ بِمِثْلِهِ — and from that عجز the theologians coined <b>iʿjāz / "
+          "muʿjiza</b>. The word is absent; the idea is <i>derived</i> from these verses. The loop closes: they cry "
+          "'sorcery / forgery' → the text says 'match it' → they cannot → the standing sign stands.", accent=C.TEAL)
+C.note("Sequencing note [REPORT]: the popular 'the challenge de-escalates (whole → ten → one)' is <b>not</b> cleanly "
+       "borne out by revelation order here (17:88 whole, then 10:38 one sūra, then 11:13 ten sūras; 2:23–24 latest, "
+       "Medinan). What is <b>measured</b>: the four scopes above, the humans+jinn maximum (17:88), and the never-clause (2:24).")
 
 # ── 7 · CAVEATS ──
 C.section("Caveats")

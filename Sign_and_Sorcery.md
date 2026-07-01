@@ -80,6 +80,27 @@ that tell the real from the mimic. The meaning lives not in one pole, nor in the
 - **Level:** **word-level** (a lexical–narrative concept), the opposite pole from the muqaṭṭaʿāt's character-level
   letters.
 
+## 6b. The taḥaddī — the standing challenge that closes the loop  [TEXT · MEASURED]
+
+The accusation *"he forged it"* (أَمْ يَقُولُونَ افْتَرَاهُ, **10:38 · 11:13**) and *"he said it himself"* (تَقَوَّلَهُ,
+**52:33**) is answered with one move: **then produce the like.** The challenge (taḥaddī) is issued at four scopes —
+the whole Qurʾān, even humans and jinn combined (*لَا يَأْتُونَ بِمِثْلِهِ … ظَهِيرًا*, **17:88**); **ten** forged
+sūras (**11:13**); **one** sūra (**2:23 · 10:38**); merely **a discourse** like it (**52:34**) — plus the variant
+"bring a better Book from God" (**28:49**). Recurring condition: *إِن كُنتُمْ صَادِقِين* ("if you are truthful").
+
+Two measured features make it the pivot of the whole sign/sorcery question:
+1. **A falsifiable, standing prediction.** Uniquely, **2:24** adds *فَإِن لَّمْ تَفْعَلُوا وَلَن تَفْعَلُوا* — "and
+   you will **never**." Other prophets' signs were one-time events; the Qurʾān's sign is **the text itself**,
+   permanently present and openly challengeable.
+2. **Where the missing word comes from.** The challenge asserts the opponents' **عَجْز (inability)** — *لا يأتون
+   بمثله* — and it is precisely from that عجز that later theology coined **iʿjāz / muʿjiza**. The noun is absent from
+   the Qurʾān (Finding 0); the *idea* is **derived** from these verses.
+
+So the loop closes: **siḥr / iftirāʾ** (the denier's "sorcery / forgery") → **taḥaddī** ("then match it") →
+**عَجْز** (they cannot) → the standing **āyah** that authenticates. *(Sequencing note **[REPORT]**: the popular
+"de-escalating challenge, whole → ten → one" is not cleanly borne out by revelation order — 17:88 whole, then 10:38
+one, then 11:13 ten; 2:23–24 latest. Measured: the four scopes, the humans+jinn maximum, the never-clause.)*
+
 ## 7. Honesty ledger
 
 - **[TEXT · MEASURED]:** معجزة 0× / عجز = "frustrate" (26×); āyah 382, bayyina 523, burhān 8; siḥr 63 (~60 sorcery),
