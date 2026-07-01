@@ -716,19 +716,22 @@ else:
         if _family_level:
             _fams = sorted(dm["nodes"], key=lambda n: -dm["docf"][n])
             _cards = []
+            _nms = dm.get("names") or {}
             for _f in _fams:
                 _col = THEME_COLORS[dm["theme_of"][_f] % len(THEME_COLORS)]
                 _mem = (dm.get("members") or {}).get(_f, [])
                 _lead = " · ".join(disp_root(m) for m in _mem[:6])
+                _nm = _nms.get(_f, "")
                 _cards.append(
                     "<div style='background:#fff;border:1px solid #E2E8F1;border-left:5px solid %s;border-radius:9px;padding:8px 12px'>"
-                    "<div style='font-size:13px;font-weight:700;color:#1D3557'><span style='color:%s'>●</span> Family %d "
-                    "<span style='font-size:12px;font-weight:500;color:#10243A'>· weight %d</span></div>"
-                    "<div style='font-size:15px;color:#10243A;font-family:Amiri,serif;direction:rtl;margin-top:3px'>%s</div></div>"
-                    % (_col, _col, dm["theme_of"][_f] + 1, dm["docf"][_f], _lead))
+                    "<div style='font-size:14px;font-weight:800;color:#1D3557'><span style='color:%s'>●</span> %s</div>"
+                    "<div style='font-size:12px;font-weight:500;color:#10243A;margin:1px 0 2px'>Family %d · weight %d</div>"
+                    "<div style='font-size:15px;color:#10243A;font-family:Amiri,serif;direction:rtl'>%s</div></div>"
+                    % (_col, _col, _nm, dm["theme_of"][_f] + 1, dm["docf"][_f], _lead))
             st.markdown(
-                "<div style='font-size:13px;color:#10243A;margin:10px 0 4px'><b>The 12 families named</b> — "
-                "each organ of the web, by its leading concepts (largest first):</div>"
+                "<div style='font-size:13px;color:#10243A;margin:10px 0 4px'><b>The 12 families, named</b> — "
+                "each organ of the web with its leading concepts (largest first). "
+                "<i>Names are an interpretive reading of the auto-grouped clusters, not a fixed label.</i></div>"
                 "<div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px'>"
                 + "".join(_cards) + "</div>", unsafe_allow_html=True)
 
