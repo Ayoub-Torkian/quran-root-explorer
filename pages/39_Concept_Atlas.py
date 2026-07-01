@@ -333,8 +333,8 @@ def _field_space(_cid, n=700):
     for r in nodes: nmix.setdefault(normalize_letters(r), r)
     return dict(nodes=nodes, ni=ni, f=f, co=co, E=E, defz=defz, PMI=PMI, COS=COS, norm_index=nmix, freq_rho=frho)
 
-def _ego_view(F, concept, kg=16, kr=5):
-    """Embedding-space neighbourhood: concepts placed AND linked by vector cosine (used-in-similar-contexts)."""
+def _ego_view(F, concept, kg=16, kr=5, dim3=False):
+    """Embedding-space neighbourhood: concepts placed AND linked by vector cosine (used-in-similar-contexts). 2-D or 3-D."""
     import pandas as pd
     from sklearn.manifold import MDS
     i = F["ni"][concept]; f, co, E, defz, COS, PMI = F["f"], F["co"], F["E"], F["defz"], F["COS"], F["PMI"]
@@ -342,10 +342,15 @@ def _ego_view(F, concept, kg=16, kr=5):
     far = [j for j in np.argsort(COS[i]) if j != i][:kr]
     S = [i] + near + far
     D = 1.0 - COS[np.ix_(S, S)]; np.fill_diagonal(D, 0.0); D = (D + D.T) / 2; D[D < 0] = 0
-    xy = MDS(n_components=2, dissimilarity="precomputed", random_state=1, n_init=4,
+    xy = MDS(n_components=(3 if dim3 else 2), dissimilarity="precomputed", random_state=1, n_init=4,
              normalized_stress="auto").fit_transform(D)
     xy = xy - xy[0]                                   # place the chosen concept at the origin
-    pos = {S[t]: (float(xy[t, 0]), float(xy[t, 1])) for t in range(len(S))}
+    pos = {S[t]: tuple(float(v) for v in xy[t]) for t in range(len(S))}
+    Sc = go.Scatter3d if dim3 else go.Scatter
+    def _c(keys):                                     # x/y(/z) coordinate kwargs for a list of node indices
+        cc = {"x": [pos[k][0] for k in keys], "y": [pos[k][1] for k in keys]}
+        if dim3: cc["z"] = [pos[k][2] for k in keys]
+        return cc
     # edges: any pair (incl. neighbour–neighbour) alike in the embedding; width & opacity ∝ cosine
     cand = [(a, b, COS[a, b]) for ai, a in enumerate(near) for b in near[ai + 1:] if COS[a, b] >= 0.30]
     cand += [(i, j, COS[i, j]) for j in near if COS[i, j] >= 0.30]
@@ -355,37 +360,40 @@ def _ego_view(F, concept, kg=16, kr=5):
         cmn = min(c for _, _, c in cand); cmx = max(c for _, _, c in cand); rng = (cmx - cmn) or 1.0
         for a, b, cv in cand:
             frac = (cv - cmn) / rng
-            fig.add_trace(go.Scatter(x=[pos[a][0], pos[b][0]], y=[pos[a][1], pos[b][1]], mode="lines",
-                          line=dict(width=1.2 + 6.0 * frac, color="#1D9E75"), opacity=0.22 + 0.5 * frac,
-                          hoverinfo="none"))
+            fig.add_trace(Sc(mode="lines", line=dict(width=1.2 + 6.0 * frac, color="#1D9E75"),
+                          opacity=0.22 + 0.5 * frac, hoverinfo="none", **_c([a, b])))
     for j in far:                                     # faint spokes to embedding-opposites
-        fig.add_trace(go.Scatter(x=[0, pos[j][0]], y=[0, pos[j][1]], mode="lines",
-                      line=dict(width=1, color="#E63946", dash="dot"), opacity=0.32, hoverinfo="none"))
+        _ln = dict(width=1, color="#E63946")
+        if not dim3: _ln["dash"] = "dot"
+        fig.add_trace(Sc(mode="lines", line=_ln, opacity=0.32, hoverinfo="none", **_c([i, j])))
     def _hov(j):
         return (f"{F['nodes'][j]} · cosine {COS[i, j]:+.2f} (used in similar contexts) · "
                 f"together {int(co[i, j])}× vs ~{E[i, j]:.0f} by chance")
-    fig.add_trace(go.Scatter(x=[pos[j][0] for j in near], y=[pos[j][1] for j in near], mode="markers+text",
-        text=[disp_root(F["nodes"][j]) for j in near], textposition="top center",
+    fig.add_trace(Sc(mode="markers+text", text=[disp_root(F["nodes"][j]) for j in near], textposition="top center",
         textfont=dict(size=13, color="#0b3b2e", family="Amiri,serif"),
-        marker=dict(size=[13 + (f[j] ** 0.5) * 0.6 for j in near],
+        marker=dict(size=[(7 if dim3 else 13) + (f[j] ** 0.5) * (0.4 if dim3 else 0.6) for j in near],
                     color=[COS[i, j] for j in near], colorscale=[[0, "#EAF7F1"], [1, "#1D9E75"]],
                     cmin=0.0, cmax=max(COS[i, j] for j in near), line=dict(width=1.4, color="#1D9E75")),
-        hovertext=[_hov(j) for j in near], hoverinfo="text"))
+        hovertext=[_hov(j) for j in near], hoverinfo="text", **_c(near)))
     if far:
-        fig.add_trace(go.Scatter(x=[pos[j][0] for j in far], y=[pos[j][1] for j in far], mode="markers+text",
-            text=[disp_root(F["nodes"][j]) for j in far], textposition="top center",
+        fig.add_trace(Sc(mode="markers+text", text=[disp_root(F["nodes"][j]) for j in far], textposition="top center",
             textfont=dict(size=12, color="#7a1620", family="Amiri,serif"),
-            marker=dict(size=[11 + (f[j] ** 0.5) * 0.5 for j in far], color="#FBE0E3",
+            marker=dict(size=[(6 if dim3 else 11) + (f[j] ** 0.5) * (0.3 if dim3 else 0.5) for j in far], color="#FBE0E3",
                         line=dict(width=1.2, color="#E63946")),
-            hovertext=[_hov(j) for j in far], hoverinfo="text"))
-    fig.add_trace(go.Scatter(x=[0], y=[0], mode="markers+text", text=[disp_root(concept)], textposition="middle center",
+            hovertext=[_hov(j) for j in far], hoverinfo="text", **_c(far)))
+    fig.add_trace(Sc(mode="markers+text", text=[disp_root(concept)], textposition="middle center",
         textfont=dict(size=18, color="#ffffff", family="Amiri,serif"),
-        marker=dict(size=46, color="#1D3557", line=dict(width=2, color="#ffffff")),
-        hovertext=[f"{concept} · appears in {int(f[i])} āyāt"], hoverinfo="text"))
-    fig.update_layout(height=600, showlegend=False, margin=dict(l=0, r=0, t=10, b=0),
-        xaxis=dict(visible=False), yaxis=dict(visible=False, scaleanchor="x"),
-        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
-    st.plotly_chart(fig, use_container_width=True)
+        marker=dict(size=(20 if dim3 else 46), color="#1D3557", line=dict(width=2, color="#ffffff")),
+        hovertext=[f"{concept} · appears in {int(f[i])} āyāt"], hoverinfo="text", **_c([i])))
+    if dim3:
+        fig.update_layout(height=600, showlegend=False, margin=dict(l=0, r=0, t=10, b=0),
+            scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False)),
+            paper_bgcolor="rgba(0,0,0,0)")
+    else:
+        fig.update_layout(height=600, showlegend=False, margin=dict(l=0, r=0, t=10, b=0),
+            xaxis=dict(visible=False), yaxis=dict(visible=False, scaleanchor="x"),
+            plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
+    st.plotly_chart(fig, use_container_width=True, config={"scrollZoom": True, "displaylogo": False})
     st.markdown("<div style='font-size:13px;color:#10243A;margin:2px 0'>"
         "Placed and linked by <b>embedding cosine</b> — nearness = used in similar contexts. "
         "<span style='color:#1D9E75'>●</span> near (greener &amp; closer = more alike; <b>edge thickness = cosine</b>) "
@@ -622,6 +630,8 @@ else:
                          horizontal=True, key="atlas_color",
                          format_func=lambda x: {"Theme": "Family", "Around a concept": "Around a root"}.get(x, x),
                          help="The first three colour the whole territory. 'Around a root' zooms to one root's field.")
+    _dim3 = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="atlas_dim",
+                     label_visibility="collapsed").startswith("3")
     _focus = None
     if color_by == "Around a concept":
         _F = _field_space(id(corpus))
@@ -632,14 +642,12 @@ else:
         st.markdown("<style>.st-key-atlas_concept{max-width:520px}</style>", unsafe_allow_html=True)
         _csel = cc2.selectbox("Pick a root (its embedding neighbourhood — roots used in similar contexts)",
                               _vocab, index=_vocab.index(_dft), key="atlas_concept", format_func=disp_root)
-        _ego_view(_F, _csel)
+        _ego_view(_F, _csel, dim3=_dim3)
     else:
         _theme_labels = ["— whole map —"] + [f"Family {ti + 1}: {' · '.join(disp_root(t) for t in top)}" for ti, _o, top in d["themes"]]
         _focus_sel = cc2.selectbox("Focus a family", _theme_labels, key="atlas_focus",
                                    disabled=(color_by != "Theme"), help="Family focus applies to the Family colouring.")
         _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
-        _dim3 = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="atlas_dim",
-                         label_visibility="collapsed").startswith("3")
         st.plotly_chart(figure(d, color_by, _focus, _dim3), use_container_width=True,
                         config={"scrollZoom": True, "displaylogo": False})
         if color_by == "Network role":
