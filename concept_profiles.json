@@ -1,61 +1,125 @@
 {
-  "_schema": "Curated concept-profile registry for the Concept Atlas. Measured attributes (reach, role, degree, betweenness, signature partners, family) are computed at runtime by build_atlas; THIS file holds the curated, grounded UNDERSTANDING. To add a concept, add an entry keyed by its rasm root (Book6 forms, e.g. ک/ی). Fields: display, family, structural_type, reading{form_content, grammar_semantics, structure_function}, senses[], universe_analog, status(draft|reviewed), closeup_page(optional). Tag claims [TEXT]/[INFERENCE] inside the reading. Un-listed concepts render measured-only — the atlas is always complete and deepens as entries are filled.",
-  "profiles": {
-    "قلب": {
-      "display": "qalb — heart",
-      "family": "inner_self",
-      "structural_type": "ladder-of-states (~27)",
-      "reading": {
-        "form_content": "[TEXT] root ق-ل-ب = both the organ 'heart' and the verb 'to turn / overturn' — the heart is named as the TURNING faculty; its states are how it has turned.",
-        "grammar_semantics": "[INFERENCE] morphology splits senses the lexicon blurs: قلب-organ vs قلب 'to turn'; auto-clustering misses this, so senses must be read morphologically.",
-        "structure_function": "[TEXT] co-referent with صدر and فؤاد as ONE organ-system; states attach SELECTIVELY — constriction ضیق·حرج occur 0× with قلب, only with صدر (organ-specific selectivity)."
-      },
-      "senses": ["sound سليم", "trembling وجل", "humbled خشع", "softened لين", "sealed طبع/ختم", "hardened قسو", "diseased مرض", "rusted رين", "wrapped غلف"],
-      "universe_analog": "anatomy — graded states of an organ",
-      "status": "reviewed",
-      "closeup_page": "pages/42_Closeup_InnerSelf.py"
-    },
-    "صدر": {
-      "display": "ṣadr — breast",
-      "family": "inner_self",
-      "structural_type": "ladder-of-states (~27)",
-      "reading": {
-        "form_content": "[TEXT] the breast/chest as the container of the heart; what is 'in the breasts' (ما في الصدور) = the inmost.",
-        "grammar_semantics": "[INFERENCE] carries the SPATIAL states the heart-organ does not: expansion (شرح) vs constriction (ضیق/حرج).",
-        "structure_function": "[TEXT] the constriction/expansion POLE of the heart-system; ضیق·حرج attach here, not to قلب — the measured organ-specific selectivity."
-      },
-      "senses": ["expanded شرح", "constricted ضیق", "straitened حرج", "what-is-within ما في الصدور"],
-      "universe_analog": "anatomy — the organ's spatial pole",
-      "status": "reviewed",
-      "closeup_page": "pages/42_Closeup_InnerSelf.py"
-    },
-    "فاد": {
-      "display": "fuʾād — heart (the kindled faculty)",
-      "family": "inner_self",
-      "structural_type": "ladder-of-states (~27)",
-      "reading": {
-        "form_content": "[INFERENCE] fuʾād from a root of kindling/burning — the heart as the faculty of focused attention/perception.",
-        "grammar_semantics": "[TEXT] paired with hearing and sight (السمع والأبصار والأفئدة) — the perceptual triad.",
-        "structure_function": "[TEXT] third co-referent of the heart-system (قلب·صدر·فؤاد); the faculty held accountable for what it pursues."
-      },
-      "senses": ["steadied/strengthened ثبّت", "empty/voided فارغ", "what the faculty pursued"],
-      "universe_analog": "anatomy — the perceptual faculty",
-      "status": "draft",
-      "closeup_page": "pages/42_Closeup_InnerSelf.py"
-    },
-    "رحم": {
-      "display": "raḥma — mercy",
-      "family": "mercy_relief",
-      "structural_type": "gradient / ambient field",
-      "reading": {
-        "form_content": "[TEXT] root ر-ح-م = the WOMB (رَحِم); mercy (رَحْمة) is womb-shaped — enclosing, gestating, provisioning — not mere pity; kinship-ties (الأرحام) are named from it.",
-        "grammar_semantics": "[TEXT] الرَّحْمٰن (faʿlān = overflowing, cosmic, near-proper-name of God) vs الرَّحِيم (faʿīl = constant, particular, even of the Prophet 9:128) — same root, the PATTERN encodes the SCOPE.",
-        "structure_function": "[MEASURED+INFERENCE] a GRADIENT over a shared recipient field, not a partition — mercy reaches every recipient type (even disbelief, 19×); operates through forgiveness غفر and repentance توب; the threshold of the text (Basmala opens 113/114 sūras)."
-      },
-      "senses": ["divine attribute (the Names)", "cosmic gift — rain/Book/Prophet (21:107)", "kinship bond الأرحام", "human ethic رحماء بينهم (48:29)"],
-      "universe_analog": "physics — an ambient field; anatomy — the womb",
-      "status": "reviewed",
-      "closeup_page": null
-    }
+ "_schema": "Curated concept-profile registry for the Concept Atlas. Measured attributes (reach, role, degree, betweenness, signature partners, family) are computed at runtime by build_atlas; THIS file holds the curated, grounded UNDERSTANDING. To add a concept, add an entry keyed by its rasm root (Book6 forms, e.g. ک/ی). Fields: display, family, structural_type, reading{form_content, grammar_semantics, structure_function}, senses[], universe_analog, status(draft|reviewed), closeup_page(optional). Tag claims [TEXT]/[INFERENCE] inside the reading. Un-listed concepts render measured-only — the atlas is always complete and deepens as entries are filled.",
+ "profiles": {
+  "قلب": {
+   "display": "qalb — heart",
+   "family": "inner_self",
+   "structural_type": "ladder-of-states (~27)",
+   "reading": {
+    "form_content": "[TEXT] root ق-ل-ب = both the organ 'heart' and the verb 'to turn / overturn' — the heart is named as the TURNING faculty; its states are how it has turned.",
+    "grammar_semantics": "[INFERENCE] morphology splits senses the lexicon blurs: قلب-organ vs قلب 'to turn'; auto-clustering misses this, so senses must be read morphologically.",
+    "structure_function": "[TEXT] co-referent with صدر and فؤاد as ONE organ-system; states attach SELECTIVELY — constriction ضیق·حرج occur 0× with قلب, only with صدر (organ-specific selectivity)."
+   },
+   "senses": [
+    "sound سليم",
+    "trembling وجل",
+    "humbled خشع",
+    "softened لين",
+    "sealed طبع/ختم",
+    "hardened قسو",
+    "diseased مرض",
+    "rusted رين",
+    "wrapped غلف"
+   ],
+   "universe_analog": "anatomy — graded states of an organ",
+   "status": "reviewed",
+   "closeup_page": "pages/42_Closeup_InnerSelf.py"
+  },
+  "صدر": {
+   "display": "ṣadr — breast",
+   "family": "inner_self",
+   "structural_type": "ladder-of-states (~27)",
+   "reading": {
+    "form_content": "[TEXT] the breast/chest as the container of the heart; what is 'in the breasts' (ما في الصدور) = the inmost.",
+    "grammar_semantics": "[INFERENCE] carries the SPATIAL states the heart-organ does not: expansion (شرح) vs constriction (ضیق/حرج).",
+    "structure_function": "[TEXT] the constriction/expansion POLE of the heart-system; ضیق·حرج attach here, not to قلب — the measured organ-specific selectivity."
+   },
+   "senses": [
+    "expanded شرح",
+    "constricted ضیق",
+    "straitened حرج",
+    "what-is-within ما في الصدور"
+   ],
+   "universe_analog": "anatomy — the organ's spatial pole",
+   "status": "reviewed",
+   "closeup_page": "pages/42_Closeup_InnerSelf.py"
+  },
+  "فاد": {
+   "display": "fuʾād — heart (the kindled faculty)",
+   "family": "inner_self",
+   "structural_type": "ladder-of-states (~27)",
+   "reading": {
+    "form_content": "[INFERENCE] fuʾād from a root of kindling/burning — the heart as the faculty of focused attention/perception.",
+    "grammar_semantics": "[TEXT] paired with hearing and sight (السمع والأبصار والأفئدة) — the perceptual triad.",
+    "structure_function": "[TEXT] third co-referent of the heart-system (قلب·صدر·فؤاد); the faculty held accountable for what it pursues."
+   },
+   "senses": [
+    "steadied/strengthened ثبّت",
+    "empty/voided فارغ",
+    "what the faculty pursued"
+   ],
+   "universe_analog": "anatomy — the perceptual faculty",
+   "status": "draft",
+   "closeup_page": "pages/42_Closeup_InnerSelf.py"
+  },
+  "رحم": {
+   "display": "raḥma — mercy",
+   "family": "mercy_relief",
+   "structural_type": "gradient / ambient field",
+   "reading": {
+    "form_content": "[TEXT] root ر-ح-م = the WOMB (رَحِم); mercy (رَحْمة) is womb-shaped — enclosing, gestating, provisioning — not mere pity; kinship-ties (الأرحام) are named from it.",
+    "grammar_semantics": "[TEXT] الرَّحْمٰن (faʿlān = overflowing, cosmic, near-proper-name of God) vs الرَّحِيم (faʿīl = constant, particular, even of the Prophet 9:128) — same root, the PATTERN encodes the SCOPE.",
+    "structure_function": "[MEASURED+INFERENCE] a GRADIENT over a shared recipient field, not a partition — mercy reaches every recipient type (even disbelief, 19×); operates through forgiveness غفر and repentance توب; the threshold of the text (Basmala opens 113/114 sūras). [MEASURED] encompasses all things without exception (7:156, 40:7); a graded scale with God at the apex أرحم/خير الراحمين (6×); 113 āyāt close on رحيم — mercy is the resolving cadence (غفور رحيم 49×)."
+   },
+   "senses": [
+    "divine attribute (the Names)",
+    "cosmic gift — rain/Book/Prophet (21:107)",
+    "kinship bond الأرحام",
+    "human ethic رحماء بينهم (48:29)"
+   ],
+   "universe_analog": "physics — an ambient field; anatomy — the womb",
+   "status": "reviewed",
+   "closeup_page": null
+  },
+  "نور": {
+   "display": "nūr — light",
+   "family": "light_guidance",
+   "structural_type": "oriented polarity axis (light ↔ darknesses)",
+   "reading": {
+    "form_content": "[TEXT · MEASURED] the noun نور is ALWAYS singular (43×; plural أنوار 0×) while darkness is ALWAYS plural ظلمات (23×; singular ظلمة 0×) — the form itself says one light, many darknesses.",
+    "grammar_semantics": "[TEXT · MEASURED] the salvific motion is fixed in the prepositions مِنَ الظُّلُمَاتِ إِلَى النُّورِ (out of the many, into the one) — 7×; the single reversal light→dark (2:257) is marked as the ṭāghūt's work.",
+    "structure_function": "[TEXT+INFERENCE] light is never self-attained — it is BROUGHT (by God, the Book, Moses, the Prophet سراجاً منيراً); light = guidance = the one straight path (5:16, 14:1); its singularity meets God's Oneness الواحد (13:16); light=life vs death=darkness (6:122)."
+   },
+   "senses": [
+    "the light — singular, the destination",
+    "the darknesses — plural, the origin",
+    "God is the Light (24:35)",
+    "light-giver منير — the Book / moon / Prophet",
+    "light = life vs death (6:122)"
+   ],
+   "universe_analog": "optics — an oriented axis (source → illumination)",
+   "status": "reviewed",
+   "closeup_page": null
+  },
+  "حرم": {
+   "display": "ḥarām / ḥalāl — the forbidden & the sacred",
+   "family": "law_boundary",
+   "structural_type": "bounded partition (default ḥalāl + marked ḥarām)",
+   "reading": {
+    "form_content": "[TEXT] the root ح-ر-م means BOTH 'forbidden' and 'sacred / inviolable' (المسجد الحرام 15×, الأشهر الحرم 5×, حرماً آمناً) — the concept is named after the BOUNDARY: to make ḥarām is to fence off.",
+    "grammar_semantics": "[TEXT · MEASURED] the two operators are passive — حُرِّم عليكم / أُحِلَّ لكم (9× each); the forbidden is an ENUMERATED closed list, the lawful the open default — 'I find nothing forbidden except…' (6:145).",
+    "structure_function": "[TEXT] one legitimate Author — only God draws the line; private permitting/forbidding = fabrication against God (16:116, 10:59, 66:1); the line tracks ṭayyib (good) vs khabīth (impure) — 7:157, ḥalālan ṭayyiban 5×."
+   },
+   "senses": [
+    "the forbidden — marked, enumerated",
+    "the lawful — default, open",
+    "the sacred / inviolable — Mosque · months · town",
+    "criterion: ṭayyib (good) vs khabīth (impure)",
+    "God alone as the line-drawer"
+   ],
+   "universe_analog": "law / set theory — a bounded domain (default region + marked exception)",
+   "status": "reviewed",
+   "closeup_page": null
   }
+ }
 }
