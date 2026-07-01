@@ -598,10 +598,15 @@ with st.expander("ℹ️ What this page shows — scales, maps & metrics (one-pa
 
 **Honest scope.** Everything is **measured** (attraction, communities, centralities, MDS) and presented as a **navigation map, not a claim**. Bands and footprints are *exploratory* (DIVINE-ALT / approximate 2-D); necessity is never asserted.""")
 
+st.markdown("<div style='font-size:12.5px;color:#10243A;margin:2px 0 8px'>"
+            "📍 <b>On this page</b> (scroll ↓): <b>§1</b> the map · <b>§2</b> theme sizes · "
+            "<b>§3–4</b> sūra / family views · <b>§5</b> data table · <b>§6</b> concept profile · <b>§7</b> themes</div>",
+            unsafe_allow_html=True)
 if not _map_ok:
     st.info("This sūra is too short to draw its own concept map — but its sūra-level views below "
             "(semantic footprint and the sūras that elaborate it) still work. Pick a longer sūra for the map.")
 else:
+    layer(1, "🗺️ The map — concepts as a web")
     c1, c2, c3 = st.columns(3)
     c1.metric("Concepts mapped", len(d["nodes"]))
     c2.metric("Attraction links", len(d["edges"]))
@@ -643,7 +648,7 @@ else:
                    "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
 
     # ── THEME SIZES — ranked bar chart (shared landscape.py helper) ──
-    layer(1, "📊 Theme sizes — the themes, ranked")
+    layer(2, "📊 Theme sizes — the themes, ranked")
     with st.expander("What this shows — open me", expanded=True):
         st.markdown(
             "<div style='font-size:14px;color:#10243A;line-height:1.65'>"
@@ -813,7 +818,7 @@ if _scope == "A sūra":
     _scd = {r: (_rc[r] / _tot) * _S["idf"].get(r, 0.0) for r in _rc}
     _top = sorted(_scd, key=lambda r: -_scd[r])[:25]
     _idx = [_S["ni"][r] for r in _top]
-    layer(1, "🧭 Where this sūra sits in the Qur'ān's meaning-space (semantic footprint)")
+    layer(3, "🧭 Where this sūra sits in the Qur'ān's meaning-space (semantic footprint)")
     if len(_idx) >= 6:
         _iu = np.triu_indices(len(_idx), 1)
         _obs = float(_S["SIM"][np.ix_(_idx, _idx)][_iu].mean())
@@ -857,7 +862,7 @@ if _scope == "A sūra":
         _ord = [(_Qs["suras"][b], float(_row[b]), _tlen.get(_Qs["suras"][b], 0))
                 for b in np.argsort(-_row) if _Qs["suras"][b] != _sel]
         _topc = _ord[0][1] if _ord else 0.0
-        layer(1, "🧭 Most related sūras (mutual) — by whole-vocabulary similarity")
+        layer(4, "🧭 Most related sūras (mutual) — by whole-vocabulary similarity")
         st.caption("⤷ Sūra-level companion (the maps above are the *concept/root* territory). Similarity is "
                    "**symmetric** — these sūras and the one you picked elaborate *each other*; the relation arrow only "
                    "marks which side has more room to develop the shared theme.")
@@ -935,7 +940,7 @@ if _scope == "A sūra":
 # ---- the 114 sūras as a semantic map (which sūras are alike) — whole-Qur'ān companion view ----
 if _scope == "Whole Qur'ān":
     _Q = _sura_space(id(corpus))
-    layer(1, "🗺️ The 114 sūras as a semantic map — which sūras are alike")
+    layer(3, "🗺️ The 114 sūras as a semantic map — which sūras are alike")
     _qx, _qs, _qc = _Q["xy"], _Q["suras"], _Q["comm"]
     _fam = {}
     for a, s in enumerate(_qs): _fam.setdefault(_qc.get(a, 0), []).append(s)
@@ -969,7 +974,7 @@ if _scope == "Whole Qur'ān":
                "Colour = family (legend above). Hover a point to see its name; use the dropdown to open a sūra's internal map + footprint. A navigation map, not a claim.")
     # ---- cluster (family) metrics table ----
     _F = _Q["families"]
-    layer(1, "📊 Cluster metrics — the sūra families")
+    layer(4, "📊 Cluster metrics — the sūra families")
     _hdr = "".join(
         f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
         f'text-align:right;font-size:12px;white-space:nowrap">{h}</th>'
@@ -1049,7 +1054,7 @@ for n in d["nodes"]:
                   "clustering": round(_clu.get(n, 0.0), 3), "revelation 1–114": round(d["nuz"][n]),
                   "top partners": " · ".join(disp_root(p) for p in _partners[n])})
 _df = pd.DataFrame(_rows).sort_values(["community #", "frequency"], ascending=[True, False])
-layer(1, "📋 Data behind the map — scrollable · copyable (use the CSV below to sort)")
+layer(5, "📋 Data behind the map — scrollable · copyable (use the CSV below to sort)")
 # Full-width HTML table — st.dataframe won't stretch on this Streamlit build, so we control width directly.
 _cols = list(_df.columns)
 _arab = {"concept", "community", "top partners"}
@@ -1122,7 +1127,7 @@ _FAM_OF = {}   # root -> (family name, organ_role) from the curated families reg
 for _fid, _fv in _load_concept_families().items():
     for _m in _fv.get("members", []):
         _FAM_OF[_m] = (_fv.get("name", _fid), _fv.get("organ_role", ""))
-layer(1, "🧬 CONCEPT PROFILE — pick any concept; its layers open here, in place")
+layer(6, "🧬 CONCEPT PROFILE — pick any concept; its layers open here, in place")
 _pick = st.selectbox("🔍 Pick a concept — its profile opens below (the map stays above)",
                      [""] + sorted(d["nodes"], key=disp_root),
                      format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
@@ -1166,7 +1171,7 @@ if _pick:
     if _cp and _bc[1].button("🗺 Full close-up →", key="atlas_closeup"):
         st.switch_page(_cp)
 
-layer(1, "Themes — click a concept to open it in Search")
+layer(7, "🗂️ Themes — click a concept to open it in Search")
 for ti, ordered, top in d["themes"]:
     col = THEME_COLORS[ti % len(THEME_COLORS)]
     st.markdown(f"<div style='margin:8px 0 2px;font-size:13.5px;color:{INK}'>"
