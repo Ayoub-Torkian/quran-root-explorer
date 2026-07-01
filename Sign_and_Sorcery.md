@@ -101,6 +101,35 @@ So the loop closes: **siḥr / iftirāʾ** (the denier's "sorcery / forgery") �
 "de-escalating challenge, whole → ten → one" is not cleanly borne out by revelation order — 17:88 whole, then 10:38
 one, then 11:13 ten; 2:23–24 latest. Measured: the four scopes, the humans+jinn maximum, the never-clause.)*
 
+## 6c. The forms of the sign — every element as the Maker's instrument  [TEXT · MEASURED]
+
+The āyah takes more than one form: the **evidentiary sign** given to a messenger (Moses' staff; Ṣāliḥ's she-camel,
+"made visible," 17:59), the **standing sign** of the Book (§6b), and — when the sign is denied — the
+**punishment-sign**, a sudden and total event. Across the punished nations, **every element of creation is drawn on
+as God's instrument** — *"to God belong the hosts (junūd) of the heavens and the earth"* (48:4·7; 74:31):
+
+| People | Element | Mechanism | Verse |
+|---|---|---|---|
+| Nūḥ's people | water | flood / drowning — الطوفان · أغرقنا | 29:14 · 7:64 |
+| ʿĀd | wind | howling wind — رِيحٌ صَرْصَرٌ عَاتِيَة | 69:6 · 41:16 · 54:19 |
+| Thamūd | sky / earth | the Cry · bolt · quake — الصَّيْحَة · الصَّاعِقَة · الرَّجْفَة | 11:67 · 41:17 · 7:78 |
+| Pharaoh | sea | drowned — أَغْرَقْنَاهُم فِي الْيَمّ | 7:136 · 10:90 |
+| Qārūn | earth | swallowed — فَخَسَفْنَا بِهِ وَبِدَارِهِ الْأَرْض | 28:81 |
+| Lūṭ's people | sky + earth | stones + overturning — حِجَارَةٍ مِّن سِجِّيل · عَالِيَهَا سَافِلَهَا | 11:82 · 15:74 |
+| Madyan | sky / earth | the Cry · the quake — الصَّيْحَة · الرَّجْفَة | 11:94 · 7:91 |
+
+**Historical tag:** the events are **[TEXT]** (Qurʾānic narration); identifying each people with a specific site/date
+is **[REPORT]** and not asserted. Shared, measured signature: **sudden/unawares** (وَهُمْ لَا يَشْعُرُونَ, 16:45),
+**total** (a whole qawm), **timed** (لِكُلِّ أُمَّةٍ أَجَلٌ, 7:34).
+
+**Why no punishment-sign today? [TEXT]** *"وَمَا مَنَعَنَا أَن نُّرْسِلَ بِالْآيَاتِ إِلَّا أَن كَذَّبَ بِهَا
+الْأَوَّلُونَ"* (17:59) — the demanded punishment-signs were **withheld** from the final community, because the ancient
+pattern was sign → denial → annihilation. The sign **changed form, not substance**: the **standing sign** (the Book)
++ **deferred judgment** (the reckoning is the Hour) — *"We send not the signs except to warn"* (تَخْوِيفًا). The
+**pattern (sunnat Allāh) is unchanged** — فَلَن تَجِدَ لِسُنَّةِ اللَّهِ تَبْدِيلًا (35:43); only its **mode** differs.
+[INFERRED] So the answer to "do we still have muʿjiza?" is: **yes, in a changed form** — the Book as the standing
+sign, and judgment deferred rather than immediate.
+
 ## 7. Honesty ledger
 
 - **[TEXT · MEASURED]:** معجزة 0× / عجز = "frustrate" (26×); āyah 382, bayyina 523, burhān 8; siḥr 63 (~60 sorcery),

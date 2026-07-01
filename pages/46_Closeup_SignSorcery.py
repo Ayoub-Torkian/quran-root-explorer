@@ -50,7 +50,7 @@ C.kpis([
     ("9×", "'سِحْرٌ مُبِين'", "'clear sorcery' — hurled at Moses (10:76,27:13), Jesus (5:110,61:6), Muhammad (46:7,37:15). Mirror of بيّنة. [MEASURED]", C.CORAL),
 ])
 C.onpage(["① The problem", "② No 'muʿjiza'", "③ siḥr = what deniers say", "④ Four differentiators",
-          "⑤ The taḥaddī", "⑥ Type", "⑦ Caveats", "⑧ Verdict"], fa="ss-fa", ar="ss-ar")
+          "⑤ The taḥaddī", "⑥ Forms of the sign", "⑦ Type", "⑧ Caveats", "⑨ Verdict"], fa="ss-fa", ar="ss-ar")
 
 # ── 2 · FOUNDATION ──
 C.foundation(
@@ -124,6 +124,38 @@ C.callout("The self-staking sign — and the missing word, found",
 C.note("Sequencing note [REPORT]: the popular 'the challenge de-escalates (whole → ten → one)' is <b>not</b> cleanly "
        "borne out by revelation order here (17:88 whole, then 10:38 one sūra, then 11:13 ten sūras; 2:23–24 latest, "
        "Medinan). What is <b>measured</b>: the four scopes above, the humans+jinn maximum (17:88), and the never-clause (2:24).")
+
+# ── 6c · FORMS OF THE SIGN ──
+C.section("⑥ The forms of the sign — every element is His instrument (and why not today)")
+C.para("The āyah is not one shape. It comes as an <b>evidentiary sign</b> given to a messenger (Moses' staff; "
+       "Ṣāliḥ's she-camel, 'made visible' 17:59; Jesus' healing), as the <b>standing sign</b> of the Book (§⑤), and "
+       "— when the sign is denied — as the <b>punishment-sign</b>: a sudden, total event that vindicates it. Across "
+       "these, <b>the whole of creation is drawn on as God's instrument</b> — <i>'to God belong the hosts (junūd) of "
+       "the heavens and the earth'</i> (48:4·7; 74:31). A different element strikes each nation:")
+C.table(["People", "Element", "Mechanism (Qurʾānic)", "Verse"], tight=False, rows=[
+    ["Nūḥ's people", "water", "the flood / drowning — الطوفان · أغرقنا", "29:14 · 7:64"],
+    ["ʿĀd", "wind", "a howling wind — رِيحٌ صَرْصَرٌ عَاتِيَة", "69:6 · 41:16 · 54:19"],
+    ["Thamūd", "sky / earth", "the Cry · bolt · quake — الصَّيْحَة · الصَّاعِقَة · الرَّجْفَة", "11:67 · 41:17 · 7:78"],
+    ["Pharaoh & his host", "sea", "drowned in the sea — أَغْرَقْنَاهُم فِي الْيَمّ", "7:136 · 10:90"],
+    ["Qārūn", "earth", "the earth swallowed him — فَخَسَفْنَا بِهِ وَبِدَارِهِ الْأَرْض", "28:81"],
+    ["Lūṭ's people", "sky + earth", "stones + overturning — حِجَارَةٍ مِّن سِجِّيل · عَالِيَهَا سَافِلَهَا", "11:82 · 15:74"],
+    ["Madyan (Shuʿayb)", "sky / earth", "the Cry · the quake — الصَّيْحَة · الرَّجْفَة", "11:94 · 7:91"],
+])
+C.note("<b>Historical tag.</b> The events are narrated in the text — <b>[TEXT]</b>; identifying each people with a "
+       "specific archaeological site or date is external — <b>[REPORT]</b> — and is not asserted here. The shared "
+       "signature is measured: each strike is <b>sudden / unawares</b> (وَهُمْ لَا يَشْعُرُونَ — e.g. 16:45, the earth "
+       "swallowing), <b>total</b> (a whole qawm), and <b>timed</b> — 'every nation has a term' (لِكُلِّ أُمَّةٍ أَجَلٌ, 7:34).")
+C.callout("The tools of the Maker — and why there is no punishment-sign today",
+          "The point is not the variety of disasters but the <b>single Author behind every element</b>: earth "
+          "swallows, sea drowns, wind blasts, sky cries, stones fall — each is a <i>jund</i> (soldier) of God (48:4). "
+          "And the Qurʾān answers 'why not now?' directly — <b>وَمَا مَنَعَنَا أَن نُّرْسِلَ بِالْآيَاتِ إِلَّا أَن "
+          "كَذَّبَ بِهَا الْأَوَّلُونَ</b> (17:59): the demanded punishment-signs were <b>withheld</b> from the final "
+          "community, because the ancient pattern was sign → denial → annihilation. For this umma the sign "
+          "<b>changed form, not substance</b>: the <b>standing sign</b> (the Book, §⑤) + <b>deferred judgment</b> (the "
+          "reckoning is the Hour, not an immediate wipe-out) — <i>'We send not the signs except to warn'</i> "
+          "(تَخْوِيفًا, 17:59). The <b>pattern is unchanged</b> — فَلَن تَجِدَ لِسُنَّةِ اللَّهِ تَبْدِيلًا (35:43); only "
+          "its <b>mode</b> for the last people differs. So we <i>do</i> still have the sign — as the Book and the "
+          "deferred term — just not as the sudden collective ʿadhāb of old.", accent=C.TEAL)
 
 # ── 7 · CAVEATS ──
 C.section("Caveats")
