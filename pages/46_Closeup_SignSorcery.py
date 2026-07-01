@@ -50,7 +50,7 @@ C.kpis([
     ("9×", "'سِحْرٌ مُبِين'", "'clear sorcery' — hurled at Moses (10:76,27:13), Jesus (5:110,61:6), Muhammad (46:7,37:15). Mirror of بيّنة. [MEASURED]", C.CORAL),
 ])
 C.onpage(["① The problem", "② No 'muʿjiza'", "③ siḥr = what deniers say", "④ Four differentiators",
-          "⑤ The taḥaddī", "⑥ Forms of the sign", "⑦ Type", "⑧ Caveats", "⑨ Verdict", "⑩ Takeaway"], fa="ss-fa", ar="ss-ar")
+          "⑤ The taḥaddī", "⑥ Forms of the sign", "⑦ Signs today", "⑧ Type", "⑨ Caveats", "⑩ Verdict", "⑪ Takeaway"], fa="ss-fa", ar="ss-ar")
 
 # ── 2 · FOUNDATION ──
 C.foundation(
@@ -149,6 +149,22 @@ C.table(["Prophet", "The sign (Qurʾānic)", "Sūrah · verse", "≈ era", "Wher
     ["ʿĪsā", "clay bird given life, healing the blind & leper, raising the dead — بِإِذْنِ اللَّهِ", "Āl ʿImrān 3:49 · al-Māʾidah 5:110", "≈ 1st c. CE", "Palestine ·ext"],
     ["Sulaymān", "wind (a month each way); speech of birds; Bilqīs's throne in an instant — قَبْلَ أَن يَرْتَدَّ إِلَيْكَ طَرْفُكَ", "al-Naml 27:16·40 · Sabaʾ 34:12", "≈ 10th c. BCE", "Jerusalem ·ext ← Sabaʾ (27:22)"],
 ])
+C.para("<b>Mūsā's nine signs (تِسْعُ آيَاتٍ)</b> — the count is stated (al-Isrāʾ 17:101 · al-Naml 27:12); the list below gathers the scattered mentions (mostly al-Aʿrāf 7:107–133). All in Egypt, ≈ 13th c. BCE?")
+C.table(["#", "Sign", "Qurʾānic term", "Sūrah · verse"], tight=True, rows=[
+    ["1", "staff → serpent", "الْعَصَا → ثُعْبَانٌ مُّبِين", "al-Aʿrāf 7:107 · al-Shuʿarāʾ 26:32"],
+    ["2", "the radiant white hand", "الْيَدُ الْبَيْضَاء", "al-Aʿrāf 7:108 · Ṭā-Hā 20:22"],
+    ["3", "years of drought", "السِّنِين", "al-Aʿrāf 7:130"],
+    ["4", "shortage of crops", "نَقْصٌ مِّنَ الثَّمَرَات", "al-Aʿrāf 7:130"],
+    ["5", "the flood", "الطُّوفَان", "al-Aʿrāf 7:133"],
+    ["6", "the locusts", "الْجَرَاد", "al-Aʿrāf 7:133"],
+    ["7", "the lice", "الْقُمَّل", "al-Aʿrāf 7:133"],
+    ["8", "the frogs", "الضَّفَادِع", "al-Aʿrāf 7:133"],
+    ["9", "the blood", "الدَّم", "al-Aʿrāf 7:133"],
+])
+C.note("The five of 7:133 (flood · locusts · lice · frogs · blood) are named آيَاتٍ مُّفَصَّلَات ('signs made distinct'). "
+       "The Qurʾān <b>states 'nine' [TEXT]</b> but does not number them in one list; this enumeration is the traditional "
+       "harmonisation <b>[INFERRED / REPORT]</b> — some scholars count differently (e.g. including the sea's parting).")
+
 C.para("<b>B · Signs of God's power & the Resurrection</b> — wonders shown as āyāt, not tied to a contest (indirect):")
 C.table(["Sign", "What (Qurʾānic)", "Sūrah · verse", "≈ date", "Where"], tight=False, rows=[
     ["Aṣḥāb al-Kahf (the Cave)", "the sleepers preserved ~309 yrs, called a sign — كَانُوا مِنْ آيَاتِنَا عَجَبًا", "al-Kahf 18:9 (·25)", "≈ 3rd c. CE? ·ext", "a cave ·ext"],
@@ -183,6 +199,24 @@ C.callout("The tools of the Maker — and why there is no punishment-sign today"
           "(the Book, §⑤) + <b>deferred judgment</b> (the reckoning is the Hour, not an immediate wipe-out) — "
           "<i>'We send not the signs except to warn'</i> (تَخْوِيفًا, 17:59). The <b>pattern is unchanged</b> — "
           "فَلَن تَجِدَ لِسُنَّةِ اللَّهِ تَبْدِيلًا (35:43); only its <b>mode</b> for the last people differs.", accent=C.TEAL)
+
+# ── 6d · SIGNS TODAY ──
+C.section("⑦ Do we still have signs — and why we may not notice them?")
+C.para("Yes — but not as the sudden ʿadhāb of old (§⑥). The Qurʾān points to <b>ongoing, public signs</b> in three "
+       "registers: the <b>standing sign</b> of the Book (the taḥaddī, §⑤); signs <b>in the horizons (āfāq)</b> — the "
+       "cosmos and the alternation of night and day (<b>41:53</b>; 3:190; 51:20); and signs <b>in the selves "
+       "(anfus)</b> — the human being itself (<b>41:53</b>; 51:21). Even a past judgment is left as a <b>lasting "
+       "sign</b>: Pharaoh's body preserved <i>'as a sign for those after you'</i> (10:92).")
+C.callout("Why they go unnoticed — the deficit is attention, not signs",
+          "The Qurʾān locates the gap in the <b>beholder</b>, not the sign: people <b>pass them by, turning away</b> — "
+          "وَكَأَيِّن مِّنْ آيَةٍ … يَمُرُّونَ عَلَيْهَا وَهُمْ عَنْهَا مُعْرِضُونَ (12:105); they <b>do not look</b> — "
+          "أَفَلَا تُبْصِرُونَ (51:21); <b>hearts are locked</b> against reflection — أَفَلَا يَتَدَبَّرُونَ الْقُرْآنَ "
+          "أَمْ عَلَىٰ قُلُوبٍ أَقْفَالُهَا (47:24); and the <b>arrogant</b> are turned from them — سَأَصْرِفُ عَنْ "
+          "آيَاتِيَ الَّذِينَ يَتَكَبَّرُونَ (7:146). The signs are read only by <b>أُولُو الْأَلْبَاب</b> ('people of "
+          "understanding', 3:190) and <b>الْمُوقِنِين</b> ('those of certainty', 51:20). So the sign is <b>ever-present "
+          "and open; perceiving it needs تَدَبُّر · تَفَكُّر · يَقِين</b> — and its absence (heedlessness, turning "
+          "away, arrogance, a closed heart) is why it goes unseen. <i>[verses TEXT; that this answers 'why we don't "
+          "notice today' is INFERRED.]</i>", accent=C.TEAL)
 
 # ── 7 · CAVEATS ──
 C.section("Caveats")
