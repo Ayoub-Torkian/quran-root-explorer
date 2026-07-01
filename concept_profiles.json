@@ -120,6 +120,26 @@
    "universe_analog": "law / set theory — a bounded domain (default region + marked exception)",
    "status": "reviewed",
    "closeup_page": null
+  },
+  "سمو": {
+   "display": "samāwāt / arḍ — heaven & earth",
+   "family": "cosmos_creation",
+   "structural_type": "frozen pair / merism (heaven ↔ earth = the whole)",
+   "reading": {
+    "form_content": "[TEXT · MEASURED] the pair is FROZEN in order — السماوات والأرض 147× vs the reverse 2× (both contextually motivated, 14:48 · 20:4); and in number — heavens plural/seven (سبع سماوات 7×) but earth NEVER plural (أرضين 0×): up is many, down is one.",
+    "grammar_semantics": "[TEXT · MEASURED] naming the two poles is a MERISM for totality — خلق السماوات والأرض 29×, ما في السماوات والأرض 38×, وما بينهما ('and what is between them') 21× spells out that the pair brackets ALL creation.",
+    "structure_function": "[TEXT+INFERENCE] the concept is the BRACKET, not the endpoints — heaven/earth is the scope-word for God's creating/owning/knowing ('to God belongs whatever is in the heavens and the earth', 38×); the fixed order encodes cosmic hierarchy (heaven prior/above)."
+   },
+   "senses": [
+    "the heavens — plural, sevenfold, above",
+    "the earth — singular, below",
+    "the pair = totality (merism)",
+    "'and what is between them' — the bracketed whole",
+    "سمو 'raise' ↔ اسم 'name' (shared root, elevation)"
+   ],
+   "universe_analog": "cosmology — a vertical axis named by its two extremes (a merism for the cosmos)",
+   "status": "reviewed",
+   "closeup_page": null
   }
  }
 }
