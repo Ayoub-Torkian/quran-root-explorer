@@ -603,6 +603,11 @@ if not _map_ok:
     st.info("This sūra is too short to draw its own concept map — but its sūra-level views below "
             "(semantic footprint and the sūras that elaborate it) still work. Pick a longer sūra for the map.")
 else:
+    _loc = st.session_state.pop("_atlas_locate", None)   # ← set by the concept profile's "Locate on the map" button
+    if _loc is not None and _loc in d["theme_of"]:
+        st.session_state["atlas_color"] = "Theme"
+        _lt = d["theme_of"][_loc]
+        st.session_state["atlas_focus"] = "Family %d: %s" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
     layer(1, "🗺️ The map — roots as a web")
     c1, c2, c3 = st.columns(3)
     c1.metric("Roots mapped", len(d["nodes"]))
@@ -1166,10 +1171,15 @@ with _concept_slot:
                     "padding:9px 14px;margin:2px 0 8px;font-size:13px;color:#10243A;line-height:1.7'>"
                     "structural type: <b style='color:%s'>%s</b>%s<br>%s%s</div>"
                     % (_tcol, _tcol, _typ, _read, _mm, _partners), unsafe_allow_html=True)
-        _bc = st.columns([1, 1, 3])
+        st.markdown("<div class='t-cap' style='margin:0 0 6px'>↓ <b>How this connects:</b> above is this one concept in depth; the "
+                    "<b>map below</b> is the whole web — this root sits in <b>%s</b>. Hit “Locate on the map” to light it up there.</div>"
+                    % _famtxt, unsafe_allow_html=True)
+        _bc = st.columns([1.1, 1.2, 2])
         if _bc[0].button("🔎 Open in Search →", key="atlas_open"):
             st.session_state._pending_q = _pick; st.switch_page("pages/38_Search.py")
+        if _bc[1].button("📍 Locate on the map ↓", key="atlas_locate"):
+            st.session_state["_atlas_locate"] = _pick; st.rerun()
         _cp = _prof.get("closeup_page") if _prof else None
-        if _cp and _bc[1].button("🗺 Full close-up →", key="atlas_closeup"):
+        if _cp and _bc[2].button("🗺 Full close-up →", key="atlas_closeup"):
             st.switch_page(_cp)
 
