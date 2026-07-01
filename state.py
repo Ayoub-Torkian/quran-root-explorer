@@ -85,6 +85,7 @@ NAV_SECTIONS = [
             ("pages/23_Structural_Twins.py", "Structural Twins", "♊"),
         ]),
         ("Claims reviewed", [
+            ("pages/14_Disjoint_Letters.py", "Mysterious letters · muqaṭṭaʿāt", "🔠"),
             ("pages/31_Closeup_Code19.py", "Code 19", "🔢"),
             ("pages/33_Closeup_Adadi.py", "Word-count miracle", "🧮"),
             ("pages/32_Closeup_Nuzul.py", "Revelation order", "🕰️"),
@@ -97,7 +98,6 @@ NAV_SECTIONS = [
             ("pages/17_Two_Books_Summary.py", "Two Books · FDR Summary", "📋"),
         ]),
         ("Computational lenses", [
-            ("pages/14_Disjoint_Letters.py", "Disjoint Letters", "🔠"),
             ("pages/18_Spatial_Patterns.py", "Spatial Patterns", "🗺️"),
             ("pages/15_Signal.py", "Signal", "📡"),
             ("pages/16_Biology.py", "Biology", "🧫"),

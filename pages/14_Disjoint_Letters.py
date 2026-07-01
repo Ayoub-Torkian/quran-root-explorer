@@ -341,6 +341,30 @@ st.markdown(
     "is computed live and validated against permutation nulls.</div>",
     unsafe_allow_html=True)
 
+
+with st.expander("❓ What are the muqaṭṭaʿāt? — start here (plain answers, from the data)", expanded=True):
+    st.markdown("""
+**What they are.** Disjoined letters that open **29 sūras** — pronounced *by name* (الٓمٓ = *alif-lām-mīm*, not "alam"). They are the **only** place in the Qurʾān that operates at the pure **letter** level rather than as words.
+
+**How many & which letters.** 29 sūras · **14 distinct letters** — *exactly half* the 28-letter alphabet: **ا ح ر س ص ط ع ق ك ل م ن ه ي** (mnemonic **نَصٌّ حَكِيمٌ قَاطِعٌ لَهُ سِرّ** — "a wise, decisive text has a secret"). They form **14 combinations**.
+
+**Types, by length.** 1-letter: **صٓ · قٓ · نٓ** · 2-letter: **طه · يس · حمٓ** · 3-letter: **الٓمٓ · الٓرٓ · طسٓمٓ** · 4-letter: **المٓصٓ · الٓمٓرٰ** · 5-letter (the maximum): **كهٓيٰعٓصٓ · حمٓ عٓسٓقٓ**.
+
+**Which sūras — and a pattern.** Repeated combos cluster in **contiguous runs (families)**: **ḤM** (7 sūras, 40–46), **ALM** (6: 2,3,29,30,31,32), **ALR** (5: 10,11,12,14,15), **ṬSM** (2: 26,28), plus singletons. Neighbours share a tag — like a **library call-number**.
+
+**Why at the beginning? What do they point to? (MEASURED)**
+- **They flag the *long* sūras.** Muqaṭṭaʿāt sūras average **94.6 āyāt vs 41.1** for the rest (**2.3×**); **25/29** are above the median length → an **organizational / positional pointer**, an index over the major sūras. *(validated vs a label-permutation null in the tabs below.)*
+- **They are followed by the Book.** In **23/29**, āyāt 1–3 immediately mention **the Book / revelation / the signs** (*ذَٰلِكَ الْكِتَابُ · تَنزِيلُ · تِلْكَ آيَاتُ*). The letters → *"this is the Book."*
+
+**Are they a hidden letter-frequency / numerical code?** Tested honestly: only a **weak** echo (obs/expected ≈ **1.07**, z ≈ 2.5, p ≈ 0.01), **concentrated in the single-letter sūras** — **قٓ/Qāf 1.78× · صٓ 1.51× · نٓ 1.23×** — while common-letter combos (الٓمٓ ≈ 1.04) show almost none. So: a faint over-representation exactly where the letter is *distinctive*, **not** the strong "mathematical miracle" cipher often claimed (that fails as a general code).
+
+**Word or character level?** Uniquely **character-level** — letters *qua* letters. Elsewhere the rasm builds words; here the 14 "luminous" letters stand alone.
+
+**What do they mean?** *[external reports differ — God-knows-best · divine names · attention · challenge].* What the **text itself** supports: an **inimitability challenge** ("from these very letters — your own alphabet — comes a Book you cannot match") **+ an organizational index**. The Qurʾān never decodes them, so the *secret* (سِرّ) is left as such.
+
+**Verdict.** Positional/organizational **pointer = measured & validated**. Letter-frequency **code = not established** (weak, concentrated echo only). Semantic content of the letters = **not decoded**. Explore each claim live in the three tabs below.
+""")
+
 # Three-category navigation (per design review): Position (the validated index
 # geometry) · Sequence (character scale) · Semantic (word/root scale). Inner tab
 # containers keep their nesting path, so the `with t_*:` blocks below render
