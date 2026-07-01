@@ -1145,10 +1145,14 @@ def _load_concept_senses():
 _SENSES = _load_concept_senses()   # root -> {occ, n_concepts, senses:[{sense,gloss,status,occ,forms}]} — ALL 1701 roots
 with _concept_slot:
     st.markdown("<div style='display:inline-block;background:#1D3557;color:#fff;font-weight:800;font-size:15px;"
-                "padding:7px 15px;border-radius:8px;margin:2px 0 8px;letter-spacing:.03em'>🧬 CONCEPT PROFILE</div>",
+                "padding:7px 15px;border-radius:8px;margin:2px 0 6px;letter-spacing:.03em'>🧬 CONCEPT PROFILE</div>",
                 unsafe_allow_html=True)
     _pickroots = sorted(set(_SENSES) | set(d["nodes"]), key=disp_root) if _SENSES else sorted(d["nodes"], key=disp_root)
-    _pick = st.selectbox("🔍 Pick a root — its concept(s) open here (all %d roots; the map & families are below)" % len(_pickroots),
+    st.markdown("<div class='t-body' style='margin:-2px 0 6px;color:#10243A'><b>Zoom into one root</b> — the opposite of the map below. "
+                "Pick a root and read the <b>concept(s)</b> it carries (meaning · senses · partners); <b>Layer 1 · the map</b> below shows "
+                "<b>all</b> roots at once and <b>auto-highlights</b> your pick's family. <i>One ↔ the whole.</i></div>",
+                unsafe_allow_html=True)
+    _pick = st.selectbox("🔍 Pick a root (all %d)" % len(_pickroots),
                          [""] + _pickroots,
                          format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
     if _pick:
@@ -1210,12 +1214,6 @@ with _concept_slot:
             st.markdown("<div style='background:#EAF2FB;border:1px solid #CFE0F2;border-radius:10px;padding:8px 13px;"
                         "margin:2px 0 8px;font-size:13px;color:#10243A'><b>Concepts in this root</b> "
                         "(split by surface form — ✓ curated · candidate):%s</div>" % _grid, unsafe_allow_html=True)
-        if _mapped:
-            _conn = "this root sits in <b>%s</b> — <b>highlighted on the map below</b> the moment you pick it." % _famtxt
-        else:
-            _conn = "this root is <b>rare</b> (below the map's cutoff), so it isn't drawn — its concept is authored above and reachable in Search."
-        st.markdown("<div class='t-cap' style='margin:0 0 6px'>↓ <b>How this connects:</b> above is this root's concept(s) in depth; the "
-                    "<b>map below</b> is the whole web — %s</div>" % _conn, unsafe_allow_html=True)
         _bc = st.columns([1.3, 2.7])
         if _bc[0].button("🔎 Open in Search →", key="atlas_open"):
             st.session_state._pending_q = _pick; st.switch_page("pages/38_Search.py")
