@@ -142,29 +142,29 @@ C.para("The āyah takes several forms: an <b>evidentiary / power sign</b> handed
        "heavens and the earth'</i> (48:4·7; 74:31). Place-names shown with a verse are Qurʾānic ([TEXT]); those marked "
        "<i>·ext</i> are traditional identifications ([REPORT]); the ≈date column is external throughout ([REPORT]).")
 C.para("<b>A · Evidentiary / power signs</b> — the created order bent to authenticate a prophet (direct signs):")
-C.table(["Prophet", "The sign (Qurʾānic)", "Verse", "≈ era", "Where"], tight=False, rows=[
-    ["Mūsā", "staff → serpent, radiant hand — 'nine signs' (تِسْعَ آيَاتٍ)", "17:101 · 27:12", "≈ 13th c. BCE?", "Egypt (43:51)"],
-    ["Ṣāliḥ", "the she-camel, itself named a sign — نَاقَةُ اللَّهِ … آيَةً", "7:73 · 54:27", "≈ 1st mill. BCE", "al-Ḥijr (15:80)"],
-    ["Ibrāhīm", "the fire made cool — يَا نَارُ كُونِي بَرْدًا وَسَلَامًا", "21:69", "≈ 2nd mill. BCE", "Babylon ·ext"],
-    ["ʿĪsā", "clay bird given life, healing the blind & leper, raising the dead — بِإِذْنِ اللَّهِ", "3:49 · 5:110", "≈ 1st c. CE", "Palestine ·ext"],
-    ["Sulaymān", "wind (a month each way); speech of birds; Bilqīs's throne from Sabaʾ in an instant — قَبْلَ أَن يَرْتَدَّ إِلَيْكَ طَرْفُكَ", "27:16·40 · 34:12", "≈ 10th c. BCE", "Jerusalem ·ext ← Sabaʾ (27:22)"],
+C.table(["Prophet", "The sign (Qurʾānic)", "Sūrah · verse", "≈ era", "Where"], tight=False, rows=[
+    ["Mūsā", "staff → serpent, radiant hand — 'nine signs' (تِسْعَ آيَاتٍ)", "al-Isrāʾ 17:101 · al-Naml 27:12", "≈ 13th c. BCE?", "Egypt (43:51)"],
+    ["Ṣāliḥ", "the she-camel, itself named a sign — نَاقَةُ اللَّهِ … آيَةً", "al-Aʿrāf 7:73 · al-Qamar 54:27", "≈ 1st mill. BCE", "al-Ḥijr (15:80)"],
+    ["Ibrāhīm", "the fire made cool — يَا نَارُ كُونِي بَرْدًا وَسَلَامًا", "al-Anbiyāʾ 21:69", "≈ 2nd mill. BCE", "Babylon ·ext"],
+    ["ʿĪsā", "clay bird given life, healing the blind & leper, raising the dead — بِإِذْنِ اللَّهِ", "Āl ʿImrān 3:49 · al-Māʾidah 5:110", "≈ 1st c. CE", "Palestine ·ext"],
+    ["Sulaymān", "wind (a month each way); speech of birds; Bilqīs's throne in an instant — قَبْلَ أَن يَرْتَدَّ إِلَيْكَ طَرْفُكَ", "al-Naml 27:16·40 · Sabaʾ 34:12", "≈ 10th c. BCE", "Jerusalem ·ext ← Sabaʾ (27:22)"],
 ])
 C.para("<b>B · Signs of God's power & the Resurrection</b> — wonders shown as āyāt, not tied to a contest (indirect):")
-C.table(["Sign", "What (Qurʾānic)", "Verse", "Where"], tight=False, rows=[
-    ["Aṣḥāb al-Kahf (the Cave)", "the sleepers preserved ~309 yrs, called a sign — كَانُوا مِنْ آيَاتِنَا عَجَبًا", "18:9 (·25)", "a cave ·ext"],
-    ["The man & the ruined town", "made to die 100 years, then revived — فَأَمَاتَهُ اللَّهُ مِئَةَ عَامٍ ثُمَّ بَعَثَهُ", "2:259", "a town ·ext"],
-    ["Ibrāhīm's four birds", "revived to answer 'how do You give life?' — كَيْفَ تُحْيِي الْمَوْتَىٰ", "2:260", "—"],
+C.table(["Sign", "What (Qurʾānic)", "Sūrah · verse", "≈ date", "Where"], tight=False, rows=[
+    ["Aṣḥāb al-Kahf (the Cave)", "the sleepers preserved ~309 yrs, called a sign — كَانُوا مِنْ آيَاتِنَا عَجَبًا", "al-Kahf 18:9 (·25)", "≈ 3rd c. CE? ·ext", "a cave ·ext"],
+    ["The man & the ruined town", "made to die 100 years, then revived — فَأَمَاتَهُ اللَّهُ مِئَةَ عَامٍ ثُمَّ بَعَثَهُ", "al-Baqarah 2:259", "≈ 6th c. BCE? ·ext", "a town ·ext"],
+    ["Ibrāhīm's four birds", "revived to answer 'how do You give life?' — كَيْفَ تُحْيِي الْمَوْتَىٰ", "al-Baqarah 2:260", "≈ early 2nd mill. BCE", "—"],
 ])
 C.para("<b>C · Protective & punitive signs</b> — a different element (or creature) strikes when the sign is denied; and once, birds defend the Sanctuary:")
-C.table(["People / event", "Element", "Mechanism (Qurʾānic)", "Verse", "≈ date", "Where"], tight=False, rows=[
-    ["Aṣḥāb al-Fīl (Elephant)", "birds + stones", "طَيْرًا أَبَابِيلَ · بِحِجَارَةٍ مِّن سِجِّيل", "105:3–4", "≈ 570 CE", "Mecca ·ext"],
-    ["Nūḥ's people", "water", "flood / drowning — الطوفان · أغرقنا", "29:14 · 7:64", "prehistoric", "ark on al-Jūdī (11:44)"],
-    ["ʿĀd", "wind", "howling wind — رِيحٌ صَرْصَرٌ عَاتِيَة", "69:6 · 54:19", "ancient", "al-Aḥqāf (46:21)"],
-    ["Thamūd", "sky / earth", "the Cry · bolt · quake — الصَّيْحَة · الصَّاعِقَة · الرَّجْفَة", "11:67 · 7:78", "≈ 1st mill. BCE", "al-Ḥijr (15:80)"],
-    ["Pharaoh & host", "sea", "drowned — أَغْرَقْنَاهُم فِي الْيَمّ", "7:136 · 10:90", "≈ 13th c. BCE?", "Egypt (43:51)"],
-    ["Qārūn", "earth", "swallowed — فَخَسَفْنَا بِهِ وَبِدَارِهِ الْأَرْض", "28:81", "≈ 13th c. BCE?", "Egypt ·ext"],
-    ["Lūṭ's people", "sky + earth", "stones + overturning — سِجِّيل · عَالِيَهَا سَافِلَهَا", "11:82 · 15:74", "≈ early 2nd mill. BCE", "al-Muʾtafikāt (53:53)"],
-    ["Madyan (Shuʿayb)", "sky / earth", "the Cry · the quake — الصَّيْحَة · الرَّجْفَة", "11:94 · 7:91", "2nd mill. BCE", "Madyan (7:85)"],
+C.table(["People / event", "Element", "Mechanism (Qurʾānic)", "Sūrah · verse", "≈ date", "Where"], tight=False, rows=[
+    ["Aṣḥāb al-Fīl (Elephant)", "birds + stones", "طَيْرًا أَبَابِيلَ · بِحِجَارَةٍ مِّن سِجِّيل", "al-Fīl 105:3–4", "≈ 570 CE", "Mecca ·ext"],
+    ["Nūḥ's people", "water", "flood / drowning — الطوفان · أغرقنا", "al-ʿAnkabūt 29:14 · al-Aʿrāf 7:64", "prehistoric", "ark on al-Jūdī (11:44)"],
+    ["ʿĀd", "wind", "howling wind — رِيحٌ صَرْصَرٌ عَاتِيَة", "al-Ḥāqqah 69:6 · al-Qamar 54:19", "ancient", "al-Aḥqāf (46:21)"],
+    ["Thamūd", "sky / earth", "the Cry · bolt · quake — الصَّيْحَة · الصَّاعِقَة · الرَّجْفَة", "Hūd 11:67 · al-Aʿrāf 7:78", "≈ 1st mill. BCE", "al-Ḥijr (15:80)"],
+    ["Pharaoh & host", "sea", "drowned — أَغْرَقْنَاهُم فِي الْيَمّ", "al-Aʿrāf 7:136 · Yūnus 10:90", "≈ 13th c. BCE?", "Egypt (43:51)"],
+    ["Qārūn", "earth", "swallowed — فَخَسَفْنَا بِهِ وَبِدَارِهِ الْأَرْض", "al-Qaṣaṣ 28:81", "≈ 13th c. BCE?", "Egypt ·ext"],
+    ["Lūṭ's people", "sky + earth", "stones + overturning — سِجِّيل · عَالِيَهَا سَافِلَهَا", "Hūd 11:82 · al-Ḥijr 15:74", "≈ early 2nd mill. BCE", "al-Muʾtafikāt (53:53)"],
+    ["Madyan (Shuʿayb)", "sky / earth", "the Cry · the quake — الصَّيْحَة · الرَّجْفَة", "Hūd 11:94 · al-Aʿrāf 7:91", "2nd mill. BCE", "Madyan (7:85)"],
 ])
 C.note("<b>Dates are external ([REPORT]) — the Qurʾān gives none;</b> '≈' is traditional/scholarly estimate, often "
        "legendary and debated (esp. Nūḥ, ʿĀd). <b>Locations differ:</b> those shown with a verse are named <b>in the "
