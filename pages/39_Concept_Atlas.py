@@ -478,6 +478,18 @@ def _axis_vec(S, pairs):
     ax = np.mean(offs, 0); ax /= np.linalg.norm(ax) + 1e-9
     return ax, len(offs)
 
+@st.cache_data(show_spinner="Loading the concept-level map…")
+def _load_concept_graph():
+    """Precomputed sense-resolved concept graph (concept_graph.json) in build_atlas's schema, or None."""
+    import json, os
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "..", "concept_graph.json"), encoding="utf-8") as _f:
+            g = json.load(_f)
+    except Exception:
+        return None
+    g.setdefault("gf", {})
+    return g
+
 def figure(d, color_by, focus=None, dim3=False):
     pos = d["pos3"] if dim3 else d["pos"]
     nodes, docf = d["nodes"], d["docf"]
@@ -501,13 +513,15 @@ def figure(d, color_by, focus=None, dim3=False):
     zs = [pos[n][2] for n in nodes] if dim3 else None
     sizes = [6 + (docf[n] ** 0.5) * 0.9 for n in nodes]
     top40 = set(nodes)   # label every node (was top-40 by frequency; user wants all labels)
-    texts = [disp_root(n) if n in top40 else "" for n in nodes]
+    _D = d.get("disp") or {}                          # concept nodes carry an Arabic surface-form label; roots use their own key
+    _lab = lambda n: disp_root(_D.get(n) or n)         # disp_root only prettifies (ک→ك, ی→ي); plotly/browser handle RTL
+    texts = [_lab(n) if n in top40 else "" for n in nodes]
     gf = d.get("gf", {})
     if color_by == "Theme":
         colors = [THEME_COLORS[d["theme_of"][n] % len(THEME_COLORS)] for n in nodes]
         if focus is not None:                       # dim everything except the focused theme
             colors = [colors[i] if d["theme_of"][n] == focus else "#dce4e7" for i, n in enumerate(nodes)]
-            texts = [disp_root(n) if (d["theme_of"][n] == focus and n in top40) else "" for n in nodes]
+            texts = [_lab(n) if (d["theme_of"][n] == focus and n in top40) else "" for n in nodes]
         marker = dict(size=sizes, color=colors, line=dict(width=0.5, color="#ffffff"))
     elif color_by == "Network role":               # banked graph finding: bridge / hub / member
         colors = [ROLE_COLOR.get((gf.get(normalize_letters(n)) or {}).get("role"), "#9FB3C8") for n in nodes]
@@ -533,7 +547,7 @@ def figure(d, color_by, focus=None, dim3=False):
         if f:
             extra = " · " + ROLE_TAG.get(f.get("role"), "member")
             if f.get("family_label"): extra += f" · family {f['family_label']}"
-        hov.append(f"{n} · freq {docf[n]} · revelation {d['nuz'][n]:.0f}/114 · family {d['theme_of'][n] + 1}{extra}")
+        hov.append(f"{_lab(n)} · freq {docf[n]} · revelation {d['nuz'][n]:.0f}/114 · family {d['theme_of'][n] + 1}{extra}")
     if dim3:
         node_tr = go.Scatter3d(x=xs, y=ys, z=zs, mode="markers+text", text=texts, textposition="top center",
                                textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
@@ -621,12 +635,24 @@ else:
         st.session_state["atlas_color"] = "Theme"
         _lt = d["theme_of"][_cp_g]
         st.session_state["atlas_focus"] = "Family %d: %s" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
-    layer(2, "🗺️ The map — roots as a web")
+    layer(2, "🗺️ The map — the web")
+    _CG = _load_concept_graph()
+    if _scope == "Whole Qur'ān" and _CG:
+        _level = st.radio("Level", ["Root", "Concept"], horizontal=True, key="atlas_level",
+                          format_func=lambda x: {"Root": "🌱 Roots", "Concept": "🧬 Concepts (sense-resolved)"}[x],
+                          help="Roots: each node is one grammatical root. Concepts: polysemous roots split by sense — نور·light (نور) vs نور·fire (نار), قوم·people (قوم) vs Resurrection (قيامة).")
+    else:
+        _level = "Root"
+    _concept_level = (_level == "Concept" and _CG is not None)
+    dm = _CG if _concept_level else d
     c1, c2, c3 = st.columns(3)
-    c1.metric("Roots mapped", len(d["nodes"]))
-    c2.metric("Attraction links", len(d["edges"]))
-    c3.metric("Families", len(d["themes"]))
-    st.caption("The map draws the %d most-frequent roots for legibility%s — the rest aren't dropped: every root is split into concepts in the registry and reachable via Search." % (len(d["nodes"]), (" of %s in scope" % d["n_all_roots"]) if d.get("n_all_roots") else ""))
+    c1.metric("Concepts mapped" if _concept_level else "Roots mapped", len(dm["nodes"]))
+    c2.metric("Attraction links", len(dm["edges"]))
+    c3.metric("Families", len(dm["themes"]))
+    if _concept_level:
+        st.caption("Sense-resolved: polysemous roots split into separate concept-nodes by surface form (نور·light نور vs نور·fire نار; قوم·people قوم vs قیامة). Families separate far more cleanly here — modularity %.2f vs ~0.03 for roots." % (dm.get("modularity") or 0))
+    else:
+        st.caption("The map draws the %d most-frequent roots for legibility%s — the rest aren't dropped: every root is split into concepts in the registry and reachable via Search." % (len(d["nodes"]), (" of %s in scope" % d["n_all_roots"]) if d.get("n_all_roots") else ""))
     cc1, cc2 = st.columns([1, 1.4])
     color_by = cc1.radio("Map mode", ["Theme", "Revelation phase", "Network role", "Around a concept"],
                          horizontal=True, key="atlas_color",
@@ -635,7 +661,7 @@ else:
     _dim3 = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="atlas_dim",
                      label_visibility="collapsed").startswith("3")
     _focus = None
-    if color_by == "Around a concept":
+    if color_by == "Around a concept" and not _concept_level:
         _F = _field_space(id(corpus))
         _here = {normalize_letters(n) for n in d["nodes"]}
         _vocab = [n for n in _F["nodes"] if normalize_letters(n) in _here] or _F["nodes"]
@@ -646,11 +672,13 @@ else:
                               _vocab, index=_vocab.index(_dft), key="atlas_concept", format_func=disp_root)
         _ego_view(_F, _csel, dim3=_dim3)
     else:
-        _theme_labels = ["— whole map —"] + [f"Family {ti + 1}: {' · '.join(disp_root(t) for t in top)}" for ti, _o, top in d["themes"]]
-        _focus_sel = cc2.selectbox("Focus a family", _theme_labels, key="atlas_focus",
+        _dd = dm.get("disp") or {}
+        _flab = lambda t: _dd.get(t) or disp_root(t)
+        _theme_labels = ["— whole map —"] + [f"Family {ti + 1}: {' · '.join(_flab(t) for t in top)}" for ti, _o, top in dm["themes"]]
+        _focus_sel = cc2.selectbox("Focus a family", _theme_labels, key=("atlas_focus_c" if _concept_level else "atlas_focus"),
                                    disabled=(color_by != "Theme"), help="Family focus applies to the Family colouring.")
         _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
-        st.plotly_chart(figure(d, color_by, _focus, _dim3), use_container_width=True,
+        st.plotly_chart(figure(dm, color_by, _focus, _dim3), use_container_width=True,
                         config={"scrollZoom": True, "displaylogo": False})
         if color_by == "Network role":
             _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
