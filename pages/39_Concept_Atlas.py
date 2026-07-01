@@ -490,6 +490,18 @@ def _load_concept_graph():
     g.setdefault("gf", {})
     return g
 
+@st.cache_data(show_spinner="Loading the family (meso) map…")
+def _load_family_graph():
+    """Precomputed family-aggregate graph (family_graph.json): nodes = concept-families, edges = strongest inter-family bonds."""
+    import json, os
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "..", "family_graph.json"), encoding="utf-8") as _f:
+            g = json.load(_f)
+    except Exception:
+        return None
+    g.setdefault("gf", {})
+    return g
+
 def figure(d, color_by, focus=None, dim3=False):
     pos = d["pos3"] if dim3 else d["pos"]
     nodes, docf = d["nodes"], d["docf"]
@@ -511,7 +523,7 @@ def figure(d, color_by, focus=None, dim3=False):
         theme_edge_tr = go.Scatter(x=tx, y=ty, mode="lines", line=dict(width=1.6, color=_tcol), opacity=0.9, hoverinfo="none") if tx else None
     xs = [pos[n][0] for n in nodes]; ys = [pos[n][1] for n in nodes]
     zs = [pos[n][2] for n in nodes] if dim3 else None
-    sizes = [6 + (docf[n] ** 0.5) * 0.9 for n in nodes]
+    sizes = [min(6 + (docf[n] ** 0.5) * 0.9, 42) for n in nodes]   # cap so heavy family (meso) nodes don't sprawl
     top40 = set(nodes)   # label every node (was top-40 by frequency; user wants all labels)
     _D = d.get("disp") or {}                          # concept nodes carry an Arabic surface-form label; roots use their own key
     _lab = lambda n: disp_root(_D.get(n) or n)         # disp_root only prettifies (ک→ك, ی→ي); plotly/browser handle RTL
@@ -547,6 +559,8 @@ def figure(d, color_by, focus=None, dim3=False):
         if f:
             extra = " · " + ROLE_TAG.get(f.get("role"), "member")
             if f.get("family_label"): extra += f" · family {f['family_label']}"
+        _mem = (d.get("members") or {}).get(n)
+        if _mem: extra += "<br>leading concepts: " + " · ".join(disp_root(m) for m in _mem)
         hov.append(f"{_lab(n)} · freq {docf[n]} · revelation {d['nuz'][n]:.0f}/114 · family {d['theme_of'][n] + 1}{extra}")
     if dim3:
         node_tr = go.Scatter3d(x=xs, y=ys, z=zs, mode="markers+text", text=texts, textposition="top center",
@@ -636,20 +650,27 @@ else:
         _lt = d["theme_of"][_cp_g]
         st.session_state["atlas_focus"] = "Family %d: %s" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
     layer(2, "🗺️ The map — the web")
-    _CG = _load_concept_graph()
+    _CG = _load_concept_graph(); _FG = _load_family_graph()
     if _scope == "Whole Qur'ān" and _CG:
-        _level = st.radio("Level", ["Root", "Concept"], horizontal=True, key="atlas_level",
-                          format_func=lambda x: {"Root": "🌱 Roots", "Concept": "🧬 Concepts (sense-resolved)"}[x],
-                          help="Roots: each node is one grammatical root. Concepts: polysemous roots split by sense — نور·light (نور) vs نور·fire (نار), قوم·people (قوم) vs Resurrection (قيامة).")
+        _opts = ["Root", "Concept"] + (["Family"] if _FG else [])
+        _level = st.radio("Level", _opts, horizontal=True, key="atlas_level",
+                          format_func=lambda x: {"Root": "🌱 Roots", "Concept": "🧬 Concepts (sense-resolved)", "Family": "🗂️ Families (meso)"}[x],
+                          help="Roots: each node is one grammatical root. Concepts: polysemous roots split by sense — نور·light (نور) vs نور·fire (نار), قوم·people (قوم) vs Resurrection (قيامة). Families: zoom out — each node is a whole family (organ) of concepts.")
     else:
         _level = "Root"
     _concept_level = (_level == "Concept" and _CG is not None)
-    dm = _CG if _concept_level else d
+    _family_level = (_level == "Family" and _FG is not None)
+    dm = _FG if _family_level else (_CG if _concept_level else d)
     c1, c2, c3 = st.columns(3)
-    c1.metric("Concepts mapped" if _concept_level else "Roots mapped", len(dm["nodes"]))
-    c2.metric("Attraction links", len(dm["edges"]))
-    c3.metric("Families", len(dm["themes"]))
-    if _concept_level:
+    c1.metric("Families mapped" if _family_level else ("Concepts mapped" if _concept_level else "Roots mapped"), len(dm["nodes"]))
+    c2.metric("Inter-family bonds" if _family_level else "Attraction links", len(dm["edges"]))
+    if _family_level:
+        c3.metric("Modularity (family split)", "%.2f" % (dm.get("modularity") or 0))
+    else:
+        c3.metric("Families", len(dm["themes"]))
+    if _family_level:
+        st.caption("Zoomed out to the **meso** scale — each node is a whole **family** (organ) of concepts; size = its concepts' combined weight, edges = the strongest bonds between families. Hover a family to see its leading concepts. The calm overview of the same web you read up close in Roots / Concepts.")
+    elif _concept_level:
         st.caption("Sense-resolved: polysemous roots split into separate concept-nodes by surface form (نور·light نور vs نور·fire نار; قوم·people قوم vs قیامة). Families separate far more cleanly here — modularity %.2f vs ~0.03 for roots." % (dm.get("modularity") or 0))
     else:
         st.caption("The map draws the %d most-frequent roots for legibility%s — the rest aren't dropped: every root is split into concepts in the registry and reachable via Search." % (len(d["nodes"]), (" of %s in scope" % d["n_all_roots"]) if d.get("n_all_roots") else ""))
@@ -661,7 +682,7 @@ else:
     _dim3 = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="atlas_dim",
                      label_visibility="collapsed").startswith("3")
     _focus = None
-    if color_by == "Around a concept" and not _concept_level:
+    if color_by == "Around a concept" and not _concept_level and not _family_level:
         _F = _field_space(id(corpus))
         _here = {normalize_letters(n) for n in d["nodes"]}
         _vocab = [n for n in _F["nodes"] if normalize_letters(n) in _here] or _F["nodes"]
