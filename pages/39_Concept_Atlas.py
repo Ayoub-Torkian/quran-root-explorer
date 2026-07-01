@@ -600,7 +600,7 @@ with st.expander("ℹ️ What this page shows — scales, maps & metrics (one-pa
 
 st.markdown("<div style='font-size:12.5px;color:#10243A;margin:2px 0 8px'>"
             "📍 <b>On this page</b> (scroll ↓): <b>§1</b> the map · <b>§2</b> theme sizes · "
-            "<b>§3–4</b> sūra / family views · <b>§5</b> data table · <b>§6</b> concept profile · <b>§7</b> themes</div>",
+            "<b>§3–4</b> sūra / family views · <b>§5</b> data table · <b>§6</b> concept profile · <b>§7</b> families</div>",
             unsafe_allow_html=True)
 if not _map_ok:
     st.info("This sūra is too short to draw its own concept map — but its sūra-level views below "
@@ -1171,17 +1171,23 @@ if _pick:
     if _cp and _bc[1].button("🗺 Full close-up →", key="atlas_closeup"):
         st.switch_page(_cp)
 
-layer(7, "🗂️ Themes — click a concept to open it in Search")
-for ti, ordered, top in d["themes"]:
-    col = THEME_COLORS[ti % len(THEME_COLORS)]
-    st.markdown(f"<div style='margin:8px 0 2px;font-size:13.5px;color:{INK}'>"
-                f"<span style='display:inline-block;width:11px;height:11px;border-radius:3px;"
-                f"background:{col};margin-left:4px'></span> <b>Theme {ti + 1}</b> · {' · '.join(disp_root(t) for t in top)}</div>",
+layer(7, "🗂️ Families — the organs of the whole · click a concept to open it in Search")
+st.markdown("<div class='t-cap' style='margin:-2px 0 10px'>The curated families are the working <b>organs</b> of the "
+            "concept-web — the meaningful grouping. (The measured auto-themes are one blended field, so they are not "
+            "shown here as structure.) Pick any member to open it in Search.</div>", unsafe_allow_html=True)
+_FAMS = _load_concept_families()
+for _fid, _fv in _FAMS.items():
+    _col = _fv.get("colour", "#1D3557")
+    st.markdown(f"<div style='background:#fff;border:1px solid #E2E8F1;border-left:5px solid {_col};"
+                f"border-radius:10px;padding:9px 14px;margin:10px 0 2px'>"
+                f"<span style='font-size:15px;font-weight:700;color:{_col}'>{_fv.get('name','')}</span>"
+                f"<span style='font-size:12px;color:{INK}'> — {_fv.get('organ_role','')}</span></div>",
                 unsafe_allow_html=True)
-    rr = ordered[:18]
-    with chip_row(f"atlas-{ti}"):                          # content-sized wrapping chips (density rule), not full-width
-        cols = st.columns(len(rr))
-        for k, r in enumerate(rr):
-            if cols[k].button(r, key=f"atlas_{ti}_{k}"):    # NO use_container_width → small chip
-                st.session_state._pending_q = r
-                st.switch_page("pages/38_Search.py")
+    _mem = _fv.get("members", [])
+    if _mem:
+        with chip_row(f"fam-{_fid}"):                      # content-sized wrapping chips (density rule), not full-width
+            cols = st.columns(len(_mem))
+            for k, r in enumerate(_mem):
+                if cols[k].button(disp_root(r), key=f"fam_{_fid}_{k}"):   # NO use_container_width → small chip
+                    st.session_state._pending_q = r
+                    st.switch_page("pages/38_Search.py")
