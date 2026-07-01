@@ -398,7 +398,7 @@ def _ego_view(F, concept, kg=16, kr=5):
               f"so sorting by them floats common roots up — sort by <i>cosine</i> for the embedding signal."
               if _fr == _fr else "")
     st.caption("Embedding = SVD-of-PPMI (the count-based word2vec; Levy & Goldberg 2014) — apt for a corpus this size, "
-        "where neural word2vec is unstable. Relation strength = cosine, shown three ways: distance, node colour, "
+        "where neural word2vec is unstable. Relation strength = cosine, shown three ways: distance, dot colour, "
         "edge thickness. ‘Together’ in the table is literal co-occurrence — corroboration, a different signal.")
     if _frtxt:
         st.markdown(f"<div style='font-size:12px;color:#10243A;background:#EAF2FB;border:1px solid #CFE0F2;"
@@ -525,7 +525,7 @@ def figure(d, color_by, focus=None, dim3=False):
         if f:
             extra = " · " + ROLE_TAG.get(f.get("role"), "member")
             if f.get("family_label"): extra += f" · family {f['family_label']}"
-        hov.append(f"{n} · freq {docf[n]} · revelation {d['nuz'][n]:.0f}/114 · theme {d['theme_of'][n] + 1}{extra}")
+        hov.append(f"{n} · freq {docf[n]} · revelation {d['nuz'][n]:.0f}/114 · family {d['theme_of'][n] + 1}{extra}")
     if dim3:
         node_tr = go.Scatter3d(x=xs, y=ys, z=zs, mode="markers+text", text=texts, textposition="top center",
                                textfont=dict(size=12, color=INK), hovertext=hov, hoverinfo="text", marker=marker)
@@ -543,7 +543,7 @@ def figure(d, color_by, focus=None, dim3=False):
     return fig
 
 hero("🗺️ Concept Atlas",
-     "The conceptual territory as a map — roots linked by attraction, grouped into communities, sized by "
+     "The conceptual territory as a map — concepts linked by attraction, grouped into families, sized by "
      "frequency. Scope it to the whole Qur'ān, a single sūra, or a relative-position band. "
      "Click any concept to open it in Search.")
 
@@ -581,25 +581,25 @@ if _scope != "Whole Qur'ān":
         st.rerun()
 with st.expander("ℹ️ What this page shows — scales, maps & metrics (one-page guide)"):
     st.markdown(
-"""**The core idea.** Concepts (grammatical roots) are **nodes**; an **edge** joins two that co-occur more than chance (PPMI); **colour** = auto-found communities (Louvain). The *same* engine drives every view below.
+"""**The core idea.** Each **concept** is a node; an **edge** joins two concepts that co-occur more than chance (PPMI); **colour** = the **family** each concept falls into. The *same* engine drives every view below.
 
 **Scope — three lenses on the concept web (the radio at the top):**
-- **1 · Whole Qur'ān — the territory.** Every major concept across all 6,236 āyāt, grouped into **themes**, with the concepts that **bridge** them. The master map; everything else is a zoom or a companion. *Takeaway: the vocabulary self-organises into a few coherent themes.*
-- **2 · A sūra — how one chapter is built.** The same graph from one sūra's verses → its **internal communities**; for narratives these track the **episodes** (Yūsuf: plot · temptation · prison · reunion). *Takeaway: a chapter's skeleton is latent in its own concept co-occurrence.*
+- **1 · Whole Qur'ān — the territory.** Every major concept across all 6,236 āyāt, grouped into **families**, with the concepts that **bridge** them. The master map; everything else is a zoom or a companion. *Takeaway: the vocabulary self-organises into a few coherent families.*
+- **2 · A sūra — how one chapter is built.** The same graph from one sūra's verses → its **internal families**; for narratives these track the **episodes** (Yūsuf: plot · temptation · prison · reunion). *Takeaway: a chapter's skeleton is latent in its own concept co-occurrence.*
 - **3 · Position band — the shape of a sūra. ⚠️ [DIVINE-ALT].** Verses pooled by *where* they fall (opening→closing) across all sūras: **doxology frames the edges, exhortation closes, narrative fills the body.** An alternative re-indexing, never the muṣḥaf's primary order.
 
 **Companion views (same data, a different question):**
-- **The 114 sūras as a semantic map** (Whole scope) — each sūra is a **point**, distance ≈ vocabulary similarity; auto-**families** emerge (one ≈ 88% Medinan, found with no labels). The **cluster-metrics table** gives each family's cohesion, separation, silhouette (tight vs loose), revelation tilt and defining concepts.
+- **The 114 sūras as a semantic map** (Whole scope) — each sūra is a **point**, distance ≈ vocabulary similarity; **families** emerge (one ≈ 88% Medinan, found with no labels). The **family-metrics table** gives each family's cohesion, separation, silhouette (tight vs loose), revelation tilt and defining concepts.
 - **A sūra's semantic footprint** (A-sūra scope) — *where* that sūra's distinctive concepts sit in the whole meaning-space, with a **concentration score** (legal sūras tight, narrative/hymn scattered).
-- **Most related sūras / mutual elaboration** (A-sūra scope) — for a sūra, the sūras most alike in **whole-vocabulary** profile (symmetric cosine, so the relation is mutual), with each pair's **shared distinctive concepts** and a marker for which side has more room to develop the theme.
-- **The data table** — every concept with frequency and the full **centrality suite** (degree, betweenness, closeness, eigenvector, PageRank, clustering) plus community, revelation and top partners — sortable, copyable, Arabic-safe CSV.
+- **Most related sūras / mutual elaboration** (A-sūra scope) — for a sūra, the sūras most alike in **whole-vocabulary** profile (symmetric cosine, so the relation is mutual), with each pair's **shared distinctive concepts** and a marker for which side has more room to develop the shared material.
+- **The data table** — every concept with frequency and the full **centrality suite** (degree, betweenness, closeness, eigenvector, PageRank, clustering) plus family, revelation and top partners — sortable, copyable, Arabic-safe CSV.
 
 **How to read it together.** Move **outward → inward**: the whole territory → one chapter's build → its opening-to-closing shape; and **macro → micro**: which sūras are alike (the 114-map) → where one sūra's concepts live (footprint) → the exact numbers (table).
 
 **Honest scope.** Everything is **measured** (attraction, communities, centralities, MDS) and presented as a **navigation map, not a claim**. Bands and footprints are *exploratory* (DIVINE-ALT / approximate 2-D); necessity is never asserted.""")
 
 st.markdown("<div style='font-size:12.5px;color:#10243A;margin:2px 0 8px'>"
-            "📍 <b>On this page</b> (scroll ↓): <b>§1</b> the map · <b>§2</b> theme sizes · "
+            "📍 <b>On this page</b> (scroll ↓): <b>§1</b> the map · <b>§2</b> family sizes · "
             "<b>§3–4</b> sūra / family views · <b>§5</b> data table · <b>§6</b> concept profile</div>",
             unsafe_allow_html=True)
 if not _map_ok:
@@ -610,10 +610,11 @@ else:
     c1, c2, c3 = st.columns(3)
     c1.metric("Concepts mapped", len(d["nodes"]))
     c2.metric("Attraction links", len(d["edges"]))
-    c3.metric("Themes", len(d["themes"]))
+    c3.metric("Families", len(d["themes"]))
     cc1, cc2 = st.columns([1, 1.4])
     color_by = cc1.radio("Map mode", ["Theme", "Revelation phase", "Network role", "Around a concept"],
                          horizontal=True, key="atlas_color",
+                         format_func=lambda x: "Family" if x == "Theme" else x,
                          help="The first three colour the whole territory. 'Around a concept' zooms to one concept's field.")
     _focus = None
     if color_by == "Around a concept":
@@ -627,9 +628,9 @@ else:
                               _vocab, index=_vocab.index(_dft), key="atlas_concept", format_func=disp_root)
         _ego_view(_F, _csel)
     else:
-        _theme_labels = ["— whole map —"] + [f"Theme {ti + 1}: {' · '.join(disp_root(t) for t in top)}" for ti, _o, top in d["themes"]]
-        _focus_sel = cc2.selectbox("Focus a theme", _theme_labels, key="atlas_focus",
-                                   disabled=(color_by != "Theme"), help="Theme focus applies to the Theme colouring.")
+        _theme_labels = ["— whole map —"] + [f"Family {ti + 1}: {' · '.join(disp_root(t) for t in top)}" for ti, _o, top in d["themes"]]
+        _focus_sel = cc2.selectbox("Focus a family", _theme_labels, key="atlas_focus",
+                                   disabled=(color_by != "Theme"), help="Family focus applies to the Family colouring.")
         _focus = None if _focus_sel.startswith("—") else _theme_labels.index(_focus_sel) - 1
         _dim3 = st.radio("View", ["2-D (read)", "3-D (rotate)"], horizontal=True, key="atlas_dim",
                          label_visibility="collapsed").startswith("3")
@@ -639,71 +640,72 @@ else:
             _nb = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "connector / bridge")
             _nh = sum(1 for n in d["nodes"] if (d["gf"].get(normalize_letters(n)) or {}).get("role") == "family anchor (hub)")
             st.markdown("<div style='font-size:12px;color:#10243A;margin:2px 0 0'>"
-                        f"<span style='color:#E63946'>●</span> bridge — connector across themes ({_nb}) &nbsp;&nbsp;"
+                        f"<span style='color:#E63946'>●</span> bridge — connector across families ({_nb}) &nbsp;&nbsp;"
                         f"<span style='color:#EF9F27'>●</span> family anchor — hub ({_nh}) &nbsp;&nbsp;"
                         "<span style='color:#9FB3C8'>●</span> member"
                         "<br>Roles are a <b>banked graph finding</b> (degree-normalised betweenness for bridges, "
                         "dcSBM within-family hubs) — precomputed, not a runtime claim.</div>", unsafe_allow_html=True)
         st.caption("Edges = above-chance pairings (PPMI) only — each concept's strongest 3 partners. "
-                   "Themes are auto-grouped (Louvain); a navigation map, not a structural claim.")
+                   "Families are auto-grouped (Louvain); a navigation map, not a structural claim.")
 
-    # ── THEME SIZES — ranked bar chart (shared landscape.py helper) ──
-    layer(2, "📊 Theme sizes — the themes, ranked")
+    # ── FAMILY SIZES — ranked bar chart (shared landscape.py helper) ──
+    layer(2, "📊 Family sizes — the families, ranked")
     with st.expander("What this shows — open me", expanded=True):
         st.markdown(
             "<div style='font-size:14px;color:#10243A;line-height:1.65'>"
-            "<b>The idea.</b> The map above shows the themes as colour; here they are <b>ranked</b> — one <b>bar per "
-            "theme</b> (labelled by its top concept), its length = a measured quantity you pick below: <b>breadth</b> "
+            "<b>The idea.</b> The map above shows the families as colour; here they are <b>ranked</b> — one <b>bar per "
+            "family</b> (labelled by its top concept), its length = a measured quantity you pick below: <b>breadth</b> "
             "(how many concepts), <b>weight</b> (how much text they fill), or <b>cohesion</b> (how tightly they "
-            "interlink). So you see at a glance which themes dominate and how lopsided the set is.</div>"
+            "interlink). So you see at a glance which families dominate and how lopsided the set is.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
-            "<b>Which concepts are here — NOT every root.</b> To stay legible this covers only the <b>most frequent "
+            "<b>Which concepts are here — NOT every concept.</b> To stay legible this covers only the <b>most frequent "
             "content concepts</b> of the current scope (the same nodes as the map above) — for a sūra the top ~90, for "
-            "the whole Qur’ān ~150. It is <b>not the full root inventory</b>: ubiquitous ‘glue’ roots (God · say · all) "
-            "are dropped as uninformative, and rare one-off roots aren’t shown. The <b>“Concepts mapped”</b> number at "
+            "the whole Qur’ān ~150. It is <b>not the full inventory</b>: ubiquitous ‘glue’ concepts (God · say · all) "
+            "are dropped as uninformative, and rare one-off concepts aren’t shown. The <b>“Concepts mapped”</b> number at "
             "the top of the page is exactly how many appear here — so for al-Baqarah you see its leading concepts "
-            "grouped into themes, not its entire vocabulary.</div>"
+            "grouped into families, not its entire vocabulary.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
-            "<b>How to read it.</b> Bars are <b>ranked longest-first</b>, so the top bar is the biggest theme on the "
-            "chosen metric. <b>Zoom to one theme</b> switches the chart to that theme’s <b>concepts</b>, each a bar "
+            "<b>How to read it.</b> Bars are <b>ranked longest-first</b>, so the top bar is the biggest family on the "
+            "chosen metric. <b>Zoom to one family</b> switches the chart to that family’s <b>concepts</b>, each a bar "
             "whose length is how many verses it appears in. Hover any bar for details; the table below has every "
-            "theme’s exact numbers.</div>"
+            "family’s exact numbers.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
             "<b>What to look for — the significance.</b> <b>Switch the metric</b> to ask three questions of the SAME "
-            "themes: which is the <b>widest</b> (breadth), which carries the <b>most text</b> (weight), which is the "
-            "<b>most tightly-knit</b> (cohesion). A theme can rank high on one and low on another — a <b>broad but "
-            "loose</b> theme (many concepts, few bonds) vs a <b>small but dense</b> one — and that contrast is the "
+            "families: which is the <b>widest</b> (breadth), which carries the <b>most text</b> (weight), which is the "
+            "<b>most tightly-knit</b> (cohesion). A family can rank high on one and low on another — a <b>broad but "
+            "loose</b> family (many concepts, few bonds) vs a <b>small but dense</b> one — and that contrast is the "
             "insight.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
-            "<b>Honest reading.</b> All values are <b>MEASURED</b>; themes are auto-grouped (Louvain). A navigation "
+            "<b>Honest reading.</b> All values are <b>MEASURED</b>; families are auto-grouped (Louvain). A navigation "
             "aid, not a structural claim.</div>",
             unsafe_allow_html=True)
-    with st.expander("Where the data comes from & how the themes are made — read me"):
+    with st.expander("Where the data comes from & how the families are made — read me"):
         st.markdown(
             "<div style='font-size:14px;color:#10243A;line-height:1.65'>"
-            "<b>The data.</b> Every verse in the current scope is a bag of roots; two roots get a <b>bond</b> when they "
+            "<b>The data.</b> Every verse in the current scope is a bag of concepts; two concepts get a <b>bond</b> when they "
             "co-occur <b>far above chance</b> (PPMI, which controls for how common each one is). It is all "
             "<b>measured</b> from the text — nothing is imposed by hand.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
-            "<b>How the themes are made.</b> A <b>community-detection</b> algorithm (Louvain) groups roots that bond "
-            "tightly into themes, each named by its most central root. The grouping is <b>measured</b> (real structure "
-            "vs a random baseline), but the <b>exact number of themes is not an absolute</b> — a different setting "
-            "shifts a few borderline roots or changes the count by one or two. Read it as a good map, not a fixed "
+            "<b>How the families are made.</b> A <b>community-detection</b> algorithm (Louvain) groups concepts that bond "
+            "tightly into families, each named by its most central concept. The grouping is <b>measured</b> (real structure "
+            "vs a random baseline), but the <b>exact number of families is not an absolute</b> — a different setting "
+            "shifts a few borderline concepts or changes the count by one or two. Read it as a good map, not a fixed "
             "number.</div>"
             "<div style='font-size:14px;color:#10243A;line-height:1.65;margin-top:6px'>"
             "<b>Coverage &amp; sizes.</b> As noted above, only the top ~90 (a sūra) / ~150 (whole Qur’ān) most frequent "
-            "content roots are mapped — not every root. And themes come out <b>unequal in size</b>; the “concepts in "
-            "the theme” bars report exactly that.</div>",
+            "content concepts are mapped — not every concept. And families come out <b>unequal in size</b>; the “concepts in "
+            "the family” bars report exactly that.</div>",
             unsafe_allow_html=True)
     _PALA = ["#1D9E75", "#378ADD", "#7209B7", "#EF9F27", "#0F6E56", "#138A74", "#B5651D", "#94A3B8", "#E63946", "#1D3557", "#8a5a16", "#534AB7"]
     _hubA = {ti: disp_root(o[0]) for ti, o, _t in d["themes"]}
     _lcA = st.columns([2, 2])
     with _lcA[0]:
-        _lh = st.radio("Rank themes by", ["concepts in the theme", "total occurrences", "internal density"],
-                       horizontal=True, key="atlas_land_h")
+        _lh = st.radio("Rank families by", ["concepts in the theme", "total occurrences", "internal density"],
+                       horizontal=True, key="atlas_land_h",
+                       format_func=lambda x: x.replace("theme", "family"))
     with _lcA[1]:
-        _lz = st.selectbox("Zoom to one theme — or see all", ["All themes"] + [_hubA[ti] for ti, _o, _t in d["themes"]],
-                           key="atlas_land_z")
+        _lz = st.selectbox("Zoom to one family — or see all", ["All themes"] + [_hubA[ti] for ti, _o, _t in d["themes"]],
+                           key="atlas_land_z", format_func=lambda x: "All families" if x == "All themes" else x)
     _docfA = d["docf"]; _edgesA = d["edges"]
     def _hvalA(mem):
         if _lh.startswith("total"):
@@ -716,12 +718,12 @@ else:
             return ec / (k * (k - 1) / 2.0) * 10.0
         return float(len(mem))
     _MEXPLA = {
-        "concepts in the theme": "<b>breadth</b> — how many concepts the theme holds (wide-ranging vs small and focused).",
-        "total occurrences": "<b>weight</b> — how often the theme’s concepts occur across the Qur’ān (a frequently-invoked theme).",
-        "internal density": "<b>cohesion</b> — how tightly the theme’s concepts interlink (share of the possible bonds present).",
+        "concepts in the theme": "<b>breadth</b> — how many concepts the family holds (wide-ranging vs small and focused).",
+        "total occurrences": "<b>weight</b> — how often the family’s concepts occur across the Qur’ān (a frequently-invoked family).",
+        "internal density": "<b>cohesion</b> — how tightly the family’s concepts interlink (share of the possible bonds present).",
     }
     st.markdown("<div style='font-size:13.5px;color:#10243A;margin:2px 0 4px'><b>Bar length = %s</b> — %s</div>"
-                % (_lh, _MEXPLA[_lh]), unsafe_allow_html=True)
+                % (_lh.replace("theme", "family"), _MEXPLA[_lh]), unsafe_allow_html=True)
     _famA = [{"id": ti, "hub": _hubA[ti], "color": _PALA[ti % len(_PALA)], "members": list(o), "hval": _hvalA(o)}
              for ti, o, _t in d["themes"]]
     _nodesA = {r: {"label": disp_root(r), "full": disp_root(r), "size": _docfA.get(r, 1),
@@ -767,11 +769,11 @@ else:
     else:
         _atheading = "Map at a glance — read this so the numbers aren’t misread"
         _atrows = [
-            ("Distinct roots in scope", (str(_nall) if _nall else "—"), "the full content vocabulary of this scope"),
+            ("Distinct concepts in scope", (str(_nall) if _nall else "—"), "the full content vocabulary of this scope"),
             ("Concepts mapped", str(len(d["nodes"])), "the most frequent ones — what you actually see here"),
-            ("Coverage", _covtxt, "share of this scope’s root-mentions the mapped concepts cover — the rest are "
-             "ubiquitous ‘glue’ roots (dropped) and a long tail of rare roots (not shown)"),
-            ("Families (themes)", str(len(d["themes"])), "measured groups — a good map, <b>not a fixed count</b> "
+            ("Coverage", _covtxt, "share of this scope’s concept-mentions the mapped concepts cover — the rest are "
+             "ubiquitous ‘glue’ concepts (dropped) and a long tail of rare concepts (not shown)"),
+            ("Families", str(len(d["themes"])), "measured groups — a good map, <b>not a fixed count</b> "
              "(a different setting gives a few more or fewer)"),
             ("Grouping strength (modularity)", _modtxt, "how cleanly the families separate — above ~0.30 = clear, real "
              "structure, not random"),
@@ -797,13 +799,13 @@ else:
             " · ".join(disp_root(x) for x in o[:8]),
         ])
     _pkrows.sort(key=lambda r: r[1], reverse=True)
-    _pkhdr = ["theme (top concept)", "concepts (breadth)", "total occurrences (weight)", "avg occ / concept",
+    _pkhdr = ["family (top concept)", "concepts (breadth)", "total occurrences (weight)", "avg occ / concept",
               "internal density (cohesion)", "internal bonds", "bridge bonds (out)", "avg degree (within)", "top concepts"]
-    with st.expander("🔬 Per-theme detail table (breadth · weight · cohesion · connectivity)", expanded=False):
+    with st.expander("🔬 Per-family detail table (breadth · weight · cohesion · connectivity)", expanded=False):
         st.markdown(LS.html_table(_pkhdr, _pkrows, num_cols={1, 2, 3, 4, 5, 6, 7}, wide_col=8), unsafe_allow_html=True)
-        st.caption("Every theme with all three ranking metrics side by side (breadth · weight · cohesion) plus its "
-                   "connectivity — internal bonds, bridge bonds to other themes, and within-theme average degree. "
-                   "Sorted by breadth; “Zoom to one theme” above shows that theme’s concepts as bars.")
+        st.caption("Every family with all three ranking metrics side by side (breadth · weight · cohesion) plus its "
+                   "connectivity — internal bonds, bridge bonds to other families, and within-family average degree. "
+                   "Sorted by breadth; “Zoom to one family” above shows that family’s concepts as bars.")
 
 # ---- semantic footprint: where THIS sūra's distinctive concepts sit in the whole-Qur'ān meaning-space ----
 if _scope == "A sūra":
@@ -863,9 +865,9 @@ if _scope == "A sūra":
                 for b in np.argsort(-_row) if _Qs["suras"][b] != _sel]
         _topc = _ord[0][1] if _ord else 0.0
         layer(4, "🧭 Most related sūras (mutual) — by whole-vocabulary similarity")
-        st.caption("⤷ Sūra-level companion (the maps above are the *concept/root* territory). Similarity is "
+        st.caption("⤷ Sūra-level companion (the maps above are the *concept* territory). Similarity is "
                    "**symmetric** — these sūras and the one you picked elaborate *each other*; the relation arrow only "
-                   "marks which side has more room to develop the shared theme.")
+                   "marks which side has more room to develop the shared material.")
         _self_len = _tlen.get(_sel, 0) or 1
         _E = _elab_engine(id(corpus)); _dist = _E["DIST"].get(_sel, [])
         _top = _ord[:8]
@@ -898,7 +900,7 @@ if _scope == "A sūra":
         st.caption(f"{_conf}Similarity = cosine of the two sūras' tf-idf vocabulary profiles (roots in ≥2 sūras only; "
                    "single-sūra roots can't be shared). It is **symmetric**, so the relationship is mutual — every pair "
                    "shares some vocabulary, making this a continuum of degree, not a one-way claim. The ‘relation’ "
-                   "column compares lengths: a much longer partner simply has more room to develop the shared theme.")
+                   "column compares lengths: a much longer partner simply has more room to develop the shared material.")
         with st.expander("🔬 Substantiate it — raw root-count vs similarity, side by side (exportable)"):
             _Rin = _Qs["rootsets"].get(_sel, set())
             _raw = sorted(((L, len(_Rin & _Qs["rootsets"][L]), _tlen.get(L, 0))
@@ -1046,18 +1048,18 @@ _rows = []
 for n in d["nodes"]:
     _ti = d["theme_of"][n]
     _role = _rolemap.get((d["gf"].get(normalize_letters(n)) or {}).get("role"), "member")
-    _rows.append({"concept": disp_root(n), "frequency": d["docf"][n], "community #": _ti + 1,
-                  "community": _clab.get(_ti, ""), "role": _role,
+    _rows.append({"concept": disp_root(n), "frequency": d["docf"][n], "family #": _ti + 1,
+                  "family": _clab.get(_ti, ""), "role": _role,
                   "degree": _deg.get(n, 0), "degree_cent": round(_degc.get(n, 0.0), 3),
                   "betweenness": round(_bet.get(n, 0.0), 3), "closeness": round(_clo.get(n, 0.0), 3),
                   "eigenvector": round(_eig.get(n, 0.0), 3), "pagerank": round(_pr.get(n, 0.0), 4),
                   "clustering": round(_clu.get(n, 0.0), 3), "revelation 1–114": round(d["nuz"][n]),
                   "top partners": " · ".join(disp_root(p) for p in _partners[n])})
-_df = pd.DataFrame(_rows).sort_values(["community #", "frequency"], ascending=[True, False])
+_df = pd.DataFrame(_rows).sort_values(["family #", "frequency"], ascending=[True, False])
 layer(5, "📋 Data behind the map — scrollable · copyable (use the CSV below to sort)")
 # Full-width HTML table — st.dataframe won't stretch on this Streamlit build, so we control width directly.
 _cols = list(_df.columns)
-_arab = {"concept", "community", "top partners"}
+_arab = {"concept", "family", "top partners"}
 _head = "".join(
     f'<th style="position:sticky;top:0;background:#1D3557;color:#fff;padding:7px 9px;'
     f'text-align:right;font-size:12px;white-space:nowrap">{c}</th>'
@@ -1079,31 +1081,31 @@ st.download_button("⬇️ Download table (CSV — Arabic-safe for Excel)",
                    file_name="concept_atlas_data.csv", mime="text/csv", key="atlas_csv")
 with st.expander("ℹ️ What the columns mean — and why each matters"):
     st.markdown(
-"""Each row is one **concept** (a grammatical root = a node). The columns answer different questions about its place in the web.
+"""Each row is one **concept** (a node in the web). The columns answer different questions about its place in the web.
 
 **Prominence**
 - **frequency** — in how many āyāt (at the current scope) the concept appears. *Why:* raw weight — how much of the text it touches.
 
 **Grouping**
-- **community # / community** — the auto-detected cluster it belongs to (Louvain), labelled by that cluster's lead concepts. *Why:* its **thematic neighbourhood** — which family of ideas it lives in.
-- **role** — a banked graph role: **bridge** (connects different themes), **hub** (anchor of its family), or **member**. *Why:* its structural job in the map.
+- **family # / family** — the group it belongs to (Louvain community), labelled by that group's lead concepts. *Why:* which **family of ideas** it lives in.
+- **role** — a banked graph role: **bridge** (connects different families), **hub** (anchor of its family), or **member**. *Why:* its structural job in the map.
 
 **Centrality — different senses of "important"**
 - **degree** — how many strong (above-chance) partners it links to. *Why:* direct reach — a high-degree concept attracts many others.
 - **degree_cent** — the same, normalised 0–1 by network size. *Why:* lets you compare across scopes (a sūra vs the whole Qur'ān).
-- **betweenness** — how often it lies on the shortest path between other concepts. *Why:* a **broker/bridge** — high betweenness means removing it would fragment the map; it links otherwise-separate themes.
+- **betweenness** — how often it lies on the shortest path between other concepts. *Why:* a **broker/bridge** — high betweenness means removing it would fragment the map; it links otherwise-separate families.
 - **closeness** — how short its average path is to *every* other concept. *Why:* **reach** — a high-closeness concept is "near everything," touching the whole web quickly.
 - **eigenvector** — importance by the *company it keeps* (connected to other well-connected concepts). *Why:* **prestige** — embedded among the central, not just busy.
 - **pagerank** — a random-walk version of the same idea, robust to quirks. *Why:* where "attention" flows in the web; a stable importance ranking.
-- **clustering** — how tightly its own neighbours interlink (0–1). *Why:* **cohesion vs brokerage** — high = sits inside a tight, self-contained theme; low = spans loosely-linked groups (more bridge-like).
+- **clustering** — how tightly its own neighbours interlink (0–1). *Why:* **cohesion vs brokerage** — high = sits inside a tight, self-contained family; low = spans loosely-linked groups (more bridge-like).
 
 **Context**
 - **revelation 1–114** — the mean revelation order (nuzūl) of the sūras it appears in, early (Meccan) → late (Medinan). *Why:* *when* in the revelation the concept concentrates.
 - **top partners** — its strongest co-occurring concepts. *Why:* what it "goes with" — its immediate meaning-company.
 
-**Reading them together:** *degree / eigenvector / pagerank* tell you **how central** a concept is; *betweenness* tells you whether it's a **bridge**; *closeness* tells you its **reach**; *clustering* tells you whether it sits in a **tight theme or brokers between themes**. A concept high in betweenness but low in clustering is a connector across the Qur'ān's themes; one high in eigenvector and clustering is a core anchor of its own theme.
+**Reading them together:** *degree / eigenvector / pagerank* tell you **how central** a concept is; *betweenness* tells you whether it's a **bridge**; *closeness* tells you its **reach**; *clustering* tells you whether it sits in a **tight family or brokers between families**. A concept high in betweenness but low in clustering is a connector across the Qur'ān's families; one high in eigenvector and clustering is a core anchor of its own family.
 
-**Takeaway.** This table turns the map into numbers you can rank, sort, and export: find the concept that most **bridges** the Qur'ān's themes (top *betweenness*), the **anchor** of each theme (top *eigenvector* within a community), the most far-reaching ideas (top *closeness*), and how a concept's weight tilts **Meccan → Medinan** (*revelation*) — at whichever scale you choose (whole Qur'ān, one sūra, or a position band). It makes the picture **measurable and checkable**, not just visual.""")
+**Takeaway.** This table turns the map into numbers you can rank, sort, and export: find the concept that most **bridges** the Qur'ān's families (top *betweenness*), the **anchor** of each family (top *eigenvector* within a family), the most far-reaching ideas (top *closeness*), and how a concept's weight tilts **Meccan → Medinan** (*revelation*) — at whichever scale you choose (whole Qur'ān, one sūra, or a position band). It makes the picture **measurable and checkable**, not just visual.""")
 
 # ── In-context CONCEPT PROFILE — part-in-whole: the profile opens HERE, the map/families stay framed
 #    (the elephant is never lost). Structural-type comes from a curated registry that grows as concepts
@@ -1143,7 +1145,7 @@ if _pick:
     _typ = _prof["structural_type"] if _prof else "not yet profiled — measured attributes only"
     _tcol = "#1D9E75" if _prof else "#8FA6BC"
     _fam = _FAM_OF.get(_pick) or _FAM_OF.get(normalize_letters(_pick))
-    _famtxt = _fam[0] if _fam else ("Theme %d (%s)" % (_th + 1, " · ".join(disp_root(t) for t in _top)))
+    _famtxt = _fam[0] if _fam else ("Family %d (%s)" % (_th + 1, " · ".join(disp_root(t) for t in _top)))
     st.markdown("<div style='font-size:12.5px;color:#10243A;margin:6px 0 3px'>"
                 "🐘 <b>Whole</b> &nbsp;›&nbsp; 🗂 <b>Family</b>: %s &nbsp;›&nbsp; 🌱 <b>%s</b></div>"
                 % (_famtxt, disp_root(_pick)), unsafe_allow_html=True)
