@@ -603,10 +603,12 @@ if not _map_ok:
     st.info("This sūra is too short to draw its own concept map — but its sūra-level views below "
             "(semantic footprint and the sūras that elaborate it) still work. Pick a longer sūra for the map.")
 else:
-    _loc = st.session_state.pop("_atlas_locate", None)   # ← set by the concept profile's "Locate on the map" button
-    if _loc is not None and _loc in d["theme_of"]:
+    # AUTO-FOLLOW: when you pick a concept up top, the map jumps to & highlights its family (only on change, so you can still explore freely after)
+    _cp_now = st.session_state.get("atlas_pick", "")
+    if _cp_now and _cp_now != st.session_state.get("_atlas_lastpick") and _cp_now in d["theme_of"]:
+        st.session_state["_atlas_lastpick"] = _cp_now
         st.session_state["atlas_color"] = "Theme"
-        _lt = d["theme_of"][_loc]
+        _lt = d["theme_of"][_cp_now]
         st.session_state["atlas_focus"] = "Family %d: %s" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
     layer(1, "🗺️ The map — roots as a web")
     c1, c2, c3 = st.columns(3)
@@ -1132,55 +1134,88 @@ _FAM_OF = {}   # root -> (family name, organ_role) from the curated families reg
 for _fid, _fv in _load_concept_families().items():
     for _m in _fv.get("members", []):
         _FAM_OF[_m] = (_fv.get("name", _fid), _fv.get("organ_role", ""))
+def _load_concept_senses():
+    import json, os
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "..", "concept_senses.json"), encoding="utf-8") as _f:
+            return json.load(_f)
+    except Exception:
+        return {}
+_SENSES = _load_concept_senses()   # root -> {occ, n_concepts, senses:[{sense,gloss,status,occ,forms}]} — ALL 1701 roots
 with _concept_slot:
     st.markdown("<div style='display:inline-block;background:#1D3557;color:#fff;font-weight:800;font-size:15px;"
                 "padding:7px 15px;border-radius:8px;margin:2px 0 8px;letter-spacing:.03em'>🧬 CONCEPT PROFILE</div>",
                 unsafe_allow_html=True)
-    _pick = st.selectbox("🔍 Pick a root — its concept profile opens here (the map & families are below)",
-                         [""] + sorted(d["nodes"], key=disp_root),
+    _pickroots = sorted(set(_SENSES) | set(d["nodes"]), key=disp_root) if _SENSES else sorted(d["nodes"], key=disp_root)
+    _pick = st.selectbox("🔍 Pick a root — its concept(s) open here (all %d roots; the map & families are below)" % len(_pickroots),
+                         [""] + _pickroots,
                          format_func=lambda r: "— pick a root —" if r == "" else disp_root(r), key="atlas_pick")
     if _pick:
-        _th = d["theme_of"][_pick]; _top = d["themes"][_th][2]
-        _role = ((d.get("gf", {}).get(normalize_letters(_pick)) or {}).get("role")) or "member"
-        _rolelab = {"connector / bridge": "bridge", "family anchor (hub)": "hub"}.get(_role, "member")
-        _nb = sorted(((w, (b if a == _pick else a)) for a, b, w in d["edges"] if _pick in (a, b)), reverse=True)[:6]
-        _N = len(d["nodes"])
-        _drank = sorted(d["nodes"], key=lambda n: -_deg.get(n, 0)).index(_pick) + 1
-        _brank = sorted(d["nodes"], key=lambda n: -_bet.get(n, 0.0)).index(_pick) + 1
+        _mapped = _pick in d.get("theme_of", {})
         _prof = _PROFILES.get(_pick) or _PROFILES.get(normalize_letters(_pick))
-        _typ = _prof["structural_type"] if _prof else "not yet profiled — measured attributes only"
-        _tcol = "#1D9E75" if _prof else "#8FA6BC"
         _fam = _FAM_OF.get(_pick) or _FAM_OF.get(normalize_letters(_pick))
-        _famtxt = _fam[0] if _fam else ("Family %d (%s)" % (_th + 1, " · ".join(disp_root(t) for t in _top)))
+        _reg = _SENSES.get(_pick) or _SENSES.get(normalize_letters(_pick)) or {}
+        if _fam:
+            _famtxt = _fam[0]
+        elif _mapped:
+            _lt = d["theme_of"][_pick]
+            _famtxt = "Family %d (%s)" % (_lt + 1, " · ".join(disp_root(t) for t in d["themes"][_lt][2]))
+        else:
+            _famtxt = "none (rare root — not drawn on the map)"
         st.markdown("<div style='font-size:12.5px;color:#10243A;margin:6px 0 3px'>"
                     "🐘 <b>Whole</b> &nbsp;›&nbsp; 🗂 <b>Family</b>: %s &nbsp;›&nbsp; 🌱 <b>%s</b></div>"
                     % (_famtxt, disp_root(_pick)), unsafe_allow_html=True)
+        _tcol = "#1D9E75" if _prof else "#1D3557"
+        _typ = _prof["structural_type"] if _prof else (("%d concept(s) by surface form" % _reg["n_concepts"]) if _reg.get("n_concepts") else "not yet profiled")
         _read = ""
         if _prof:
             _rd = _prof.get("reading", {})
             for _lab, _k in (("form ↔ content", "form_content"), ("grammar ↔ semantics", "grammar_semantics"), ("structure ↔ function", "structure_function")):
                 if _rd.get(_k):
                     _read += "<br><b style='color:#1D3557'>%s:</b> %s" % (_lab, _rd[_k])
-            if _prof.get("senses"):
-                _read += "<br><b style='color:#1D3557'>senses:</b> " + " · ".join(_prof["senses"])
         if _fam and _fam[1]:
             _read += "<br><b style='color:#1D3557'>family role (in the whole):</b> %s" % _fam[1]
-        _mm = ("freq <b>%d</b> · role <b>%s</b> · degree <b>%d</b> (#%d/%d) · betweenness <b>#%d</b> · revelation <b>%.0f/114</b>"
-               % (d["docf"][_pick], _rolelab, _deg.get(_pick, 0), _drank, _N, _brank, d["nuz"][_pick]))
-        _partners = ("<br>pairs with <b>" + " · ".join(disp_root(m) for _w, m in _nb) + "</b>") if _nb else ""
+        if _mapped:
+            _role = ((d.get("gf", {}).get(normalize_letters(_pick)) or {}).get("role")) or "member"
+            _rolelab = {"connector / bridge": "bridge", "family anchor (hub)": "hub"}.get(_role, "member")
+            _nb = sorted(((w, (b if a == _pick else a)) for a, b, w in d["edges"] if _pick in (a, b)), reverse=True)[:6]
+            _N = len(d["nodes"])
+            _drank = sorted(d["nodes"], key=lambda n: -_deg.get(n, 0)).index(_pick) + 1
+            _brank = sorted(d["nodes"], key=lambda n: -_bet.get(n, 0.0)).index(_pick) + 1
+            _mm = ("freq <b>%d</b> · role <b>%s</b> · degree <b>%d</b> (#%d/%d) · betweenness <b>#%d</b> · revelation <b>%.0f/114</b>"
+                   % (d["docf"][_pick], _rolelab, _deg.get(_pick, 0), _drank, _N, _brank, d["nuz"][_pick]))
+            _partners = ("<br>pairs with <b>" + " · ".join(disp_root(m) for _w, m in _nb) + "</b>") if _nb else ""
+        else:
+            _mm = ("freq <b>%d</b> · <b>rare</b> — below the map's top %d, so no graph metrics yet (its concept is authored here &amp; reachable in Search)"
+                   % (_reg.get("occ", 0), len(d["nodes"])))
+            _partners = ""
         st.markdown("<div style='background:#F4F9F7;border:1px solid #cfe4dc;border-left:4px solid %s;border-radius:10px;"
                     "padding:9px 14px;margin:2px 0 8px;font-size:13px;color:#10243A;line-height:1.7'>"
                     "structural type: <b style='color:%s'>%s</b>%s<br>%s%s</div>"
                     % (_tcol, _tcol, _typ, _read, _mm, _partners), unsafe_allow_html=True)
-        st.markdown("<div class='t-cap' style='margin:0 0 6px'>↓ <b>How this connects:</b> above is this one concept in depth; the "
-                    "<b>map below</b> is the whole web — this root sits in <b>%s</b>. Hit “Locate on the map” to light it up there.</div>"
-                    % _famtxt, unsafe_allow_html=True)
-        _bc = st.columns([1.1, 1.2, 2])
+        _snf = [s for s in _reg.get("senses", []) if not s["sense"].startswith("(unassigned")]
+        if _snf and (len(_snf) > 1 or any(s.get("status") == "curated" for s in _snf)):
+            _sp = []
+            for s in _snf[:8]:
+                _lab = s["sense"].split(" [")[0]
+                _gl = (" — " + s["gloss"]) if s.get("gloss") else ""
+                _bd = "✓" if s.get("status") == "curated" else "·"
+                _fm = " · ".join("%s×%d" % (f, n) for f, n in s["forms"][:6])
+                _sp.append("<div style='margin:3px 0'>%s <b>%s</b> <span style='font-size:11px'>(%d)</span>%s"
+                           "<br><span style='font-size:12px'>%s</span></div>" % (_bd, _lab, s["occ"], _gl, _fm))
+            st.markdown("<div style='background:#EAF2FB;border:1px solid #CFE0F2;border-radius:10px;padding:8px 13px;"
+                        "margin:2px 0 8px;font-size:13px;color:#10243A'><b>Concepts in this root</b> "
+                        "(split by surface form — ✓ curated · candidate):<br>%s</div>" % "".join(_sp), unsafe_allow_html=True)
+        if _mapped:
+            _conn = "this root sits in <b>%s</b> — <b>highlighted on the map below</b> the moment you pick it." % _famtxt
+        else:
+            _conn = "this root is <b>rare</b> (below the map's cutoff), so it isn't drawn — its concept is authored above and reachable in Search."
+        st.markdown("<div class='t-cap' style='margin:0 0 6px'>↓ <b>How this connects:</b> above is this root's concept(s) in depth; the "
+                    "<b>map below</b> is the whole web — %s</div>" % _conn, unsafe_allow_html=True)
+        _bc = st.columns([1.3, 2.7])
         if _bc[0].button("🔎 Open in Search →", key="atlas_open"):
             st.session_state._pending_q = _pick; st.switch_page("pages/38_Search.py")
-        if _bc[1].button("📍 Locate on the map ↓", key="atlas_locate"):
-            st.session_state["_atlas_locate"] = _pick; st.rerun()
         _cp = _prof.get("closeup_page") if _prof else None
-        if _cp and _bc[2].button("🗺 Full close-up →", key="atlas_closeup"):
+        if _cp and _bc[1].button("🗺 Full close-up →", key="atlas_closeup"):
             st.switch_page(_cp)
 
