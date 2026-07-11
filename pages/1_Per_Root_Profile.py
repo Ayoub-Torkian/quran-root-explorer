@@ -403,23 +403,42 @@ if not combined_mode:
 
     st.divider()
     layer(4, "Every ayah containing this root")
-    st.caption(f"{len(sub)} rows — laid out in 2 columns to minimize scrolling.")
+    st.caption(f"{len(sub)} rows — laid out in 2 columns to minimize scrolling. "
+               "The root\u2019s matched surface form(s) are highlighted in each ayah.")
     st.markdown("""
 <style>
 .ayah-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;}
 .ayah-row{border:1px solid #E2E8F1;border-radius:8px;padding:6px 10px;background:#FFFFFF;}
 .ayah-row:hover{background:#EEF3FB;}
 .ayah-row .ar{direction:rtl;text-align:right;font-family:'Amiri','Amiri Quran','Noto Naskh Arabic',serif;font-size:18px;line-height:1.5;color:#243447;margin:0;}
+.ayah-row .ar mark{background:#FFE08A;color:#5A3B00;padding:0 3px;border-radius:4px;font-weight:700;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
 .ayah-row .meta{font-size:12px;color:#10243A;margin:0;line-height:1.2;}
 </style>
 """, unsafe_allow_html=True)
+    import re as _re, html as _html
+    _AR_DIAC = _re.compile(r"[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]")
+    def _bare(_t):
+        return _A.normalize_letters(_AR_DIAC.sub("", _t or ""))
+    def _hl_ayah(_text, _forms):
+        _bf = [b for b in (_bare(f) for f in _forms if f) if b]
+        if not _text:
+            return ""
+        _out = []
+        for _tok in _text.split():
+            _bt = _bare(_tok)
+            _hit = any((bf in _bt) if len(bf) >= 3 else (bf == _bt) for bf in _bf)
+            _esc = _html.escape(_tok)
+            _out.append("<mark>" + _esc + "</mark>" if _hit else _esc)
+        return " ".join(_out)
     has_dia = R.get("has_diacritized")
     rows_html = []
     for _, row in sub.iterrows():
         if has_dia and row.get("Quranic Text (diacritized)"):
-            ar = row["Quranic Text (diacritized)"]
+            ar_raw = row["Quranic Text (diacritized)"]
         else:
-            ar = row["Segmented Ayah"]
+            ar_raw = row["Segmented Ayah"]
+        _forms = [x.strip() for x in str(row["Surface Form(s)"]).split("،")]
+        ar = _hl_ayah(ar_raw, _forms)
         meta = f"S{row['Surah #']}·A{row['Ayah #']} · {row['Surah Name']} · {row['Surface Form(s)']}"
         rows_html.append(f"<div class='ayah-row'><div class='ar'>{ar}</div><div class='meta'>{meta}</div></div>")
     st.markdown(f"<div class='ayah-grid'>{''.join(rows_html)}</div>", unsafe_allow_html=True)
