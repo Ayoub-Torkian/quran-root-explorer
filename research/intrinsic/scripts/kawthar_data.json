@@ -1,0 +1,1320 @@
+{
+ "s108_roots": {
+  "108:1": [
+   "عطو",
+   "کثر"
+  ],
+  "108:2": [
+   "صلو",
+   "ربب",
+   "نحر"
+  ],
+  "108:3": [
+   "شنء",
+   "بتر"
+  ]
+ },
+ "inventory": [
+  {
+   "root": "عطو",
+   "occ": 14,
+   "n_ayahs": 12,
+   "n_surahs": 11,
+   "hapax": false,
+   "first": "9:29",
+   "last": "108:1",
+   "busiest": "9 توبه",
+   "rate_per_1k_ayahs": 1.92
+  },
+  {
+   "root": "کثر",
+   "occ": 167,
+   "n_ayahs": 162,
+   "n_surahs": 51,
+   "hapax": false,
+   "first": "2:26",
+   "last": "108:1",
+   "busiest": "5 مائده",
+   "rate_per_1k_ayahs": 25.98
+  },
+  {
+   "root": "صلو",
+   "occ": 99,
+   "n_ayahs": 90,
+   "n_surahs": 37,
+   "hapax": false,
+   "first": "2:3",
+   "last": "108:2",
+   "busiest": "2 بقره",
+   "rate_per_1k_ayahs": 14.43
+  },
+  {
+   "root": "ربب",
+   "occ": 980,
+   "n_ayahs": 871,
+   "n_surahs": 94,
+   "hapax": false,
+   "first": "1:2",
+   "last": "114:1",
+   "busiest": "7 اعراف",
+   "rate_per_1k_ayahs": 139.67
+  },
+  {
+   "root": "نحر",
+   "occ": 1,
+   "n_ayahs": 1,
+   "n_surahs": 1,
+   "hapax": true,
+   "first": "108:2",
+   "last": "108:2",
+   "busiest": "108 کوثر",
+   "rate_per_1k_ayahs": 0.16
+  },
+  {
+   "root": "شنء",
+   "occ": 3,
+   "n_ayahs": 3,
+   "n_surahs": 2,
+   "hapax": false,
+   "first": "5:2",
+   "last": "108:3",
+   "busiest": "5 مائده",
+   "rate_per_1k_ayahs": 0.48
+  },
+  {
+   "root": "بتر",
+   "occ": 1,
+   "n_ayahs": 1,
+   "n_surahs": 1,
+   "hapax": true,
+   "first": "108:3",
+   "last": "108:3",
+   "busiest": "108 کوثر",
+   "rate_per_1k_ayahs": 0.16
+  }
+ ],
+ "corpus_root_stats": {
+  "n_roots": 1701,
+  "median_occ": 5,
+  "mean_occ": 30.0,
+  "n_hapax": 408
+ },
+ "kthr_field": {
+  "total_ayahs": 162,
+  "valence": {
+   "most_negated": 69,
+   "rivalry_takathur": 1,
+   "other": 92
+  }
+ },
+ "kthr_detail": [
+  {
+   "k": "2:26",
+   "cat": "other",
+   "en": "Indeed Allah is not ashamed to draw a parable whether it is that of a gnat or something above it. As for those who have faith, they know it is the truth from th"
+  },
+  {
+   "k": "2:100",
+   "cat": "other",
+   "en": "Is it not that whenever they made a covenant, a part of them would cast it away? Rather, the majority of them do not have faith"
+  },
+  {
+   "k": "2:109",
+   "cat": "other",
+   "en": "Many of the People of the Book are eager to turn you into unbelievers after your faith, out of their inner envy, [and] after the truth had become manifest to th"
+  },
+  {
+   "k": "2:243",
+   "cat": "most_negated",
+   "en": "Have you not regarded those who left their homes in thousands, apprehensive of death, whereupon Allah said to them, ‘Die,’ then He revived them? Indeed Allah is"
+  },
+  {
+   "k": "2:245",
+   "cat": "other",
+   "en": "Who is it that will lend Allah a good loan that He may multiply it for him severalfold? Allah tightens and expands [the means of life], and to Him you shall be "
+  },
+  {
+   "k": "2:249",
+   "cat": "other",
+   "en": "As Saul set out with the troops, he said, ‘Allah will test you with a stream: anyone who drinks from it will not belong to me, but those who do not drink from i"
+  },
+  {
+   "k": "2:269",
+   "cat": "other",
+   "en": "He grants wisdom to whomever He wishes, and he, who is given wisdom, is certainly given an abundant good, and none takes admonition except those who possess int"
+  },
+  {
+   "k": "3:41",
+   "cat": "other",
+   "en": "He said, ‘My Lord, grant me a sign.’ Said He, ‘Your sign is that you will not speak to people for three days except in gestures. Remember Your Lord much, and gl"
+  },
+  {
+   "k": "3:110",
+   "cat": "most_negated",
+   "en": "You are the best nation [ever] brought forth for mankind: you bid what is right and forbid what is wrong, and have faith in Allah. And if the People of the Book"
+  },
+  {
+   "k": "3:146",
+   "cat": "other",
+   "en": "How many a prophet there has been with whom a multitude of godly men fought. They did not falter for what befell them in the way of Allah, neither did they weak"
+  },
+  {
+   "k": "3:186",
+   "cat": "other",
+   "en": "You will surely be tested in your possessions and your souls, and you will surely hear much affront from those who were given the Book before you and from the p"
+  },
+  {
+   "k": "4:1",
+   "cat": "other",
+   "en": "O mankind! Be wary of your Lord who created you from a single soul, and created its mate from it, and from the two of them scattered numerous men and women. Be "
+  },
+  {
+   "k": "4:7",
+   "cat": "other",
+   "en": "Men have a share in the heritage left by parents and near relatives, and women have a share in the heritage left by parents and near relatives, whether it be li"
+  },
+  {
+   "k": "4:12",
+   "cat": "other",
+   "en": "For you shall be a half of what your wives leave, if they have no children; but if they have children, then for you shall be a fourth of what they leave, after "
+  },
+  {
+   "k": "4:19",
+   "cat": "other",
+   "en": "O you who have faith! It is not lawful for you to inherit women forcibly, and do not press them to take away part of what you have given them, unless they commi"
+  },
+  {
+   "k": "4:82",
+   "cat": "other",
+   "en": "Do they not contemplate the Quran? Had it been from [someone] other than Allah, they would have surely found much discrepancy in it"
+  },
+  {
+   "k": "4:94",
+   "cat": "other",
+   "en": "O you who have faith! When you issue forth in the way of Allah, try to ascertain: do not say to someone who offers you peace, ‘You are not a believer,’ seeking "
+  },
+  {
+   "k": "4:100",
+   "cat": "other",
+   "en": "Whoever migrates in the way of Allah will find many havens and plenitude in the earth. And whoever leaves his home migrating toward Allah and His Apostle, and i"
+  },
+  {
+   "k": "4:114",
+   "cat": "other",
+   "en": "There is no good in much of their secret talks, excepting him who enjoins charity or what is right or reconciliation between people, and whoever does that, seek"
+  },
+  {
+   "k": "4:160",
+   "cat": "other",
+   "en": "Due to the wrongdoing of the Jews, We prohibited them certain good things that were permitted to them [earlier], and for their barring many [people] from the wa"
+  },
+  {
+   "k": "5:15",
+   "cat": "other",
+   "en": "O People of the Book! Certainly Our Apostle has come to you, clarifying for you much of what you used to hide of the Book, and excusing many [an offense of your"
+  },
+  {
+   "k": "5:32",
+   "cat": "other",
+   "en": "That is why We decreed for the Children of Israel that whoever kills a soul, without [its being guilty of] manslaughter or corruption on the earth, is as though"
+  },
+  {
+   "k": "5:49",
+   "cat": "other",
+   "en": "Judge between them by what Allah has sent down, and do not follow their desires. Beware of them lest they should beguile you from part of what Allah has sent do"
+  },
+  {
+   "k": "5:59",
+   "cat": "other",
+   "en": "Say, ‘O People of the Book! Are you vindictive toward us for any reason except that we have faith in Allah and in what has been sent down to us, and in what was"
+  },
+  {
+   "k": "5:62",
+   "cat": "other",
+   "en": "You see many of them actively engaged in sin and aggression, and consuming illicit gains. Surely, evil is what they have been doing"
+  },
+  {
+   "k": "5:64",
+   "cat": "other",
+   "en": "The Jews say, ‘Allah’s hand is tied up.’ Tied up be their hands, and cursed be they for what they say! No, His hands are wide open: He bestows as He wishes. Sur"
+  },
+  {
+   "k": "5:66",
+   "cat": "other",
+   "en": "Had they observed the Torah and the Evangel, and what was sent down to them from their Lord, they would surely have drawn nourishment from above them and from b"
+  },
+  {
+   "k": "5:68",
+   "cat": "other",
+   "en": "Say, ‘O People of the Book! You do not stand on anything until you observe the Torah and the Evangel and what was sent down to you from your Lord.’ Surely many "
+  },
+  {
+   "k": "5:71",
+   "cat": "other",
+   "en": "They supposed there would be no testing, so they became blind and deaf. Thereafter Allah accepted their repentance, yet [again] many of them became blind and de"
+  },
+  {
+   "k": "5:77",
+   "cat": "other",
+   "en": "Say, ‘O People of the Book! Do not unduly exceed the bounds in your religion and do not follow the fancies of a people who went astray in the past, and led many"
+  },
+  {
+   "k": "5:80",
+   "cat": "other",
+   "en": "You see many of them fraternizing with the faithless. Surely evil is what they have sent ahead for their souls, as Allah is displeased with them and they shall "
+  },
+  {
+   "k": "5:81",
+   "cat": "most_negated",
+   "en": "Had they believed in Allah and the Prophet and what has been sent down to him, they would not have taken them for allies. But most of them are transgressors"
+  },
+  {
+   "k": "5:100",
+   "cat": "most_negated",
+   "en": "Say, ‘The good and the bad are not equal, though the abundance of the bad should amaze you.’ So be wary of Allah, O you who possess intellect, so that you may b"
+  },
+  {
+   "k": "5:103",
+   "cat": "most_negated",
+   "en": "Allah has not prescribed any such thing as Bahirah, Sa’ibah, Waseelah, or Haam; but those who are faithless fabricate lies against Allah, and most of them do no"
+  },
+  {
+   "k": "6:37",
+   "cat": "most_negated",
+   "en": "They say, ‘Why has not a sign been sent down to him from his Lord?’ Say, ‘Allah is indeed able to send down a sign,’ but most of them do not know"
+  },
+  {
+   "k": "6:91",
+   "cat": "other",
+   "en": "They did not regard Allah with the regard due to Him when they said, ‘Allah has not sent down anything to any human.’ Say, ‘Who had sent down the Book that was "
+  },
+  {
+   "k": "6:111",
+   "cat": "most_negated",
+   "en": "Even if We had sent down angels to them, and the dead had spoken to them, and We had gathered before them all things manifestly, they would [still] not believe "
+  },
+  {
+   "k": "6:116",
+   "cat": "other",
+   "en": "If you obey most of those on the earth, they will lead you astray from the way of Allah. They follow nothing but conjectures and they do nothing but surmise"
+  },
+  {
+   "k": "6:119",
+   "cat": "other",
+   "en": "Why should you not eat that over which Allah’s Name has been mentioned, while He has already elaborated for you whatever He has forbidden you, excepting what yo"
+  },
+  {
+   "k": "6:128",
+   "cat": "other",
+   "en": "On the day He will gather them all together, [He will say], ‘O company of jinn! You claimed many of the humans.’ Their friends from among the humans will say, ‘"
+  },
+  {
+   "k": "6:137",
+   "cat": "other",
+   "en": "That is how to most of the polytheists the slaying of their children is presented as decorous by those whom they ascribe as partners [to Allah], that they may r"
+  },
+  {
+   "k": "7:17",
+   "cat": "most_negated",
+   "en": "Then I will come at them from their front and from their rear, and from their right and their left, and You will not find most of them to be grateful.’"
+  },
+  {
+   "k": "7:86",
+   "cat": "other",
+   "en": "And do not lie in wait on every road to threaten and bar those who have faith in Him from the way of Allah, seeking to make it crooked. Remember when you were f"
+  },
+  {
+   "k": "7:102",
+   "cat": "most_negated",
+   "en": "We did not find in most of them any [loyalty to] covenants. Indeed, We found most of them to be transgressors"
+  },
+  {
+   "k": "7:131",
+   "cat": "most_negated",
+   "en": "But whenever any good came to them, they would say, ‘This is our due.’ And if any ill visited them, they took it for ill omens attending Moses and those who wer"
+  },
+  {
+   "k": "7:179",
+   "cat": "other",
+   "en": "Certainly We have winnowed out for hell many of the jinn and humans: they have hearts with which they do not understand, they have eyes with which they do not s"
+  },
+  {
+   "k": "7:187",
+   "cat": "most_negated",
+   "en": "They question you concerning the Hour, when will it set in? Say, ‘Its knowledge is only with my Lord: none except Him shall manifest it at its time. It will wei"
+  },
+  {
+   "k": "7:188",
+   "cat": "other",
+   "en": "Say, ‘I have no control over any benefit for myself, nor [over] any harm except what Allah may wish. Had I known the Unseen, I would have acquired much good, an"
+  },
+  {
+   "k": "8:19",
+   "cat": "other",
+   "en": "If you sought a verdict, the verdict has certainly come to you; and if you cease [your belligerence against the Prophet and his followers], it is better for you"
+  },
+  {
+   "k": "8:34",
+   "cat": "most_negated",
+   "en": "What [excuse] have they that Allah should not punish them, when they bar [the faithful] from the Holy Mosque, and they are not its custodians? Its custodians ar"
+  },
+  {
+   "k": "8:43",
+   "cat": "other",
+   "en": "When Allah showed them to you as few in your dream, and had He shown them as many, you would have lost heart, and disputed about the matter. But Allah spared yo"
+  },
+  {
+   "k": "8:45",
+   "cat": "other",
+   "en": "O you who have faith! When you meet a host [in battle], then stand firm, and remember Allah greatly so that you may be felicitous"
+  },
+  {
+   "k": "9:8",
+   "cat": "most_negated",
+   "en": "How? For if, they get the better of you, they will observe toward you neither kinship nor covenant. They please you with their mouths while their hearts spurn y"
+  },
+  {
+   "k": "9:25",
+   "cat": "other",
+   "en": "Allah has certainly helped you in many situations, and on the day of Hunayn, when your great number impressed you, but it did not avail you in any way, and the "
+  },
+  {
+   "k": "9:34",
+   "cat": "other",
+   "en": "O you who have faith! Indeed many of the scribes and monks wrongfully eat up the people’s wealth, and bar [them] from the way of Allah. Those who treasure up go"
+  },
+  {
+   "k": "9:69",
+   "cat": "other",
+   "en": "[Hypocrites! Your case is] similar to those who were before you, who were more powerful than you and more abounding in wealth and children: they enjoyed their s"
+  },
+  {
+   "k": "9:82",
+   "cat": "other",
+   "en": "So let them laugh a little; much will they weep as a requital for what they used to earn"
+  },
+  {
+   "k": "10:36",
+   "cat": "most_negated",
+   "en": "Most of them just follow conjecture; indeed conjecture is no substitute for the truth. Indeed Allah knows best what they do"
+  },
+  {
+   "k": "10:55",
+   "cat": "most_negated",
+   "en": "Look! To Allah indeed belongs whatever is in the heavens and the earth. Look! Allah’s promise is indeed true; but most of them do not know"
+  },
+  {
+   "k": "10:60",
+   "cat": "most_negated",
+   "en": "What is the idea of those who fabricate lies against Allah [concerning their situation] on the Day of Resurrection? Indeed Allah is gracious to mankind, but mos"
+  },
+  {
+   "k": "10:92",
+   "cat": "other",
+   "en": "So today We shall deliver your body so that you may be a sign for those who come after you.’ Indeed many of the people are oblivious to Our signs"
+  },
+  {
+   "k": "11:17",
+   "cat": "most_negated",
+   "en": "Is he who stands on a manifest proof from his Lord, and whom a witness of his own [family] follows? And before him there was the Book of Moses, a guide and merc"
+  },
+  {
+   "k": "11:32",
+   "cat": "other",
+   "en": "They said, ‘O Noah, you have disputed with us already, and you have disputed with us exceedingly. Now bring us what you threaten us with, should you be truthful"
+  },
+  {
+   "k": "11:91",
+   "cat": "other",
+   "en": "They said, ‘O Shu‘ayb, we do not understand much of what you say. Indeed we see that you are weak amongst us, and were it not for your tribe, we would have ston"
+  },
+  {
+   "k": "12:21",
+   "cat": "most_negated",
+   "en": "The man from Egypt who had bought him said to his wife, ‘Give him an honourable place [in the household]. Maybe he will be useful to us, or we may adopt him as "
+  },
+  {
+   "k": "12:38",
+   "cat": "most_negated",
+   "en": "I follow the creed of my fathers, Abraham, Isaac and Jacob. It is not for us to ascribe any partner to Allah. That is by virtue of Allah’s grace upon us and upo"
+  },
+  {
+   "k": "12:40",
+   "cat": "most_negated",
+   "en": "You do not worship besides Him but [mere] names that you and your fathers have coined, for which Allah has not sent down any authority. Sovereignty belongs only"
+  },
+  {
+   "k": "12:68",
+   "cat": "most_negated",
+   "en": "When they entered whence their father had bidden them, it did not avail them anything against Allah, but only fulfilled a wish in Jacob’s heart. Indeed, he had "
+  },
+  {
+   "k": "12:103",
+   "cat": "most_negated",
+   "en": "Yet most people will not have faith, however eager you should be"
+  },
+  {
+   "k": "12:106",
+   "cat": "most_negated",
+   "en": "And most of them do not believe in Allah without ascribing partners to Him"
+  },
+  {
+   "k": "13:1",
+   "cat": "most_negated",
+   "en": "Alif, Lam, Mim, Ra. These are the signs of the Book. That which has been sent down to you from your Lord is the truth, but most people do not believe [in it]"
+  },
+  {
+   "k": "14:36",
+   "cat": "other",
+   "en": "My Lord! Indeed they have misled many people. So whoever follows me indeed belongs to me, and as for those who disobey me, well, You are indeed all-forgiving, a"
+  },
+  {
+   "k": "16:38",
+   "cat": "most_negated",
+   "en": "They swear by Allah with solemn oaths that Allah will not resurrect those who die. Yes indeed [He will], it is a promise binding upon Him, but most people do no"
+  },
+  {
+   "k": "16:75",
+   "cat": "most_negated",
+   "en": "Allah draws a parable: a slave owned [by his master] who has no power over anything, and another one [a free man] whom We have provided a goodly provision and w"
+  },
+  {
+   "k": "16:83",
+   "cat": "most_negated",
+   "en": "They recognize the blessing of Allah and then deny it, and most of them are faithless"
+  },
+  {
+   "k": "16:101",
+   "cat": "most_negated",
+   "en": "When We change a sign for another in its stead—and Allah knows best what He sends down—they say, ‘You are indeed a fabricator.’ Indeed, most of them do not know"
+  },
+  {
+   "k": "17:6",
+   "cat": "other",
+   "en": "Then We gave you back the turn [to prevail] over them, and We aided you with children and wealth, and made you greater in number"
+  },
+  {
+   "k": "17:70",
+   "cat": "other",
+   "en": "Certainly We have honoured the Children of Adam, and carried them over land and sea, and provided them with all the good things, and preferred them with a compl"
+  },
+  {
+   "k": "17:89",
+   "cat": "most_negated",
+   "en": "We have certainly interspersed this Quran with every [kind of] parable for the people, but most people are only intent on ingratitude"
+  },
+  {
+   "k": "18:34",
+   "cat": "other",
+   "en": "He had abundant fruits, so he said to his companion, as he conversed with him: ‘I have more wealth than you, and am stronger with respect to numbers.’"
+  },
+  {
+   "k": "18:54",
+   "cat": "other",
+   "en": "We have certainly interspersed this Quran with every kind of parable for the people. But man is the most disputatious of creatures"
+  },
+  {
+   "k": "20:33",
+   "cat": "other",
+   "en": "so that we may glorify You greatly"
+  },
+  {
+   "k": "20:34",
+   "cat": "other",
+   "en": "and remember You greatly"
+  },
+  {
+   "k": "21:24",
+   "cat": "most_negated",
+   "en": "Have they taken gods besides Him? Say, ‘Produce your evidence! This is a precept of those who are with me, and a precept of those [who went] before me.’ But mos"
+  },
+  {
+   "k": "22:18",
+   "cat": "other",
+   "en": "Have you not regarded that whoever is in the heavens and whoever is on the earth prostrates to Allah, as well as the sun, the moon, and the stars, the mountains"
+  },
+  {
+   "k": "22:40",
+   "cat": "other",
+   "en": "—those who were expelled from their homes unjustly, only because they said, ‘Allah is our Lord.’ Had not Allah repulsed the people from one another, ruin would "
+  },
+  {
+   "k": "23:19",
+   "cat": "other",
+   "en": "Then with it We produced for you gardens of date palms and vines. There are abundant fruits in them for you, and you eat from them"
+  },
+  {
+   "k": "23:21",
+   "cat": "other",
+   "en": "There is indeed a moral for you in the cattle: We give you to drink of that which is in their bellies, and you have many uses in them, and you eat some of them"
+  },
+  {
+   "k": "23:70",
+   "cat": "most_negated",
+   "en": "Do they say, ‘There is madness in him’? No, he has brought them the truth, and most of them are averse to the truth"
+  },
+  {
+   "k": "25:14",
+   "cat": "other",
+   "en": "[They will be told:] ‘Do not pray for a single annihilation today, but pray for many annihilations!’"
+  },
+  {
+   "k": "25:38",
+   "cat": "other",
+   "en": "And ‘Ad and Thamud, and the people of Rass, and many generations between them"
+  },
+  {
+   "k": "25:44",
+   "cat": "most_negated",
+   "en": "Do you suppose that most of them listen or exercise their reason? They are just like cattle; indeed, they are further astray from the way"
+  },
+  {
+   "k": "25:49",
+   "cat": "other",
+   "en": "with which We revive a dead country and provide water to many of the cattle and humans We have created"
+  },
+  {
+   "k": "25:50",
+   "cat": "most_negated",
+   "en": "Certainly We distribute it among them so that they may take admonition. But most people are only intent on ingratitude"
+  },
+  {
+   "k": "26:8",
+   "cat": "most_negated",
+   "en": "There is indeed a sign in that; but most of them do not have faith"
+  },
+  {
+   "k": "26:67",
+   "cat": "most_negated",
+   "en": "There is indeed a sign in that, but most of them do not have faith"
+  },
+  {
+   "k": "26:103",
+   "cat": "most_negated",
+   "en": "There is indeed a sign in that; but most of them do not have faith"
+  },
+  {
+   "k": "26:121",
+   "cat": "most_negated",
+   "en": "There is indeed a sign in that; but most of them do not have faith"
+  },
+  {
+   "k": "26:139",
+   "cat": "most_negated",
+   "en": "So they impugned him, whereupon We destroyed them. There is indeed a sign in that; but most of them do not have faith"
+  },
+  {
+   "k": "26:158",
+   "cat": "most_negated",
+   "en": "So the punishment seized them. There is indeed a sign in that; but most of them do not have faith"
+  },
+  {
+   "k": "26:174",
+   "cat": "most_negated",
+   "en": "There is indeed a sign in that; but most of them do not have faith"
+  },
+  {
+   "k": "26:190",
+   "cat": "most_negated",
+   "en": "There is indeed a sign in that; but most of them do not have faith"
+  },
+  {
+   "k": "26:223",
+   "cat": "most_negated",
+   "en": "They eavesdrop, and most of them are liars"
+  },
+  {
+   "k": "26:227",
+   "cat": "most_negated",
+   "en": "Barring those who have faith, do righteous deeds, and remember Allah much often, and vindicate themselves after they have been wronged. And the wrongdoers will "
+  },
+  {
+   "k": "27:15",
+   "cat": "other",
+   "en": "Certainly, We gave knowledge to David and Solomon, and they said, ‘All praise belongs to Allah, who granted us an advantage over many of His faithful servants.’"
+  },
+  {
+   "k": "27:61",
+   "cat": "most_negated",
+   "en": "Is He who made the earth an abode [for you], and made rivers [flowing] through it, and set firm mountains for it [’s stability], and set a barrier between the t"
+  },
+  {
+   "k": "27:73",
+   "cat": "most_negated",
+   "en": "Indeed your Lord is gracious to mankind, but most of them do not give thanks"
+  },
+  {
+   "k": "27:76",
+   "cat": "other",
+   "en": "This Quran recounts for the Children of Israel most of what they differ about"
+  },
+  {
+   "k": "28:13",
+   "cat": "most_negated",
+   "en": "That is how We restored him to his mother so that she might be comforted and not grieve, and that she might know that Allah’s promise is true, but most of them "
+  },
+  {
+   "k": "28:57",
+   "cat": "most_negated",
+   "en": "They say, ‘If we follow the guidance with you, we will be forced out of our territory.’ Did We not establish a secure sanctuary for them where fruits of all kin"
+  },
+  {
+   "k": "28:78",
+   "cat": "other",
+   "en": "He said, ‘I have indeed been given [all] this because of the knowledge that I have.’ Did he not know that Allah had already destroyed before him some of the gen"
+  },
+  {
+   "k": "29:63",
+   "cat": "most_negated",
+   "en": "And if you ask them, ‘Who sends down water from the sky, with which He revives the earth after its death?’ They will surely say, ‘Allah.’ Say, ‘All praise belon"
+  },
+  {
+   "k": "30:6",
+   "cat": "most_negated",
+   "en": "[This is] a promise of Allah: Allah does not break His promise, but most people do not know"
+  },
+  {
+   "k": "30:8",
+   "cat": "most_negated",
+   "en": "Have they not reflected in their own souls? Allah did not create the heavens and the earth and whatever is between them except with consummate wisdom and for a "
+  },
+  {
+   "k": "30:9",
+   "cat": "other",
+   "en": "Have they not travelled in the land and seen how was the fate of those who were before them? They were more powerful than them, and they plowed the earth and de"
+  },
+  {
+   "k": "30:30",
+   "cat": "most_negated",
+   "en": "So set your heart as a person of pure faith on this religion, the original nature endowed by Allah according to which He originated mankind (There is no alterin"
+  },
+  {
+   "k": "30:42",
+   "cat": "other",
+   "en": "Say, ‘Travel over the land, and see how was the fate of those who were before [you], most of whom were polytheists.’"
+  },
+  {
+   "k": "31:25",
+   "cat": "most_negated",
+   "en": "If you ask them, ‘Who created the heavens and the earth?’ they will surely say, ‘Allah.’ Say, ‘All praise belongs to Allah!’ But most of them do not know"
+  },
+  {
+   "k": "33:21",
+   "cat": "other",
+   "en": "There is certainly a good exemplar for you in the Apostle of Allah—for those who look forward to Allah and the Last Day, and remember Allah much"
+  },
+  {
+   "k": "33:35",
+   "cat": "other",
+   "en": "Indeed the muslim men and the muslim women, the faithful men and the faithful women, the obedient men and the obedient women, the truthful men and the truthful "
+  },
+  {
+   "k": "33:41",
+   "cat": "other",
+   "en": "O you who have faith! Remember Allah with frequent remembrance"
+  },
+  {
+   "k": "34:28",
+   "cat": "most_negated",
+   "en": "We did not send you except as a bearer of good news and warner to all mankind, but most people do not know"
+  },
+  {
+   "k": "34:35",
+   "cat": "other",
+   "en": "They say, ‘We have greater wealth and more children, and we will not be punished!’"
+  },
+  {
+   "k": "34:36",
+   "cat": "most_negated",
+   "en": "Say, ‘Indeed my Lord expands the provision for whomever He wishes and He tightens it, but most people do not know.’"
+  },
+  {
+   "k": "34:41",
+   "cat": "most_negated",
+   "en": "They will say, ‘Immaculate are You! You are our wali, not they! No, they used to worship the jinn; most of them had faith in them.’"
+  },
+  {
+   "k": "36:7",
+   "cat": "most_negated",
+   "en": "The word has certainly become due against most of them, so they will not have faith"
+  },
+  {
+   "k": "36:62",
+   "cat": "other",
+   "en": "Certainly, he has led astray many of your generations. Have you not exercised your reason"
+  },
+  {
+   "k": "37:71",
+   "cat": "other",
+   "en": "Most of the former peoples went astray before them"
+  },
+  {
+   "k": "38:24",
+   "cat": "other",
+   "en": "He said, ‘He has certainly wronged you by asking your ewe in addition to his own ewes, and indeed many partners bully one another, except such as have faith and"
+  },
+  {
+   "k": "38:51",
+   "cat": "other",
+   "en": "Reclining therein [on couches], they will call for abundant fruits and drinks"
+  },
+  {
+   "k": "39:29",
+   "cat": "most_negated",
+   "en": "Allah draws an example: a man jointly owned by several contending masters, and a man belonging entirely to one man: are the two equal in comparison? All praise "
+  },
+  {
+   "k": "39:49",
+   "cat": "most_negated",
+   "en": "When distress befalls man, he supplicates Us. Then, when We grant him a blessing from Us, he says, ‘I was given it by virtue of [my] knowledge.’ Indeed, it is a"
+  },
+  {
+   "k": "40:57",
+   "cat": "most_negated",
+   "en": "The creation of the heavens and the earth is surely more prodigious than the creation of mankind, but most people do not know"
+  },
+  {
+   "k": "40:59",
+   "cat": "most_negated",
+   "en": "Indeed the Hour is bound to come; there is no doubt in it. But most people do not believe"
+  },
+  {
+   "k": "40:61",
+   "cat": "most_negated",
+   "en": "It is Allah who made the night for you, that you may rest in it, and the day to provide visibility. Indeed Allah is gracious to mankind, but most people do not "
+  },
+  {
+   "k": "40:82",
+   "cat": "other",
+   "en": "Have they not travelled over the land so that they may observe how was the fate of those who were before them? They were more numerous than them and were greate"
+  },
+  {
+   "k": "41:4",
+   "cat": "most_negated",
+   "en": "a bearer of good news and a warner. But most of them turn away [from it], [and] so they do not listen"
+  },
+  {
+   "k": "41:22",
+   "cat": "other",
+   "en": "You did not use to conceal yourselves [while perpetrating sinful acts] lest your hearing, your eyes, or your skins should bear witness against you, but you thou"
+  },
+  {
+   "k": "42:30",
+   "cat": "other",
+   "en": "Whatever affliction that may visit you is because of what your hands have earned, and He excuses many [an offense of yours]"
+  },
+  {
+   "k": "42:34",
+   "cat": "other",
+   "en": "Or He wrecks them because of what they have earned, and He excuses many [an offense]"
+  },
+  {
+   "k": "43:73",
+   "cat": "other",
+   "en": "There are abundant fruits for you in it, from which you will eat.’"
+  },
+  {
+   "k": "43:78",
+   "cat": "most_negated",
+   "en": "‘We certainly brought you the truth, but most of you were averse to the truth.’"
+  },
+  {
+   "k": "44:39",
+   "cat": "most_negated",
+   "en": "We did not create them except with consummate wisdom; but most of them do not know"
+  },
+  {
+   "k": "45:26",
+   "cat": "most_negated",
+   "en": "Say, ‘It is Allah who gives you life, then He makes you die. Then He will gather you on the Day of Resurrection, in which there is no doubt. But most people do "
+  },
+  {
+   "k": "48:19",
+   "cat": "other",
+   "en": "and abundant spoils that they will capture, and Allah is all-mighty, all-wise"
+  },
+  {
+   "k": "48:20",
+   "cat": "other",
+   "en": "Allah has promised you abundant spoils, which you will capture. He has expedited this one for you, and withheld men’s hands from you, so that it may be a sign f"
+  },
+  {
+   "k": "49:4",
+   "cat": "most_negated",
+   "en": "Indeed those who call you from behind the apartments, most of them do not use their reason"
+  },
+  {
+   "k": "49:7",
+   "cat": "other",
+   "en": "Know that the Apostle of Allah is among you. Should he comply with you in many matters, you would surely suffer. But Allah has endeared faith to you and made it"
+  },
+  {
+   "k": "49:12",
+   "cat": "other",
+   "en": "O you who have faith! Avoid much suspicion; indeed some suspicions are sins. And do not spy on one another or backbite. Will any of you love to eat the flesh of"
+  },
+  {
+   "k": "52:47",
+   "cat": "most_negated",
+   "en": "Indeed there is a punishment besides that for those who do wrong, but most of them do not know"
+  },
+  {
+   "k": "56:32",
+   "cat": "other",
+   "en": "and abundant fruits"
+  },
+  {
+   "k": "57:16",
+   "cat": "other",
+   "en": "Is it not time yet for those who have faith that their hearts should be humbled for Allah’s remembrance and toward the truth which has come down [to them], and "
+  },
+  {
+   "k": "57:20",
+   "cat": "most_negated",
+   "en": "Know that the life of this world is mere diversion and play, glamour and mutual vainglory among you and rivalry for wealth and children—like rain, whose growth "
+  },
+  {
+   "k": "57:26",
+   "cat": "other",
+   "en": "Certainly We sent Noah and Abraham and We ordained among their descendants prophethood and the Book. Some of them are [rightly] guided, and many of them are tra"
+  },
+  {
+   "k": "57:27",
+   "cat": "other",
+   "en": "Then We followed them up with Our apostles and We followed [them] with Jesus son of Mary, and We gave him the Evangel, and We put kindness and mercy into the he"
+  },
+  {
+   "k": "58:7",
+   "cat": "other",
+   "en": "Have you not regarded that Allah knows whatever there is in the heavens and whatever there is in the earth? There dost not takes place any secret talk among thr"
+  },
+  {
+   "k": "62:10",
+   "cat": "other",
+   "en": "And when the prayer is finished disperse through the land and seek Allah’s grace, and remember Allah much so that you may be felicitous"
+  },
+  {
+   "k": "71:24",
+   "cat": "most_negated",
+   "en": "and already they have led many astray. Do not increase the wrongdoers in anything but error.’"
+  },
+  {
+   "k": "74:6",
+   "cat": "other",
+   "en": "Do not grant a favour seeking a greater gain"
+  },
+  {
+   "k": "89:12",
+   "cat": "other",
+   "en": "and caused much corruption in them"
+  },
+  {
+   "k": "102:1",
+   "cat": "rivalry_takathur",
+   "en": "Rivalry [and vainglory] distracted you"
+  },
+  {
+   "k": "108:1",
+   "cat": "other",
+   "en": "Indeed We have given you abundance"
+  }
+ ],
+ "severance_field": {
+  "بتر": {
+   "occ": 1,
+   "n_ayahs": 1,
+   "hapax": true
+  },
+  "قطع": {
+   "occ": 36,
+   "n_ayahs": 36,
+   "hapax": false
+  },
+  "دبر": {
+   "occ": 44,
+   "n_ayahs": 44,
+   "hapax": false
+  },
+  "جذذ": {
+   "occ": 2,
+   "n_ayahs": 2,
+   "hapax": false
+  },
+  "صرم": {
+   "occ": 3,
+   "n_ayahs": 3,
+   "hapax": false
+  },
+  "بور": {
+   "occ": 5,
+   "n_ayahs": 5,
+   "hapax": false
+  },
+  "هلک": {
+   "occ": 68,
+   "n_ayahs": 63,
+   "hapax": false
+  }
+ },
+ "sacrifice_field": {
+  "نحر": {
+   "occ": 1,
+   "n_ayahs": 1,
+   "hapax": true
+  },
+  "نسک": {
+   "occ": 7,
+   "n_ayahs": 6,
+   "hapax": false
+  },
+  "ذبح": {
+   "occ": 9,
+   "n_ayahs": 9,
+   "hapax": false
+  },
+  "هدی": {
+   "occ": 316,
+   "n_ayahs": 268,
+   "hapax": false
+  },
+  "قرب": {
+   "occ": 96,
+   "n_ayahs": 91,
+   "hapax": false
+  },
+  "بدن": {
+   "occ": 2,
+   "n_ayahs": 2,
+   "hapax": false
+  },
+  "صلو": {
+   "occ": 99,
+   "n_ayahs": 90,
+   "hapax": false
+  }
+ },
+ "salat_cooc_top": [
+  [
+   "قوم",
+   52
+  ],
+  [
+   "ءله",
+   44
+  ],
+  [
+   "زکو",
+   28
+  ],
+  [
+   "ءتی",
+   27
+  ],
+  [
+   "ءمن",
+   22
+  ],
+  [
+   "کون",
+   19
+  ],
+  [
+   "ربب",
+   14
+  ],
+  [
+   "ذکر",
+   12
+  ],
+  [
+   "ءخر",
+   12
+  ],
+  [
+   "نفق",
+   10
+  ],
+  [
+   "قول",
+   10
+  ],
+  [
+   "رسل",
+   10
+  ],
+  [
+   "علم",
+   10
+  ],
+  [
+   "رزق",
+   9
+  ],
+  [
+   "ءمر",
+   9
+  ],
+  [
+   "قبل",
+   8
+  ],
+  [
+   "جعل",
+   8
+  ],
+  [
+   "ءخذ",
+   8
+  ],
+  [
+   "رحم",
+   8
+  ],
+  [
+   "بین",
+   8
+  ]
+ ],
+ "salat_n_ayahs": 90,
+ "salat_with": {
+  "زکو": 28,
+  "ربب": 14,
+  "قوم": 52,
+  "اتی": 0,
+  "صبر": 7,
+  "رکع": 3,
+  "سجد": 4,
+  "نسک": 1,
+  "هدی": 3
+ },
+ "structure": [
+  {
+   "k": "108:1",
+   "display": "إِنَّا أَعْطَيْنَاکَ الْکَوْثَرَ",
+   "rasm": "انا اعطیناک الکوثر",
+   "n_words": 3,
+   "n_letters": 16,
+   "last_word_rasm": "الکوثر",
+   "starts_inna": true,
+   "has_kaf_suffix": true,
+   "roots": [
+    "عطو",
+    "کثر"
+   ]
+  },
+  {
+   "k": "108:2",
+   "display": "فَصَلِّ لِرَبِّکَ وَانْحَرْ",
+   "rasm": "فصل لربک وانحر",
+   "n_words": 3,
+   "n_letters": 12,
+   "last_word_rasm": "وانحر",
+   "starts_inna": false,
+   "has_kaf_suffix": true,
+   "roots": [
+    "صلو",
+    "ربب",
+    "نحر"
+   ]
+  },
+  {
+   "k": "108:3",
+   "display": "إِنَّ شَانِئَکَ هُوَ الْأَبْتَرُ",
+   "rasm": "ان شانئک هو الابتر",
+   "n_words": 4,
+   "n_letters": 15,
+   "last_word_rasm": "الابتر",
+   "starts_inna": true,
+   "has_kaf_suffix": true,
+   "roots": [
+    "شنء",
+    "بتر"
+   ]
+  }
+ ],
+ "rhyme": [
+  "الکوثر",
+  "وانحر",
+  "الابتر"
+ ],
+ "rhyme_endings": [
+  "ثر",
+  "حر",
+  "تر"
+ ],
+ "inna_verses": [
+  "108:1",
+  "108:3"
+ ],
+ "kaf_verses": [
+  "108:1",
+  "108:2",
+  "108:3"
+ ],
+ "ayah_hapax_dist": {
+  "0": 5869,
+  "1": 335,
+  "2": 26,
+  "3": 4,
+  "4": 1,
+  "5": 1
+ },
+ "n_ayahs_2plus_hapax": 32,
+ "s108_hapax_per_verse": {
+  "108:1": [],
+  "108:2": [
+   "نحر"
+  ],
+  "108:3": [
+   "بتر"
+  ]
+ },
+ "s108_total_hapax": 2,
+ "shortest_surahs": [
+  [
+   108,
+   43
+  ],
+  [
+   112,
+   47
+  ],
+  [
+   103,
+   73
+  ],
+  [
+   113,
+   73
+  ],
+  [
+   106,
+   77
+  ],
+  [
+   110,
+   80
+  ]
+ ],
+ "s108_letters": 43,
+ "s102_letters": 123,
+ "s108_rank_by_length": 1,
+ "surah_lengths": {
+  "1": 124,
+  "2": 26249,
+  "3": 14985,
+  "4": 16332,
+  "5": 12206,
+  "6": 12726,
+  "7": 14435,
+  "8": 5387,
+  "9": 11115,
+  "10": 7589,
+  "11": 7817,
+  "12": 7307,
+  "13": 3545,
+  "14": 3539,
+  "15": 2882,
+  "16": 7832,
+  "17": 6643,
+  "18": 6552,
+  "19": 3935,
+  "20": 5399,
+  "21": 5094,
+  "22": 5314,
+  "23": 4483,
+  "24": 5754,
+  "25": 3878,
+  "26": 5630,
+  "27": 4790,
+  "28": 5930,
+  "29": 4317,
+  "30": 3472,
+  "31": 2171,
+  "32": 1563,
+  "33": 5788,
+  "34": 3594,
+  "35": 3238,
+  "36": 3068,
+  "37": 3899,
+  "38": 3065,
+  "39": 4869,
+  "40": 5108,
+  "41": 3365,
+  "42": 3522,
+  "43": 3609,
+  "44": 1474,
+  "45": 2085,
+  "46": 2667,
+  "47": 2423,
+  "48": 2510,
+  "49": 1533,
+  "50": 1507,
+  "51": 1546,
+  "52": 1324,
+  "53": 1433,
+  "54": 1469,
+  "55": 1647,
+  "56": 1756,
+  "57": 2545,
+  "58": 2046,
+  "59": 1970,
+  "60": 1560,
+  "61": 966,
+  "62": 768,
+  "63": 801,
+  "64": 1091,
+  "65": 1203,
+  "66": 1105,
+  "67": 1347,
+  "68": 1289,
+  "69": 1133,
+  "70": 971,
+  "71": 965,
+  "72": 1109,
+  "73": 854,
+  "74": 1035,
+  "75": 676,
+  "76": 1087,
+  "77": 841,
+  "78": 796,
+  "79": 785,
+  "80": 552,
+  "81": 435,
+  "82": 333,
+  "83": 750,
+  "84": 445,
+  "85": 469,
+  "86": 254,
+  "87": 296,
+  "88": 382,
+  "89": 584,
+  "90": 342,
+  "91": 253,
+  "92": 314,
+  "93": 165,
+  "94": 102,
+  "95": 162,
+  "96": 288,
+  "97": 115,
+  "98": 404,
+  "99": 158,
+  "100": 169,
+  "101": 160,
+  "102": 123,
+  "103": 73,
+  "104": 134,
+  "105": 97,
+  "106": 77,
+  "107": 114,
+  "108": 43,
+  "109": 99,
+  "110": 80,
+  "111": 81,
+  "112": 47,
+  "113": 73,
+  "114": 80
+ },
+ "kthr_in_108": true,
+ "kthr_in_102": true
+}

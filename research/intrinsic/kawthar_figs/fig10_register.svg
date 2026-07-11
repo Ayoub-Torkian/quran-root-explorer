@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="581.299375pt" height="324.864pt" viewBox="0 0 581.299375 324.864" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-06-25T15:26:30.151182</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M -0 324.864 
+L 581.299375 324.864 
+L 581.299375 0 
+L -0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 46.223367 276.682752 
+L 275.438608 276.682752 
+Q 281.732848 276.682752 281.732848 272.957184 
+L 281.732848 51.906816 
+Q 281.732848 48.181248 275.438608 48.181248 
+L 46.223367 48.181248 
+Q 39.929127 48.181248 39.929127 51.906816 
+L 39.929127 272.957184 
+Q 39.929127 276.682752 46.223367 276.682752 
+z
+" clip-path="url(#pdc70c3ae73)" style="fill: #eaf2fb; stroke: #1d3557; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 305.860768 276.682752 
+L 535.076008 276.682752 
+Q 541.370248 276.682752 541.370248 272.957184 
+L 541.370248 51.906816 
+Q 541.370248 48.181248 535.076008 48.181248 
+L 305.860768 48.181248 
+Q 299.566528 48.181248 299.566528 51.906816 
+L 299.566528 272.957184 
+Q 299.566528 276.682752 305.860768 276.682752 
+z
+" clip-path="url(#pdc70c3ae73)" style="fill: #f4f9f7; stroke: #0f6e56; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1d3557" x="290.649688" y="19.61856" transform="rotate(-0 290.649688 19.61856)">Figure 10.  Why “We gave” (innā) and not “I gave” (innī): two registers</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1d3557" x="160.830988" y="64.63584" transform="rotate(-0 160.830988 64.63584)">“WE”  ·  innā / naḥnu</text>
+   </g>
+   <g id="text_3">
+    <text style="font-style: italic; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="160.830988" y="81.71136" transform="rotate(-0 160.830988 81.71136)">majesty — power &amp; bounty  (208×)</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="57.238287" y="103.44384" transform="rotate(-0 57.238287 103.44384)">108:1  “WE gave you” the abundance</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="57.238287" y="122.692608" transform="rotate(-0 57.238287 122.692608)">48:1   “WE opened for you” a victory</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="57.238287" y="141.941376" transform="rotate(-0 57.238287 141.941376)">15:87  “WE gave you” the seven oft-repeated</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="57.238287" y="161.190144" transform="rotate(-0 57.238287 161.190144)">94:1   “Did WE not expand your breast?”</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="57.238287" y="180.438912" transform="rotate(-0 57.238287 180.438912)">97:1   “WE sent it down” on the Night</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="57.238287" y="199.68768" transform="rotate(-0 57.238287 199.68768)">76:23  “WE sent down to you the Qurʾān”</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="57.238287" y="218.936448" transform="rotate(-0 57.238287 218.936448)">54:49  “WE created everything in measure”</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 13.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0f6e56" x="420.468388" y="64.63584" transform="rotate(-0 420.468388 64.63584)">“I”  ·  innī / innanī</text>
+   </g>
+   <g id="text_12">
+    <text style="font-style: italic; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="420.468388" y="81.71136" transform="rotate(-0 420.468388 81.71136)">oneness, nearness, worship-Me  (158×)</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="316.875688" y="103.44384" transform="rotate(-0 316.875688 103.44384)">20:14  “I am Allah… so worship ME”</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="316.875688" y="122.692608" transform="rotate(-0 316.875688 122.692608)">21:25  “no god but I, so worship ME”</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="316.875688" y="141.941376" transform="rotate(-0 316.875688 141.941376)">2:186  “I am near” (to My servants)</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="316.875688" y="161.190144" transform="rotate(-0 316.875688 161.190144)">16:51  “One God… so be in awe of ME”</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="316.875688" y="180.438912" transform="rotate(-0 316.875688 180.438912)">51:56  “I created… that they worship ME”</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="316.875688" y="218.936448" transform="rotate(-0 316.875688 218.936448)">→ singular goes with tawḥīd &amp; worship</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(9.335938 280.848075)">Inside al-Kawthar the two registers sit side by side: the GIFT is from “We” (108:1),</text>
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(47.0825 294.3792)">but worship in 108:2 is to “your Lord” (rabb, singular) — never “to Us.”</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pdc70c3ae73">
+   <rect x="28.389687" y="7.2" width="524.52" height="310.464"/>
+  </clipPath>
+ </defs>
+</svg>

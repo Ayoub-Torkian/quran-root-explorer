@@ -1,17 +1,50 @@
 # Working rules for this project (LOCKED — honor every session)
 
-## NOVELTY BAR — LOCKED (added 2026-06-24, top priority, honor EVERY session)
-**The recurring failure is the circular loop: end a null → propose the next untested probe → null again.** Stop it.
-1. **No activity unless it teaches something NOT already known.** Do not propose OR run any probe/feature on the
-   *promise* of discovery without **tested, evidence-based** justification it will yield something new. "Let's try
-   X and see" is forbidden — that IS the loop.
-2. **The prior is null.** Every instrument tested to date either confirms known structure or returns null
-   (distributional/topological → generic/null; grounded → recovers KNOWN meaning). Treat that as the baseline; the
-   burden is to show from PRIOR TESTED results why a new move would break it. If I can't, I don't propose it.
-3. **Computation's demonstrated role here is to LOCALIZE/RANK candidates for human reading — not to generate
-   meaning.** Present it as such; never dress ranking/known-recovery up as discovery.
-4. **If nothing meets the bar, say so plainly and STOP.** Do not fill silence with another probe. Silence is the
-   correct output when there is no tested basis for novelty.
+## MISSION / NORTH STAR — LOCKED (reframed 2026-06-30, TOP PRIORITY, honor EVERY session) — supersedes the old "novelty bar / discovery" frame
+**SETTLED & CLOSED — do NOT re-test, ever:** the Qur'ān behaves like any natural language/text, Arabic included. We are
+**NOT** trying to prove it is statistically distinctive, "special," or designed-beyond-a-baseline. The whole
+distinctiveness / Qur'ān-specific / matched-corpus-differential / ≥90-"discovery" chase is **RETIRED**. That probes
+recover known universals (OCP, long-range correlation, the fāṣila rhyme, frozen binomials) is **fine and EXPECTED** — no
+longer a disappointment and never the point. Do not run null-vs-shuffle "is it special" tests as an end in themselves.
+
+**THE GOAL: understand the CONCEPTS better by CROSS-REFERENCING complementary layers** — form ↔ content, structure ↔
+function, grammar ↔ semantics (also phonology↔meaning, morphology↔sense, position↔role, co-occurrence↔co-reference).
+Triangulate the layers **ON A CONCEPT (or concept-family)** to see what it means and how it works. This is القرآن يفسر
+بعضه بعضا as a **METHOD OF COMPREHENSION**, not a hunt for novelty.
+1. **Unit of work = a concept / concept-family. Deliverable = an understanding/map, NOT a grade or a null-test.** The
+   exemplar already in hand is the ANATOMY OF THE HEART (قلب·صدر·فؤاد cross-referenced with the state-words + organ /
+   grammar distinctions → ~27 graded states). Build more of these.
+2. **Computation LOCALIZES/RANKS candidates for human reading; meaning is then READ from the text, layer against layer.**
+   Recovering KNOWN meaning is **success**, not failure.
+3. **Rigor retained (what survives from the old frame):** ground every claim in the text; tag [TEXT]/[REPORT]/[INFERENCE]
+   and [MEASURED]/[INFERRED]; read a concept from its WHOLE dataset (sense-resolve FIRST); never assert beyond what the
+   cross-referencing shows. The ledger/grade still records confidence in a CLAIM, but the OBJECTIVE is comprehension, not
+   a ≥90 distinctiveness score. (The discovery-bar / BASE-TRUTH / distinctiveness machinery below is now SUBORDINATE to
+   this mission — kept only as rigor scaffolding, never as the goal.)
+4. **THE QUR'ĀN AS A UNIVERSE (governing lens, locked 2026-06-30).** Treat the text as a universe like the physical one
+   — integrity and interrelations from atom to cosmos (letter→word→āyah→sūra→whole; concept→family→web). Therefore
+   **every method humanity has for studying a structured universe has a suitable counterpart here** (physics, biology,
+   ecology/networks, linguistics, information theory, law, anatomy…), and we may borrow ANY of them — but now strictly
+   as a **LENS to UNDERSTAND the concepts and their interrelations**, never to re-litigate distinctiveness. For each
+   concept, pick the discipline whose method best illuminates it, and cross-reference that reading against the text's
+   own layers (form↔content, grammar↔semantics, structure↔function).
+5. **MAP ALL CONCEPTS WITH THEIR NUANCES — RECOGNIZE STRUCTURAL DIVERSITY (locked 2026-06-30).** Concepts need NOT
+   behave the same or share one structure. Each concept has its OWN structural TYPE — e.g. **gradient/field** (mercy:
+   overlapping degree, no clean partition), **ladder-of-states** (the heart: ~27 graded states), **partition** (clean
+   disjoint domains, e.g. ḥalāl/ḥarām candidates), **frozen-pair/binomial** (سمو·ءرض), **pervasive hub** (God),
+   **bridge** (high betweenness). The deliverable is a **typology**: profile each concept's shape (reach · role ·
+   facets · gradient-vs-partition · lock) via multimodal/graph-theoretic diagnostics, embrace that they differ, and
+   **feed these typed, nuanced profiles into the Concept Atlas 3-D maps/networks** (structure-type as a node attribute
+   → colour/shape/panel). "No clean zero" is a finding (gradient type), not a failure.
+6. **THE ELEPHANT — INTEGRATION MANDATE (locked 2026-06-30; Rumi's elephant-in-the-dark + Shabistarī's هر چیزی به جای خویش).**
+   Each per-concept view is a blind-touch — locally true, partial (leg=pole, ear=fan, trunk=pipe). Recognizing the
+   diversity (however large) is necessary but **NOT sufficient**: the parts MUST integrate into one coherent FUNCTIONAL
+   whole — the elephant has to emerge. Therefore: (a) never ship a pile of disconnected concept cards — every
+   part-study is assembled ONTO the web (the integrator): nodes = profiled concepts, edges = connective tissue
+   (relations / cross-references / co-reference), families = organs, whole = the universe; (b) the atlas is ONE
+   continuous entity navigable whole↔family↔concept↔facet **without losing sight of the whole** (breadcrumb +
+   part-in-whole context, always); (c) success = the coherent functional entity EMERGES (each concept in its proper
+   place), not a catalogue. The graph/web is the integration mechanism — it integrates everything.
 
 ## TEXT vs REPORT — LOCKED (added 2026-06-24, recurring failure: stating tradition as fact)
 1. **The Qur'anic TEXT (rasm) is base truth. Asbab al-nuzul, hadith, sira, traditional "occasions" are EXTERNAL
@@ -118,8 +151,10 @@
   trigger — provisional, raised when a better instrument arrives. Nothing real discarded; nothing unproven promoted.
 - Discovery bar: grade **≥90** to enter the ledger (`DISCOVERY_CRITERIA.md` gates G0–G9; score is provisional
   until G9(b) comparator is run). Report all candidates incl. aborted; no cherry-picking.
-- North star: define what a **Sūra** and an **Āyah** are (necessary AND sufficient), and show why the units
-  must have the **current arrangement/configuration**.
+- North star (SUPERSEDED 2026-06-30 — see MISSION at top): the unit-definition program (define Sūra/Āyah necessary AND
+  sufficient; justify the arrangement) is **done to its principled limit and retired as the goal**. The active north star
+  is now **understanding CONCEPTS by cross-referencing complementary layers** (form↔content, structure↔function,
+  grammar↔semantics). Unit-definition results remain on record as rigor scaffolding, not the objective.
 
 ## SEMANTIC METHOD — MEANING FROM THE WHOLE DATASET (LOCKED 2026-06-21, honor EVERY session — do not forget)
 - **A concept's meaning MUST be read from its WHOLE dataset** (every occurrence) — never one verse or the

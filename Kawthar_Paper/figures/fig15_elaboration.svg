@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="764.420266pt" height="390.771016pt" viewBox="0 0 764.420266 390.771016" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-06-26T19:26:12.708632</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 390.771016 
+L 764.420266 390.771016 
+L 764.420266 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 55.976125 351.519891 
+L 717.093875 351.519891 
+L 717.093875 50.887891 
+L 55.976125 50.887891 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="me4bb5c4aeb" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#me4bb5c4aeb" x="146.767924" y="351.519891" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(108.298549 367.638016)">rarity-weight</text>
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(105.841362 381.075391)">exponent = 0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#me4bb5c4aeb" x="306.612641" y="351.519891" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(268.143266 367.638016)">rarity-weight</text>
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(259.961704 381.075391)">exponent = 0.5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#me4bb5c4aeb" x="466.457359" y="351.519891" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(427.987984 367.638016)">rarity-weight</text>
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(425.530796 381.075391)">exponent = 1</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#me4bb5c4aeb" x="626.302076" y="351.519891" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(587.832701 367.638016)">rarity-weight</text>
+      <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(585.375513 381.075391)">exponent = 2</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_5">
+      <path d="M 55.976125 351.519891 
+L 717.093875 351.519891 
+" clip-path="url(#peabb1f4d6d)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <defs>
+       <path id="m18506b5b0d" d="M 0 0 
+L -3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m18506b5b0d" x="55.976125" y="351.519891" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="48.976125" y="355.319109" transform="rotate(-0 48.976125 355.319109)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_7">
+      <path d="M 55.976125 288.228943 
+L 717.093875 288.228943 
+" clip-path="url(#peabb1f4d6d)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m18506b5b0d" x="55.976125" y="288.228943" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="48.976125" y="292.028162" transform="rotate(-0 48.976125 292.028162)">20</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9">
+      <path d="M 55.976125 224.937996 
+L 717.093875 224.937996 
+" clip-path="url(#peabb1f4d6d)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m18506b5b0d" x="55.976125" y="224.937996" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="48.976125" y="228.737215" transform="rotate(-0 48.976125 228.737215)">40</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_11">
+      <path d="M 55.976125 161.647049 
+L 717.093875 161.647049 
+" clip-path="url(#peabb1f4d6d)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m18506b5b0d" x="55.976125" y="161.647049" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="48.976125" y="165.446267" transform="rotate(-0 48.976125 165.446267)">60</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_13">
+      <path d="M 55.976125 98.356101 
+L 717.093875 98.356101 
+" clip-path="url(#peabb1f4d6d)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m18506b5b0d" x="55.976125" y="98.356101" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="48.976125" y="102.15532" transform="rotate(-0 48.976125 102.15532)">80</text>
+     </g>
+    </g>
+    <g id="text_10">
+     <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(16.318125 316.160141) rotate(-90)">rank of al-Māʾida (5) among 113 sūras</text>
+     <text style="font-size: 12px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(29.7555 304.008266) rotate(-90)">(1 = best; lower = stronger claim)</text>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 55.976125 351.519891 
+L 55.976125 50.887891 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 55.976125 351.519891 
+L 717.093875 351.519891 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 86.026932 351.519891 
+L 146.767924 351.519891 
+L 146.767924 348.355343 
+L 86.026932 348.355343 
+z
+" clip-path="url(#peabb1f4d6d)" style="fill: #9fb0c4"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 245.871649 351.519891 
+L 306.612641 351.519891 
+L 306.612641 348.355343 
+L 245.871649 348.355343 
+z
+" clip-path="url(#peabb1f4d6d)" style="fill: #9fb0c4"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 405.716366 351.519891 
+L 466.457359 351.519891 
+L 466.457359 348.355343 
+L 405.716366 348.355343 
+z
+" clip-path="url(#peabb1f4d6d)" style="fill: #9fb0c4"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 565.561083 351.519891 
+L 626.302076 351.519891 
+L 626.302076 345.190796 
+L 565.561083 345.190796 
+z
+" clip-path="url(#peabb1f4d6d)" style="fill: #9fb0c4"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 146.767924 351.519891 
+L 207.508917 351.519891 
+L 207.508917 196.45707 
+L 146.767924 196.45707 
+z
+" clip-path="url(#peabb1f4d6d)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 306.612641 351.519891 
+L 367.353634 351.519891 
+L 367.353634 281.899849 
+L 306.612641 281.899849 
+z
+" clip-path="url(#peabb1f4d6d)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 466.457359 351.519891 
+L 527.198351 351.519891 
+L 527.198351 304.05168 
+L 466.457359 304.05168 
+z
+" clip-path="url(#peabb1f4d6d)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 626.302076 351.519891 
+L 687.043068 351.519891 
+L 687.043068 342.026249 
+L 626.302076 342.026249 
+z
+" clip-path="url(#peabb1f4d6d)" style="fill: #1d3557"/>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="116.397428" y="344.557886" transform="rotate(-0 116.397428 344.557886)">1</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="276.242145" y="344.557886" transform="rotate(-0 276.242145 344.557886)">1</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="436.086862" y="344.557886" transform="rotate(-0 436.086862 344.557886)">1</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="595.931579" y="341.393339" transform="rotate(-0 595.931579 341.393339)">2</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1d3557" x="177.138421" y="192.659613" transform="rotate(-0 177.138421 192.659613)">49</text>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1d3557" x="336.983138" y="278.102392" transform="rotate(-0 336.983138 278.102392)">22</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1d3557" x="496.827855" y="300.254223" transform="rotate(-0 496.827855 300.254223)">15</text>
+   </g>
+   <g id="text_18">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1d3557" x="656.672572" y="338.228792" transform="rotate(-0 656.672572 338.228792)">3</text>
+   </g>
+   <g id="text_19">
+    <g id="patch_13">
+     <path d="M 339.761093 205.879738 
+L 707.177109 205.879738 
+Q 710.627109 205.879738 710.627109 202.429738 
+L 710.627109 164.711176 
+Q 710.627109 161.261176 707.177109 161.261176 
+L 339.761093 161.261176 
+Q 336.311093 161.261176 336.311093 164.711176 
+L 336.311093 202.429738 
+Q 336.311093 205.879738 339.761093 205.879738 
+z
+" style="fill: #f4f9f7; stroke: #cfe4dc; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; fill: #0f6e56" transform="translate(367.801328 173.866254)">ROBUST FACT: the rare hate-root ﺀﻦﺷ occurs in only</text>
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; fill: #0f6e56" transform="translate(383.513202 187.160613)">sūras 5 (al-Māʾida) and 108 (al-Kawthar) of 114 —</text>
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; fill: #0f6e56" transform="translate(339.761093 200.038097)">al-Māʾida is al-Kawthar's unique lexical twin (p≈0.0005).</text>
+   </g>
+   <g id="text_20">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; fill: #1d3557" transform="translate(55.976125 16.698047)">Figure 9.  Robustness: 'al-Māʾida ranks #1 as al-Kawthar's elaborator' is NOT robust.</text>
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; fill: #1d3557" transform="translate(55.976125 30.792969)">Length-norm OFF -&gt; #1 (merely rewards a long sūra); ON -&gt; al-Māʾida falls to 3-22 (al-Ḍuḥā leads).</text>
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; fill: #1d3557" transform="translate(55.976125 44.887891)">The robust claim is the discrete fact below, not a continuous ranking.</text>
+   </g>
+   <g id="legend_1">
+    <g id="patch_14">
+     <path d="M 63.676125 91.979766 
+L 354.040031 91.979766 
+Q 356.240031 91.979766 356.240031 89.779766 
+L 356.240031 58.587891 
+Q 356.240031 56.387891 354.040031 56.387891 
+L 63.676125 56.387891 
+Q 61.476125 56.387891 61.476125 58.587891 
+L 61.476125 89.779766 
+Q 61.476125 91.979766 63.676125 91.979766 
+z
+" style="fill: #ffffff; opacity: 0.8; stroke: #e2e8f1; stroke-linejoin: miter"/>
+    </g>
+    <g id="patch_15">
+     <path d="M 65.876125 69.146172 
+L 87.876125 69.146172 
+L 87.876125 61.446172 
+L 65.876125 61.446172 
+z
+" style="fill: #9fb0c4"/>
+    </g>
+    <g id="text_21">
+     <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="96.676125" y="69.146172" transform="rotate(-0 96.676125 69.146172)">length-normalization OFF (length-confounded)</text>
+    </g>
+    <g id="patch_16">
+     <path d="M 65.876125 85.292109 
+L 87.876125 85.292109 
+L 87.876125 77.592109 
+L 65.876125 77.592109 
+z
+" style="fill: #1d3557"/>
+    </g>
+    <g id="text_22">
+     <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="96.676125" y="85.292109" transform="rotate(-0 96.676125 85.292109)">length-normalization ON</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="peabb1f4d6d">
+   <rect x="55.976125" y="50.887891" width="661.11775" height="300.632"/>
+  </clipPath>
+ </defs>
+</svg>

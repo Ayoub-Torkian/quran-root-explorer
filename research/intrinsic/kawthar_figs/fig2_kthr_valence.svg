@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="601.680497pt" height="244.54725pt" viewBox="0 0 601.680497 244.54725" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-06-25T15:26:27.896835</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 244.54725 
+L 601.680497 244.54725 
+L 601.680497 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 11.335625 201.184125 
+L 589.207847 201.184125 
+L 589.207847 39.624125 
+L 11.335625 39.624125 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m331fca86c9" d="M 0 0 
+L 0 3.5 
+" style="stroke: #10243a; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m331fca86c9" x="11.335625" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="11.335625" y="218.062094" transform="rotate(-0 11.335625 218.062094)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m331fca86c9" x="82.677875" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="82.677875" y="218.062094" transform="rotate(-0 82.677875 218.062094)">20</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m331fca86c9" x="154.020124" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="154.020124" y="218.062094" transform="rotate(-0 154.020124 218.062094)">40</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m331fca86c9" x="225.362374" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="225.362374" y="218.062094" transform="rotate(-0 225.362374 218.062094)">60</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m331fca86c9" x="296.704624" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="296.704624" y="218.062094" transform="rotate(-0 296.704624 218.062094)">80</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m331fca86c9" x="368.046873" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="368.046873" y="218.062094" transform="rotate(-0 368.046873 218.062094)">100</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m331fca86c9" x="439.389123" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="439.389123" y="218.062094" transform="rotate(-0 439.389123 218.062094)">120</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m331fca86c9" x="510.731373" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="510.731373" y="218.062094" transform="rotate(-0 510.731373 218.062094)">140</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m331fca86c9" x="582.073622" y="201.184125" style="fill: #10243a; stroke: #10243a; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="582.073622" y="218.062094" transform="rotate(-0 582.073622 218.062094)">160</text>
+     </g>
+    </g>
+    <g id="text_10">
+     <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="300.271736" y="234.643656" transform="rotate(-0 300.271736 234.643656)">All 162 verses containing the root k-th-r (abundance)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2"/>
+   <g id="patch_3">
+    <path d="M 11.335625 201.184125 
+L 589.207847 201.184125 
+" style="fill: none; stroke: #c9d6e8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 11.335625 160.794125 
+L 261.033499 160.794125 
+L 261.033499 80.014125 
+L 11.335625 80.014125 
+z
+" clip-path="url(#pec5b2e6291)" style="fill: #ef9f27; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 261.033499 160.794125 
+L 589.207847 160.794125 
+L 589.207847 80.014125 
+L 261.033499 80.014125 
+z
+" clip-path="url(#pec5b2e6291)" style="fill: #1d9e75; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(60.473937 110.231125)">cautionary 'muchness'</text>
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(96.478624 123.76225)">≈ 70 verses</text>
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(25.222062 137.199625)">(most people do not…; takāthur)</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #ffffff" transform="translate(338.156298 110.18425)">neutral / good abundance</text>
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #ffffff" transform="translate(385.414736 123.715375)">≈ 92 verses</text>
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #ffffff" transform="translate(309.851298 137.15275)">(incl. 108:1 al-Kawthar — the gift)</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; fill: #1d3557" transform="translate(11.335625 17.837812)">Figure 2.  The root behind 'Kawthar' has two faces in the Qurʾān —</text>
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; fill: #1d3557" transform="translate(11.335625 33.624125)">the gift in 108:1 is the good pole of 'muchness'</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pec5b2e6291">
+   <rect x="11.335625" y="39.624125" width="577.872222" height="161.56"/>
+  </clipPath>
+ </defs>
+</svg>

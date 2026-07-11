@@ -1,0 +1,94 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+ :root{--ink:#10243A;--navy:#1D3557;--green:#1D9E75;--line:#E2E8F1;}
+ *{box-sizing:border-box} body{margin:0;font-family:Vazirmatn,'Segoe UI',Tahoma,sans-serif;color:var(--ink);background:#FAFBFD}
+ .wrap{max-width:1180px;margin:0 auto;padding:10px 14px}
+ .title{font-size:18px;font-weight:800;color:var(--navy)}
+ .sub{font-size:13px;color:var(--ink);margin:2px 0 10px}
+ .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+ .lens{font-size:13px;font-weight:700;border:1px solid #CFE0F2;background:#fff;color:var(--navy);border-radius:18px;padding:6px 14px;cursor:pointer}
+ .lens.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+ .badge{font-size:12px;font-weight:700;border-radius:6px;padding:3px 9px;margin-left:auto}
+ .b-div{background:#EAF2FB;color:#1D3557;border:1px solid #CFE0F2}
+ .b-hum{background:#FBF1E6;color:#8a5a16;border:1px solid #EAD3B6}
+ .b-prop{background:#EFF6F2;color:#0F6E56;border:1px solid #CFE4DC}
+ .stage{display:flex;gap:12px;flex-wrap:wrap}
+ .canvas{flex:1 1 660px;min-width:560px;background:#fff;border:1px solid var(--line);border-radius:12px}
+ .panel{flex:1 1 280px;min-width:240px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+ .cap{font-size:12px;color:var(--ink);margin-top:6px;line-height:1.7}
+ .nlab{font-size:13px;font-weight:700}
+ .node{cursor:pointer}
+ .node text{font-size:13px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3px}
+ g.node{transition:transform .85s cubic-bezier(.4,0,.2,1)}
+ .pk{font-size:13px} .pk b{color:var(--navy)}
+ table{border-collapse:collapse;width:100%;margin-top:6px} td,th{font-size:12px;padding:3px 5px;text-align:right;border-bottom:1px solid #EEF2F7}
+ th{color:var(--navy);font-weight:700}
+ .hint{font-size:12px;color:var(--ink);opacity:.85}
+</style></head><body><div class="wrap">
+<div class="title">Concept Rearrangement Explorer — al-Kawthar's words + the inner self</div>
+<div class="sub">The same concepts, re-laid under different <b>lenses</b>. Watch which interrelationships appear under each. Edges &amp; positions are <b>measured on the rasm</b>; the layout only organizes known meaning for reading — it is not a claim about the text's order.</div>
+<div class="bar">
+ <button class="lens on" data-l="meaning">Meaning · co-occurrence</button>
+ <button class="lens" data-l="form">Form · edit-distance</button>
+ <button class="lens" data-l="rarity">Rarity · frequency</button>
+ <span id="badge" class="badge b-div">divine substrate (rasm co-occurrence)</span>
+</div>
+<div class="stage">
+ <svg class="canvas" id="svg" viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg"></svg>
+ <div class="panel" id="panel"><div class="pk"><b>Click a concept</b> to see how the Qur'an interprets it — its strongest grounded interpreters (root · distinctiveness PPMI · reliability P).</div>
+  <div id="detail"></div></div>
+</div>
+<div class="cap" id="cap"></div>
+</div>
+<script>
+const DATA={"nodes": [{"id": "عطو", "label": "عطو give", "role": "act", "color": "#0F6E56", "df": 12, "pos": {"meaning": [0.4943, 0.3648], "form": [1.0, 0.0], "rarity": [0.1429, 0.75]}, "interp": [{"r": "رضو", "co": 2, "ppmi": 4.02, "P": 0.17}, {"r": "حسب", "co": 2, "ppmi": 3.35, "P": 0.17}, {"r": "جزی", "co": 2, "ppmi": 3.25, "P": 0.17}, {"r": "غیر", "co": 2, "ppmi": 2.83, "P": 0.17}, {"r": "ربب", "co": 5, "ppmi": 1.58, "P": 0.42}, {"r": "کلل", "co": 2, "ppmi": 1.55, "P": 0.17}]}, {"id": "کثر", "label": "کوثر", "role": "out_g", "color": "#0F6E56", "df": 162, "pos": {"meaning": [0.853, 0.7848], "form": [0.0081, 0.2198], "rarity": [0.5714, 0.5]}, "interp": [{"r": "ءنس", "co": 41, "ppmi": 2.3, "P": 0.25}, {"r": "فسق", "co": 11, "ppmi": 2.97, "P": 0.07}, {"r": "فءی", "co": 3, "ppmi": 3.68, "P": 0.02}, {"r": "غنم", "co": 3, "ppmi": 3.68, "P": 0.02}, {"r": "فکه", "co": 4, "ppmi": 3.02, "P": 0.02}, {"r": "حقق", "co": 20, "ppmi": 1.55, "P": 0.12}]}, {"id": "صلو", "label": "صلو pray", "role": "up", "color": "#1D9E75", "df": 90, "pos": {"meaning": [0.7194, 0.3193], "form": [0.9102, 0.0019], "rarity": [0.4286, 1.0]}, "interp": [{"r": "زکو", "co": 28, "ppmi": 5.11, "P": 0.31}, {"r": "قوم", "co": 52, "ppmi": 2.59, "P": 0.58}, {"r": "بیع", "co": 4, "ppmi": 4.66, "P": 0.04}, {"r": "نفق", "co": 10, "ppmi": 3.01, "P": 0.11}, {"r": "غوط", "co": 2, "ppmi": 6.11, "P": 0.02}, {"r": "کسل", "co": 2, "ppmi": 6.11, "P": 0.02}]}, {"id": "ربب", "label": "ربب Lord", "role": "root", "color": "#B5651D", "df": 871, "pos": {"meaning": [0.6384, 0.3259], "form": [0.736, 0.3206], "rarity": [1.0, 0.25]}, "interp": [{"r": "ءلی", "co": 33, "ppmi": 2.8, "P": 0.04}, {"r": "عرش", "co": 16, "ppmi": 1.84, "P": 0.02}, {"r": "عند", "co": 62, "ppmi": 1.23, "P": 0.07}, {"r": "حمد", "co": 26, "ppmi": 1.5, "P": 0.03}, {"r": "رحم", "co": 91, "ppmi": 1.06, "P": 0.1}, {"r": "غفر", "co": 62, "ppmi": 1.14, "P": 0.07}]}, {"id": "نحر", "label": "نحر sacrifice", "role": "act", "color": "#0F6E56", "df": 1, "pos": {"meaning": [0.5229, 0.0], "form": [0.0, 0.2265], "rarity": [0.0, 0.0]}, "interp": []}, {"id": "شنء", "label": "شنء hater", "role": "down", "color": "#E63946", "df": 3, "pos": {"meaning": [0.157, 1.0], "form": [0.736, 0.3206], "rarity": [0.0952, 0.5]}, "interp": [{"r": "جرم", "co": 2, "ppmi": 6.0, "P": 0.67}, {"r": "وقی", "co": 2, "ppmi": 4.13, "P": 0.67}, {"r": "قوم", "co": 2, "ppmi": 2.8, "P": 0.67}, {"r": "ءمن", "co": 2, "ppmi": 2.52, "P": 0.67}, {"r": "ءله", "co": 2, "ppmi": 1.15, "P": 0.67}]}, {"id": "بتر", "label": "أبتر", "role": "out_r", "color": "#C1121F", "df": 1, "pos": {"meaning": [0.0, 0.9936], "form": [0.0081, 0.2198], "rarity": [0.0476, 0.25]}, "interp": []}, {"id": "قلب", "label": "قلب heart", "role": "self", "color": "#1D3557", "df": 155, "pos": {"meaning": [0.9421, 0.83], "form": [0.8879, 0.143], "rarity": [0.5238, 0.25]}, "interp": [{"r": "طبع", "co": 11, "ppmi": 5.33, "P": 0.07}, {"r": "مرض", "co": 12, "ppmi": 4.39, "P": 0.08}, {"r": "قسو", "co": 6, "ppmi": 5.33, "P": 0.04}, {"r": "رعب", "co": 5, "ppmi": 5.33, "P": 0.03}, {"r": "طمءن", "co": 7, "ppmi": 4.55, "P": 0.05}, {"r": "زیغ", "co": 5, "ppmi": 4.65, "P": 0.03}]}, {"id": "نفس", "label": "نفس self", "role": "self", "color": "#1D3557", "df": 270, "pos": {"meaning": [0.8376, 0.8176], "form": [0.5221, 0.3517], "rarity": [0.7619, 0.25]}, "interp": [{"r": "کلف", "co": 7, "ppmi": 4.34, "P": 0.03}, {"r": "ظلم", "co": 55, "ppmi": 2.13, "P": 0.2}, {"r": "وفی", "co": 16, "ppmi": 2.53, "P": 0.06}, {"r": "کسب", "co": 15, "ppmi": 2.53, "P": 0.06}, {"r": "مول", "co": 17, "ppmi": 2.3, "P": 0.06}, {"r": "قتل", "co": 22, "ppmi": 2.06, "P": 0.08}]}, {"id": "صدر", "label": "صدر breast", "role": "self", "color": "#1D3557", "df": 43, "pos": {"meaning": [0.8782, 0.794], "form": [0.0906, 0.3134], "rarity": [0.3333, 0.5]}, "interp": [{"r": "شرح", "co": 5, "ppmi": 7.18, "P": 0.12}, {"r": "ذوی", "co": 12, "ppmi": 3.68, "P": 0.28}, {"r": "ضیق", "co": 4, "ppmi": 5.6, "P": 0.09}, {"r": "علن", "co": 4, "ppmi": 5.18, "P": 0.09}, {"r": "خفی", "co": 5, "ppmi": 4.55, "P": 0.12}, {"r": "حوج", "co": 2, "ppmi": 6.6, "P": 0.05}]}, {"id": "فؤاد", "label": "فؤاد", "role": "self", "color": "#1D3557", "df": 15, "pos": {"meaning": [0.7937, 0.7372], "form": [0.6878, 0.4264], "rarity": [0.1905, 1.0]}, "interp": [{"r": "بصر", "co": 7, "ppmi": 4.39, "P": 0.47}, {"r": "شکر", "co": 5, "ppmi": 4.91, "P": 0.33}, {"r": "سمع", "co": 6, "ppmi": 3.94, "P": 0.4}, {"r": "ثبت", "co": 2, "ppmi": 5.61, "P": 0.13}, {"r": "قلل", "co": 3, "ppmi": 4.08, "P": 0.2}, {"r": "نشء", "co": 2, "ppmi": 5.06, "P": 0.13}]}, {"id": "علم", "label": "علم·عقل", "role": "cog", "color": "#378ADD", "df": 774, "pos": {"meaning": [1.0, 0.787], "form": [1.0, 0.0], "rarity": [0.9524, 0.0]}, "interp": [{"r": "غیب", "co": 34, "ppmi": 2.22, "P": 0.04}, {"r": "حکم", "co": 71, "ppmi": 1.6, "P": 0.09}, {"r": "علن", "co": 11, "ppmi": 2.47, "P": 0.01}, {"r": "صدر", "co": 21, "ppmi": 1.98, "P": 0.03}, {"r": "فحش", "co": 13, "ppmi": 2.19, "P": 0.02}, {"r": "کتم", "co": 11, "ppmi": 2.15, "P": 0.01}]}, {"id": "عمل", "label": "عمل صالح", "role": "act", "color": "#0F6E56", "df": 390, "pos": {"meaning": [0.7034, 0.8697], "form": [0.8771, 0.1221], "rarity": [0.8571, 0.75]}, "interp": [{"r": "حبط", "co": 16, "ppmi": 4.0, "P": 0.04}, {"r": "خبر", "co": 23, "ppmi": 2.85, "P": 0.06}, {"r": "سوء", "co": 44, "ppmi": 2.23, "P": 0.11}, {"r": "ءجر", "co": 30, "ppmi": 2.28, "P": 0.08}, {"r": "تحت", "co": 19, "ppmi": 2.6, "P": 0.05}, {"r": "توب", "co": 23, "ppmi": 2.41, "P": 0.06}]}, {"id": "ذکر", "label": "ذکر", "role": "up", "color": "#1D9E75", "df": 264, "pos": {"meaning": [0.8247, 0.6203], "form": [0.0081, 0.2198], "rarity": [0.6667, 1.0]}, "interp": [{"r": "ءنث", "co": 16, "ppmi": 3.86, "P": 0.06}, {"r": "لبب", "co": 10, "ppmi": 3.88, "P": 0.04}, {"r": "نسی", "co": 12, "ppmi": 2.94, "P": 0.05}, {"r": "حظظ", "co": 4, "ppmi": 3.75, "P": 0.02}, {"r": "نعم", "co": 18, "ppmi": 1.73, "P": 0.07}, {"r": "عرض", "co": 12, "ppmi": 1.98, "P": 0.05}]}, {"id": "وقی", "label": "تقوی", "role": "up", "color": "#1D9E75", "df": 237, "pos": {"meaning": [0.5942, 0.8997], "form": [0.7157, 0.8908], "rarity": [0.619, 0.75]}, "interp": [{"r": "طوع", "co": 19, "ppmi": 2.08, "P": 0.08}, {"r": "وعظ", "co": 7, "ppmi": 2.94, "P": 0.03}, {"r": "شحح", "co": 3, "ppmi": 4.3, "P": 0.01}, {"r": "برر", "co": 7, "ppmi": 2.62, "P": 0.03}, {"r": "شهر", "co": 5, "ppmi": 2.95, "P": 0.02}, {"r": "عدل", "co": 6, "ppmi": 2.72, "P": 0.03}]}, {"id": "ءمن", "label": "إیمان", "role": "up", "color": "#1D9E75", "df": 723, "pos": {"meaning": [0.7689, 0.9096], "form": [0.6013, 0.2664], "rarity": [0.9048, 1.0]}, "interp": [{"r": "صلح", "co": 82, "ppmi": 2.06, "P": 0.11}, {"r": "عمل", "co": 101, "ppmi": 1.48, "P": 0.14}, {"r": "جهد", "co": 19, "ppmi": 2.19, "P": 0.03}, {"r": "ءجر", "co": 36, "ppmi": 1.65, "P": 0.05}, {"r": "کفر", "co": 126, "ppmi": 1.22, "P": 0.17}, {"r": "قلب", "co": 49, "ppmi": 1.45, "P": 0.07}]}, {"id": "هدی", "label": "هدی", "role": "up", "color": "#1D9E75", "df": 268, "pos": {"meaning": [0.6646, 0.6969], "form": [0.6426, 0.9967], "rarity": [0.7143, 0.0]}, "interp": [{"r": "صرط", "co": 24, "ppmi": 3.63, "P": 0.09}, {"r": "ضلل", "co": 52, "ppmi": 2.83, "P": 0.19}, {"r": "جبی", "co": 7, "ppmi": 3.76, "P": 0.03}, {"r": "سبل", "co": 29, "ppmi": 2.04, "P": 0.11}, {"r": "حجج", "co": 8, "ppmi": 2.84, "P": 0.03}, {"r": "تبع", "co": 25, "ppmi": 1.88, "P": 0.09}]}, {"id": "دنو", "label": "دنیا", "role": "dom", "color": "#94A3B8", "df": 128, "pos": {"meaning": [0.9, 0.8601], "form": [0.8879, 0.143], "rarity": [0.4762, 0.0]}, "interp": [{"r": "حیی", "co": 66, "ppmi": 4.28, "P": 0.52}, {"r": "ءخر", "co": 57, "ppmi": 3.52, "P": 0.45}, {"r": "زین", "co": 15, "ppmi": 4.09, "P": 0.12}, {"r": "متع", "co": 18, "ppmi": 3.75, "P": 0.14}, {"r": "غرر", "co": 8, "ppmi": 4.21, "P": 0.06}, {"r": "خزی", "co": 8, "ppmi": 4.02, "P": 0.06}]}, {"id": "ءخر", "label": "آخرة", "role": "dom", "color": "#94A3B8", "df": 388, "pos": {"meaning": [0.9187, 0.838], "form": [0.0154, 0.2033], "rarity": [0.8095, 0.5]}, "interp": [{"r": "دنو", "co": 104, "ppmi": 3.71, "P": 0.27}, {"r": "موت", "co": 71, "ppmi": 3.0, "P": 0.18}, {"r": "ءجل", "co": 19, "ppmi": 2.67, "P": 0.05}, {"r": "متع", "co": 20, "ppmi": 2.31, "P": 0.05}, {"r": "زین", "co": 14, "ppmi": 2.39, "P": 0.04}, {"r": "نشء", "co": 9, "ppmi": 2.53, "P": 0.02}]}, {"id": "زید", "label": "زاد", "role": "amp", "color": "#EF9F27", "df": 60, "pos": {"meaning": [0.6971, 0.645], "form": [0.6878, 0.4264], "rarity": [0.381, 0.75]}, "interp": [{"r": "حطط", "co": 2, "ppmi": 6.7, "P": 0.03}, {"r": "نفر", "co": 3, "ppmi": 4.28, "P": 0.05}, {"r": "مءی", "co": 2, "ppmi": 4.89, "P": 0.03}, {"r": "مرض", "co": 3, "ppmi": 3.76, "P": 0.05}, {"r": "بسط", "co": 3, "ppmi": 3.76, "P": 0.05}, {"r": "قرء", "co": 5, "ppmi": 2.72, "P": 0.08}]}, {"id": "هوی", "label": "هوی", "role": "down", "color": "#E63946", "df": 37, "pos": {"meaning": [0.8418, 0.6513], "form": [0.7248, 1.0], "rarity": [0.2857, 0.25]}, "interp": [{"r": "تبع", "co": 22, "ppmi": 4.55, "P": 0.59}, {"r": "شرع", "co": 2, "ppmi": 6.08, "P": 0.05}, {"r": "عدل", "co": 3, "ppmi": 4.4, "P": 0.08}, {"r": "ضلل", "co": 7, "ppmi": 2.79, "P": 0.19}, {"r": "غیر", "co": 6, "ppmi": 2.79, "P": 0.16}, {"r": "فءد", "co": 2, "ppmi": 4.49, "P": 0.05}]}, {"id": "مرض", "label": "مرض", "role": "down", "color": "#E63946", "df": 23, "pos": {"meaning": [0.9433, 0.7607], "form": [0.658, 0.3894], "rarity": [0.2381, 0.0]}, "interp": [{"r": "قلب", "co": 12, "ppmi": 4.39, "P": 0.52}, {"r": "حرج", "co": 4, "ppmi": 6.62, "P": 0.17}, {"r": "سفر", "co": 4, "ppmi": 6.5, "P": 0.17}, {"r": "غوط", "co": 2, "ppmi": 8.08, "P": 0.09}, {"r": "صوم", "co": 3, "ppmi": 6.21, "P": 0.13}, {"r": "غسل", "co": 2, "ppmi": 7.08, "P": 0.09}]}], "edges": {"meaning": [[17, 18, 0.821], [2, 4, 0.626], [5, 6, 0.617], [7, 21, 0.579], [3, 4, 0.569], [5, 14, 0.563], [5, 15, 0.529], [9, 11, 0.499], [12, 15, 0.46], [7, 15, 0.415], [0, 3, 0.396], [5, 12, 0.383], [1, 11, 0.379], [5, 16, 0.366], [11, 20, 0.357], [1, 15, 0.35], [14, 15, 0.347], [15, 18, 0.345], [3, 11, 0.341], [3, 19, 0.336], [3, 16, 0.333], [15, 16, 0.331], [15, 19, 0.324], [2, 15, 0.319], [7, 11, 0.318], [3, 15, 0.316]], "form": [[16, 20, 1]]}, "corr_form_meaning": 0.12, "N": 6236};
+const NODES=DATA.nodes, EDGES=DATA.edges;
+const W=760,H=520, X0=70,X1=620, Y0=460,Y1=46;
+const svg=document.getElementById('svg');
+const px=p=>X0+p[0]*(X1-X0), py=p=>Y0-p[1]*(Y0-Y1);
+function r_of(df){return Math.max(8, 7+2.4*Math.sqrt(df));}
+let lens='meaning', sel=null;
+// edge layer + node layer
+const eLayer=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(eLayer);
+const nLayer=document.createElementNS('http://www.w3.org/2000/svg','g'); svg.appendChild(nLayer);
+const gById={};
+NODES.forEach((nd,i)=>{
+ const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.setAttribute('class','node'); g.dataset.i=i;
+ const c=document.createElementNS('http://www.w3.org/2000/svg','circle'); c.setAttribute('r',r_of(nd.df)); c.setAttribute('fill',nd.color); c.setAttribute('stroke','#fff'); c.setAttribute('stroke-width','2');
+ const t=document.createElementNS('http://www.w3.org/2000/svg','text'); t.setAttribute('text-anchor','middle'); t.setAttribute('dy',-r_of(nd.df)-5); t.textContent=nd.label;
+ g.appendChild(c); g.appendChild(t); g.onclick=()=>pick(i); nLayer.appendChild(g); gById[i]=g;
+});
+function place(){NODES.forEach((nd,i)=>{const p=nd.pos[lens]; gById[i].setAttribute('transform',`translate(${px(p)},${py(p)})`);});}
+function drawEdges(){
+ eLayer.innerHTML='';
+ if(lens==='rarity') return;
+ const es=EDGES[lens]||[];
+ es.forEach(e=>{const a=NODES[e[0]].pos[lens],b=NODES[e[1]].pos[lens];
+  const ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+  ln.setAttribute('x1',px(a));ln.setAttribute('y1',py(a));ln.setAttribute('x2',px(b));ln.setAttribute('y2',py(b));
+  if(lens==='meaning'){ln.setAttribute('stroke','#1D9E75');ln.setAttribute('stroke-width',(0.6+3*e[2]).toFixed(2));ln.setAttribute('opacity','0.5');}
+  else{ln.setAttribute('stroke','#EF9F27');ln.setAttribute('stroke-width','2');ln.setAttribute('stroke-dasharray','4 3');}
+  eLayer.appendChild(ln);});
+}
+const BADGE={meaning:['divine substrate (rasm co-occurrence)','b-div'],form:['HUMAN CONSTRUCT (spelling / edit-distance)','b-hum'],rarity:['property (corpus frequency)','b-prop']};
+const CAP={
+ meaning:"Meaning lens: distance = 1−cosine of whole-corpus co-occurrence. Clusters that emerge are real interpretive company — e.g. <b>کوثر · ربب · صلو</b> (abundance–Lord–prayer). <b>أبتر</b> and <b>نحر</b> drift to the edge: singular, low-shared (the severance isolates even here).",
+ form:"Form lens [HUMAN CONSTRUCT]: distance = letter edit-distance of the roots. Only <b>1</b> of 231 pairs is spelling-near — the map scatters, because spelling does not track meaning.",
+ rarity:"Rarity lens: ordered by how many verses each root touches (rare → frequent). <b>ربب</b> (871) and <b>کثر</b> (162) are common; <b>نحر · بتر</b> are hapax (1)."
+};
+function setLens(l){lens=l;document.querySelectorAll('.lens').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+ const bd=document.getElementById('badge');bd.textContent=BADGE[l][0];bd.className='badge '+BADGE[l][1];
+ document.getElementById('cap').innerHTML=`Form vs Meaning correlation across all pairs: <b>r = ${DATA.corr_form_meaning}</b> (near 0 — meaning is its own axis, independent of spelling and of canonical position). &nbsp; ${CAP[l]}`;
+ place();drawEdges();}
+document.querySelectorAll('.lens').forEach(b=>b.onclick=()=>setLens(b.dataset.l));
+function pick(i){sel=i;const nd=NODES[i];let h=`<div class="nlab" style="color:${nd.color}">${nd.label}</div>`;
+ h+=`<div class="hint">role: ${nd.role} · appears in ${nd.df} verse(s)</div>`;
+ if(nd.interp.length){h+=`<table><tr><th>interpreter</th><th>PPMI</th><th>P</th><th>co</th></tr>`;
+  nd.interp.forEach(x=>{h+=`<tr><td style="font-weight:700">${x.r}</td><td>${x.ppmi>=0?'+':''}${x.ppmi}</td><td>${x.P}</td><td>${x.co}</td></tr>`;});h+=`</table>`;
+  h+=`<div class="hint" style="margin-top:6px">PPMI = distinctiveness; P = reliability (share of this concept's verses the interpreter co-occurs in).</div>`;}
+ else h+=`<div class="hint" style="margin-top:8px">Hapax — appears once; defined by its semantic field, not by co-occurrence.</div>`;
+ document.getElementById('detail').innerHTML=h;
+ NODES.forEach((_,k)=>gById[k].querySelector('circle').setAttribute('stroke',k===i?'#10243A':'#fff'));
+}
+setLens('meaning');
+</script></body></html>

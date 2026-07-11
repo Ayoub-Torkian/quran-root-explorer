@@ -373,3 +373,91 @@ Last 3 **discovery** moves: **~85 · null · null** (āyah, per-sūra necessity,
 - Density/length is Heaps law (beta=0.76, universal to ALL text): TTR rho-0.80, repetition rho+0.80, development rho+0.84 vs length = expected of any corpus, NOT a Quran-specific feature.
 - DEVIATION test (own-substrate token-shuffle, same #tokens/sura): SHORT z=-2.4 (slightly BELOW random density => NOT specially dense; high TTR was pure length). LONG z=-6.2 (well below random => more concept-development/coherence than length predicts). corr(z,length) rho=-0.41.
 - VERDICT: short=dense RETIRED (length artifact). long-suras-develop-concepts-beyond-length = MEASURED. Scripts /tmp/density.py,/tmp/heaps.py.
+
+## 2026-06-30 — ↻ Candidate A (fused rasm āyah-boundary detector) — RUN end-to-end; REDUCES TO L27 (fāṣila), not a new ≥90
+- Positive control PASS (planted-end recovery AUC 1.000; negative/random 0.491 → machinery not blind).
+- Pilot Book6 (51,024 surface words, 6,216 āyah-ends, 5-fold CV grouped by sūra): final-letter 0.756 → +bigram+length FUSED AUC 0.863; clausal cadence (next و/ف) adds ~0. z≈93 vs label-null. Recall@known-count 52.3% (L17 positional floor ~5%); parameter-free exact-āyah decode 35.1%. Split-half 0.867/0.863 (stable); GroupKFold-by-sūra = leave-sūra-out.
+- Rhyme-preserving null (within-final-BIGRAM-class conditional AUC) = 0.662 — a modest beyond-rhyme residual, but driven by word-LENGTH (intrinsic, ok) + clausal CONTEXT (next-word particle = ORDER-dependent, would not survive a word-order shuffle). No clean non-rhyme rasm channel isolated.
+- ATTRIBUTION (corrected, caught on ledger check): this REPRODUCES ledgered **L27** (āyah recoverable on rasm-WORD, AUC 0.967, grade 84, "= fāṣila, order-invariant, G7 redundant") at a LOWER AUC (simpler logistic vs HistGB). It does NOT exceed L27 nor DEFINE the āyah (necessary ≠ sufficient). I initially over-credited it as "overturning L17"; L27 already overturned the positional floor. P(≥90 NEW) ≈ 0.15.
+- VERDICT: reduces to the known fāṣila (L27). No discovery-tier promotion; no new ledger row. Annotate L27 revise-up trigger: "beyond-rhyme residual cond-AUC 0.66 is length+order-context, not a clean non-rhyme channel."
+- BEARING ↻ consolidation/null on this surface. Reconfigure trigger: STOP mining the rasm āyah-ending; the genuinely open north-star gap (āyah SUFFICIENCY) sits behind the ONE-LAW wall (external/recited layer) = a governance decision, not a probe.
+
+## 2026-06-30 — ✓ GOVERNANCE DECISION (user): KEEP THE ONE LAW — āyah-definition piece CLOSED, not failed
+- Decision: do NOT admit the recited/diacritic (vowel) layer as a substrate. The rasm stays the sole divine substrate; diacritics remain corroborative-only/demoted.
+- Consequence — āyah definition north-star piece CLOSED honestly: **NECESSARY-complete on the divine substrate** (rasm fāṣila recovers the boundary; L27 AUC 0.967, grade 84; re-confirmed 2026-06-30 fused pilot AUC 0.86 / recall 52% / exact-āyah 35%). **SUFFICIENCY is principled-bounded by the ONE LAW** (full iff would need an external model OR the vowel layer — both forbidden). This is a *boundary, not a null* (absence-of-evidence ≠ evidence-of-absence; the limit is the admissible-instrument set, by deliberate axiom choice).
+- Net north-star state on the divine substrate: Sūra — necessary DONE(≥90), sufficiency principled-bounded; Āyah — necessary DONE(L27), sufficiency principled-bounded (this decision); Arrangement — non-arbitrary DONE(≥90), exact-config NOT globally forced (local necessity only, L12/L20). Unit-definition work on the rasm is at its principled boundary.
+- BEARING ✓ consolidation/closure. No further rasm āyah-definition probe is justified (novelty bar). Live research surface remains the WEB / universal-designed-system-properties program (W-series: W01 connectance done; benchmarked vs niche-model food web) — continue there only with a tested basis, never on the promise of discovery.
+
+## 2026-06-30 — ↻ Concept-node web (sense-resolved) — ABORT AT POSITIVE CONTROL (instrument blind)
+- Pre-reg PREREG_concept_node_web.md. Ran the MANDATORY positive control: plant a polysemy by merging two
+  high-freq DISJOINT roots (بعد+نور co-occur 0×; also علم+رزق, صلو+حرب) and ask the sense-clusterer to recover the split.
+- Instrument v1 (KMeans on āyah-level bag-of-roots, top-300 binary): ARI(recovered vs true)=0.001, silhouette 0.047 → BLIND.
+- Instrument v2 (TF-IDF sublinear + L2/cosine + TruncatedSVD-30 + KMeans): بعد+نور ARI=-0.005, علم+رزق ARI=0.015 → STILL BLIND.
+- DIAGNOSIS (measured, informative): at āyah granularity even roots co-occurring 0× have non-separable neighbour
+  contexts — the ubiquitous connectors (ءله/قول/كون) dominate every āyah. This IS the Network page's weak-modularity
+  "one blended field" (Q ≈ 0.03) showing up at the occurrence level. Automated sense-splitting from āyah co-occurrence
+  is therefore not viable; the ledger's sense results (heart ~27 states, وقي) came from a richer/curated method
+  (co-reference + state-word reading), not naive āyah-bag clustering.
+- VERDICT: REJECT the probe AS INSTRUMENTED (telescope: instrument limit, NOT textual absence). P(≥90 with this
+  instrument) ≈ 0. A working instrument would need a FINER context window (intra-āyah word neighbours / sub-āyah
+  span) or per-occurrence contextual representation — neither has a tested basis to run now.
+- BEARING ↻ null at control. Reconfigure trigger ENGAGED: rasm-āyah (reduces to L27) + concept-node (blind) =
+  two consecutive nulls on the semantic/web-unit surface → STOP this surface; do not launch another variant on promise.
+
+## 2026-06-30 — ↻ Sense-resolve via DIFFUSION MAPS — ABORT at control; bottleneck CONFIRMED upstream (vectorization)
+- Re-ran the planted-polysemy positive control with a nonlinear reducer (diffusion map: cosine kernel → Markov
+  normalize → eigen-coords → KMeans). بعد+نور ARI=-0.001, علم+رزق ARI=0.012, صلو+حرب n/a → BLIND.
+- (synthetic code-check hit only 0.607, mis-specified: cosine metric on origin-centred Gaussian blobs is degenerate
+  — not a clean validation; convergence of SVD(linear) + diffusion(nonlinear) both at ARI≈0 on the REAL planted
+  control is the substantive basis.)
+- DIAGNOSIS (confirmed): the wall is the VECTORIZATION (āyah-level co-occurrence is too homogeneous to separate even
+  0×-co-occurring roots — the weak-modularity "blended field"), NOT linear-vs-nonlinear DR. A reducer cannot recover
+  structure a representation doesn't contain. Trying successive reducers on the same vectors = the circular null loop.
+- VERDICT: third consecutive null on the semantic/web-unit surface (rasm-āyah→L27; concept-node SVD blind; concept-node
+  diffusion blind). RECONFIGURE TRIGGER fully engaged → STOP this surface. The ONLY honest reopener is an UPSTREAM
+  change of vectorization — a FINER context window (intra-āyah / sub-āyah word neighbours) — which is a separate
+  pre-registered probe with its own positive control; modest odds (~0.15); not run on promise.
+
+## 2026-06-30 — ✗ Sub-āyah window vectorization — ABORT; DEEPER WALL identified (corpus below distributional-semantics threshold)
+- Planted-polysemy control with sub-āyah windows ±2/±3/±5 (TF-IDF + SVD + KMeans): بعد+نور ARI≈0, علم+رزق ≤0.034,
+  ربب+شطن ≈ −0.04 → BLIND at every window.
+- FULL instrument space now exhausted on this surface: {āyah, ±2, ±3, ±5 windows} × {SVD linear, diffusion nonlinear}
+  ALL return ARI≈0 on disjoint planted splits.
+- SUBSTANTIVE DIAGNOSIS [MEASURED/INFERRED]: not the reducer, not the window — the CORPUS is below the data threshold
+  for distributional semantics. ~6,236 short āyāt / 1,701 roots; most root pairs co-occur 0–2×; two occurrences of the
+  SAME root almost never share neighbours → a root has no coherent context cloud; within-root context variance swamps
+  any between-sense signal at every granularity. Distributional sense-induction is not viable on this text.
+- CONSEQUENCE: the ledger's real sense result (heart ~27 graded states) came from GROUNDED READING (co-reference of
+  قلب·صدر·فؤاد + the state-words attached: sealed/hardened/trembling/…), NOT clustering. On this corpus meaning must be
+  READ (القرآن يفسر بعضه بعضا as a reading method), not vectorized. Sense-resolution is a CURATION task, not an
+  automated distributional-discovery probe.
+- VERDICT: 4th consecutive null → STOP the vectorization→DR / distributional-sense surface. No further probe here has a
+  tested basis. The "vectorization first, then DR" pipeline is closed for SENSE DISCOVERY on this corpus (it remains
+  valid only as (i) a kernel-matched NULL for other findings, and (ii) app visualization [HUMAN CONSTRUCT]).
+
+## 2026-06-30 — ✓ LEDGER HARDENING (nonlinear null) — A2 re-audited, SURVIVES (65→68)
+- Built a nonlinear full-distribution position-matched null (order prob per pair from each root's empirical within-āyah
+  relative-position distribution). A2 frozen binomials: real consistency 0.708 vs null 0.670±0.001 (z=25.3); frozen
+  27.3% vs 16.4% (z=23.4). SURVIVES → 65→68. Refinement: bulk of raw consistency is positional; beyond-position frozen
+  order real but modest (Δ≈0.04). Distinct from inter-sūra coherence (died nonlinearly, z=−0.7).
+- BEARING ✓ consolidation: nonlinear null now a usable hardening instrument; A2 hardened. Next (optional): same null on
+  sūra-order coherence (z+4.0) + interaction-field energy (z+45.7) — the more confound-prone survivors.
+
+## 2026-06-30 — ✓ LEDGER HARDENING cont. — sūra-order + interaction-field re-audited (survive, right-sized)
+- Same nonlinear size-matched null (decile length strata). Sūra-order adjacent coherence: real 0.248 vs size-null
+  0.230 → z=5.8 (was z+11.7 vs free; ~93% is size-adjacency) → ~62. Interaction-field energy: real −8068 vs size-null
+  −7637 → z=−4.0 (raw was z+45.7 vs length-preserving — most was the length confound) → temper ~58.
+- VERDICT: all 3 top survivors HOLD under the null that killed inter-sūra coherence, but right-sized — the muṣḥaf's
+  semantic arrangement beyond size/position is REAL but modest (z≈4–6). Nonlinear size/position-matched null ADOPTED as
+  a standard gate going forward. Hardening pass complete.
+- BEARING ✓ consolidation. Ledger is now honest-sized; no survivor refuted, none inflated.
+
+## 2026-06-30 — ✓ NEW LENSES run (phonetic #1 + DFA #2) — strong signals = KNOWN universals; wall re-diagnosed as BASELINE not instrument
+- #1 phonetic (control PASS): consonant place DISPERSION below chance — word-internal z=−73.3 (= OCP, Arabic universal),
+  cross-word z=−7.0 (faint text-level residual), emphatic-adjacency z=−19.6. Grade 42.
+- #2 DFA (controls validated 0.52/1.49): root-surprisal α=0.705 (>shuffle 0.49) = natural-language LRC band; emphatic α=0.567. Grade 40.
+- META (important): both NEW lenses gave strong dense signals (escaped the sparsity wall) yet recover KNOWN universals
+  (OCP; natural-text LRC). So the discovery wall is NOT instrument/sparsity — it is BASELINE DIFFERENTIATION. No matched-Arabic
+  prose corpus is committed → cannot test Qur'ān-specificity. HIGHEST-LEVERAGE GAP = acquire a matched-Arabic (saj'/classical)
+  corpus; then OCP-dispersion / α / frozen-binomials become testable for Qur'ān-specificity.
+- BEARING ✓ two probes done end-to-end; wall re-diagnosed (data gap, not instrument gap). No new ≥90; honest graded entries logged.

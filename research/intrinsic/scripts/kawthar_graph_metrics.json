@@ -1,0 +1,44 @@
+{
+ "ʿ-ṭ-w": {
+  "degree": 45,
+  "wdegree": 55,
+  "clustering": 0.653,
+  "pctile": 54.7
+ },
+ "k-th-r": {
+  "degree": 461,
+  "wdegree": 1582,
+  "clustering": 0.333,
+  "pctile": 97.0
+ },
+ "ṣ-l-w": {
+  "degree": 348,
+  "wdegree": 967,
+  "clustering": 0.419,
+  "pctile": 93.8
+ },
+ "r-b-b": {
+  "degree": 853,
+  "wdegree": 7177,
+  "clustering": 0.163,
+  "pctile": 99.8
+ },
+ "n-ḥ-r": {
+  "degree": 2,
+  "wdegree": 2,
+  "clustering": 1.0,
+  "pctile": 3.6
+ },
+ "sh-n-ʾ": {
+  "degree": 34,
+  "wdegree": 39,
+  "clustering": 0.829,
+  "pctile": 48.0
+ },
+ "b-t-r": {
+  "degree": 1,
+  "wdegree": 1,
+  "clustering": 0,
+  "pctile": 0.0
+ }
+}

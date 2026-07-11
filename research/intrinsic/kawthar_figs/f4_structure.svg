@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="680.01552pt" height="360.72pt" viewBox="0 0 680.01552 360.72" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-06-27T05:39:15.771232</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 360.72 
+L 680.01552 360.72 
+L 680.01552 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 76.424014 120.10032 
+L 537.029954 120.10032 
+Q 543.686109 120.10032 543.686109 116.63712 
+L 543.686109 60.53328 
+Q 543.686109 57.07008 537.029954 57.07008 
+L 76.424014 57.07008 
+Q 69.767859 57.07008 69.767859 60.53328 
+L 69.767859 116.63712 
+Q 69.767859 120.10032 76.424014 120.10032 
+z
+" clip-path="url(#p4344c3baa1)" style="fill: #ffffff; stroke: #1d9e75; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 76.424014 199.75392 
+L 537.029954 199.75392 
+Q 543.686109 199.75392 543.686109 196.29072 
+L 543.686109 140.18688 
+Q 543.686109 136.72368 537.029954 136.72368 
+L 76.424014 136.72368 
+Q 69.767859 136.72368 69.767859 140.18688 
+L 69.767859 196.29072 
+Q 69.767859 199.75392 76.424014 199.75392 
+z
+" clip-path="url(#p4344c3baa1)" style="fill: #ffffff; stroke: #1d3557; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 76.424014 279.40752 
+L 537.029954 279.40752 
+Q 543.686109 279.40752 543.686109 275.94432 
+L 543.686109 219.84048 
+Q 543.686109 216.37728 537.029954 216.37728 
+L 76.424014 216.37728 
+Q 69.767859 216.37728 69.767859 219.84048 
+L 69.767859 275.94432 
+Q 69.767859 279.40752 76.424014 279.40752 
+z
+" clip-path="url(#p4344c3baa1)" style="fill: #ffffff; stroke: #e63946; stroke-width: 1.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 55.124317 59.148 
+L 70.433474 59.148 
+" clip-path="url(#p4344c3baa1)" style="fill: none; stroke: #ef9f27; stroke-width: 3; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 55.124317 277.3296 
+L 70.433474 277.3296 
+" clip-path="url(#p4344c3baa1)" style="fill: none; stroke: #ef9f27; stroke-width: 3; stroke-linecap: square"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1d3557" x="340.00776" y="24.516" transform="rotate(-0 340.00776 24.516)">Figure 4.  The architecture of three verses</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="93.730018" y="78.1956" transform="rotate(-0 93.730018 78.1956)">V1.  ﺮﺛﻮﻜﻟﺍ ﻙﺎﻨﻴﻄﻋﺃ ﺎﻧﺇ</text>
+   </g>
+   <g id="text_3">
+    <text style="font-style: italic; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="93.730018" y="98.9748" transform="rotate(-0 93.730018 98.9748)">'Indeed WE gave YOU the abundance'</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1d9e75" x="526.380106" y="88.5852" transform="rotate(-0 526.380106 88.5852)">God → Prophet : the gift</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="93.730018" y="157.8492" transform="rotate(-0 93.730018 157.8492)">V2.  ﺮﺤﻧﺍﻭ ﻚﺑﺮﻟ ﻞﺼﻓ</text>
+   </g>
+   <g id="text_6">
+    <text style="font-style: italic; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="93.730018" y="178.6284" transform="rotate(-0 93.730018 178.6284)">'so pray to your Lord and sacrifice'</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1d3557" x="526.380106" y="168.2388" transform="rotate(-0 526.380106 168.2388)">Prophet's response : worship</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="93.730018" y="237.5028" transform="rotate(-0 93.730018 237.5028)">V3.  ﺮﺘﺑﺄﻟﺍ ﻮﻫ ﻚﺌﻧﺎﺷ ﻥﺇ</text>
+   </g>
+   <g id="text_9">
+    <text style="font-style: italic; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="93.730018" y="258.282" transform="rotate(-0 93.730018 258.282)">'indeed YOUR hater is the cut-off one'</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #e63946" x="526.380106" y="247.8924" transform="rotate(-0 526.380106 247.8924)">verdict on the adversary</text>
+   </g>
+   <g id="patch_5">
+    <path d="M 55.124317 275.328759 
+Q 55.124317 168.239522 55.124317 61.150285 
+" style="fill: none; stroke: #ef9f27; stroke-width: 3; stroke-linecap: round"/>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #7a5200" transform="translate(31.701539 207.713175) rotate(-90)">inna … inna</text>
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #7a5200" transform="translate(45.138914 259.250362) rotate(-90)">(ring: opens V1, closes V3)</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #0f6e56" transform="translate(587.616733 158.0658)">-ka thread:</text>
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #0f6e56" transform="translate(587.616733 171.503175)">'you / your'</text>
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; fill: #0f6e56" transform="translate(587.616733 185.0343)">in ALL three</text>
+   </g>
+   <g id="patch_6">
+    <path d="M 569.645114 275.328759 
+Q 569.645114 168.239522 569.645114 61.150285 
+" style="fill: none; stroke-dasharray: 7.2,4.8; stroke-dashoffset: 0; stroke: #1d9e75; stroke-width: 2.4; stroke-linecap: round"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p4344c3baa1">
+   <rect x="7.2" y="7.2" width="665.61552" height="346.32"/>
+  </clipPath>
+ </defs>
+</svg>

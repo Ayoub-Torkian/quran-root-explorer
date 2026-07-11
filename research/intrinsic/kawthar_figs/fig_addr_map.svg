@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="859.586979pt" height="378.837922pt" viewBox="0 0 859.586979 378.837922" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-06-27T05:39:43.560805</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 378.837922 
+L 859.586979 378.837922 
+L 859.586979 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 10.38125 339.346047 
+L 431.299269 339.346047 
+L 431.299269 24.698047 
+L 10.38125 24.698047 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 10.38125 339.346047 
+L 10.38125 24.698047 
+" clip-path="url(#pa499cab6bc)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="m72004b498c" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m72004b498c" x="10.38125" y="339.346047" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="10.38125" y="353.944484" transform="rotate(-0 10.38125 353.944484)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 72.280959 339.346047 
+L 72.280959 24.698047 
+" clip-path="url(#pa499cab6bc)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m72004b498c" x="72.280959" y="339.346047" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="72.280959" y="353.944484" transform="rotate(-0 72.280959 353.944484)">5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 134.180667 339.346047 
+L 134.180667 24.698047 
+" clip-path="url(#pa499cab6bc)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m72004b498c" x="134.180667" y="339.346047" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="134.180667" y="353.944484" transform="rotate(-0 134.180667 353.944484)">10</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 196.080376 339.346047 
+L 196.080376 24.698047 
+" clip-path="url(#pa499cab6bc)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m72004b498c" x="196.080376" y="339.346047" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="196.080376" y="353.944484" transform="rotate(-0 196.080376 353.944484)">15</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 257.980085 339.346047 
+L 257.980085 24.698047 
+" clip-path="url(#pa499cab6bc)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m72004b498c" x="257.980085" y="339.346047" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="257.980085" y="353.944484" transform="rotate(-0 257.980085 353.944484)">20</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 319.879794 339.346047 
+L 319.879794 24.698047 
+" clip-path="url(#pa499cab6bc)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m72004b498c" x="319.879794" y="339.346047" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="319.879794" y="353.944484" transform="rotate(-0 319.879794 353.944484)">25</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_13">
+      <path d="M 381.779502 339.346047 
+L 381.779502 24.698047 
+" clip-path="url(#pa499cab6bc)" style="fill: none; stroke: #e2e8f1; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m72004b498c" x="381.779502" y="339.346047" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="381.779502" y="353.944484" transform="rotate(-0 381.779502 353.944484)">30</text>
+     </g>
+    </g>
+    <g id="text_8">
+     <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #10243a" x="220.84026" y="369.142297" transform="rotate(-0 220.84026 369.142297)">second-person -ك per 100 (non-basmala) tokens</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2"/>
+   <g id="patch_3">
+    <path d="M 10.38125 339.346047 
+L 10.38125 24.698047 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 10.38125 339.346047 
+L 431.299269 339.346047 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 10.38125 54.262454 
+L 381.779502 54.262454 
+L 381.779502 39.000229 
+L 10.38125 39.000229 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d9e75"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 10.38125 78.878946 
+L 376.827526 78.878946 
+L 376.827526 63.616721 
+L 10.38125 63.616721 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d9e75"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 10.38125 103.495438 
+L 288.929939 103.495438 
+L 288.929939 88.233213 
+L 10.38125 88.233213 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d9e75"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 10.38125 128.11193 
+L 147.798603 128.11193 
+L 147.798603 112.849705 
+L 10.38125 112.849705 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 10.38125 152.728421 
+L 137.89465 152.728421 
+L 137.89465 137.466196 
+L 10.38125 137.466196 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 10.38125 177.344913 
+L 83.422906 177.344913 
+L 83.422906 162.082688 
+L 10.38125 162.082688 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 10.38125 201.961405 
+L 79.708924 201.961405 
+L 79.708924 186.69918 
+L 10.38125 186.69918 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 10.38125 226.577897 
+L 78.47093 226.577897 
+L 78.47093 211.315672 
+L 10.38125 211.315672 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 10.38125 251.194389 
+L 75.994941 251.194389 
+L 75.994941 235.932164 
+L 10.38125 235.932164 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 10.38125 275.810881 
+L 74.756947 275.810881 
+L 74.756947 260.548656 
+L 10.38125 260.548656 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 10.38125 300.427373 
+L 72.280959 300.427373 
+L 72.280959 285.165148 
+L 10.38125 285.165148 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 10.38125 325.043865 
+L 72.280959 325.043865 
+L 72.280959 309.78164 
+L 10.38125 309.78164 
+z
+" clip-path="url(#pa499cab6bc)" style="fill: #1d3557"/>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="386.731479" y="49.942591" transform="rotate(-0 386.731479 49.942591)">30.0%</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="381.779502" y="74.559083" transform="rotate(-0 381.779502 74.559083)">29.6%</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="293.881916" y="99.175575" transform="rotate(-0 293.881916 99.175575)">22.5%</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="152.75058" y="123.792067" transform="rotate(-0 152.75058 123.792067)">11.1%</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="142.846627" y="148.408559" transform="rotate(-0 142.846627 148.408559)">10.3%</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="88.374883" y="173.025051" transform="rotate(-0 88.374883 173.025051)">5.9%</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #e63946" x="120.562731" y="172.749113" transform="rotate(-0 120.562731 172.749113)">qul×1</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="84.6609" y="197.641543" transform="rotate(-0 84.6609 197.641543)">5.6%</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="83.422906" y="222.258035" transform="rotate(-0 83.422906 222.258035)">5.5%</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="80.946918" y="246.874527" transform="rotate(-0 80.946918 246.874527)">5.3%</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="79.708924" y="271.491019" transform="rotate(-0 79.708924 271.491019)">5.2%</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="77.232935" y="296.107511" transform="rotate(-0 77.232935 296.107511)">5.0%</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="77.232935" y="320.724003" transform="rotate(-0 77.232935 320.724003)">5.0%</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #0f6e56" x="424.985499" y="326.760127" transform="rotate(-0 424.985499 326.760127)">green = gift-and-defence cluster (qul = 0)</text>
+   </g>
+   <g id="text_23">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1d3557" x="10.38125" y="16.698047" transform="rotate(-0 10.38125 16.698047)">A.  Density of address to the Prophet</text>
+   </g>
+   <g id="text_24">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="49.982904" transform="rotate(-0 16.571221 49.982904)">ﺮﺛﻮﻜﻟﺍ  (108)</text>
+   </g>
+   <g id="text_25">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="74.599396" transform="rotate(-0 16.571221 74.599396)">ﺡﺮﺸﻟﺍ  (94)</text>
+   </g>
+   <g id="text_26">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="99.451513" transform="rotate(-0 16.571221 99.451513)">ﻰﺤﻀﻟﺍ  (93)</text>
+   </g>
+   <g id="text_27">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="123.83238" transform="rotate(-0 16.571221 123.83238)">ﺭﺎﻄﻔﻧﺎﻟﺍ  (82)</text>
+   </g>
+   <g id="text_28">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="148.684496" transform="rotate(-0 16.571221 148.684496)">ﺔﺤﺗﺎﻔﻟﺍ  (1)</text>
+   </g>
+   <g id="text_29">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="173.300988" transform="rotate(-0 16.571221 173.300988)">ﻪﻃ  (20)</text>
+   </g>
+   <g id="text_30">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="197.681855" transform="rotate(-0 16.571221 197.681855)">ﺔﻋﺭﺎﻘﻟﺍ  (101)</text>
+   </g>
+   <g id="text_31">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="222.533972" transform="rotate(-0 16.571221 222.533972)">ﺔﻣﺎﻴﻘﻟﺍ  (75)</text>
+   </g>
+   <g id="text_32">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="246.914839" transform="rotate(-0 16.571221 246.914839)">ﺮﺼﻨﻟﺍ  (110)</text>
+   </g>
+   <g id="text_33">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="271.766956" transform="rotate(-0 16.571221 271.766956)">15  (15)</text>
+   </g>
+   <g id="text_34">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="296.147823" transform="rotate(-0 16.571221 296.147823)">ﺕﺎﻋﺯﺎﻨﻟﺍ  (79)</text>
+   </g>
+   <g id="text_35">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="16.571221" y="320.764315" transform="rotate(-0 16.571221 320.764315)">ﺮﺠﻔﻟﺍ  (89)</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="text_36">
+    <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1d3557" x="443.324479" y="34.196094" transform="rotate(-0 443.324479 34.196094)">B.  Which 'giving' verb reaches the Prophet (2nd-person)?</text>
+   </g>
+   <g id="text_37">
+    <text style="font-weight: 700; font-size: 22px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1d3557" x="454.804062" y="87.006562" transform="rotate(-0 454.804062 87.006562)">ﻮﻄﻋ</text>
+   </g>
+   <g id="text_38">
+    <text style="font-style: italic; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="519.855028" y="73.633257" transform="rotate(-0 519.855028 73.633257)">aʿṭā</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #9fb0c4" x="519.855028" y="100.102399" transform="rotate(-0 519.855028 100.102399)">12 occ.</text>
+   </g>
+   <g id="text_40">
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0f6e56" x="604.038632" y="73.286851" transform="rotate(-0 604.038632 73.286851)">→ only ﻰﺤﻀﻟﺍ + ﺮﺛﻮﻜﻟﺍ</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1d9e75" x="604.038632" y="99.964431" transform="rotate(-0 604.038632 99.964431)">93:5,  108:1</text>
+   </g>
+   <g id="text_42">
+    <text style="font-weight: 700; font-size: 22px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1d3557" x="454.804062" y="166.843052" transform="rotate(-0 454.804062 166.843052)">ﺡﺮﺷ</text>
+   </g>
+   <g id="text_43">
+    <text style="font-style: italic; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="519.855028" y="153.868497" transform="rotate(-0 519.855028 153.868497)">sharaḥa</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #9fb0c4" x="519.855028" y="180.337639" transform="rotate(-0 519.855028 180.337639)">5 occ.</text>
+   </g>
+   <g id="text_45">
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0f6e56" x="604.038632" y="153.522091" transform="rotate(-0 604.038632 153.522091)">→ only ﺡﺮﺸﻟﺍ</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1d9e75" x="604.038632" y="180.199671" transform="rotate(-0 604.038632 180.199671)">94:1</text>
+   </g>
+   <g id="text_47">
+    <text style="font-weight: 700; font-size: 22px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1d3557" x="454.804062" y="247.078292" transform="rotate(-0 454.804062 247.078292)">ﺐﻫﻭ</text>
+   </g>
+   <g id="text_48">
+    <text style="font-style: italic; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #10243a" x="519.855028" y="234.103737" transform="rotate(-0 519.855028 234.103737)">wahaba</text>
+   </g>
+   <g id="text_49">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #9fb0c4" x="519.855028" y="260.572879" transform="rotate(-0 519.855028 260.572879)">22 occ.</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #9fb0c4" x="604.038632" y="233.965768" transform="rotate(-0 604.038632 233.965768)">→ NEVER to the Prophet</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #9fb0c4" x="604.038632" y="260.434911" transform="rotate(-0 604.038632 260.434911)">only progeny → Ibrāhīm, Zakariyyā, Dāwūd…</text>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(454.804062 315.203982)">The personal gift is named with the open verb ﻮﻄﻋ + genus-noun ﺮﺛﻮﻛ,</text>
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; fill: #10243a" transform="translate(454.804062 327.34231)">not with ﺐﻫﻭ (a specific child) — underwriting the open referent (§5.11).</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pa499cab6bc">
+   <rect x="10.38125" y="24.698047" width="420.918019" height="314.648"/>
+  </clipPath>
+ </defs>
+</svg>
