@@ -222,6 +222,111 @@ if not combined_mode:
     except Exception:
         pass
 
+    # ── Density tables — per surah & per ayah (root + top-5 surface forms) ──
+    st.divider()
+    st.markdown(
+        "<span class='layer-label'>LAYER 2·B · Density — per surah &amp; per ayah "
+        "(root and top-5 surface forms)</span>", unsafe_allow_html=True)
+    st.caption(
+        "**Density is size-true — the same spec as the density-home chart:** occurrences per 1,000 "
+        "units of the container.  **Per surah →** hits per 1,000 *ayahs* of that surah "
+        "(`1000 × freq ÷ surah ayahs`).  **Per ayah →** hits per 1,000 *roots* (root-tokens) of that ayah "
+        "(`1000 × freq ÷ ayah roots`).  *Freq* is the term-frequency (token count, repeats included). "
+        "Surah reliability floor (like the density-home chart): **≥3 hits and ≥10 ayahs** — rows below "
+        "it read as notable usage, not a ranking."
+    )
+
+    # Token-level occurrences of this root: one row per matched token (surah, ayah, surface form).
+    _nz = _A.normalize_letters
+    _tok_rows = []
+    for _i in _A.search_root(corpus, root, normalize):
+        _rr = corpus.df.iloc[_i]
+        _rt = corpus.root_tokens[_i]
+        _stk = corpus.surface_tokens[_i]
+        _alen = len(_rt)                               # ayah length in roots (root-tokens)
+        for _j, _t in enumerate(_rt):
+            if (_nz(_t) if normalize else _t) == root:
+                _tok_rows.append({
+                    "Surah #": int(_rr[_A.COL_SURAH]),
+                    "Ayah #": int(_rr[_A.COL_AYAH]),
+                    "Surah": _rr[_A.COL_SURAH_NAME],
+                    "Surface": (_stk[_j] if _j < len(_stk) else ""),
+                    "Ayah roots": _alen,
+                })
+    _tok = pd.DataFrame(_tok_rows)
+
+    if _tok.empty:
+        st.caption("No token-level occurrences to break down.")
+    else:
+        def _dens_surah(_frame):
+            g = (_frame.groupby(["Surah #", "Surah"])
+                       .agg(**{"Total freq": ("Surface", "size"),
+                               "Ayah-hits": ("Ayah #", "nunique")}).reset_index())
+            g["Surah ayahs"] = g["Surah #"].map(lambda s: int(_aps.get(int(s), 0)))
+            g["Density /1k ayahs"] = (1000 * g["Total freq"]
+                                      / g["Surah ayahs"].replace(0, pd.NA)).round(1)
+            g["Reliable"] = (g["Total freq"] >= 3) & (g["Surah ayahs"] >= 10)
+            return g.sort_values(["Density /1k ayahs", "Total freq"], ascending=False)
+
+        def _dens_ayah(_frame):
+            g = (_frame.groupby(["Surah #", "Ayah #", "Surah", "Ayah roots"])
+                       .agg(**{"Freq": ("Surface", "size")}).reset_index())
+            g.insert(0, "S:A", "S" + g["Surah #"].astype(str) + ":A" + g["Ayah #"].astype(str))
+            g["Density /1k roots"] = (1000 * g["Freq"]
+                                      / g["Ayah roots"].replace(0, pd.NA)).round(1)
+            return g.sort_values(["Surah #", "Ayah #"])
+
+        _root_su = _dens_surah(_tok)
+        _root_ay = _dens_ayah(_tok)
+
+        st.markdown(f"**The root `{root}` — density by location**")
+        cA, cB = st.columns(2)
+        with cA:
+            st.caption("Per surah — sorted by density")
+            st.dataframe(_root_su[["Surah #", "Surah", "Surah ayahs", "Ayah-hits",
+                                   "Total freq", "Density /1k ayahs", "Reliable"]],
+                         width='stretch', hide_index=True, height=320)
+        with cB:
+            st.caption("Per ayah — mushaf order")
+            st.dataframe(_root_ay[["S:A", "Surah", "Ayah roots", "Freq", "Density /1k roots"]],
+                         width='stretch', hide_index=True, height=320)
+
+        # Top-5 surface forms of this root
+        _fc = _tok["Surface"].value_counts()
+        _top5 = list(_fc.index[:5])
+        _tok5 = _tok[_tok["Surface"].isin(_top5)].copy()
+        _sf_sum = _fc.head(5).rename_axis("Surface").reset_index(name="Occurrences")
+        _sf_sum["Share % of root"] = (100 * _sf_sum["Occurrences"] / len(_tok)).round(1)
+
+        st.markdown("**Top-5 surface forms — frequency &amp; density**")
+        st.dataframe(_sf_sum, width='content', hide_index=True, height=210)
+
+        _fsu = (_tok5.groupby(["Surface", "Surah #", "Surah"])
+                     .agg(**{"Freq": ("Surface", "size"),
+                             "Ayah-hits": ("Ayah #", "nunique")}).reset_index())
+        _fsu["Surah ayahs"] = _fsu["Surah #"].map(lambda s: int(_aps.get(int(s), 0)))
+        _fsu["Density /1k ayahs"] = (1000 * _fsu["Freq"]
+                                     / _fsu["Surah ayahs"].replace(0, pd.NA)).round(1)
+        _fsu = _fsu.sort_values(["Surface", "Density /1k ayahs"], ascending=[True, False])
+
+        _fay = (_tok5.groupby(["Surface", "Surah #", "Ayah #", "Ayah roots"])
+                     .agg(**{"Freq": ("Surface", "size")}).reset_index())
+        _fay.insert(1, "S:A", "S" + _fay["Surah #"].astype(str) + ":A" + _fay["Ayah #"].astype(str))
+        _fay["Density /1k roots"] = (1000 * _fay["Freq"]
+                                     / _fay["Ayah roots"].replace(0, pd.NA)).round(1)
+        _fay = _fay.sort_values(["Surface", "Surah #", "Ayah #"])
+
+        cC, cD = st.columns(2)
+        with cC:
+            st.caption("Top-5 forms · per surah (freq + density)")
+            st.dataframe(_fsu[["Surface", "Surah #", "Surah", "Surah ayahs",
+                               "Freq", "Density /1k ayahs"]],
+                         width='stretch', hide_index=True, height=360)
+        with cD:
+            st.caption("Top-5 forms · per ayah (freq + density)")
+            st.dataframe(_fay[["Surface", "S:A", "Ayah roots", "Freq", "Density /1k roots"]],
+                         width='stretch', hide_index=True, height=360)
+
     st.divider()
     layer(3, "Partners & morphology — drill-down tables")
     c1, c2 = st.columns(2)
