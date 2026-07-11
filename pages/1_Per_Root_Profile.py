@@ -214,6 +214,11 @@ if not combined_mode:
         st.plotly_chart(PC.chart_position_histogram(R["position"], root), width='stretch')
     with c2:
         st.plotly_chart(PC.chart_surface_form_sunburst(R["sforms"], root), width='stretch')
+        _tailfig = PC.chart_surface_form_tail(R["sforms"], root)
+        if _tailfig is not None:
+            st.plotly_chart(_tailfig, width='stretch')
+            st.caption("Zoom into the surface forms **beyond the top 3** — percentages here are "
+                       "relative to these smaller forms only, so the rare spellings become legible.")
         st.plotly_chart(PC.chart_ayah_length_hist(R["position"], root), width='stretch')
 
     st.plotly_chart(PC.chart_density_home_surahs(R["occurrences"], _aps, _names, root), width='stretch')

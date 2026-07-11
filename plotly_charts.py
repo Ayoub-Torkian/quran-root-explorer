@@ -2519,3 +2519,39 @@ def chart_dependency(dep: dict, root: str, max_each: int = 7) -> go.Figure:
         yaxis=dict(visible=False, range=[-1.45, 1.45]),
         margin=dict(l=10, r=10, t=46, b=10))
     return fig
+
+
+def chart_surface_form_tail(surface_forms: pd.DataFrame, root: str,
+                            skip_top: int = 3, max_slices: int = 16) -> "go.Figure | None":
+    """Companion 'zoom' pie: the surface forms BEYOND the top `skip_top`, so the
+    rare spellings that collapse into slivers on the main donut become legible.
+    Percentages are relative to this tail only. Returns None when there is no
+    meaningful tail to show."""
+    sub = surface_forms[surface_forms["Input Root"] == root].copy()
+    if sub.empty:
+        return None
+    sub = sub.sort_values("Occurrences", ascending=False)
+    tail = sub.iloc[skip_top:]
+    if len(tail) < 2:
+        return None
+    if len(tail) > max_slices:
+        head = tail.iloc[:max_slices]
+        rest = int(tail.iloc[max_slices:]["Occurrences"].sum())
+        cnt = len(tail) - max_slices
+        tail = pd.concat([head, pd.DataFrame([{
+            "Input Root": root,
+            "Surface Form (col 5)": f"+{cnt} more",
+            "Occurrences": rest}])], ignore_index=True)
+    total = int(tail["Occurrences"].sum())
+    fig = px.pie(tail, names="Surface Form (col 5)", values="Occurrences",
+                 color_discrete_sequence=px.colors.qualitative.Vivid, hole=0.42)
+    fig.update_traces(textinfo="label+percent", textposition="inside",
+                      textfont=dict(size=12, color="#FFFFFF", family="Arial"),
+                      insidetextorientation="horizontal",
+                      hovertemplate="%{label}<br>%{value} occ · %{percent} of tail<extra></extra>")
+    fig.add_annotation(text=f"tail<br>{total} occ", x=0.5, y=0.5, showarrow=False,
+                       font=dict(size=13, color="#5A6B72", family="Arial"))
+    fig.update_layout(showlegend=False, uniformtext=dict(minsize=9, mode="hide"))
+    fig = _layout(fig, f"Surface forms — smaller forms only  ·  {root}", h=380)
+    fig.update_layout(margin=dict(l=20, r=20, t=50, b=24))
+    return fig
