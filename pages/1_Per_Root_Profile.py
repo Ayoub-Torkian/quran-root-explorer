@@ -280,6 +280,19 @@ if not combined_mode:
         _root_ay = _dens_ayah(_tok)
 
         st.markdown(f"**The root `{root}` — density by location**")
+        with st.expander("ℹ️ How to read — root density by location", expanded=False):
+            st.markdown(r'''
+**Per surah (left).** Each row is a surah the root appears in.
+`Total freq` = raw occurrences (repeats within a verse counted); `Ayah-hits` = distinct verses touched;
+`Density /1k ayahs` = 1000 × freq ÷ that surah's ayah-count — a **size-true** rate, so a short surah and a long one compare fairly.
+`Reliable` is ✓ only when `Total freq` ≥ 3 **and** the surah has ≥ 10 ayahs; an unticked row's density rests on too little data.
+
+**Per ayah (right).** One row per verse, in mushaf order.
+`Freq` = occurrences in that verse; `Ayah roots` = number of root-tokens in it;
+`Density /1k roots` = 1000 × freq ÷ ayah-roots — how **saturated** that single verse is with the root, corrected for its length.
+
+**What to watch.** Raw counts favour long surahs; density corrects for size. The root's genuine *home* is a surah that is **both** ✓ Reliable **and** high in `Density /1k ayahs`. A sky-high density on an unticked row (one hit in a 3-ayah surah = 333/1k) is a curiosity, not a ranking.
+''')
         cA, cB = st.columns(2)
         with cA:
             st.caption("Per surah — sorted by density")
@@ -299,6 +312,16 @@ if not combined_mode:
         _sf_sum["Share % of root"] = (100 * _sf_sum["Occurrences"] / len(_tok)).round(1)
 
         st.markdown("**Top-5 surface forms — frequency &amp; density**")
+        with st.expander("ℹ️ How to read — surface forms (frequency & density)", expanded=False):
+            st.markdown(r'''
+**Top-5 table.** The five most common *spellings* of this root. `Occurrences` = how many times each form appears; `Share % of root` = its slice of all the root's occurrences — so you see which form dominates (often a particular noun or verb pattern).
+
+**Per surah (freq + density).** For each of the five forms, where it clusters across surahs: `Freq` = raw count, `Density /1k ayahs` = size-true rate.
+
+**Per ayah (freq + density).** The specific verses each form lands in: `Density /1k roots` = how saturated that verse is with the form.
+
+**What to watch.** A form with high `Freq` but low `Density` is just riding long surahs; a form that is dense in a *reliable* surah is genuinely characteristic there. Compare the forms — different spellings often concentrate in different surahs and contexts. The **pie charts** below show these same frequency shares visually.
+''')
         st.dataframe(_sf_sum, width='content', hide_index=True, height=210)
 
         _fsu = (_tok5.groupby(["Surface", "Surah #", "Surah"])
