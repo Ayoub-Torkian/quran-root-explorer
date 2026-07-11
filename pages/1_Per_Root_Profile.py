@@ -328,18 +328,11 @@ if not combined_mode:
                          width='stretch', hide_index=True, height=360)
 
     st.divider()
-    layer(3, "Partners & morphology — drill-down tables")
-    c1, c2 = st.columns(2)
-    with c1:
-        st.subheader("Top co-occurring partners")
-        st.plotly_chart(PC.chart_partner_motifs(R["pmotifs"], root, top=15), width='stretch')
-        pm_sub = R["pmotifs"][R["pmotifs"]["Input Root"] == root]
-        st.dataframe(pm_sub, width='content', hide_index=True, height=300)
-    with c2:
-        st.subheader("Attached particles (col 6 morphology)")
-        st.plotly_chart(PC.chart_morphology_per_root(R["morphology"], root), width='stretch')
-        morph_sub = R["morphology"][R["morphology"]["Input Root"] == root]
-        st.dataframe(morph_sub, width='content', hide_index=True, height=300)
+    layer(3, "Partners — drill-down tables")
+    st.subheader("Top co-occurring partners")
+    st.plotly_chart(PC.chart_partner_motifs(R["pmotifs"], root, top=15), width='stretch')
+    pm_sub = R["pmotifs"][R["pmotifs"]["Input Root"] == root]
+    st.dataframe(pm_sub, width='content', hide_index=True, height=300)
 
     st.subheader("Top co-occurring SURFACE FORMS (by lift)")
     _spl = _A.surface_partner_lift(corpus, [root], normalize, top=15, min_co=4)
