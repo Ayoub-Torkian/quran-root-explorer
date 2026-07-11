@@ -327,6 +327,36 @@ if not combined_mode:
             st.dataframe(_fay[["Surface", "S:A", "Ayah roots", "Freq", "Density /1k roots"]],
                          width='stretch', hide_index=True, height=360)
 
+        # -- Pie charts: each top-5 surface form, per surah & per ayah --
+        st.markdown("**Pie charts — each top-5 surface form, per surah &amp; per ayah**")
+        st.caption("Slices are frequency share. For legibility the 14 largest locations are shown "
+                   "individually and any remainder is grouped as “others.”")
+
+        def _pie_freq(_frame, _names, _title):
+            _d = (_frame[[_names, "Freq"]].groupby(_names, as_index=False)["Freq"].sum()
+                                          .sort_values("Freq", ascending=False))
+            if len(_d) > 14:
+                _head = _d.iloc[:14]
+                _rest = pd.DataFrame({_names: ["others"],
+                                      "Freq": [int(_d["Freq"].iloc[14:].sum())]})
+                _d = pd.concat([_head, _rest], ignore_index=True)
+            _fig = px.pie(_d, names=_names, values="Freq", title=_title, hole=0.35)
+            _fig.update_traces(textposition="inside", textinfo="percent+label", sort=False)
+            _fig.update_layout(height=330, margin=dict(t=44, b=10, l=10, r=10), showlegend=False)
+            return _fig
+
+        for _i, _sf in enumerate(_top5):
+            _su_sf = _fsu[_fsu["Surface"] == _sf]
+            _ay_sf = _fay[_fay["Surface"] == _sf]
+            st.markdown(f"**Surface form: `{_sf}`** — {int(_su_sf['Freq'].sum())} occurrences")
+            _p1, _p2 = st.columns(2)
+            with _p1:
+                st.plotly_chart(_pie_freq(_su_sf, "Surah", f"{_sf} · per surah (freq share)"),
+                                width='stretch', key=f"pie_su_{_i}")
+            with _p2:
+                st.plotly_chart(_pie_freq(_ay_sf, "S:A", f"{_sf} · per ayah (freq share)"),
+                                width='stretch', key=f"pie_ay_{_i}")
+
     st.divider()
     layer(3, "Partners — drill-down tables")
     st.subheader("Top co-occurring partners")
