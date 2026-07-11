@@ -380,6 +380,56 @@ if not combined_mode:
                 st.plotly_chart(_pie_freq(_ay_sf, "S:A", f"{_sf} · per ayah (freq share)"),
                                 width='stretch', key=f"pie_ay_{_i}")
 
+    # ── LAYER 2·C · Revelation timing (Meccan/Medinan + nuzul phases) ──
+    st.divider()
+    st.markdown(
+        "<span class='layer-label'>LAYER 2·C · Revelation timing — Meccan vs Medinan &amp; nuzūl phases</span>",
+        unsafe_allow_html=True)
+    st.caption(
+        "Where the root sits in **revelation order** (nuzūl), not mushaf order. Meccan = sūras revealed "
+        "1–86, Medinan = 87–114 (Egyptian standard). Density is **size-true** — hits per 1,000 āyāt *of "
+        "that period* — so it corrects for the text being ~74% Meccan / 26% Medinan.")
+    try:
+        _snz = corpus.df.drop_duplicates(_A.COL_SURAH).set_index(_A.COL_SURAH)["ترتیب نزول"].to_dict()
+        _bl = corpus.df[_A.COL_SURAH].map(
+            lambda s: "Meccan" if int(_snz.get(int(s), 0)) <= 86 else "Medinan").value_counts().to_dict()
+        _bmec, _bmed = int(_bl.get("Meccan", 0)), int(_bl.get("Medinan", 0))
+        _sp = sub[["Surah #", "Hit Count"]].copy()
+        _sp["_rank"] = _sp["Surah #"].map(lambda s: int(_snz.get(int(s), 0)))
+        _mec_ay = int((_sp["_rank"] <= 86).sum()); _med_ay = int((_sp["_rank"] > 86).sum())
+        _dmec = round(1000 * _mec_ay / _bmec, 1) if _bmec else 0.0
+        _dmed = round(1000 * _med_ay / _bmed, 1) if _bmed else 0.0
+        _cR1, _cR2 = st.columns(2)
+        with _cR1:
+            _fp = go.Figure(go.Bar(x=["Meccan", "Medinan"], y=[_dmec, _dmed],
+                                   marker_color=["#1D3557", "#0F6E56"],
+                                   text=[_dmec, _dmed], textposition="outside"))
+            _fp.update_layout(title="Density per 1,000 āyāt of the period", height=300,
+                              margin=dict(t=44, b=10, l=10, r=10), yaxis_title="hits /1k āyāt")
+            st.plotly_chart(_fp, width='stretch', key="rev_period")
+        with _cR2:
+            _phz = [("early Meccan", 1, 20), ("mid Meccan", 21, 50),
+                    ("late Meccan", 51, 86), ("Medinan", 87, 114)]
+            _pc = [int(((_sp["_rank"] >= a) & (_sp["_rank"] <= b)).sum()) for _, a, b in _phz]
+            _ft = go.Figure(go.Bar(x=[q[0] for q in _phz], y=_pc,
+                                   marker_color=["#8ECAE6", "#4EA8DE", "#2C6FB3", "#0F6E56"],
+                                   text=_pc, textposition="outside"))
+            _ft.update_layout(title="Āyah-hits by revelation phase", height=300,
+                              margin=dict(t=44, b=10, l=10, r=10), yaxis_title="āyah-hits")
+            st.plotly_chart(_ft, width='stretch', key="rev_phase")
+        _lean = "Medinan" if _dmed > _dmec else "Meccan"
+        _ratio = round(max(_dmec, _dmed) / max(min(_dmec, _dmed), 0.1), 1)
+        _rawpct = round(100 * _mec_ay / max(_mec_ay + _med_ay, 1))
+        _rel = (_mec_ay + _med_ay) >= 8
+        st.markdown(
+            f"**📍 Reading:** `{root}` is in {_mec_ay} Meccan and {_med_ay} Medinan āyāt "
+            f"({_rawpct}% Meccan by raw count), but size-true density is **{_dmec}/1k** Meccan vs "
+            f"**{_dmed}/1k** Medinan → **{_lean}-leaning (~{_ratio}×)** once the "
+            f"{round(100*_bmec/6236)}%/{round(100*_bmed/6236)}% Meccan/Medinan split of the text is "
+            f"accounted for." + ("" if _rel else "  _(few occurrences — indicative only.)_"))
+    except Exception as _e:
+        st.caption(f"Revelation-timing unavailable ({_e}).")
+
     st.divider()
     layer(3, "Partners — drill-down tables")
     st.subheader("Top co-occurring partners")
@@ -398,6 +448,50 @@ if not combined_mode:
         st.dataframe(_spl[_spl["Input Root"] == root][
             ["Partner Surface", "Ayahs Together", "Global Ayahs", "Lift", "Affinity"]],
             width='content', hide_index=True, height=300)
+
+    # ── LAYER 3·B · Collocations (immediate neighbours) ──
+    st.divider()
+    st.markdown(
+        "<span class='layer-label'>LAYER 3·B · Collocations — immediate neighbours &amp; fixed phrases</span>",
+        unsafe_allow_html=True)
+    st.caption(
+        "The words sitting **directly before/after** each occurrence of the root (segmented tokens). "
+        "The partner tables above count roots co-occurring **anywhere in the āyah**; this instead captures "
+        "**adjacency** — the set phrases and constructions the root actually forms.")
+    from collections import Counter as _Counter
+    _Lc, _Rc, _bg, _tg = _Counter(), _Counter(), _Counter(), _Counter()
+    _nzc = _A.normalize_letters
+    for _i in _A.search_root(corpus, root, normalize):
+        _rt = corpus.root_tokens[_i]; _stk = corpus.surface_tokens[_i]
+        for _j, _t in enumerate(_rt):
+            if (_nzc(_t) if normalize else _t) == root:
+                _f = _stk[_j] if _j < len(_stk) else ""
+                _L = _stk[_j-1] if _j-1 >= 0 else "—"
+                _R = _stk[_j+1] if _j+1 < len(_stk) else "—"
+                _Lc[_L] += 1; _Rc[_R] += 1
+                if _L != "—": _bg[_L + " " + _f] += 1
+                if _R != "—": _bg[_f + " " + _R] += 1
+                if _L != "—" and _R != "—": _tg[_L + " " + _f + " " + _R] += 1
+    if not _Lc and not _Rc:
+        st.caption("No neighbouring tokens to show.")
+    else:
+        _cN1, _cN2, _cN3 = st.columns(3)
+        with _cN1:
+            st.caption("Preceding word (before)")
+            st.dataframe(pd.DataFrame(_Lc.most_common(12), columns=["Word before", "Count"]),
+                         width='stretch', hide_index=True, height=300)
+        with _cN2:
+            st.caption("Following word (after)")
+            st.dataframe(pd.DataFrame(_Rc.most_common(12), columns=["Word after", "Count"]),
+                         width='stretch', hide_index=True, height=300)
+        with _cN3:
+            st.caption("Fixed phrases (2–3 words)")
+            _ph = sorted(_bg.most_common(8) + _tg.most_common(6), key=lambda x: -x[1])[:12]
+            st.dataframe(pd.DataFrame(_ph, columns=["Phrase", "Count"]),
+                         width='stretch', hide_index=True, height=300)
+        st.caption("Neighbours use morphological (segmented) tokens, so the article and prepositions "
+                   "appear as their own words. High-frequency neighbours expose the root's formulaic "
+                   "language — fixed genitives (e.g. *kitāb Allāh*) and verb–object pairings.")
 
     st.divider()
     layer(4, "Surface forms — every spelling found")
