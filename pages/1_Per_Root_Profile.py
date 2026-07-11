@@ -26,6 +26,11 @@ if run or needs_recompute():
     compute_all(corpus, raw, normalize, top_p, min_w)
 R = need_results()
 
+@st.cache_data(show_spinner="Building the trilingual dossier…")
+def _dossier_bytes(root, normalize):
+    import root_dossier as _RD
+    return _RD.build_docx(_RD.compute(corpus, root, normalize))
+
 # ── Surface-form divergence banner ──
 # (placed AFTER corpus/R exist — previously this block ran before they were
 #  defined, so the NameError was silently swallowed and the banner never showed)
@@ -129,6 +134,22 @@ if not combined_mode:
     sforms = R["sforms"][R["sforms"]["Input Root"] == root]
     rarity_row = R["rarity"][R["rarity"]["Input Root"] == root]
     flast = R["first_last"][R["first_last"]["Input Root"] == root]
+
+    # ── Trilingual dossier export (EN · FA · AR) ──
+    _dcol1, _dcol2 = st.columns([3, 2])
+    with _dcol1:
+        try:
+            st.download_button(
+                "⬇  Download trilingual dossier  (EN · FA · AR · DOCX)",
+                data=_dossier_bytes(root, normalize),
+                file_name=f"root_dossier_{root}.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                type="primary", width='stretch')
+        except Exception as _e:
+            st.caption(f"Dossier unavailable ({_e}).")
+    with _dcol2:
+        st.caption("One-file research brief consolidating every angle below — "
+                   "English (comprehensive) plus faithful Persian & Arabic.")
 
     layer(1, "Headline metrics")
     _ay   = sub[["Surah #", "Ayah #"]].drop_duplicates().shape[0] if not sub.empty else 0
